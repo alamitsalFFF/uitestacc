@@ -1,0 +1,87 @@
+﻿C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionCashSaleData.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionCashSaleMain.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionCS.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQB.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQP.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQR.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQuickBuyAssetMain.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQuickBuyAssetResult.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQuickPaymantResult.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQuickPaymentMain.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQuickReceiveMain.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionQuickReceiveResult.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\cash management\AccordionSelectProductCS.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Payment\AccordionPC.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Payment\AccordionPCDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Payment\AccordionPCHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Payment\AccordionPIEditDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Payment\AccordionSelectProductPI.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Receive\AccordionRC.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Receive\AccordionRCDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Cheque Receive\AccordionRCHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery In\AccordionDI.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery In\AccordionDIDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery In\AccordionDIEditDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery In\AccordionDIHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery In\AccordionSelectProductDI.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery Out\AccordionDO.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery Out\AccordionDODT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery Out\AccordionDOEditDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery Out\AccordionDOHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Delivery\Delivery Out\AccordionSelectProductDO.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Invoice\AccordionPI.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Invoice\AccordionPIDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Invoice\AccordionPIEditDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Invoice\AccordionPIHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Invoice\AccordionSelectProductPI.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Voucher\AccordionPV.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Voucher\AccordionPVDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Payment Voucher\AccordionPVHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Order\AccordionPO.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Order\AccordionPODT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Order\AccordionPOEditDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Order\AccordionPOHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Order\AccordionSelectProductPO.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Requisition\AccordionPR.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\purchase\Purchase Requisition\AccordionSelectProductPR.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Receive Voucher\AccordionRV.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Receive Voucher\AccordionRVDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Receive Voucher\AccordionRVHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sale Invoice\AccordionSI.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sale Invoice\AccordionSIDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sale Invoice\AccordionSIHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Order\AccordionSelectProductSO.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Order\AccordionSO.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Order\AccordionSODT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Order\AccordionSOEditDT.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Order\AccordionSOHD.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Requisition\AccordionSelectProductSR.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Sales\Sales Requisition\AccordionSR.js
+C:\Users\tawan\Desktop\uitestacc\amita\src\components\Withholding Tax\AccordionWHT.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\Accordion\Accordion.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\Accordion\accordionClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\Accordion\AccordionContext.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\AccordionActions\AccordionActions.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\AccordionActions\accordionActionsClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\AccordionDetails\AccordionDetails.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\AccordionDetails\accordionDetailsClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\AccordionSummary\AccordionSummary.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\AccordionSummary\accordionSummaryClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\Accordion\Accordion.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\Accordion\accordionClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\Accordion\AccordionContext.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\AccordionActions\AccordionActions.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\AccordionActions\accordionActionsClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\AccordionDetails\AccordionDetails.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\AccordionDetails\accordionDetailsClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\AccordionSummary\AccordionSummary.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\modern\AccordionSummary\accordionSummaryClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\Accordion\Accordion.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\Accordion\accordionClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\Accordion\AccordionContext.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\AccordionActions\AccordionActions.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\AccordionActions\accordionActionsClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\AccordionDetails\AccordionDetails.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\AccordionDetails\accordionDetailsClasses.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\AccordionSummary\AccordionSummary.js
+C:\Users\tawan\Desktop\uitestacc\node_modules\@mui\material\node\AccordionSummary\accordionSummaryClasses.js
