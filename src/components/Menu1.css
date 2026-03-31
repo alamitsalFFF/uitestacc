@@ -1,0 +1,94 @@
+/* สไตล์สำหรับเมนูหลัก */
+.menu {
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
+  
+  /* สไตล์สำหรับรายการเมนูย่อย */
+  .menu li {
+    list-style: none;
+    margin: 5px 0;
+  }
+  
+  /* สไตล์สำหรับลิงก์ในเมนู */
+  .menu a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  /* สไตล์สำหรับเมนูย่อยเมื่อโฮเวอร์ */
+  .menu li:hover {
+    background-color: #9ce6f8;
+  }
+
+  /* ///////////// */
+  /* Basic styles for the menu */
+/* .menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+} */
+
+.menu-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+  background-color: #f2f2f2;
+}
+
+.submenu {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+  /* display: none; */
+}
+
+.submenu-item {
+  padding: 5px 10px;
+  list-style: none;
+  cursor: pointer;
+  /* pointer-events: auto; */
+}
+
+.submenu-indicator {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 1  8px solid #a5f1ff;
+  margin-right: 5px;
+  transition: transform 0.3s ease-in-out;
+} 
+
+.submenu.open .submenu-indicator {
+  transform: rotate(180deg);
+}
+ul {
+  list-style: none;
+}
+
+button {
+  margin: 3px;
+  display: flex;
+  text-decoration: none;
+  color: var(--theme-fade-ad);
+  padding: 10px 20px;
+  transition: .3s ease;
+  border-radius: 10px;
+  position: relative;
+}
+
+button.btsubmenu{
+  margin: 1px;
+  display: flex;
+  text-decoration: none;
+  color: var(--theme-fade-ad);
+  padding: 10px 20px;
+  transition: .3s ease;
+  border-radius: 20px;
+  position: relative;
+}

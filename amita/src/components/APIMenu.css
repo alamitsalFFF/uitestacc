@@ -1,0 +1,54 @@
+/* Menu1.css */
+.menu-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Animation สำหรับ card */
+.menu-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+}
+
+/* การจัด layout สำหรับเมนูย่อย */
+.submenu-grid {
+  padding: 16px 0;
+  width: 100%;
+}
+
+.nested-submenu {
+  padding-left: 20px;
+  width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .menu-container {
+    padding: 10px;
+  }
+  
+  .menu-card {
+    min-width: 140px;
+    height: 100px;
+  }
+}
+
+/* สไตล์สำหรับ card ระดับต่างๆ */
+.card-level-0 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.card-level-1 {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.card-level-2 {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}

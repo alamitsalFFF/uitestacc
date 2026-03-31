@@ -1,0 +1,1327 @@
+import React, { useState, useEffect } from "react";
+import axios from "../Auth/axiosConfig";
+import { useAuthFetch } from "../Auth/fetchConfig";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Button from "@mui/material/Button";
+import { ButtonGroup } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleArrowUp,
+  faAngleRight,
+  faAnglesRight,
+  faHouseMedicalCircleCheck,
+  faPen,
+  faTrash,
+  faFloppyDisk,
+  faListUl,
+  faRectangleList,
+  faEllipsisVertical,
+  faPlus,
+  faCircleArrowLeft,
+  faPrint,
+  faD,
+  faI,
+  faP,
+  faV,
+  faTruckRampBox,
+  faTicket,
+  faFileInvoice,
+  faInfo,
+  faTruckMoving,
+} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+  Modal,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+// import IconButton from "../purchase/Purchase Order/Iconbutton";
+import { API_BASE, DATA_BASE, REPORT_BASE } from "../api/url";
+import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
+import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
+import Swal from "sweetalert2";
+import DocStatusDO from "../Delivery/Delivery Out/DocStatusDO";
+import { StockFromDO } from "../Delivery/Delivery Out/StockFromDO";
+import CircularButton from "../DataFilters/CircularButton";
+
+export default function TransactionHeader({
+  apiData,
+  setApiData,
+  currentIndex,
+  setCurrentIndex,
+  setCurrentAccDocNo,
+  setCurrentAccDocType,
+}) {
+  const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
+  const PartyName = useSelector((state) => state.partyName);
+  const AccEffectiveDate = useSelector((state) => state.accEffectiveDate);
+  const DocStatus = useSelector((state) => state.docStatus);
+  const amount = useSelector((state) => state.amount);
+  const AccDocType = useSelector((state) => state.accDocType);
+  const statusName = useSelector((state) => state.statusName);
+
+  const DocRefNo = useSelector((formData) => formData.docRefNo);
+  const location = useLocation();
+  const authFetch = useAuthFetch();
+  const isNewMode = location.state && location.state.isNew;
+  const [doctype, setDoctype] = React.useState("");
+  const [formData, setFormData] = useState({
+    // เก็บข้อมูลในฟอร์ม
+    accDocType: "",
+    accDocNo: "",
+    accEffectiveDate: new Date().toISOString().slice(0, 10),
+    partyCode: "",
+    partyTaxCode: "",
+    partyName: "",
+    partyAddress: "",
+    docRefNo: "",
+    docStatus: "",
+    accBatchDate: new Date().toISOString().slice(0, 10),
+    issueBy: "",
+    accPostDate: new Date().toISOString().slice(0, 10),
+    fiscalYear: new Date().toISOString().slice(0, 10),
+  });
+
+  // --- State for MoreInfoModal ---
+  const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false);
+  const handleOpenMoreInfoModal = () => setIsMoreInfoModalOpen(true);
+  const handleCloseMoreInfoModal = () => setIsMoreInfoModalOpen(false);
+  // ---------------------------------
+  const [selectedDocConfigID, setSelectedDocConfigID] = useState(null);
+
+  const handleChange = (event) => {
+    const selectedCategory = event.target.value;
+    setDoctype(selectedCategory); // อัปเดตค่า doctype
+    console.log("Selected Category:", selectedCategory);
+
+    const selectedOption = categoryOptions.find(
+      (option) => option.value === selectedCategory
+    );
+    if (selectedOption) {
+      setSelectedEName(selectedOption.label);
+      setSelectedDocConfigID(selectedOption.docConfigID);
+    } else {
+      setSelectedEName(""); // ถ้าไม่พบ eName ให้ตั้งค่าว่าง
+    }
+    fetchDataFromApi(selectedCategory);
+  };
+
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    setFormData({ ...formData, [id]: value }); // อัปเดต formData เสมอ
+  };
+
+  const DO = "DO";
+
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectedEName, setSelectedEName] = useState("");
+
+  useEffect(() => {
+    const fetchCategoryOptions = async () => {
+      try {
+        const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig`;
+        const response = await authFetch(categoryApiUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+
+        if (Array.isArray(data)) {
+          setCategoryOptions(
+            data.map((item) => ({
+              value: item.category,
+              label: item.eName,
+              docConfigID: item.docConfigID,
+            }))
+          );
+        } else {
+          console.error("Category API did not return an array.");
+        }
+      } catch (error) {
+        console.error("Error fetching category options:", error);
+      }
+    };
+
+    fetchCategoryOptions();
+  }, []);
+
+  useEffect(() => {
+    // เมื่อ formData.accDocType หรือ apiData เปลี่ยน ให้ set AccDocType และ selectedEName ใหม่
+    if (formData.accDocType) {
+      const matchedOption = categoryOptions.find(
+        (option) => option.value === formData.accDocType
+      );
+      if (matchedOption) {
+        setSelectedEName(matchedOption.label);
+        console.log("Selected Document Config ID:", matchedOption.docConfigID);
+        setSelectedDocConfigID(matchedOption.docConfigID);
+      } else {
+        setSelectedEName("");
+      }
+    }
+  }, [formData.accDocType, categoryOptions]);
+
+  const [showButton, setShowButton] = useState(false);
+  const [accDocNoFromApi, setAccDocNoFromApi] = useState(null);
+  // const [currentIndex, setCurrentIndex] = useState(0);
+  // const [apiData, setApiData] = useState(null);
+  const params = new URLSearchParams(location.search);
+  const accDocNoFromUrl = params.get("accDocNo") || AccDocNo; // AccDocNo จาก redux fallback
+
+  const fetchDataFromApi = async (AccDocType, accDocNoTarget) => {
+    if (isNewMode) {
+      return;
+    }
+    try {
+      const apiUrl = `${API_BASE}/AccTransaction/GetAccTransactionHD?accDocType=${AccDocType}`;
+      const response = await authFetch(apiUrl, {
+        headers: {},
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("data form accdoctype:", data);
+
+      // หลัง fetch ข้อมูล
+      if (Array.isArray(data) && data.length > 0) {
+        setApiData(data);
+        data.sort((a, b) => b.accDocNo.localeCompare(a.accDocNo));
+        let matchedIndex = 0;
+        if (accDocNoTarget) {
+          const foundIndex = data.findIndex(
+            (item) => item.accDocNo === accDocNoTarget
+          );
+          if (foundIndex !== -1) matchedIndex = foundIndex;
+        }
+        setCurrentIndex(matchedIndex);
+      } else {
+        // setApiData([]); // ล้างข้อมูลใน apiData state
+        setCurrentIndex(0);
+        setFormData({
+          accDocType: "",
+          accDocNo: "",
+          accEffectiveDate: new Date().toISOString().slice(0, 10),
+          partyCode: "",
+          partyTaxCode: "",
+          partyName: "",
+          partyAddress: "",
+          docRefNo: "",
+          docStatus: "",
+          accBatchDate: new Date().toISOString().slice(0, 10),
+          issueBy: "", //ต้องแก้เมื่อทำระบบlogin
+          accPostDate: new Date().toISOString().slice(0, 10),
+          fiscalYear: new Date().toISOString().slice(0, 10),
+        });
+        setDoctype(AccDocType || "");
+      }
+      console.log("DataDoc:", data[0].accDocNo);
+      console.log("DataDocS:", data[0].docStatus);
+      setAccDocNoFromApi(data[0].accDocNo);
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // alert("ไม่มีข้อมูล",doctype)
+      // จัดการ error เช่น แสดงข้อความให้ผู้ใช้
+      // throw error; // โยน error ต่อไปเพื่อให้ handleDetail จัดการ
+    }
+  };
+
+  useEffect(() => {
+    if (!doctype) {
+      setDoctype("DO");
+    }
+    if (doctype && !isNewMode) {
+      // เพิ่มเงื่อนไข !isNewMode
+      fetchDataFromApi(doctype, accDocNoFromUrl);
+    }
+  }, [doctype, accDocNoFromUrl, isNewMode]);
+
+  // useEffect สำหรับจัดการโหมดสร้างใหม่ หรือเมื่อ apiData เปลี่ยนแปลง
+  useEffect(() => {
+    if (isNewMode) {
+      // ถ้าเป็นการสร้างใหม่ ให้เรียก handleNew ทันที
+      handleNew();
+      return; // ไม่ต้องทำอย่างอื่นใน useEffect นี้
+    }
+
+    // ถ้าไม่ใช่โหมดสร้างใหม่ ให้ประมวลผล apiData ตามปกติ
+    if (apiData && apiData.length > 0) {
+      const sortedData = [...apiData].sort((a, b) => {
+        const accDocNoA = a.accDocNo;
+        const accDocNoB = b.accDocNo;
+        return accDocNoB.localeCompare(accDocNoA);
+      });
+
+      const matchedIndex = sortedData.findIndex(
+        (item) => item.accDocNo === accDocNoFromUrl
+      );
+
+      let newIndex = 0;
+      if (matchedIndex !== -1) {
+        newIndex = matchedIndex;
+      }
+      setCurrentIndex(newIndex);
+      setFormData({
+        accDocType: sortedData[newIndex].accDocType || "",
+        accDocNo: sortedData[newIndex].accDocNo || "",
+        accBatchDate: sortedData[newIndex].accBatchDate?.split("T")[0] || "",
+        accEffectiveDate:
+          sortedData[newIndex].accEffectiveDate?.split("T")[0] || "",
+        partyCode: sortedData[newIndex].partyCode || "",
+        partyTaxCode: sortedData[newIndex].partyTaxCode || "",
+        partyName: sortedData[newIndex].partyName || "",
+        partyAddress: sortedData[newIndex].partyAddress || "",
+        docRefNo: sortedData[newIndex].docRefNo || "",
+        docStatus: Number(sortedData[newIndex].docStatus) || 0,
+        issueBy: sortedData[newIndex].issueBy || "",
+        accPostDate: sortedData[newIndex].accPostDate?.split("T")[0] || "",
+        fiscalYear: sortedData[newIndex].fiscalYear?.split("T")[0] || "",
+      });
+      setDoctype(sortedData[newIndex].accDocType || ""); // ตั้งค่า doctype ด้วย
+    }
+    // ถ้า apiData ไม่มีข้อมูล และไม่ใช่โหมดสร้างใหม่ (คือไม่มีข้อมูลสำหรับ AccDocType ที่เลือก)
+    // การตั้งค่าเริ่มต้นจะถูกจัดการใน fetchDataFromApi แล้ว
+  }, [apiData, accDocNoFromUrl, isNewMode]); // เพิ่ม isNewMode ใน dependency array
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => Math.min(prev + 1, apiData.length - 1));
+  };
+
+  const goToLast = () => {
+    setCurrentIndex(apiData.length - 1);
+  };
+
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const goToFirst = () => {
+    setCurrentIndex(0);
+  };
+  const isNavigationDisabled = () => {
+    const disabled = !doctype || !apiData || apiData.length === 0;
+    // console.log("Navigation disabled:", disabled); // ตรวจสอบค่า disabled
+    console.log(
+      "Current Index:",
+      currentIndex,
+      "of",
+      apiData ? apiData.length : 0
+    );
+    return disabled;
+  };
+
+  const navigate = useNavigate();
+
+  // const handleSave = async () => {
+  //   try {
+  //     const dataToSend = { ...formData };
+  //     // ลบ accDocNo
+  //     delete dataToSend.accDocNo;
+  //     // ตรวจสอบว่า docStatus มีค่าหรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
+  //     if (!dataToSend.docStatus) {
+  //       dataToSend.docStatus = 0; // หรือค่าเริ่มต้นอื่นๆ ที่เหมาะสม
+  //     }
+  //     // ตรวจสอบ accPostDate และแก้ไขถ้าจำเป็น
+  //     if (dataToSend.accPostDate === "1900-01-01" || !dataToSend.accPostDate) {
+  //       dataToSend.accPostDate = new Date().toISOString().split("T")[0]; // หรือวันที่ที่ถูกต้องอื่นๆ
+  //     }
+
+  //     const regex = /^[0-9]{13}$/;
+
+  //     if (!regex.test(formData.partyTaxCode)) {
+  //       alert("PartyTaxCode ต้องเป็นตัวเลข (0-9) 13หลักเท่านั้น");
+  //       return; // หยุดการทำงานของฟังก์ชัน ถ้าข้อมูลไม่ถูกต้อง
+  //     }
+
+  //     console.log("DATATU:", JSON.stringify(dataToSend));
+  //     const response = await authFetch(
+  //       `${API_BASE}/AccTransaction/SetAccTransactionHD`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           // Add any other necessary headers (e.g., authorization)
+  //         },
+  //         body: JSON.stringify(dataToSend),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json(); // Try to get error details from the server
+  //       throw new Error(
+  //         `HTTP error! status: ${response.status}, message: ${
+  //           errorData.message || "Unknown error"
+  //         }`
+  //       );
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log("Data saved successfully:", responseData);
+  //     // Optionally, you can reset the form or update the UI after a successful save
+  //     alert("บันทึกข้อมูลสำเร็จ");
+  //     await fetchDataFromApi(doctype);
+  //     // ดึงค่า accDocNo และวันที่ที่ต้องการ
+  //     const accDocNo = responseData.accDocNo;
+  //     const accEffectiveDate = formData.accEffectiveDate;
+  //     const partyCode = formData.partyCode;
+  //     const partyName = formData.partyName;
+  //     const nameCategory = selectedEName;
+  //     console.log("nameEDoc:", selectedEName);
+
+  //     navigate(`/uitestacc/AccordionPR?accDocNo=${accDocNo}`, {
+  //       // state: {
+  //       //   accDocNo: accDocNo,
+  //       //   accEffectiveDate: accEffectiveDate,
+  //       //   partyCode: partyCode,
+  //       //   partyName: partyName,
+  //       //   nameCategory: nameCategory,
+  //       // },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error saving data:", error);
+  //     // Handle errors, e.g., display an error message to the user
+  //     alert("บันทึกข้อมูลไม่สำเร็จ กรุณาลองใหม่");
+  //   }
+  // };
+  const handleSave = async () => {
+    try {
+      const dataToSendHD = { ...formData };
+      delete dataToSendHD.accDocNo;
+      if (dataToSendHD.docStatus > 0) {
+        dataToSendHD.docStatus = 0;
+      }
+      if (
+        dataToSendHD.accPostDate === "1900-01-01" ||
+        !dataToSendHD.accPostDate
+      ) {
+        dataToSendHD.accPostDate = new Date().toISOString().split("T")[0];
+      }
+
+      if (
+        formData.partyCode === "DEF" &&
+        formData.partyTaxCode &&
+        formData.partyTaxCode.includes("/")
+      ) {
+        dataToSendHD.partyTaxCode = formData.partyTaxCode.split("/")[0];
+      } else if (formData.partyCode !== "DEF") {
+        dataToSendHD.partyTaxCode = formData.partyTaxCode;
+      }
+
+      console.log(
+        "Data to send for SetAccTransactionHD:",
+        JSON.stringify(dataToSendHD)
+      );
+
+      const responseHD = await authFetch(
+        `${API_BASE}/AccTransaction/SetAccTransactionHD`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any other necessary headers
+          },
+          body: JSON.stringify(dataToSendHD),
+        }
+      );
+
+      if (!responseHD.ok) {
+        const errorData = await responseHD.json();
+        throw new Error(
+          `HTTP error! status: ${responseHD.status}, message: ${errorData.message || "Unknown error"
+          }`
+        );
+      }
+
+      const responseDataHD = await responseHD.json();
+      console.log("SetAccTransactionHD successful:", responseDataHD);
+
+      const AccDocNo = responseDataHD.accDocNo;
+      const accEffectiveDate = formData.accEffectiveDate;
+      const partyCode = formData.partyCode;
+      const partyTaxCode = formData.partyTaxCode;
+      const partyName = formData.partyName;
+      const partyAddress = formData.partyAddress;
+      const nameCategory = selectedEName;
+
+      // ฟังก์ชันสำหรับเรียก API SetSupplier
+      const setSupplier = async (supplierData) => {
+        const response = await authFetch(`${API_BASE}/Supplier/SetSupplier`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any other necessary headers
+          },
+          body: JSON.stringify(supplierData),
+        });
+        if (!response.ok) {
+          let errorMessage = `HTTP error during SetSupplier! status: ${response.status}`;
+          try {
+            const errorText = await response.text();
+            errorMessage += `, message: ${errorText || "Unknown error"}`;
+          } catch (e) {
+            errorMessage += ", could not read error response text.";
+          }
+          throw new Error(errorMessage);
+        }
+
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+          try {
+            const responseData = await response.json();
+            return responseData;
+          } catch (e) {
+            const textResponse = await response.text();
+            console.warn("Error parsing JSON, got:", textResponse);
+            return textResponse;
+          }
+        } else {
+          const textResponse = await response.text();
+          console.log("SetSupplier response (non-JSON):", textResponse);
+          return textResponse;
+        }
+      };
+
+      // ตรวจสอบค่า partyCode และดำเนินการเรียก API SetSupplier ถ้าไม่ใช่ 'DEF'
+      if (partyCode !== "DEF") {
+        const taxParts = partyTaxCode.split("/");
+        const taxNumberForSupplier = taxParts[0];
+        const taxBranchForSupplier =
+          taxParts.length > 1 ? taxParts[1] : "00000";
+        const supplierPayload = [
+          {
+            supplierCode: partyCode,
+            taxNumber: taxNumberForSupplier,
+            taxBranch: taxBranchForSupplier,
+            supplierName: partyName,
+            address1: partyAddress,
+          },
+        ];
+
+        console.log(
+          "Data to send for SetSupplier:",
+          JSON.stringify(supplierPayload)
+        );
+        try {
+          const setSupplierResponse = await setSupplier(supplierPayload);
+          console.log("SetSupplier response:", setSupplierResponse);
+          // ตรวจสอบ Response หากมีข้อความระบุ Supplier สร้างสำเร็จ
+          if (
+            typeof setSupplierResponse === "string" &&
+            setSupplierResponse.includes("Suppliers Created.")
+          ) {
+            console.log("Supplier created successfully");
+          } else if (
+            typeof setSupplierResponse === "string" &&
+            setSupplierResponse.includes("Supplier code already exists.")
+          ) {
+            console.log(
+              "Supplier code already exists, skipping success alert for supplier."
+            );
+            // ไม่ต้องทำอะไร ให้ข้ามไปแจ้งเตือนบันทึกสำเร็จของ Header
+          } else if (typeof setSupplierResponse !== "string") {
+            // กรณี Response เป็น JSON อาจมี Logic อื่นๆ ในการตรวจสอบความสำเร็จ
+            // หากไม่สำเร็จจริงๆ คุณอาจต้องการ Throw Error ที่นี่
+            console.warn(
+              "Unexpected response from SetSupplier:",
+              setSupplierResponse
+            );
+          }
+        } catch (error) {
+          console.error("Error during SetSupplier:", error);
+          // ตรวจสอบ Error Message หากเป็น Supplier Code ซ้ำ ให้ Log และข้ามการแจ้งเตือน Error
+          if (
+            error.message.includes("SupplierCode :") &&
+            error.message.includes("is already exsist.")
+          ) {
+            console.log(
+              "Supplier code already exists, skipping error alert for supplier."
+            );
+          } else {
+          }
+        }
+      }
+
+      // แจ้งเตือนบันทึกข้อมูลสำเร็จของ Header เสมอ
+      Swal.fire({
+        icon: "success",
+        title: `บันทึกข้อมูลสำเร็จ DO:${AccDocNo}`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      await fetchDataFromApi(doctype);
+
+      console.log("nameEDoc:", selectedEName);
+      console.log("accDocNo:", AccDocNo);
+
+      navigate(`/uitestacc/AccordionDI?accDocNo=${AccDocNo}`);
+    } catch (error) {
+      console.error("Error saving data (Header):", error);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาดในการบันทึก Header",
+        text: error.message || "กรุณาลองใหม่อีกครั้ง",
+      });
+    }
+  };
+
+  const handleUpdate = async () => {
+    console.log("Updated action fromDOHeader");
+    try {
+      const dataToSend = { ...formData };
+      const accDocNo = formData.accDocNo;
+
+      // ตรวจสอบข้อมูลก่อนส่ง
+      // const regex = /^[0-9]{13}$/;
+      // if (!regex.test(formData.partyTaxCode)) {
+      //   alert("PartyTaxCode ต้องเป็นตัวเลข (0-9) 13 หลักเท่านั้น");
+      //   return;
+      // }
+
+      const response = await authFetch(
+        `${API_BASE}/AccTransaction/EditAccTransactionHD`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
+          }`
+        );
+      }
+
+      console.log("Data updated successfully");
+      // alert("แก้ไขข้อมูลสำเร็จ");
+      Swal.fire({
+        icon: "success",
+        title: `แก้ไขข้อมูล DO:${accDocNo}สำเร็จ`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      await fetchDataFromApi(doctype);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      alert("แก้ไขข้อมูลไม่สำเร็จ กรุณาลองใหม่");
+    }
+  };
+
+  const AccDocNoC = formData.accDocNo;
+
+  // const handleCancel = async () => {
+  //     await CancelDI(AccDocNoC, navigate);
+  //   };
+  const handleDelete = async () => {
+    try {
+      const accDocNo = formData.accDocNo;
+
+      const response = await authFetch(
+        `${API_BASE}/AccTransaction/DeleteAccTransactionHD/${accDocNo}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
+          }`
+        );
+      }
+
+      console.log("Data deleted successfully");
+      alert("ลบข้อมูลสำเร็จ");
+      await fetchDataFromApi(doctype);
+    } catch (error) {
+      console.error("Error deleting data:", error);
+      alert("ลบข้อมูลไม่สำเร็จ กรุณาลองใหม่");
+    }
+  };
+
+  const handleDetail = async () => {
+    try {
+      await fetchDataFromApi(doctype); // รอผลลัพธ์จาก fetchDataFromApi
+
+      // const accDocNo = accDocNoFromApi; // เข้าถึง accDocNo จาก state
+      const accDocNo = formData.accDocNo;
+      const accEffectiveDate = formData.accEffectiveDate;
+      const partyCode = formData.partyCode;
+      const partyName = formData.partyName;
+      const nameCategory = selectedEName;
+      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`, {
+        state: {
+          accDocNo: accDocNo,
+          accEffectiveDate: accEffectiveDate,
+          partyCode: partyCode,
+          partyName: partyName,
+          nameCategory: nameCategory,
+        },
+      });
+    } catch (error) {
+      // จัดการ error ที่อาจเกิดขึ้นจาก fetchDataFromApi
+      console.error("Error in handleDetail:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (location.state && location.state.isNew) {
+      handleNew(); // เรียกใช้ handleNew ถ้า isNew เป็น true
+    }
+  }, [location.state]);
+  const handleNew = () => {
+    setFormData({
+      accDocType: DO,
+      accDocNo: "DO25xx...",
+      accEffectiveDate: new Date().toISOString().slice(0, 10),
+      partyCode: "",
+      partyTaxCode: "",
+      partyName: "",
+      partyAddress: "",
+      docRefNo: "",
+      docStatus: 0,
+      accBatchDate: new Date().toISOString().slice(0, 10),
+      // issueBy: "admin",//แก้เมื่อทำระบบlogin`
+      issueBy: localStorage.getItem("userName"),
+      accPostDate: new Date().toISOString().slice(0, 10),
+      fiscalYear: new Date().toISOString().slice(0, 10),
+    });
+  };
+
+  // ---------------------
+  const [customerOptions, setCustomerOptions] = useState([]); // state สำหรับข้อมูลจาก API Customer
+  const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
+  const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
+  const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+
+  useEffect(() => {
+    // ดึงข้อมูลจาก API ตัวใหม่
+    const fetchCustomerOptions = async () => {
+      try {
+        const response = await axios.get(`${API_BASE}/Customer/GetCustomer`);
+        setCustomerOptions(response.data); // อัปเดต state Customer
+      } catch (error) {
+        console.error("Error fetching Customer options:", error);
+      }
+    };
+    fetchCustomerOptions();
+  }, []);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleCustomerSelect = (partyCode) => {
+    const selectedCustomer = customerOptions.find(
+      (customer) => customer.customerCode === partyCode
+    );
+
+    if (selectedCustomer) {
+      setFormData({
+        ...formData,
+        partyCode: partyCode,
+        partyTaxCode: selectedCustomer.taxNumber,
+        partyName: selectedCustomer.customerEName,
+        partyAddress: selectedCustomer.address1,
+      });
+    }
+
+    handleCloseModal();
+  };
+  const handlePageChange = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const getPaginatedData = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return customerOptions.slice(startIndex, endIndex);
+  };
+  // -------------------------------
+  const docStatus = formData.docStatus;
+  const accDocNo = formData.accDocNo;
+  // ใน Component ของคุณ
+  const handleStockFromDO = async (accDocNo) => {
+    // 1. แสดง Modal เพื่อรับค่า caltype จากผู้ใช้ (เลือก 0 หรือ 1)
+    const { value: calType } = await Swal.fire({
+      title: "กรุณาเลือกวิธีการคำนวณต้นทุน",
+      input: "radio",
+      inputOptions: {
+        0: "FIFO (First-In,First-Out)",
+        // "1": "AVG (Average Cost)", // ถ้าต้องการเปิดใช้งาน AVG
+      },
+      inputValue: "0", // *** กำหนดให้ 0 (FIFO) เป็นค่าเริ่มต้น ***
+      inputValidator: (value) => {
+        if (!value) {
+          return "กรุณาเลือกวิธีการคำนวณต้นทุน";
+        }
+      },
+      showCancelButton: true,
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    // 2. ถ้าผู้ใช้กด Cancel หรือปิด Modal
+    if (calType === undefined) {
+      return; // หยุดการทำงาน
+    }
+
+    // 3. ถ้าผู้ใช้เลือกค่า calType แล้ว
+    // เรียกฟังก์ชัน StockfromDO พร้อมกับส่งค่า AccDocNo และ calType (0 หรือ 1) ไป
+    // เราไม่ใช้ refno อีกต่อไป แต่ refno ยังจำเป็นต้องส่งค่าอะไรไปก็ได้ถ้า Stored Procedure ยังต้องการ
+    // ในตัวอย่างนี้ เราจะส่ง calType เป็น string/number ไป
+    await StockFromDO(accDocNo, calType, navigate); // ส่ง calType แทน refno
+  };
+
+  const handlePrint = async () => {
+    const accDocType = formData.accDocType;
+    const accDocNo = formData.accDocNo;
+    console.log("AccDocNo:", accDocNo);
+    const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
+    window.open(printUrl, "_blank");
+  };
+
+  const handleGoBack = () => {
+    navigate("/uitestacc/DOList/");
+  };
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  const buttonActions = [
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faFloppyDisk}
+          style={{ color: "green" }}
+          size="x"
+        />
+      ),
+      name: "Save DO",
+      onClick: handleSave,
+    },
+    {
+      icon: (
+        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="x" />
+      ),
+      name: "Print DO",
+      onClick: handlePrint, // ฟังก์ชัน onClick ถูก comment ไว้ในโค้ดเดิม
+    },
+    {
+      icon: (
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+      ),
+      name: "New",
+      onClick: handleNew,
+    },
+    ...(docStatus === "0"
+      ? [
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        //  {
+        //    icon: (
+        //      <FontAwesomeIcon
+        //        icon={faTrash}
+        //        style={{ color: "#ae0000" }}
+        //        size="x"
+        //      />
+        //    ),
+        //    name: "Cancel",
+        //    onClick: handleCancel,
+        //  },
+        //  {
+        //    icon: (
+        //      <FontAwesomeIcon
+        //        icon={faTrash}
+        //        style={{ color: "#ae0000" }}
+        //        size="x"
+        //      />
+        //    ),
+        //    name: "Stock",
+        //    onClick: () => handleStockFromDO(accDocNo),
+        //  },
+      ]
+      : []),
+    ...(docStatus !== 99
+      ? [
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTruckMoving}
+              style={{ color: "#e74404ff" }}
+              size="x"
+            />
+          ),
+          name: "Stock",
+          onClick: () => handleStockFromDO(accDocNo),
+        },
+      ]
+      : []),
+    {
+      icon: (
+        <FontAwesomeIcon icon={faTrash} style={{ color: "#ae0000" }} size="x" />
+      ),
+      name: "Cancel",
+      onClick: handleDelete,
+    },
+    {
+      icon: (
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+      ),
+      name: "More Info",
+      onClick: handleOpenMoreInfoModal,
+    },
+  ];
+  const buttonActionsLNPF = [
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faAnglesRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+          rotation={180}
+        />
+      ),
+      name: "ToLast",
+      onClick: goToLast,
+      disabled: isNavigationDisabled(),
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faAngleRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+          rotation={180}
+        />
+      ),
+      name: "ToNext",
+      onClick: goToNext,
+      disabled: isNavigationDisabled(),
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faAngleRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+        />
+      ),
+      name: "ToPrevious",
+      onClick: goToPrevious,
+      disabled: isNavigationDisabled(),
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faAnglesRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+        />
+      ),
+      name: "ToFirst",
+      onClick: goToFirst,
+      disabled: isNavigationDisabled(),
+    },
+  ];
+
+  useEffect(() => {
+    if (
+      apiData &&
+      apiData.length > 0 &&
+      currentIndex >= 0 &&
+      currentIndex < apiData.length
+    ) {
+      setFormData({
+        accDocType: apiData[currentIndex].accDocType || "",
+        accDocNo: apiData[currentIndex].accDocNo || "",
+        accBatchDate: apiData[currentIndex].accBatchDate?.split("T")[0] || "",
+        accEffectiveDate:
+          apiData[currentIndex].accEffectiveDate?.split("T")[0] || "",
+        partyCode: apiData[currentIndex].partyCode || "",
+        partyTaxCode: apiData[currentIndex].partyTaxCode || "",
+        partyName: apiData[currentIndex].partyName || "",
+        partyAddress: apiData[currentIndex].partyAddress || "",
+        docRefNo: apiData[currentIndex].docRefNo || "",
+        docStatus: Number(apiData[currentIndex].docStatus) || "0",
+        issueBy: apiData[currentIndex].issueBy || "",
+        accPostDate: apiData[currentIndex].accPostDate?.split("T")[0] || "",
+        fiscalYear: apiData[currentIndex].fiscalYear?.split("T")[0] || "",
+      });
+      setCurrentAccDocNo(apiData[currentIndex].accDocNo);
+      setCurrentAccDocType(apiData[currentIndex].accDocType);
+    }
+  }, [currentIndex, apiData]);
+
+  useEffect(() => {
+    if (accDocNoFromUrl && !isNewMode) {
+      // ดึงข้อมูลจาก API ด้วย accDocNo จาก URL
+      const fetchByAccDocNo = async () => {
+        try {
+          const apiUrl = `${API_BASE}/AccTransaction/GetAccTransactionHD?accDocNo=${accDocNoFromUrl}`;
+          const response = await authFetch(apiUrl);
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setApiData(data);
+            setAccDocNoFromApi(data[0].accDocNo);
+            setFormData({
+              accDocType: data[0].accDocType || "",
+              accDocNo: data[0].accDocNo || "",
+              accBatchDate: data[0].accBatchDate?.split("T")[0] || "",
+              accEffectiveDate: data[0].accEffectiveDate?.split("T")[0] || "",
+              partyCode: data[0].partyCode || "",
+              partyTaxCode: data[0].partyTaxCode || "",
+              partyName: data[0].partyName || "",
+              partyAddress: data[0].partyAddress || "",
+              docRefNo: data[0].docRefNo || "",
+              docStatus: Number(data[0].docStatus) || 0,
+              issueBy: data[0].issueBy || "",
+              accPostDate: data[0].accPostDate?.split("T")[0] || "",
+              fiscalYear: data[0].fiscalYear?.split("T")[0] || "",
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching by accDocNo:", error);
+        }
+      };
+      fetchByAccDocNo();
+    }
+  }, [accDocNoFromUrl, isNewMode]);
+
+  return (
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
+      <CircularButtonGroup actions={buttonActions} />
+      {/* <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none" ,paddingTop:"3px"}}
+      />
+      <CircularButton actions={buttonActionsLNPF} /> */}
+      <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none", paddingTop: "3px" }}
+      />
+      <div>&nbsp;</div>
+      {/* <div className="col-md-3">
+        <TextField
+          className="fonts"
+          variant="outlined"
+          id="demo-simple-select"
+          // value={AccDocType}
+          value={formData.accDocType || doctype}
+          style={{ width: "100%" }}
+          slotProps={{
+            input: {
+              readOnly: true,
+            },
+          }}
+        ></TextField>
+      </div>
+      <div className="col-md-9">
+        <div>&nbsp;</div>
+        <TextField
+          className="fonts"
+          variant="standard"
+          id="demo-simple-select"
+          // onChange={handleChange}
+          // value={doctype}
+          value={selectedEName}
+          style={{ width: "100%" }}
+          slotProps={{
+            input: {
+              readOnly: true,
+            },
+          }}
+        >
+          <MenuItem value={DO}>Delivery In</MenuItem>
+        </TextField>
+      </div>
+      <div>&nbsp;</div> */}
+
+      <div className="col-md-6">
+        <TextField
+          id="accDocNo"
+          label="AccDocNo"
+          value={formData.accDocNo || AccDocNo || ""}
+          type="text"
+          slotProps={{
+            input: {
+              readOnly: true,
+            },
+          }}
+          style={{ width: "100%" }}
+          // onChange={handleInputChange}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="col-md-1">&nbsp;</div>
+      <div className="col-md-5">
+        <TextField
+          id="accEffectiveDate"
+          label="AccEffectiveDate"
+          type="date"
+          variant="standard"
+          value={formData.accEffectiveDate}
+          onChange={handleInputChange}
+          // defaultValue={new Date().toISOString().slice(0, 10)}
+          style={{ width: "100%" }}
+        />
+      </div>
+
+      <div>&nbsp;</div>
+      <div className="col-md-6" style={{ display: "flex" }}>
+        <TextField
+          id="partyCode"
+          label="PartyCode"
+          value={formData.partyCode}
+          type="text"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+        <FontAwesomeIcon
+          icon={faEllipsisVertical}
+          size="1x"
+          onClick={handleOpenModal}
+          style={{ cursor: "pointer" }}
+        />
+      </div>
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            backgroundColor: "white",
+            // border: "2px solid #000",
+            borderRadius: "30px",
+            padding: "20px",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <List>
+            <h4 style={{ textAlign: "center" }}>Select Customer</h4>
+            <Divider
+              variant="middle"
+              component="li"
+              style={{ listStyle: "none" }}
+            />
+            {getPaginatedData().map((customer) => (
+              <ListItem key={customer.customerID} disablePadding>
+                <ListItemButton
+                  onClick={() => handleCustomerSelect(customer.customerCode)}
+                >
+                  <ListItemText primary={customer.customerCode} />
+                  <h5>{customer.customerName}</h5>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider
+            variant="middle"
+            component="li"
+            style={{ listStyle: "none" }}
+          />
+          <div
+            style={{
+              display: "flex",
+              // justifyContent: "space-between",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
+            <Stack spacing={2}>
+              <Pagination
+                count={Math.ceil(customerOptions.length / itemsPerPage)} // คำนวณจำนวนหน้า
+                page={currentPage} // กำหนดหน้าปัจจุบัน
+                onChange={handlePageChange} // ใช้ onChange เพื่อจัดการการเปลี่ยนหน้า
+              />
+            </Stack>
+          </div>
+        </div>
+      </Modal>
+      {isMoreInfoModalOpen && (
+        <MoreInfoHD
+          open={isMoreInfoModalOpen}
+          handleClose={handleCloseMoreInfoModal}
+          accDocNo={formData.accDocNo}
+          accDocType={formData.accDocType}
+          docConfigID={selectedDocConfigID}
+          fetchDataFromApi={fetchDataFromApi}
+        />
+      )}
+
+      <div className="col-md-1">&nbsp;</div>
+      <div className="col-md-5">
+        <TextField
+          id="partyTaxCode"
+          label="PartyTaxCode"
+          value={formData.partyTaxCode}
+          type="text"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+      </div>
+
+      <div>&nbsp;</div>
+      <div className="col-md-12">
+        <TextField
+          id="partyName"
+          label="PartyName"
+          value={formData.partyName}
+          type="text"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+      </div>
+      <div>&nbsp;</div>
+      <div className="col-md-12">
+        <TextField
+          id="partyAddress"
+          label="PartyAddress"
+          value={formData.partyAddress}
+          // type="text"
+          multiline
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+      </div>
+
+      <div>&nbsp;</div>
+      <div className="col-md-6">
+        <TextField
+          id="docRefNo"
+          label="DocRefNo"
+          value={formData.docRefNo}
+          type="text"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+      </div>
+      <div className="col-md-1">&nbsp;</div>
+      {/* <div className="col-md-5">
+        <DocStatusDO accDocNo={formData.accDocNo} />
+      </div> */}
+      <div className="col-md-5">
+        <TextField
+          id="docStatus"
+          label="DocStatus"
+          value={formData.docStatus}
+          type="number"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+      </div>
+
+      <div>&nbsp;</div>
+      <div className="col-md-6">
+        <TextField
+          id="accBatchDate"
+          label="AccBatchDate"
+          type="date"
+          variant="standard"
+          value={formData.accBatchDate}
+          onChange={handleInputChange}
+          // defaultValue={new Date().toISOString().slice(0, 10)}
+          style={{ width: "100%" }}
+        />
+      </div>
+      <div className="col-md-1">&nbsp;</div>
+      <div className="col-md-5">
+        <TextField
+          id="issueBy"
+          label="IssueBy"
+          value={formData.issueBy}
+          type="text"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
+      </div>
+
+      <div>&nbsp;</div>
+      <div className="col-md-6">
+        <TextField
+          id="accPostDate"
+          label="AccPostDate"
+          value={formData.accPostDate}
+          type="date"
+          variant="standard"
+          style={{ width: "100%" }}
+          onChange={handleInputChange}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
+        />
+      </div>
+      <div className="col-md-1">&nbsp;</div>
+      <div className="col-md-5">
+        <TextField
+          id="fiscalYear"
+          label="FiscalYear"
+          value={formData.fiscalYear}
+          type="date"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
+        />
+      </div>
+
+      <div>&nbsp;</div>
+
+      <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none", paddingTop: "3px" }}
+      />
+      <div style={{ display: "grid", justifyContent: "flex-end" }}>
+        <CircularButton actions={buttonActionsLNPF} />
+      </div>
+    </div>
+  );
+}

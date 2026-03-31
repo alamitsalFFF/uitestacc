@@ -1,0 +1,40 @@
+.top-action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap; 
+  margin-bottom: 10px;
+}
+
+.status-legend-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* 📱 เมื่อหน้าจอเล็กกว่า 600px */
+@media (max-width: 600px) {
+  .top-action-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .status-legend-wrapper {
+    width: 100%;
+    justify-content: flex-start; 
+  }
+  
+  /* 💡 NEW: การควบคุมการขึ้นบรรทัดใน DocStatusPoint บนจอเล็ก */
+  .doc-status-point-container {
+      /* ตั้งค่าเริ่มต้นให้มัน wrap */
+      flex-wrap: wrap; 
+  }
+  
+  .status-item {
+      /* ทำให้รายการสถานะแต่ละอันใช้พื้นที่เท่าที่ต้องการ และมี margin ล่างเล็กน้อย */
+      margin-bottom: 5px !important; 
+      margin-right: 5px !important;
+      font-size: 0.9em; 
+  }
+
+}

@@ -1,0 +1,373 @@
+.App {
+  text-align: center;
+}
+
+.App-container {
+  text-align: left;
+  padding: 50px;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* body,h1 {font-family: "Raleway", Arial, sans-serif}
+h1 {letter-spacing: 6px}
+.w3-row-padding img {margin-bottom: 12px} */
+
+/* 0d1b2a 1b263b 415a77 778da9 e0e1dd  */
+.header-parent {
+  border-bottom: solid 1px #0d1b2a;
+  background-color: #778da9;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2rem;
+}
+
+.logo {
+  height: 45px;
+}
+
+/* NAVIGATION */
+
+/* .header-nav-li {} */
+
+.header-nav-link {
+  text-decoration: none;
+  height: 100%;
+  background: #1b263b;
+  display: flex;
+  width: 80px;
+  height: 40px;
+
+  justify-content: center;
+  /* border: solid 1px #CDD1C4; */
+  border-bottom: none;
+  border-radius: 6px;
+  margin-top: 20px;
+  margin-right: 10%;
+}
+
+.header-nav-link span {
+  display: block;
+  align-self: center;
+}
+
+.header-nav-options {
+  position: relative;
+  height: 40px;
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-nav-div {
+  /* text-decoration: none; */
+  border-radius: 6px;
+
+  height: 100%;
+  background: #1b263b;
+  display: flex;
+  width: 80px;
+  justify-content: center;
+  /* border: solid 1px #CDD1C4; */
+  border-bottom: none;
+}
+
+.header-nav-div span {
+  display: block;
+  align-self: center;
+}
+
+.header-nav-options:last-child .header-nav-ul {
+  right: 0;
+}
+
+.header-nav-options:last-child .sub-menu-ul {
+  left: -100%;
+}
+
+.header-nav-ul {
+  padding-top: 10px;
+}
+
+.sub-menu-li {
+  width: 100%;
+  height: 40px;
+  background-color: #1b263b;
+}
+
+.sub-menu-link {
+  display: flex;
+  align-items: center;
+  border: solid 1px #0d1b2a;
+  border-bottom: none;
+  padding-left: 1rem;
+  height: 100%;
+  width: 100%;
+}
+
+.sub-menu-li:last-child {
+  border-bottom: solid 1px #cdd1c4;
+}
+
+.header-nav-ul {
+  position: absolute;
+  top: 100%;
+  list-style: none;
+  width: 150px;
+}
+
+.sub-menu-options {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: #1b263b;
+}
+
+.header-nav-link:hover,
+.sub-menu-li:hover,
+.grand-child-link:hover,
+.options-hover:hover .header-nav-div,
+.sub-menu-hover:hover .sub-menu-div {
+  background-color: #0d1b2a;
+}
+
+.sub-menu-ul {
+  position: absolute;
+  background-color: #1b263b;
+  list-style: none;
+  top: 0px;
+  left: 100%;
+  width: 150px;
+}
+
+.sub-menu-div {
+  display: flex;
+  align-items: center;
+  border: solid 1px #0d1b2a;
+  border-bottom: none;
+  padding-left: 1rem;
+  height: 100%;
+  width: 100%;
+}
+
+/* .grand-child-link {} */
+
+.grand-child-link:last-child {
+  border-bottom: solid 1px #cdd1c4;
+}
+
+.grand-child-link a {
+  text-decoration: none;
+  height: 100%;
+  width: 100%;
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  border: solid 1px #0d1b2a;
+  border-bottom: none;
+  white-space: nowrap;
+}
+
+.main-nav {
+  display: flex;
+  list-style: none;
+  width: 600px;
+  justify-content: space-between;
+}
+
+.main-content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto 2rem;
+  margin-right: 10%;
+}
+
+.heading {
+  color: #181818;
+}
+
+.arrow {
+  margin-left: auto;
+  padding-right: 10px;
+}
+
+.btn-hamburger {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 2rem;
+  z-index: 100;
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  .btn-hamburger {
+    display: block;
+  }
+
+  /* .sidebar {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    }
+    .sidebar-active {
+    display: flex;
+    }
+    .dashboard {
+    width: 100%;
+    } */
+}
+
+/* .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start; */
+/* height: 100vh; */
+/* } */
+
+.sidebar {
+  /* max-width: 300px;
+      width: 100%;
+      height: 100vh;
+      overflow: auto;
+      background: #fff;
+      padding: 0 10px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center; */
+
+  max-width: 250px;
+  width: 100%;
+  /* height: 100vh; */
+  overflow: auto;
+  background: #fff;
+  padding: 0 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-right: 30px; */
+}
+
+.sidebar-top,
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* .dashboard {
+        width: 100%;
+        overflow: auto;
+        background: #F4F9FD;
+        border-radius: 20px;
+        padding: 30px;
+        margin: 30px;
+        margin-left: 250px
+      } */
+html,
+body {
+  /* background: darkblue !important; */
+  /* background: #008000 !important; */
+  background: #ffffff !important;
+  min-height: 100vh;
+}
+
+/* .dashboard {
+  margin: 20px auto;
+  width: 93%;
+  overflow: auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: -1px 5px 20px 10px #23292f61;
+} */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* กำหนดความสูงขั้นต่ำให้เต็มหน้าจอ */
+
+  width: 93%;
+  /*max-width: 960px; กำหนดความกว้างสูงสุด*/
+  position: relative;
+  margin: 20px auto;
+  padding: 20px;
+
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: -1px 5px 20px 10px #23292f61;
+}
+
+/* สำหรับมือถือ */
+/* @media (max-width: 768px) { */
+/* .dashboard { */
+/* width: 95%; เพิ่มความกว้างเล็กน้อยบนมือถือ */
+/* margin: 10px auto; ลดระยะห่างด้านบนและล่าง */
+/* padding: 15px; ลด padding */
+/* } */
+/* } */
+
+.menuContainer {
+  position: relative;
+}
+
+.menuList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  /* สไตล์อื่นๆ */
+}
+
+.swal2-container {
+  z-index: 20000 !important;
+}

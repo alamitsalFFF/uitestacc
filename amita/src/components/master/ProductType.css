@@ -1,0 +1,185 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f5f6fa;
+    --text-color: #2c3e50;
+    --card-bg: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+}
+
+/* ใช้ร่วมกับ Warehouse.css อยู่แล้ว แต่ถ้า import แยกก็ define ซ้ำได้ */
+
+.producttype-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1px 3px;
+}
+
+.producttype-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.producttype-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 5px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.producttype-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #4a90e2, #63b3ed);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.producttype-subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.producttype-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.producttype-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border-top: 4px solid transparent;
+}
+
+.producttype-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.producttype-card.general {
+    border-top-color: #4a90e2;
+}
+
+.producttype-card.type {
+    border-top-color: #2ecc71;
+}
+
+.producttype-card.account {
+    border-top-color: #e67e22;
+}
+
+.producttype-card.tax {
+    border-top-color: #9b59b6;
+}
+
+.producttype-card.full-width {
+    grid-column: 1 / -1;
+}
+
+/* shared card-header / card-icon / card-title from Warehouse.css */
+/* but we define them here too in case Warehouse.css is not imported */
+.producttype-card .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.producttype-card .card-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: var(--text-color);
+    background: rgba(0, 0, 0, 0.05);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.producttype-card .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #08325d;
+    margin: 0;
+}
+
+/* Checkbox / label row */
+.producttype-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+.producttype-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #00008b;
+    cursor: pointer;
+    user-select: none;
+}
+
+.producttype-checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #4a90e2;
+    cursor: pointer;
+}
+
+/* Select styled like form-control-custom */
+.producttype-select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    background-color: #ffffe0;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.producttype-select:focus {
+    border-color: #4a90e2;
+    background-color: #ffffe0;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    outline: none;
+}
+
+.producttype-select:hover {
+    border-color: #b2bec3;
+}
+
+/* reuse warehouse form styles */
+.producttype-form-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #00008b;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .producttype-content {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,17 @@
+.container {
+    width: 50%; /* กำหนดความกว้างของ container */
+    margin: 0 auto; /* จัดวาง container ให้ตรงกลางหน้าจอ */
+  }
+  
+  .row {
+    display: flex; /* ทำให้ row เป็น flex container */
+    justify-content: center; /* จัดวาง child elements ให้ตรงกลางในแนวนอน */
+    align-items: center; /* จัดวาง child elements ให้ตรงกลางในแนวตั้ง */
+    margin: 0 auto;
+
+}
+
+/* .colormenu {
+  color: #c10001 !important;
+  text-decoration: none;
+} */

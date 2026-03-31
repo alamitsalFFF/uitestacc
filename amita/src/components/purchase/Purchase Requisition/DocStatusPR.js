@@ -1,0 +1,90 @@
+import React, { useState, useEffect } from 'react';
+import TextField from '@mui/material/TextField';
+import axios from '../../Auth/axiosConfig';
+import { API_VIEW_RESULT } from '../../api/url';
+
+// เพิ่ม onStatusNameFetched เข้ามาใน props
+const DocStatusPR = ({ accDocNo, onStatusNameFetched }) => {
+  const [displayedStatusName, setDisplayedStatusName] = useState('');
+
+  useEffect(() => {
+    const fetchStatusName = async () => {
+      if (!accDocNo || accDocNo === "PR26xx...") {
+        setDisplayedStatusName('');
+        // ตรวจสอบให้แน่ใจว่าได้เรียก callback ด้วยค่าว่างหรือค่าเริ่มต้น
+        if (onStatusNameFetched) {
+          onStatusNameFetched('');
+        }
+        return;
+      }
+
+      try {
+        const vPR_H_Payload = {
+          viewName: "vPR_H",
+          parameters: [
+            { field: "AccDocNo", value: accDocNo },
+          ],
+          results: [
+            { sourceField: "AccDocNo" },
+            { sourceField: "StatusName" },
+          ],
+        };
+
+        const response = await axios.post(API_VIEW_RESULT, vPR_H_Payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = response.data;
+        console.log('DATA DocStatus:', data);
+        let status = '';
+        if (Array.isArray(data) && data.length > 0) {
+          const foundDoc = data.find(item => item.AccDocNo === accDocNo);
+          if (foundDoc) {
+            status = foundDoc.StatusName;
+          } else {
+            status = 'Not Found';
+          }
+        } else {
+          // status = 'No Data'; //ไม่มีข้อมูลที่ vPR_H (ไม่มีDetails)
+          status = 'OPEN'; // กำหนดค่าเริ่มต้นเป็น 'Open' หากไม่มีข้อมูล
+        }
+        setDisplayedStatusName(status);
+        // เรียกใช้ callback เพื่อส่งค่า displayedStatusName กลับไป
+        if (onStatusNameFetched) {
+          onStatusNameFetched(status);
+        }
+      } catch (error) {
+        console.error("Error fetching status name for AccDocNo:", accDocNo, error);
+        setDisplayedStatusName('Error Loading');
+        // เรียกใช้ callback ด้วยค่า error
+        if (onStatusNameFetched) {
+          onStatusNameFetched('Error Loading');
+        }
+      }
+    };
+
+    fetchStatusName();
+  }, [accDocNo, onStatusNameFetched]); // เพิ่ม onStatusNameFetched ใน dependency array ด้วย
+
+  return (
+    <TextField
+      id="docStatusDisplay"
+      label="DocStatus"
+      value={displayedStatusName || '0'}
+      type="text"
+      variant="standard"
+      fullWidth
+      InputProps={{
+        readOnly: true,
+        style: {
+          backgroundColor: "#cdcdd1",
+        }
+      }}
+      style={{ width: "100%" }}
+    />
+  );
+};
+
+export default DocStatusPR;
