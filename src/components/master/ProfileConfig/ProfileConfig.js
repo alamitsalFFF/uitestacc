@@ -212,10 +212,7 @@ function ProfileConfig() {
 
   return (
     <div className="profile-container" >
-      {/* <div className="profile-header">
-        <h1 className="profile-title" onClick={handleGoMenu}>Company Profile</h1>
-        <p className="profile-subtitle">Manage your organization's identity and settings</p>
-      </div> */}
+      {/* <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>*/}
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
           <div className="profile-header">
@@ -228,7 +225,6 @@ function ProfileConfig() {
           <HeaderBar />
         </div>
       </div>
-
       {loading ? (
         <div className="text-center">Loading...</div>
       ) : (

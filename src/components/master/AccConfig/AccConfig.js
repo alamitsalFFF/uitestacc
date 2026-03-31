@@ -13,6 +13,7 @@ import {
   faCircleArrowLeft,
   faPlus,
   faArrowRotateLeft,
+  faFloppyDisk,
 } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams } from "react-router-dom";
 import { toNumber } from "lodash";
@@ -81,6 +82,20 @@ function AccConfig() {
   };
 
   const handleSave = async () => {
+    const result = await Swal.fire({
+      title: 'ต้องการบันทึกข้อมูลหรือไม่?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'บันทึก',
+      cancelButtonText: 'ยกเลิก'
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
     // สร้างสำเนาของ formData เพื่อแก้ไข
     const formDataToSend = { ...formData };
 
@@ -152,6 +167,20 @@ function AccConfig() {
   };
 
   const handleUpdate = async () => {
+    const result = await Swal.fire({
+      title: 'ต้องการแก้ไขข้อมูลหรือไม่?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'แก้ไข',
+      cancelButtonText: 'ยกเลิก'
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
     const editData = formData;
     console.log("editData:", editData);
     try {
@@ -209,6 +238,21 @@ function AccConfig() {
 
       return;
     }
+    const result = await Swal.fire({
+      title: 'ต้องการลบข้อมูลหรือไม่?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'ลบ',
+      cancelButtonText: 'ยกเลิก'
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
     console.log("DATA:", formData);
     console.log("DATA:", formData.configCode);
     const configCodeToDelete = formData.configCode;
@@ -323,9 +367,20 @@ function AccConfig() {
   const buttonActions = [
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
+        <FontAwesomeIcon
+          icon={faPlus}
+          style={{ color: "green" }}
+          size="1x"
+        />
       ),
-      name: "Add New",
+      name: "Clear New",
+      onClick: handleClear,
+    },
+    {
+      icon: (
+        <FontAwesomeIcon icon={faFloppyDisk} style={{ color: "green" }} size="1x" />
+      ),
+      name: "Save New",
       onClick: handleSave, // เรียก handleAddNew โดยตรง
     },
     // {
@@ -357,17 +412,17 @@ function AccConfig() {
       name: "Delete Data",
       onClick: handleDelete,
     },
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faArrowRotateLeft}
-          style={{ color: "#007bff" }}
-          size="1x"
-        />
-      ),
-      name: "Clear",
-      onClick: handleClear,
-    },
+    // {
+    //   icon: (
+    //     <FontAwesomeIcon
+    //       icon={faArrowRotateLeft}
+    //       style={{ color: "#007bff" }}
+    //       size="1x"
+    //     />
+    //   ),
+    //   name: "Clear",
+    //   onClick: handleClear,
+    // },
   ];
   const buttonActionsLNPF = [
     {
@@ -405,22 +460,20 @@ function AccConfig() {
   ];
   return (
     <div className="row" style={{ paddingLeft: "5%", paddingRight: "5%" }}>
-      {/* <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoBack}>
-        &nbsp;AccConfig&nbsp;
-      </h2> */}
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
-          <div className="suppiler-header" >
-            <h4 className="suppiler-title" onClick={handleGoBack}>
+          <div className="docconfig-header">
+            <h4 className="docconfig-title" onClick={handleGoBack}>
               Configs
             </h4>
-            <p className="suppiler-subtitle">ตั้งค่าอื่นๆ</p>
+            <p className="docconfig-subtitle">ตั้งค่าอื่นๆ</p>
           </div>
         </div>
         <div className="col-4">
           <HeaderBar />
         </div>
       </div>
+
       <div className="top-action-bar">
         <CircularButtonGroup actions={buttonActions} />
       </div>

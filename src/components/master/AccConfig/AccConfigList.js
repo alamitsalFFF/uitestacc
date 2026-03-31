@@ -17,6 +17,7 @@ import { API_BASE, URL } from "../../api/url";
 import FloatingActionBar from "../../DataFilters/FloatingActionBar";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
 import HeaderBar from "../../menu/HeaderBar";
+import { IconButton, Tooltip, Typography } from "@mui/material";
 
 function AccConfigList() {
   const [loading, setLoading] = useState(false);
@@ -122,9 +123,7 @@ function AccConfigList() {
     // },
   ];
   return (
-    <div>
-      {/* <h2 style={{ textAlign: "center", textDecorationLine: "underline" }}
-        onClick={handleGoBack}>&nbsp;AccConfig&nbsp;</h2> */}
+    <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
           <div className="docconfig-header">
@@ -138,7 +137,7 @@ function AccConfigList() {
           <HeaderBar />
         </div>
       </div>
-      <div style={{ display: "flex", padding: "10px", alignItems: "center" }}>
+      <div style={{ display: "flex", marginBottom: "10px", alignItems: "center" }}>
         <div>
           <CircularButtonGroup actions={buttonActions} />
         </div>
@@ -146,44 +145,48 @@ function AccConfigList() {
           {showSearch ? (
             <SearchComponent onSearch={handleSearch} /> // แสดง SearchComponent เมื่อ showSearch เป็น true
           ) : (
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              size="1x"
-              style={{
-                color: "#4301b3",
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 40,
-                height: 30,
-                borderRadius: '50%',
-                boxShadow: 2,
-                bgcolor: 'background.paper',
-                // color: 'text.primary',
-                '&:hover': {
-                  bgcolor: 'action.hover',
-                },
-                flexShrink: 0,
-                p: 0.5,
-                fontSize: '0.9rem'
-              }}
-              onClick={toggleSearch} // แสดงไอคอนค้นหาเมื่อ showSearch เป็น false
-            />
+            <Tooltip
+              title={<Typography variant="caption" sx={{ fontSize: '0.9rem' }}>Search Data</Typography>}
+              arrow
+              placement="top"
+            >
+              <IconButton
+                aria-label="Search Data"
+                onClick={toggleSearch}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  boxShadow: 2,
+                  bgcolor: 'background.paper',
+                  color: 'text.primary',
+                  '&:hover': {
+                    bgcolor: 'action.hover',
+                  },
+                  flexShrink: 0,
+                  p: 0.5,
+                }}
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#4301b3" }} size="1x" />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       </div>
       {/* <ul> */}
-      {filteredAccConfig.map((accConfig) => (
+      <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none" }}
+      />
+      {filteredAccConfig.map((accConfig, index) => (
         <div key={accConfig.configCode} onClick={() => handleEditClick(accConfig.configCode)}>
           <ListItem style={{ display: "flex", alignItems: "center" }}>
-            {/* <FontAwesomeIcon
-              icon={faPenToSquare}
-              size="2x"
-              style={{ color: "#2d01bd" }}
-              onClick={() => handleEditClick(accConfig.configCode)}
-            /> */}
-            <h5 style={{ marginLeft: "10px" }}>{accConfig.configCode}</h5>
+            <h5 style={{ marginLeft: "10px" }}>{index + 1}.{accConfig.configCode}</h5>
           </ListItem>
           <Divider
             variant="middle"

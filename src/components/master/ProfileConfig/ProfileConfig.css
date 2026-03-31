@@ -16,7 +16,10 @@ body {
 .profile-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1px 3px;
+  /* padding: 1px 3px; */
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 10px;
   /* background-color: #130368; */
 }
 

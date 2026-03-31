@@ -337,15 +337,15 @@ function Product() {
   };
 
   return (
-    <div className="product-container">
+    <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
       {/* Header Row */}
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
-          <div className="product-header">
-            <h4 className="product-title" onClick={handleGoBack}>
-              Products
+          <div className="docconfig-header">
+            <h4 className="docconfig-title" onClick={handleGoBack}>
+              Product And Services
             </h4>
-            <p className="product-subtitle">สินค้า / บริการ</p>
+            <p className="docconfig-subtitle">รหัสสินค้า/บริการ</p>
           </div>
         </div>
         <div className="col-4">

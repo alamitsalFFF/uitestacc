@@ -105,8 +105,7 @@ function ProductList() {
   ];
 
   return (
-    <div style={{ paddingLeft: "3%", paddingRight: "3%" }}>
-
+    <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
       {/* Header Row */}
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
@@ -123,7 +122,7 @@ function ProductList() {
       </div>
 
       {/* Action + Search Bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "10px" }}>
         <div>
           <CircularButtonGroup actions={buttonActions} />
         </div>

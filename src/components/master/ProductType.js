@@ -319,15 +319,15 @@ function ProductType() {
   };
 
   return (
-    <div className="producttype-container">
+    <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
       {/* Header Row */}
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
-          <div className="producttype-header">
-            <h4 className="producttype-title" onClick={handleGoBack}>
-              Product Type
+          <div className="docconfig-header">
+            <h4 className="docconfig-title" onClick={handleGoBack}>
+              Product Type And Services Type
             </h4>
-            <p className="producttype-subtitle">ประเภทสินค้า / บริการ</p>
+            <p className="docconfig-subtitle">ประเภทสินค้า/ประเภทบริการ</p>
           </div>
         </div>
         <div className="col-4">
@@ -485,7 +485,7 @@ function ProductType() {
         </div>
 
         {/* Card 4 – Account Configuration */}
-        <div className="producttype-card account full-width">
+        <div className="producttype-card account">
           <div className="card-header">
             <div className="card-icon">
               <FontAwesomeIcon icon={faFileInvoiceDollar} />
