@@ -995,6 +995,12 @@ export default function AccordionPVHD({
           type="text"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-5" style={{ paddingTop: "5px" }}>
@@ -1006,6 +1012,12 @@ export default function AccordionPVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-3" style={{ paddingTop: "5px" }}>
@@ -1035,6 +1047,12 @@ export default function AccordionPVHD({
           value={formData?.effectiveDate ? String(formData.effectiveDate) : ""}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       {/* <div className="col-md-1">&nbsp;</div> */}
@@ -1047,6 +1065,12 @@ export default function AccordionPVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1064,4 +1088,4 @@ export default function AccordionPVHD({
     </div>
   );
 }
-//ยังเลื่อนดูข้อมูลไม่ได้
+

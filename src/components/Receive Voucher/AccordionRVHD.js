@@ -974,6 +974,12 @@ export default function AccordionRVHD({
           type="text"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       {/* <div className="col-md-1">&nbsp;</div> */}
@@ -986,6 +992,12 @@ export default function AccordionRVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-3" style={{ paddingTop: "5px" }}>
@@ -1015,6 +1027,12 @@ export default function AccordionRVHD({
           value={formData?.effectiveDate ? String(formData.effectiveDate) : ""}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       {/* <div className="col-md-1">&nbsp;</div> */}
@@ -1027,6 +1045,12 @@ export default function AccordionRVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1044,4 +1068,4 @@ export default function AccordionRVHD({
     </div>
   );
 }
-//ยังเลื่อนดูข้อมูลไม่ได้
+

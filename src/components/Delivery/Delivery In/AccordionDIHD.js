@@ -314,78 +314,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const navigate = useNavigate();
-
-  // const handleSave = async () => {
-  //   try {
-  //     const dataToSend = { ...formData };
-  //     // ลบ accDocNo
-  //     delete dataToSend.accDocNo;
-  //     // ตรวจสอบว่า docStatus มีค่าหรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
-  //     if (!dataToSend.docStatus) {
-  //       dataToSend.docStatus = 0; // หรือค่าเริ่มต้นอื่นๆ ที่เหมาะสม
-  //     }
-  //     // ตรวจสอบ accPostDate และแก้ไขถ้าจำเป็น
-  //     if (dataToSend.accPostDate === "1900-01-01" || !dataToSend.accPostDate) {
-  //       dataToSend.accPostDate = new Date().toISOString().split("T")[0]; // หรือวันที่ที่ถูกต้องอื่นๆ
-  //     }
-
-  //     const regex = /^[0-9]{13}$/;
-
-  //     if (!regex.test(formData.partyTaxCode)) {
-  //       alert("PartyTaxCode ต้องเป็นตัวเลข (0-9) 13หลักเท่านั้น");
-  //       return; // หยุดการทำงานของฟังก์ชัน ถ้าข้อมูลไม่ถูกต้อง
-  //     }
-
-  //     console.log("DATATU:", JSON.stringify(dataToSend));
-  //     const response = await authFetch(
-  //       `${API_BASE}/AccTransaction/SetAccTransactionHD`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           // Add any other necessary headers (e.g., authorization)
-  //         },
-  //         body: JSON.stringify(dataToSend),
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       const errorData = await response.json(); // Try to get error details from the server
-  //       throw new Error(
-  //         `HTTP error! status: ${response.status}, message: ${
-  //           errorData.message || "Unknown error"
-  //         }`
-  //       );
-  //     }
-
-  //     const responseData = await response.json();
-  //     console.log("Data saved successfully:", responseData);
-  //     // Optionally, you can reset the form or update the UI after a successful save
-  //     alert("บันทึกข้อมูลสำเร็จ");
-  //     await fetchDataFromApi(doctype);
-  //     // ดึงค่า accDocNo และวันที่ที่ต้องการ
-  //     const accDocNo = responseData.accDocNo;
-  //     const accEffectiveDate = formData.accEffectiveDate;
-  //     const partyCode = formData.partyCode;
-  //     const partyName = formData.partyName;
-  //     const nameCategory = selectedEName;
-  //     console.log("nameEDoc:", selectedEName);
-
-  //     navigate(`/uitestacc/AccordionPR?accDocNo=${accDocNo}`, {
-  //       // state: {
-  //       //   accDocNo: accDocNo,
-  //       //   accEffectiveDate: accEffectiveDate,
-  //       //   partyCode: partyCode,
-  //       //   partyName: partyName,
-  //       //   nameCategory: nameCategory,
-  //       // },
-  //     });
-  //   } catch (error) {
-  //     console.error("Error saving data:", error);
-  //     // Handle errors, e.g., display an error message to the user
-  //     alert("บันทึกข้อมูลไม่สำเร็จ กรุณาลองใหม่");
-  //   }
-  // };
   const handleSave = async () => {
     try {
       const dataToSendHD = { ...formData };
@@ -1020,7 +948,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
               readOnly: true,
             },
           }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
         />
@@ -1036,6 +964,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1043,12 +977,18 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6" style={{ display: "flex" }}>
         <TextField
           id="partyCode"
-          label="PartyCode"
+          label="Supplier Code"
           value={formData.partyCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1135,6 +1075,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1142,25 +1088,37 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-12">
         <TextField
           id="partyName"
-          label="PartyName"
+          label="Supplier Name"
           value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
       <div className="col-md-12">
         <TextField
           id="partyAddress"
-          label="PartyAddress"
+          label="Address"
           value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1168,12 +1126,18 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6">
         <TextField
           id="docRefNo"
-          label="DocRefNo"
+          label="DocNo Inv."
           value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1192,6 +1156,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1222,6 +1192,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
           onChange={handleInputChange}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
@@ -1236,6 +1212,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>

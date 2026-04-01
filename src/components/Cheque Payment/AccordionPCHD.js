@@ -1073,7 +1073,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
               readOnly: true,
             },
           }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
         />
@@ -1089,6 +1089,12 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1096,12 +1102,18 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6" style={{ display: "flex" }}>
         <TextField
           id="partyCode"
-          label="PartyCode"
+          label="Supplier Code"
           value={formData.partyCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1182,12 +1194,18 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-5">
         <TextField
           id="partyTaxCode"
-          label="PartyTaxCode"
+          label="Tax ID"
           value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1195,25 +1213,37 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-12">
         <TextField
           id="partyName"
-          label="PartyName"
+          label="Supplier Name"
           value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
       <div className="col-md-12">
         <TextField
           id="partyAddress"
-          label="PartyAddress"
+          label="Address"
           value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1221,12 +1251,18 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6">
         <TextField
           id="docRefNo"
-          label="DocRefNo"
+          label="DocNo Inv."
           value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1245,6 +1281,12 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1275,6 +1317,12 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
           onChange={handleInputChange}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
@@ -1289,6 +1337,12 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>

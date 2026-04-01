@@ -702,20 +702,21 @@ function DocConfigSchema() {
           </Select>
         </FormControl>
       </div>
-
-      <FormControl component="fieldset">
-        <RadioGroup
-          row
-          aria-label="config-type"
-          name="config-type"
-          value={selectedConfigType}
-          onChange={handleConfigTypeChange}
-          style={{ justifyContent: "center", marginBottom: 20 }}
-        >
-          <FormControlLabel value="0" control={<Radio />} label="Header (0)" />
-          <FormControlLabel value="1" control={<Radio />} label="Detail (1)" />
-        </RadioGroup>
-      </FormControl>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+        <FormControl component="fieldset">
+          <RadioGroup
+            row
+            aria-label="config-type"
+            name="config-type"
+            value={selectedConfigType}
+            onChange={handleConfigTypeChange}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <FormControlLabel value="0" control={<Radio />} label="Header (0)" />
+            <FormControlLabel value="1" control={<Radio />} label="Detail (1)" />
+          </RadioGroup>
+        </FormControl>
+      </div>
 
       <div style={{ marginBottom: 20 }}>
         <table className="table table-bordered">

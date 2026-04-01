@@ -1179,7 +1179,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
               readOnly: true,
             },
           }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
         />
@@ -1194,6 +1194,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           value={formData.accEffectiveDate}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1207,6 +1213,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1285,6 +1297,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1297,6 +1315,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1310,6 +1334,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1322,6 +1352,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1339,6 +1375,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1368,6 +1410,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
           onChange={handleInputChange}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
@@ -1382,6 +1430,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>

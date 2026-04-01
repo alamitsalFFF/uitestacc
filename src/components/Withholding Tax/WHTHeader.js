@@ -68,7 +68,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
     const fetchDataFromApi = async () => {
         if (isNewMode) return;
         try {
-            const apiUrl = `${API_BASE}/WithholdingTax/GetWithholdingTaxHD`;
+            const apiUrl = `${API_BASE}/AccWHTax/GetWHTax`;
             const response = await authFetch(apiUrl);
             if (!response.ok) throw new Error("Fetch failed");
             const data = await response.json();

@@ -1265,6 +1265,12 @@ export default function SOAccordionHD({
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1277,6 +1283,12 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1352,6 +1364,12 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1364,6 +1382,12 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1377,6 +1401,12 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1389,6 +1419,12 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1420,6 +1456,12 @@ export default function SOAccordionHD({
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1449,6 +1491,12 @@ export default function SOAccordionHD({
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
           onChange={handleInputChange}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
@@ -1463,6 +1511,12 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>

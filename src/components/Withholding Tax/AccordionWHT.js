@@ -12,6 +12,7 @@ import FloatingActionBar from "../DataFilters/FloatingActionBar";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import { API_BASE, URL } from "../api/url";
 import "../../components/DataFilters/MenuHeader.css";
+import HeaderBar from "../menu/HeaderBar";
 
 export default function AccordionWHT() {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ export default function AccordionWHT() {
         fetchWebAddress();
     }, [authFetch]);
 
-    const handleGoMenu = () => {
+    const handleGoBack = () => {
         if (webAddress) {
             navigate(`${URL}${webAddress}`);
         } else {
@@ -70,24 +71,32 @@ export default function AccordionWHT() {
     };
 
     return (
-        <div>
-            <div className="name-header">
-                <h1 className="name-title" onClick={handleGoMenu}>Withholding Tax</h1>
+        <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
+            <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
+                <div className="col-8">
+                    <div className="docconfig-header">
+                        <h4 className="docconfig-title" onClick={handleGoBack}>
+                            Withholding Tax
+                        </h4>
+                        <p className="docconfig-subtitle">ภาษีหัก ณ ที่จ่าย</p>
+                    </div>
+                </div>
+                <div className="col-4">
+                    <HeaderBar />
+                </div>
             </div>
-
             {/* Header Panel */}
             <Accordion
                 expanded={expandedPanels.panel1}
                 onChange={() => setExpandedPanels((prev) => ({ ...prev, panel1: !prev.panel1 }))}
             >
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
                     aria-controls="panel1-content"
                     id="panel1-header"
                     style={{ backgroundColor: "#00008b" }}
-                    style={{ backgroundColor: "#7bf4a9ab" }}
                 >
-                    <Typography component="span" style={{ textAlign: "center" }}>Header</Typography>
+                    <Typography component="span" style={{ textAlign: "center", color: "white" }}>Header</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <WHTHeader
@@ -106,12 +115,12 @@ export default function AccordionWHT() {
                 onChange={() => setExpandedPanels((prev) => ({ ...prev, panel2: !prev.panel2 }))}
             >
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
                     aria-controls="panel2-content"
                     id="panel2-header"
-                    style={{ backgroundColor: "#00008b" }} style={{ backgroundColor: "#7bf4a9ab" }}
+                    style={{ backgroundColor: "#00008b" }}
                 >
-                    <Typography component="span" style={{ justifyContent: "center" }}>Detail</Typography>
+                    <Typography component="span" style={{ justifyContent: "center", color: "white" }}>Detail</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <WHTListDT

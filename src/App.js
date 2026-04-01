@@ -420,7 +420,7 @@ function App() {
 
             <Route path="uitestacc/AccordionWHT" element={<RequireAuth><AccordionWHT /></RequireAuth>} />
             {/* <Route path="uitestacc/WithholdingTax" element={<RequireAuth><WHTList /></RequireAuth>} /> */}
-            <Route path="uitestacc/WithholdingTax" element={<RequireAuth><AccordionWHT /></RequireAuth>} />
+            <Route path="uitestacc/WithholdingTax3" element={<RequireAuth><AccordionWHT /></RequireAuth>} />
 
             <Route path="uitestacc/AccordionPO" element={<RequireAuth><AccordionPO /></RequireAuth>} />
             <Route path="uitestacc/AccordionDI" element={<RequireAuth><AccordionDI /></RequireAuth>} />

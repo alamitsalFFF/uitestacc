@@ -1068,7 +1068,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6" style={{ display: "flex" }}>
         <TextField
           id="partyCode"
-          label="PartyCode"
+          label="Customer Code"
           value={formData.partyCode}
           type="text"
           variant="standard"
@@ -1154,7 +1154,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-5">
         <TextField
           id="partyTaxCode"
-          label="PartyTaxCode"
+          label="Tax ID"
           value={formData.partyTaxCode}
           type="text"
           variant="standard"
@@ -1167,7 +1167,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-12">
         <TextField
           id="partyName"
-          label="PartyName"
+          label="Customer Name"
           value={formData.partyName}
           type="text"
           variant="standard"
@@ -1179,7 +1179,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-12">
         <TextField
           id="partyAddress"
-          label="PartyAddress"
+          label="Address"
           value={formData.partyAddress}
           // type="text"
           multiline
@@ -1193,7 +1193,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6">
         <TextField
           id="docRefNo"
-          label="DocRefNo"
+          label="DocNo Inv."
           value={formData.docRefNo}
           type="text"
           variant="standard"
