@@ -19,7 +19,7 @@ export default function WHTListDT({ accDocNo, onSaveSuccess }) {
     const fetchDetails = useCallback(async () => {
         if (!accDocNo) return;
         try {
-            const response = await authFetch(`${API_BASE}/WithholdingTax/GetWithholdingTaxDT?docNo=${accDocNo}`);
+            const response = await authFetch(`${API_BASE}/AccWHTax/GetWHTaxDT?docNo=${accDocNo}`);
             if (response.ok) {
                 const data = await response.json();
                 if (Array.isArray(data)) {

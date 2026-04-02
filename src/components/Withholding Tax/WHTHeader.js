@@ -31,9 +31,12 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
     const authFetch = useAuthFetch();
     const location = useLocation();
     const navigate = useNavigate();
+    const params = new URLSearchParams(location.search);
+    const docNoParam = params.get("docNo") || params.get("accDocNo");
     const [isNewMode, setIsNewMode] = useState(location.state?.isNew || false);
     const [openSupplierModal, setOpenSupplierModal] = useState(false);
     const [openCustomerModal, setOpenCustomerModal] = useState(false);
+    console.log('apiData', apiData);
     const [formData, setFormData] = useState({
         docNo: "",
         docDate: new Date().toISOString().slice(0, 10),
@@ -68,13 +71,17 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
     const fetchDataFromApi = async () => {
         if (isNewMode) return;
         try {
-            const apiUrl = `${API_BASE}/AccWHTax/GetWHTax`;
+            console.log('docNoParam fetching', docNoParam);
+            const apiUrl = docNoParam 
+                ? `${API_BASE}/AccWHTax/GetWHTaxHD?docNo=${docNoParam}`
+                : `${API_BASE}/AccWHTax/GetWHTaxHD`;
             const response = await authFetch(apiUrl);
             if (!response.ok) throw new Error("Fetch failed");
             const data = await response.json();
 
             if (Array.isArray(data) && data.length > 0) {
                 setApiData(data);
+                console.log('APIDATA', data);
                 const safeIndex = (currentIndex >= 0 && currentIndex < data.length) ? currentIndex : 0;
                 setCurrentIndex(safeIndex);
                 mapDataToState(data[safeIndex]);
@@ -247,7 +254,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
 
     const handleSave = async () => {
         try {
-            const response = await authFetch(`${API_BASE}/WithholdingTax/AddWithholdingTaxHD`, {
+            const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
@@ -267,7 +274,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
 
     const handleUpdate = async () => {
         try {
-            const response = await authFetch(`${API_BASE}/WithholdingTax/EditWithholdingTaxHD`, {
+            const response = await authFetch(`${API_BASE}/AccWHTax/EditWHTaxHD`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
@@ -294,7 +301,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await authFetch(`${API_BASE}/WithholdingTax/DeleteWithholdingTaxHD/${formData.docNo}`, {
+                    const response = await authFetch(`${API_BASE}/AccWHTax/DeleteWHTaxHD/${formData.docNo}`, {
                         method: "DELETE"
                     });
                     if (response.ok) {
@@ -624,7 +631,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} style={{ display: "flex", justifyContent: "flex-end", marginTop: "10px" }}>
+                <Grid item xs={12} style={{ display: "grid", marginTop: "10px", justifyContent: "flex-end" }}>
                     <CircularButtonGroup actions={buttonActionsLNPF} />
                 </Grid>
             </Grid>

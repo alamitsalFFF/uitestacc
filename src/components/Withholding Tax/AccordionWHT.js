@@ -18,7 +18,7 @@ export default function AccordionWHT() {
     const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const accDocNoParam = params.get("accDocNo");
+    const accDocNoParam = params.get("docNo") || params.get("accDocNo");
 
     const [expandedPanels, setExpandedPanels] = useState({
         panel1: true,
@@ -31,7 +31,7 @@ export default function AccordionWHT() {
     const [webAddress, setWebAddress] = useState("");
 
     const authFetch = useAuthFetch();
-    const DocType = "WHT"; // Assuming WHT is the doc type, verify if needed
+    const DocType = "WH3"; // Assuming WHT is the doc type, verify if needed
 
     // Fetch Module Menu for Navigation
     useEffect(() => {
