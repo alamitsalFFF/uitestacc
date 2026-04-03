@@ -87,10 +87,11 @@ export default function WHTAddDT({ isOpen, onClose, onSave, docNo, editItem }) {
     };
 
     const handleSave = async () => {
+        console.log('formData:', formData);
         try {
             const endpoint = editItem
-                ? `${API_BASE}/WithholdingTax/EditWithholdingTaxDT`
-                : `${API_BASE}/WithholdingTax/AddWithholdingTaxDT`;
+                ? `${API_BASE}/AccWHTax/EditWHTaxDT?docNo=${docNo}&itemNo=${formData.itemNo}`
+                : `${API_BASE}/AccWHTax/SetWHTaxDT?docNo=${docNo}&itemNo=${formData.itemNo}`;
 
             const method = editItem ? "PUT" : "POST";
 
@@ -122,7 +123,7 @@ export default function WHTAddDT({ isOpen, onClose, onSave, docNo, editItem }) {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await authFetch(`${API_BASE}/WithholdingTax/DeleteWithholdingTaxDT?docNo=${docNo}&itemNo=${formData.itemNo}`, {
+                    const response = await authFetch(`${API_BASE}/AccWHTax/DeleteWHTaxDT?docNo=${docNo}&itemNo=${formData.itemNo}`, {
                         method: "DELETE"
                     });
                     if (response.ok) {

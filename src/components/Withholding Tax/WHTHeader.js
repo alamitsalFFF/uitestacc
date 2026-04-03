@@ -27,7 +27,8 @@ import Divider from "@mui/material/Divider";
 import { Card, CardContent, Grid, Typography, FormControl, InputLabel, Select, MenuItem, InputAdornment } from "@mui/material";
 import CustomerModal from "../Share/CustomerModal";
 
-export default function WHTHeader({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
+export default function WHTHeader({ apiData, setApiData, currentIndex, setCurrentIndex,
+    setCurrentAccDocNo, DocType }) {
     const authFetch = useAuthFetch();
     const location = useLocation();
     const navigate = useNavigate();
@@ -36,7 +37,6 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
     const [isNewMode, setIsNewMode] = useState(location.state?.isNew || false);
     const [openSupplierModal, setOpenSupplierModal] = useState(false);
     const [openCustomerModal, setOpenCustomerModal] = useState(false);
-    console.log('apiData', apiData);
     const [formData, setFormData] = useState({
         docNo: "",
         docDate: new Date().toISOString().slice(0, 10),
@@ -44,8 +44,8 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         taxNumber2: "", tName2: "", tAddress2: "", branch2: "", idCard2: "",
         taxNumber3: "", tName3: "", tAddress3: "", branch3: "", idCard3: "",
         seqInForm: "",
-        formType: 1, // Default to PND 1
-        taxLawNo: 1, // Default value 1
+        formType: 4, // Default to PND 1
+        taxLawNo: "01", // Default value 01
         incRate: "",
         incOther: "",
         updateBy: localStorage.getItem("userName") || "",
@@ -64,17 +64,20 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         lastUpdate: new Date().toISOString(),
         teacherAmt: "0",
         isCSV: 0,
-        docStatus: 0
+        // docStatus: 0
     });
 
     // Fetch Data Logic
-    const fetchDataFromApi = async () => {
-        if (isNewMode) return;
+    const fetchDataFromApi = async (specificDocNo = null) => {
+        if (isNewMode && !specificDocNo) return;
         try {
-            console.log('docNoParam fetching', docNoParam);
-            const apiUrl = docNoParam 
-                ? `${API_BASE}/AccWHTax/GetWHTaxHD?docNo=${docNoParam}`
-                : `${API_BASE}/AccWHTax/GetWHTaxHD`;
+            const targetDocNo = specificDocNo || docNoParam;
+            console.log('targetDocNo fetching', targetDocNo);
+            // const apiUrl = targetDocNo
+            //     ? `${API_BASE}/AccWHTax/GetWHTaxHD?docNo=${targetDocNo}`
+            //     : `${API_BASE}/AccWHTax/GetWHTaxHD`
+            //     ;
+            const apiUrl = `${API_BASE}/AccWHTax/GetWHTaxHD?docNo=${targetDocNo}`;
             const response = await authFetch(apiUrl);
             if (!response.ok) throw new Error("Fetch failed");
             const data = await response.json();
@@ -138,7 +141,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             taxNumber3: customer.taxNumber,
             branch3: customer.taxBranch,
             tName3: customer.customerName,
-            tAddress3: customer.address3,
+            tAddress3: customer.address1,
         });
 
         setOpenCustomerModal(false);
@@ -210,7 +213,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             ...formData,
             docNo: "", // Mock Auto Generate
             docDate: new Date().toISOString().slice(0, 10),
-            docStatus: 0,
+            // docStatus: 0,
             totalPayAmount: "0",
             totalPayTax: "0",
             // Reset logic
@@ -228,15 +231,15 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             taxNumber3: "1234567891234", tName3: "Company COSCO shipping line (Thailand)", tAddress3: "319 อาคารจัตุรัสจามจุรี ชั้น 25 ยูนิต 1-8 ถนนพญาไท แขวงปทุมวัน เขตปทุมวัน กรุงเทพมหานคร 10330 ", branch3: "00000", idCard3: "",
             seqInForm: "0",
             formType: 1, // Default to PND 1
-            taxLawNo: 1, // Default value 1
+            taxLawNo: "01", // Default value 1
             incRate: "",
             incOther: "",
             updateBy: localStorage.getItem("userName") || "",
             totalPayAmount: "0",
             totalPayTax: "0",
             soLicenseNo: "",
-            soLicenseAmount: "0",
-            soAccAmount: "0",
+            soLicenseAmount: 0,
+            soAccAmount: 0,
             payeeAccNo: "",
             soTaxNo: "",
             payTaxType: 4,
@@ -247,24 +250,52 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             lastUpdate: new Date().toISOString(),
             teacherAmt: "0",
             isCSV: 0,
-            docStatus: 0
+            // docStatus: 0
         });
     };
 
 
     const handleSave = async () => {
         try {
-            const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD`, {
+            const payload = {
+                ...formData,
+                seqInForm: Number(formData.seqInForm) || 0,
+                incRate: Number(formData.incRate) || 0,
+                totalPayAmount: Number(formData.totalPayAmount) || 0,
+                totalPayTax: Number(formData.totalPayTax) || 0,
+                soLicenseAmount: Number(formData.soLicenseAmount) || 0,
+                soAccAmount: Number(formData.soAccAmount) || 0,
+                teacherAmt: Number(formData.teacherAmt) || 0,
+                formType: Number(formData.formType) || 0,
+                payTaxType: Number(formData.payTaxType) || 0,
+                isCSV: Number(formData.isCSV) || 0
+            };
+            // const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD?cagetory=${DocType}`, {
+            const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD?category=${DocType}`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                headers: { "Content-Type": "application/json" },//?category=wh3
+                body: JSON.stringify(payload)
             });
             if (response.ok) {
-                Swal.fire("Saved", "Data saved successfully", "success");
+                const responseData = await response.json().catch(() => null);
+                const docNo = responseData?.accDocNo || '';
+                console.log('response data:', responseData);
+                Swal.fire("Saved", `Data saved successfully.\nเลขเอกสาร: ${docNo}`, "success");
                 setIsNewMode(false);
-                fetchDataFromApi();
+                fetchDataFromApi(docNo);
             } else {
-                Swal.fire("Error", "Failed to save data", "error");
+                const errorData = await response.json().catch(() => null);
+                let errorMsg = "Failed to save data";
+                if (errorData && errorData.errors) {
+                    errorMsg = JSON.stringify(errorData.errors);
+                } else if (errorData && errorData.title) {
+                    errorMsg = errorData.title;
+                } else if (typeof errorData === 'string') {
+                    errorMsg = errorData;
+                }
+                console.log('error response:', errorData || response.statusText);
+                console.log('error payload:', payload);
+                Swal.fire("Error (400)", errorMsg, "error");
             }
         } catch (error) {
             console.error(error);
@@ -274,16 +305,36 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
 
     const handleUpdate = async () => {
         try {
+            const payload = {
+                ...formData,
+                seqInForm: Number(formData.seqInForm) || 0,
+                incRate: Number(formData.incRate) || 0,
+                totalPayAmount: Number(formData.totalPayAmount) || 0,
+                totalPayTax: Number(formData.totalPayTax) || 0,
+                soLicenseAmount: Number(formData.soLicenseAmount) || 0,
+                soAccAmount: Number(formData.soAccAmount) || 0,
+                teacherAmt: Number(formData.teacherAmt) || 0,
+                formType: Number(formData.formType) || 0,
+                payTaxType: Number(formData.payTaxType) || 0,
+                isCSV: Number(formData.isCSV) || 0
+            };
             const response = await authFetch(`${API_BASE}/AccWHTax/EditWHTaxHD`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
             });
             if (response.ok) {
                 Swal.fire("Updated", "Data updated successfully", "success");
                 fetchDataFromApi();
             } else {
-                Swal.fire("Error", "Failed to update data", "error");
+                const errorData = await response.json().catch(() => null);
+                let errorMsg = "Failed to update data";
+                if (errorData && errorData.errors) {
+                    errorMsg = JSON.stringify(errorData.errors);
+                } else if (errorData && errorData.title) {
+                    errorMsg = errorData.title;
+                }
+                Swal.fire("Error", errorMsg, "error");
             }
         } catch (error) {
             console.error(error);
@@ -390,11 +441,11 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                                         <InputLabel id="taxLawNo-label">Tax Code</InputLabel> {/*(หักภาษีตามมาตรา)*/}
                                         {/* <Select labelId="taxLawNo-label" id="taxLawNo" name="taxLawNo" value={formData.taxLawNo} onChange={handleInputChange}> */}
                                         <Select labelId="taxLawNo-label" id="taxLawNo" name="taxLawNo" value={formData.taxLawNo} label="Tax Code" onChange={handleInputChange}>
-                                            <MenuItem value={1}>3 เตรส</MenuItem>
-                                            <MenuItem value={2}>65 จัตวา</MenuItem>
-                                            <MenuItem value={3}>69 ทวิ</MenuItem>
-                                            <MenuItem value={4}>48 ทวิ</MenuItem>
-                                            <MenuItem value={5}>50 ทวิ</MenuItem>
+                                            <MenuItem value="01">3 เตรส</MenuItem>
+                                            <MenuItem value="02">65 จัตวา</MenuItem>
+                                            <MenuItem value="03">69 ทวิ</MenuItem>
+                                            <MenuItem value="04">48 ทวิ</MenuItem>
+                                            <MenuItem value="05">50 ทวิ</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -591,6 +642,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                                         id="totalPayAmount"
                                         label="Total Amount"
                                         value={formData.totalPayAmount}
+                                        // onChange={handleInputChange}
                                         variant="outlined"
                                         fullWidth
                                         InputProps={{

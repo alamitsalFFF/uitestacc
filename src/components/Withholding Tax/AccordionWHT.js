@@ -105,6 +105,7 @@ export default function AccordionWHT() {
                         currentIndex={currentIndex}
                         setCurrentIndex={setCurrentIndex}
                         setCurrentAccDocNo={setCurrentAccDocNo}
+                        DocType={DocType}
                     />
                 </AccordionDetails>
             </Accordion>
@@ -124,7 +125,7 @@ export default function AccordionWHT() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <WHTListDT
-                        accDocNo={currentAccDocNo || accDocNoParam}
+                        DocNo={currentAccDocNo || accDocNoParam}
                         onSaveSuccess={handleOpenHeaderPanel}
                     />
                 </AccordionDetails>
