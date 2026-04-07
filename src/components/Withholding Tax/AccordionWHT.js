@@ -125,7 +125,7 @@ export default function AccordionWHT() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <WHTListDT
-                        DocNo={currentAccDocNo || accDocNoParam}
+                        docNo={currentAccDocNo || accDocNoParam}
                         onSaveSuccess={handleOpenHeaderPanel}
                     />
                 </AccordionDetails>

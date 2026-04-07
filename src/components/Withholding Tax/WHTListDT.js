@@ -10,16 +10,16 @@ import { useAuthFetch } from "../Auth/fetchConfig";
 import WHTAddDT from "./WHTAddDT";
 import Swal from "sweetalert2";
 
-export default function WHTListDT({ DocNo, onSaveSuccess }) {
+export default function WHTListDT({ docNo, onSaveSuccess }) {
     const [details, setDetails] = useState([]);
     const [openAddModal, setOpenAddModal] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const authFetch = useAuthFetch();
 
     const fetchDetails = useCallback(async () => {
-        if (!DocNo) return;
+        if (!docNo) return;
         try {
-            const response = await authFetch(`${API_BASE}/AccWHTax/GetWHTaxDT?docNo=${DocNo}`);
+            const response = await authFetch(`${API_BASE}/AccWHTax/GetWHTaxDT?docNo=${docNo}`);
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
@@ -32,7 +32,7 @@ export default function WHTListDT({ DocNo, onSaveSuccess }) {
         } catch (error) {
             console.error("Error fetching details:", error);
         }
-    }, [DocNo, authFetch]);
+    }, [docNo, authFetch]);
 
     useEffect(() => {
         fetchDetails();
@@ -126,7 +126,7 @@ export default function WHTListDT({ DocNo, onSaveSuccess }) {
                 isOpen={openAddModal}
                 onClose={handleCloseModal}
                 onSave={handleSaveSuccess}
-                docNo={DocNo}
+                docNo={docNo}
                 editItem={editItem}
             />
         </div>
