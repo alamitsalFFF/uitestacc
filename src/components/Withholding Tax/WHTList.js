@@ -22,7 +22,7 @@ import {
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { API_VIEW_RESULT, URL, API_BASE } from "../api/url";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Chip } from "@mui/material";
 import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 import ButtonAction from "../DataFilters/ButtonAction";
 import SearchModal from "../DataFilters/SearchModal";
@@ -86,7 +86,8 @@ function WHTList() {
             PartyName: item.tName1 || item.tName3 || "",
             TotalNet: parseFloat(item.totalPayAmount || 0),
             // DocStatus: item.cancelDate ? 1 : 0,
-            StatusName: item.cancelDate ? "Cancel" : "Normal",
+            Status: item.cancelDate ? "Cancel" : "Normal",
+            StatusName: item.cancelProve ? item.cancelProve : "Not Prove",
             DocType: "WH3",
             ...item
           }));
@@ -341,6 +342,14 @@ function WHTList() {
                       {transaction.AccDocNo}&nbsp;
                       {/* <Status status={transaction.DocStatus} /> */}
                       {/* <DocStatus status={transaction.StatusName} /> */}
+                      {transaction.cancelProve && (
+                        <Chip
+                          label={`Cancel By :${transaction.StatusName}`}
+                          color={transaction.StatusName === transaction.cancelProve ? "error" : "success"}
+                          variant="outlined"
+                          size="small"
+                        />
+                      )}
                     </h5>
                     <h6 style={{ marginBottom: "1px" }}>
                       &nbsp; {transaction.PartyName}

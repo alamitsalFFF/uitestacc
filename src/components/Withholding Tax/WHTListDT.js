@@ -10,14 +10,14 @@ import { useAuthFetch } from "../Auth/fetchConfig";
 import WHTAddDT from "./WHTAddDT";
 import Swal from "sweetalert2";
 
-export default function WHTListDT({ docNo, onSaveSuccess }) {
+export default function WHTListDT({ docNo, onSaveSuccess, onUpdateTotals }) {
     const [details, setDetails] = useState([]);
     const [openAddModal, setOpenAddModal] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const authFetch = useAuthFetch();
 
     const fetchDetails = useCallback(async () => {
-        if (!docNo) return;
+        if (!docNo) return null;
         try {
             const response = await authFetch(`${API_BASE}/AccWHTax/GetWHTaxDT?docNo=${docNo}`);
             if (response.ok) {
@@ -25,13 +25,16 @@ export default function WHTListDT({ docNo, onSaveSuccess }) {
                 console.log(data);
                 if (Array.isArray(data)) {
                     setDetails(data);
+                    return data;
                 } else {
                     setDetails([]);
+                    return [];
                 }
             }
         } catch (error) {
             console.error("Error fetching details:", error);
         }
+        return null;
     }, [docNo, authFetch]);
 
     useEffect(() => {
@@ -53,9 +56,14 @@ export default function WHTListDT({ docNo, onSaveSuccess }) {
         setEditItem(null);
     };
 
-    const handleSaveSuccess = () => {
-        fetchDetails();
+    const handleSaveSuccess = async () => {
+        const data = await fetchDetails();
         handleCloseModal();
+        if (data) {
+            const totalAmt = data.reduce((sum, item) => sum + (parseFloat(item.payAmount) || 0), 0);
+            const totalTax = data.reduce((sum, item) => sum + (parseFloat(item.payTax) || 0), 0);
+            if (onUpdateTotals) onUpdateTotals(totalAmt, totalTax);
+        }
         if (onSaveSuccess) onSaveSuccess();
     };
 
@@ -88,6 +96,18 @@ export default function WHTListDT({ docNo, onSaveSuccess }) {
                                 <div>
                                     <div style={{ display: "flex", alignItems: "center" }}>
                                         <span style={{ fontWeight: "bold", marginRight: "10px", color: "#555" }}>{item.itemNo}.</span>
+                                        <h6 style={{ margin: 0, fontWeight: "bold", color: "#000" }}>{item.payTaxDesc}</h6>
+                                        {item.payDate && (
+                                            <Chip size="small" label={`Paid: ${item.payDate.split("T")[0]}`} style={{ marginLeft: "10px", backgroundColor: "#e3f2fd", color: "#1976d2", fontSize: "0.75rem" }} />
+                                        )}
+                                    </div>
+                                    {item.docRefNo && (
+                                        <p style={{ margin: "5px 0 0 25px", fontSize: "0.9em", color: "#666" }}>{item.docRefNo}/{item.jNo}</p>
+                                    )}
+                                </div>
+                                {/* <div>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <span style={{ fontWeight: "bold", marginRight: "10px", color: "#555" }}>{item.itemNo}.</span>
                                         <h6 style={{ margin: 0, fontWeight: "bold", color: "#000" }}>{item.incType}</h6>
                                         {item.payDate && (
                                             <Chip size="small" label={`Paid: ${item.payDate.split("T")[0]}`} style={{ marginLeft: "10px", backgroundColor: "#e3f2fd", color: "#1976d2", fontSize: "0.75rem" }} />
@@ -96,7 +116,7 @@ export default function WHTListDT({ docNo, onSaveSuccess }) {
                                     {item.payTaxDesc && (
                                         <p style={{ margin: "5px 0 0 25px", fontSize: "0.9em", color: "#666" }}>{item.payTaxDesc}</p>
                                     )}
-                                </div>
+                                </div> */}
 
                                 <div style={{ display: "flex", alignItems: "center" }}>
                                     <div style={{ textAlign: "right", marginRight: "20px" }}>

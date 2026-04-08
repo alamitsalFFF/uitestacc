@@ -89,23 +89,44 @@ export default function WHTAddDT({ isOpen, onClose, onSave, docNo, editItem }) {
     const handleSave = async () => {
         console.log('formData:', formData);
         try {
+            const payload = {
+                ...formData,
+                payAmount: Number(formData.payAmount) || 0,
+                payRate: Number(formData.payRate) || 0,
+                payTax: Number(formData.payTax) || 0,
+                docRefType: Number(formData.docRefType) || 0,
+                itemNo: Number(formData.itemNo) || 0,
+                incType: String(formData.incType)
+            };
+
             const endpoint = editItem
-                ? `${API_BASE}/AccWHTax/EditWHTaxDT?docNo=${docNo}&itemNo=${formData.itemNo}`
-                : `${API_BASE}/AccWHTax/SetWHTaxDT?docNo=${docNo}&itemNo=${formData.itemNo}`;
+                ? `${API_BASE}/AccWHTax/EditWHTaxDT?docNo=${docNo}&itemNo=${payload.itemNo}`
+                : `${API_BASE}/AccWHTax/SetWHTaxDT?docNo=${docNo}&itemNo=${payload.itemNo}`;
 
             const method = editItem ? "PUT" : "POST";
 
             const response = await authFetch(endpoint, {
                 method: method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(editItem ? payload : [payload])
             });
 
             if (response.ok) {
                 Swal.fire("Success", "Detail saved.", "success");
                 onSave();
             } else {
-                Swal.fire("Error", "Failed to save detail.", "error");
+                const errorData = await response.json().catch(() => null);
+                let errorMsg = "Failed to save detail.";
+                if (errorData && errorData.errors) {
+                    errorMsg = JSON.stringify(errorData.errors);
+                } else if (errorData && errorData.title) {
+                    errorMsg = errorData.title;
+                } else if (typeof errorData === 'string') {
+                    errorMsg = errorData;
+                }
+                console.log('error response:', errorData || response.statusText);
+                console.log('error payload:', payload);
+                Swal.fire("Error (400)", errorMsg, "error");
             }
         } catch (error) {
             console.error(error);

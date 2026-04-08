@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,11 +24,11 @@ import CompanyProfileCheckbox from "../Share/CompanyProfileCheckbox";
 import { API_BASE } from "../api/url";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import Divider from "@mui/material/Divider";
-import { Card, CardContent, Grid, Typography, FormControl, InputLabel, Select, MenuItem, InputAdornment } from "@mui/material";
+import { Card, CardContent, Grid, Typography, FormControl, InputLabel, Select, MenuItem, InputAdornment, Chip, Box } from "@mui/material";
 import CustomerModal from "../Share/CustomerModal";
 
-export default function WHTHeader({ apiData, setApiData, currentIndex, setCurrentIndex,
-    setCurrentAccDocNo, DocType }) {
+const WHTHeader = forwardRef(({ apiData, setApiData, currentIndex, setCurrentIndex,
+    setCurrentAccDocNo, DocType }, ref) => {
     const authFetch = useAuthFetch();
     const location = useLocation();
     const navigate = useNavigate();
@@ -43,17 +43,17 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         taxNumber1: "", tName1: "", tAddress1: "", branch1: "", idCard1: "",
         taxNumber2: "", tName2: "", tAddress2: "", branch2: "", idCard2: "",
         taxNumber3: "", tName3: "", tAddress3: "", branch3: "", idCard3: "",
-        seqInForm: "",
+        seqInForm: 0,
         formType: 4, // Default to PND 1
         taxLawNo: "01", // Default value 01
         incRate: "",
         incOther: "",
         updateBy: localStorage.getItem("userName") || "",
-        totalPayAmount: "0",
-        totalPayTax: "0",
+        totalPayAmount: 0.00,
+        totalPayTax: 0.00,
         soLicenseNo: "",
-        soLicenseAmount: "0",
-        soAccAmount: "0",
+        soLicenseAmount: 0.00,
+        soAccAmount: 0.00,
         payeeAccNo: "",
         soTaxNo: "",
         payTaxType: 1,
@@ -62,7 +62,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         cancelReason: "",
         cancelDate: null,
         lastUpdate: new Date().toISOString(),
-        teacherAmt: "0",
+        teacherAmt: 0.00,
         isCSV: 0,
         // docStatus: 0
     });
@@ -211,14 +211,32 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
     const handleNew = () => {
         setFormData({
             ...formData,
-            docNo: "", // Mock Auto Generate
+            docNo: "",
             docDate: new Date().toISOString().slice(0, 10),
-            // docStatus: 0,
-            totalPayAmount: "0",
-            totalPayTax: "0",
-            // Reset logic
-            tName1: "", taxNumber1: "", tAddress1: "",
-            tName2: "", taxNumber2: "", tAddress2: "",
+            taxNumber1: "", tName1: "", tAddress1: "", branch1: "", idCard1: "",
+            taxNumber2: "", tName2: "", tAddress2: "", branch2: "", idCard2: "",
+            taxNumber3: "", tName3: "", tAddress3: "", branch3: "", idCard3: "",
+            seqInForm: 0,
+            formType: 4, // Default to PND 1
+            taxLawNo: "01", // Default value 01
+            incRate: "",
+            incOther: "",
+            updateBy: localStorage.getItem("userName") || "",
+            totalPayAmount: 0.00,
+            totalPayTax: 0.00,
+            soLicenseNo: "",
+            soLicenseAmount: 0.00,
+            soAccAmount: 0.00,
+            payeeAccNo: "",
+            soTaxNo: "",
+            payTaxType: 1,
+            payTaxOther: "",
+            cancelProve: "",
+            cancelReason: "",
+            cancelDate: null,
+            lastUpdate: new Date().toISOString(),
+            teacherAmt: 0.00,
+            isCSV: 0,
         });
     };
     const handleDataTest = () => {
@@ -229,17 +247,17 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             taxNumber1: "19953246780", tName1: "สยามแม็คโคร", tAddress1: "1468 ถนนพัฒนาการ แขวงพัฒนาการ เขตสวนหลวง กรุงเทพฯ 10250", branch1: "00000", idCard1: "",
             taxNumber2: "0105544112818", tName2: "บริษัทตะวันเทคโนโลยี จำกัด", tAddress2: "507 บางนา-ตราด 56 บางนาใต้บางนา กรุงเทพมหานคร 10260", branch2: "00000", idCard2: "",
             taxNumber3: "1234567891234", tName3: "Company COSCO shipping line (Thailand)", tAddress3: "319 อาคารจัตุรัสจามจุรี ชั้น 25 ยูนิต 1-8 ถนนพญาไท แขวงปทุมวัน เขตปทุมวัน กรุงเทพมหานคร 10330 ", branch3: "00000", idCard3: "",
-            seqInForm: "0",
+            seqInForm: 0,
             formType: 1, // Default to PND 1
             taxLawNo: "01", // Default value 1
             incRate: "",
             incOther: "",
             updateBy: localStorage.getItem("userName") || "",
-            totalPayAmount: "0",
-            totalPayTax: "0",
+            totalPayAmount: 0.00,
+            totalPayTax: 0.00,
             soLicenseNo: "",
-            soLicenseAmount: 0,
-            soAccAmount: 0,
+            soLicenseAmount: 0.00,
+            soAccAmount: 0.00,
             payeeAccNo: "",
             soTaxNo: "",
             payTaxType: 4,
@@ -248,7 +266,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             cancelReason: "",
             cancelDate: null,
             lastUpdate: new Date().toISOString(),
-            teacherAmt: "0",
+            teacherAmt: 0.00,
             isCSV: 0,
             // docStatus: 0
         });
@@ -268,7 +286,8 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                 teacherAmt: Number(formData.teacherAmt) || 0,
                 formType: Number(formData.formType) || 0,
                 payTaxType: Number(formData.payTaxType) || 0,
-                isCSV: Number(formData.isCSV) || 0
+                isCSV: Number(formData.isCSV) || 0,
+                cancelDate: formData.cancelDate === "" ? null : formData.cancelDate
             };
             // const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD?cagetory=${DocType}`, {
             const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD?category=${DocType}`, {
@@ -282,6 +301,8 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                 console.log('response data:', responseData);
                 Swal.fire("Saved", `Data saved successfully.\nเลขเอกสาร: ${docNo}`, "success");
                 setIsNewMode(false);
+                setCurrentAccDocNo(docNo);
+                navigate(`?docNo=${docNo}`, { replace: true });
                 fetchDataFromApi(docNo);
             } else {
                 const errorData = await response.json().catch(() => null);
@@ -293,8 +314,8 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                 } else if (typeof errorData === 'string') {
                     errorMsg = errorData;
                 }
-                console.log('error response:', errorData || response.statusText);
-                console.log('error payload:', payload);
+                console.error("SetWHTaxHD Error:", errorData);
+                console.error("Payload sent:", payload);
                 Swal.fire("Error (400)", errorMsg, "error");
             }
         } catch (error) {
@@ -303,20 +324,35 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         }
     };
 
-    const handleUpdate = async () => {
+    useImperativeHandle(ref, () => ({
+        updateTotalsAndSave: async (totalAmount, totalTax) => {
+            setFormData(prev => {
+                const updated = {
+                    ...prev,
+                    totalPayAmount: totalAmount,
+                    totalPayTax: totalTax
+                };
+                handleUpdateWithData(updated, false);
+                return updated;
+            });
+        }
+    }));
+
+    const handleUpdateWithData = async (dataToSave, showAlert = true) => {
         try {
             const payload = {
-                ...formData,
-                seqInForm: Number(formData.seqInForm) || 0,
-                incRate: Number(formData.incRate) || 0,
-                totalPayAmount: Number(formData.totalPayAmount) || 0,
-                totalPayTax: Number(formData.totalPayTax) || 0,
-                soLicenseAmount: Number(formData.soLicenseAmount) || 0,
-                soAccAmount: Number(formData.soAccAmount) || 0,
-                teacherAmt: Number(formData.teacherAmt) || 0,
-                formType: Number(formData.formType) || 0,
-                payTaxType: Number(formData.payTaxType) || 0,
-                isCSV: Number(formData.isCSV) || 0
+                ...dataToSave,
+                seqInForm: Number(dataToSave.seqInForm) || 0,
+                incRate: Number(dataToSave.incRate) || 0,
+                totalPayAmount: Number(dataToSave.totalPayAmount) || 0,
+                totalPayTax: Number(dataToSave.totalPayTax) || 0,
+                soLicenseAmount: Number(dataToSave.soLicenseAmount) || 0,
+                soAccAmount: Number(dataToSave.soAccAmount) || 0,
+                teacherAmt: Number(dataToSave.teacherAmt) || 0,
+                formType: Number(dataToSave.formType) || 0,
+                payTaxType: Number(dataToSave.payTaxType) || 0,
+                isCSV: Number(dataToSave.isCSV) || 0,
+                cancelDate: dataToSave.cancelDate === "" ? null : dataToSave.cancelDate
             };
             const response = await authFetch(`${API_BASE}/AccWHTax/EditWHTaxHD`, {
                 method: "PUT",
@@ -324,8 +360,8 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                 body: JSON.stringify(payload)
             });
             if (response.ok) {
-                Swal.fire("Updated", "Data updated successfully", "success");
-                fetchDataFromApi();
+                if (showAlert) Swal.fire("Updated", "Data updated successfully", "success");
+                fetchDataFromApi(dataToSave.docNo);
             } else {
                 const errorData = await response.json().catch(() => null);
                 let errorMsg = "Failed to update data";
@@ -334,15 +370,88 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                 } else if (errorData && errorData.title) {
                     errorMsg = errorData.title;
                 }
-                Swal.fire("Error", errorMsg, "error");
+                console.error("EditWHTaxHD Error:", errorData);
+                console.error("Payload sent:", payload);
+                if (showAlert) Swal.fire("Error (400)", errorMsg, "error");
             }
         } catch (error) {
             console.error(error);
-            Swal.fire("Error", "An error occurred", "error");
+            if (showAlert) Swal.fire("Error", "An error occurred", "error");
         }
     };
 
+    const handleUpdate = async () => {
+        await handleUpdateWithData(formData, true);
+    };
+
     const handleDelete = async () => {
+        Swal.fire({
+            title: 'Cancel/Delete Document',
+            text: "Please enter the reason for cancellation:",
+            icon: 'warning',
+            input: 'text',
+            inputPlaceholder: 'Enter reason here...',
+            showCancelButton: true,
+            confirmButtonText: 'Confirm',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You need to write a reason!'
+                }
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const cancelReason = result.value;
+                const cancelProve = localStorage.getItem("userName") || "";
+                const cancelDate = new Date().toISOString();
+
+                try {
+                    const deletePayload = {
+                        ...formData,
+                        seqInForm: Number(formData.seqInForm) || 0,
+                        incRate: Number(formData.incRate) || 0,
+                        totalPayAmount: Number(formData.totalPayAmount) || 0,
+                        totalPayTax: Number(formData.totalPayTax) || 0,
+                        soLicenseAmount: Number(formData.soLicenseAmount) || 0,
+                        soAccAmount: Number(formData.soAccAmount) || 0,
+                        teacherAmt: Number(formData.teacherAmt) || 0,
+                        formType: Number(formData.formType) || 0,
+                        payTaxType: Number(formData.payTaxType) || 0,
+                        isCSV: Number(formData.isCSV) || 0,
+                        cancelReason,
+                        cancelProve,
+                        cancelDate
+                    };
+
+                    const response = await authFetch(`${API_BASE}/AccWHTax/EditWHTaxHD`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(deletePayload)
+                    });
+                    if (response.ok) {
+                        Swal.fire("Deleted/Cancelled", "Data deleted/cancelled successfully", "success");
+                        fetchDataFromApi();
+                    } else {
+                        const errorData = await response.json().catch(() => null);
+                        let errorMsg = "Failed to delete data";
+                        if (errorData && errorData.errors) {
+                            errorMsg = JSON.stringify(errorData.errors);
+                        } else if (errorData && errorData.title) {
+                            errorMsg = errorData.title;
+                        } else if (typeof errorData === 'string') {
+                            errorMsg = errorData;
+                        }
+                        console.error("EditWHTaxHD (Cancel) Error:", errorData);
+                        Swal.fire("Error", errorMsg, "error");
+                    }
+                } catch (error) {
+                    console.error(error);
+                    Swal.fire("Error", "An error occurred", "error");
+                }
+            }
+        })
+    };
+
+    const handleDelete1 = async () => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -369,12 +478,15 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
         })
     };
 
+
+    const isCancelled = !!formData.cancelProve;
+
     const buttonActions = [
         { icon: <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} />, name: "Add", onClick: handleNew },
-        { icon: <FontAwesomeIcon icon={faFloppyDisk} style={{ color: "#115c02" }} />, name: "Save", onClick: handleSave },
-        { icon: <FontAwesomeIcon icon={faPen} style={{ color: "#72047b" }} />, name: "Update", onClick: handleUpdate },
-        { icon: <FontAwesomeIcon icon={faTrash} style={{ color: "#ae0000" }} />, name: "Delete", onClick: handleDelete },
-        { icon: <FontAwesomeIcon icon={faDatabase} style={{ color: "#0d93b4ff" }} />, name: "Test Data", onClick: handleDataTest }
+        { icon: <FontAwesomeIcon icon={faFloppyDisk} style={{ color: isCancelled ? "gray" : "#115c02" }} />, name: "Save Data", onClick: handleSave, disabled: isCancelled },
+        { icon: <FontAwesomeIcon icon={faPen} style={{ color: isCancelled ? "gray" : "#72047b" }} />, name: "Update Data", onClick: handleUpdate, disabled: isCancelled },
+        { icon: <FontAwesomeIcon icon={faTrash} style={{ color: isCancelled ? "gray" : "#ae0000" }} />, name: "Cancel Data", onClick: handleDelete, disabled: isCancelled },
+        { icon: <FontAwesomeIcon icon={faDatabase} style={{ color: isCancelled ? "gray" : "#0d93b4ff" }} />, name: "Test Data", onClick: handleDataTest, disabled: isCancelled }
     ];
 
     const buttonActionsLNPF = [
@@ -409,7 +521,16 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                 <Grid item xs={12}>
                     <Card elevation={3} style={{ borderRadius: "15px", borderLeft: "5px solid #1976d2" }}>
                         <CardContent>
-                            <SectionHeader icon={faFileInvoiceDollar} title="Document Information" color="#1976d2" />
+                            <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, justifyContent: "space-between", alignItems: { xs: "flex-start" } }}>
+                                <SectionHeader icon={faFileInvoiceDollar} title="Document Information" color="#1976d2" />
+                                {formData.cancelProve && (
+                                    <Box sx={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: { xs: "flex-start", md: "flex-end" }, mb: 2 }}>
+                                        <Chip size="small" label={`Cancel By: ${formData.cancelProve}`} style={{ backgroundColor: "#ffebee", color: "#c62828", fontWeight: "bold" }} />
+                                        {formData.cancelDate && <Chip size="small" label={`Date: ${formData.cancelDate}`} style={{ backgroundColor: "#ffebee", color: "#c62828" }} />}
+                                        {formData.cancelReason && <Chip size="small" label={`Reason: ${formData.cancelReason}`} style={{ backgroundColor: "#ffebee", color: "#c62828" }} />}
+                                    </Box>
+                                )}
+                            </Box>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={6}>
                                     <TextField id="docNo" label="Document No." value={formData.docNo || ""} onChange={handleInputChange} variant="outlined" size="small"
@@ -420,7 +541,7 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
                                 </Grid>
                                 <Grid item xs={12} md={2}>
                                     {/* <TextField id="seqInForm" label="Book No./Seq No." value={formData.seqInForm} onChange={handleInputChange} variant="outlined" size="small" fullWidth placeholder="เล่มที่/เลขที่" /> */}
-                                    <TextField id="seqInForm" label="Number" value={formData.seqInForm} onChange={handleInputChange} variant="outlined" size="small" fullWidth placeholder="เล่มที่/เลขที่" />
+                                    <TextField id="seqInForm" label="Number" type="number" value={formData.seqInForm} onChange={handleInputChange} variant="outlined" size="small" fullWidth placeholder="เล่มที่/เลขที่" />
                                 </Grid>
                                 <Grid item xs={12} md={5}>
                                     <FormControl fullWidth size="small">
@@ -699,4 +820,6 @@ export default function WHTHeader({ apiData, setApiData, currentIndex, setCurren
             />
         </div>
     );
-}
+});
+
+export default WHTHeader;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -29,6 +29,14 @@ export default function AccordionWHT() {
     const [apiData, setApiData] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [webAddress, setWebAddress] = useState("");
+
+    const headerRef = useRef(null);
+
+    const handleUpdateTotals = (totalAmount, totalTax) => {
+        if (headerRef.current) {
+            headerRef.current.updateTotalsAndSave(totalAmount, totalTax);
+        }
+    };
 
     const authFetch = useAuthFetch();
     const DocType = "WH3"; // Assuming WHT is the doc type, verify if needed
@@ -100,6 +108,7 @@ export default function AccordionWHT() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <WHTHeader
+                        ref={headerRef}
                         apiData={apiData}
                         setApiData={setApiData}
                         currentIndex={currentIndex}
@@ -127,6 +136,7 @@ export default function AccordionWHT() {
                     <WHTListDT
                         docNo={currentAccDocNo || accDocNoParam}
                         onSaveSuccess={handleOpenHeaderPanel}
+                        onUpdateTotals={handleUpdateTotals}
                     />
                 </AccordionDetails>
             </Accordion>
