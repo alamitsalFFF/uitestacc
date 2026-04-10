@@ -25,6 +25,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { blue } from "@mui/material/colors";
 import { API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
+import DocConfigHeader from "../DataFilters/DocConfigHeader";
+import useDocConfiguration from "../../hooks/useDocConfiguration";
 
 function JVList() {
   const [requisitions, setRequisitions] = useState([]);
@@ -34,13 +36,14 @@ function JVList() {
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const targetPath = URL;
+  const DocType = `JV`
+  const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(DocType);
 
   const vJournal_All = {
     viewName: "vJournal_All",
     parameters: [
-        // { field: "AccDocNo", value: "JV%" }, // การกรองข้อมูล
-    //   // { field: "DocStatus", value: "0" },
+      // { field: "AccDocNo", value: "JV%" }, // การกรองข้อมูล
+      //   // { field: "DocStatus", value: "0" },
     ],
     results: [
       { sourceField: "EntryId" },
@@ -144,9 +147,9 @@ function JVList() {
           setLoading(false);
           console.log("data_vJournal_All", response.data);
           const allData = response.data;
-          
+
           // 2. กรองข้อมูลด้วย JavaScript
-          const filteredData = allData.filter(item => 
+          const filteredData = allData.filter(item =>
             item.JournalNo && item.JournalNo.startsWith("JV")
           );
           setJournalAll(
@@ -214,16 +217,16 @@ function JVList() {
     navigate(`/uitestacc/JVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
-    const handlePrint = async (filtered) => {
-     dispatch(setAccDocNo(filtered.JournalNo));
-      const GL = "GL"; // กำหนดค่า PR ให้ถูกต้อง
-      // const accDocType = formData.accDocType;
+  const handlePrint = async (filtered) => {
+    dispatch(setAccDocNo(filtered.JournalNo));
+    const GL = "GL"; // กำหนดค่า PR ให้ถูกต้อง
+    // const accDocType = formData.accDocType;
     //   const journalNo = formData.journalNo;
-      console.log("AccDocNo:", filtered.JournalNo);
-      const printUrl = `${REPORT_BASE}/form?Form=Form${GL}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${filtered.JournalNo}`;
-      // const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
-      window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
-    };
+    console.log("AccDocNo:", filtered.JournalNo);
+    const printUrl = `${REPORT_BASE}/form?Form=Form${GL}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${filtered.JournalNo}`;
+    // const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
+    window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
+  };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
     const existingTransaction = acc.find(
@@ -237,47 +240,20 @@ function JVList() {
     return acc;
   }, []);
 
-  const handleAddNew = () => {
-    const accDocType = "PV";
-    dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/PVHeader?accDocType=${accDocType}`, {
-      state: { isNew: true },
-    }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
-  };
-
   const formatNumber = (number) => {
     return number.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
   };
-  
-//    const handlePrint = async (filtered) => {
-//     const GL = "GL"; 
-//     // const accDocType = formData.accDocType;
-//     // const accDocNo = Data.accDocNo;
-//     console.log("JournalNo:", filtered.JournalNo);
-//     const printUrl = `http://203.154.140.51/accreport/form?Form=Form${GL}&Code=${filtered.JournalNo}`;
-//     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
-//   };
 
-  const handleGoBack = () => {
-    navigate("/uitestacc/");
-  };
-  const handleGoMenu = () => {
-    navigate("/uitestacc/");
-  };
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
   return (
-    <div>
-      <h2 style={{ textAlign: "center" }} onClick={handleGoMenu}>
-        Journal Voucher
-      </h2>
+    <div style={{ paddingTop: "10px" }}>
+      <DocConfigHeader
+        categoryOptions={categoryOptions}
+        categoryOptionsThai={categoryOptionsThai}
+        handleGoMenu={handleGoMenu}
+      />
       <div style={{ display: "flex" }}>
         {/* <div>
           <FontAwesomeIcon
@@ -304,11 +280,11 @@ function JVList() {
         {groupedTransactions.map((transaction, index) => (
           <div className="row" key={index}>
             <ListItem style={{ display: "flex", alignItems: "center" }}>
-                 <FontAwesomeIcon
+              <FontAwesomeIcon
                 icon={faPrint}
                 size="2x"
                 style={{ color: "#e56107" }}
-                onClick={() => handlePrint(transaction)} 
+                onClick={() => handlePrint(transaction)}
               />
               {/* <FontAwesomeIcon
                 icon={faChevronRight}
@@ -354,7 +330,7 @@ function JVList() {
           </div>
         ))}
       </ul>
-      <div style={{padding:"30px"}}>&nbsp;</div>
+      <div style={{ padding: "30px" }}>&nbsp;</div>
       {/* <div className="row" style={{ display: "flex" }}>
         <div className="col-6" style={{ display: "grid" }}>
           <FontAwesomeIcon
@@ -386,7 +362,7 @@ function JVList() {
           />
         </div>
       </div> */}
-      <FloatingActionBar backPath={URL}/>
+      <FloatingActionBar backPath={URL} />
     </div>
   );
 }

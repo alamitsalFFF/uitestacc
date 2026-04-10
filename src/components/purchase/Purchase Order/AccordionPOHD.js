@@ -944,7 +944,6 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             showConfirmButton: false,
             timer: 3000,
           });
-          // ถ้าต้องการ ให้ fetch/รีเฟรชข้อมูลที่นี่
         } else {
           console.log("Created PC No:", pcNo);
           Swal.fire({

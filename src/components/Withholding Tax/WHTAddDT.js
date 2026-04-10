@@ -102,7 +102,6 @@ export default function WHTAddDT({ isOpen, onClose, onSave, docNo, editItem }) {
             const endpoint = editItem
                 ? `${API_BASE}/AccWHTax/EditWHTaxDT?docNo=${docNo}&itemNo=${payload.itemNo}`
                 : `${API_BASE}/AccWHTax/SetWHTaxDT?docNo=${docNo}&itemNo=${payload.itemNo}`;
-
             const method = editItem ? "PUT" : "POST";
 
             const response = await authFetch(endpoint, {

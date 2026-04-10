@@ -344,7 +344,7 @@ function WHTList() {
                       {/* <DocStatus status={transaction.StatusName} /> */}
                       {transaction.cancelProve && (
                         <Chip
-                          label={`Cancel By :${transaction.StatusName}`}
+                          label={`Cancel:${transaction.StatusName}`}
                           color={transaction.StatusName === transaction.cancelProve ? "error" : "success"}
                           variant="outlined"
                           size="small"

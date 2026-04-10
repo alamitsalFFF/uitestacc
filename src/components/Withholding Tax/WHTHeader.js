@@ -13,7 +13,8 @@ import {
     faFileInvoiceDollar,
     faSackDollar,
     faDatabase,
-    faEllipsisVertical
+    faEllipsisVertical,
+    faPrint
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -21,7 +22,7 @@ import Link from "@mui/material/Link";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import SupplierModal from "../Share/SupplierModal";
 import CompanyProfileCheckbox from "../Share/CompanyProfileCheckbox";
-import { API_BASE } from "../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE } from "../api/url";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import Divider from "@mui/material/Divider";
 import { Card, CardContent, Grid, Typography, FormControl, InputLabel, Select, MenuItem, InputAdornment, Chip, Box } from "@mui/material";
@@ -73,19 +74,28 @@ const WHTHeader = forwardRef(({ apiData, setApiData, currentIndex, setCurrentInd
         try {
             const targetDocNo = specificDocNo || docNoParam;
             console.log('targetDocNo fetching', targetDocNo);
-            // const apiUrl = targetDocNo
-            //     ? `${API_BASE}/AccWHTax/GetWHTaxHD?docNo=${targetDocNo}`
-            //     : `${API_BASE}/AccWHTax/GetWHTaxHD`
-            //     ;
-            const apiUrl = `${API_BASE}/AccWHTax/GetWHTaxHD?docNo=${targetDocNo}`;
+
+            const apiUrl = `${API_BASE}/AccWHTax/GetWHTaxHD`;
             const response = await authFetch(apiUrl);
             if (!response.ok) throw new Error("Fetch failed");
             const data = await response.json();
 
             if (Array.isArray(data) && data.length > 0) {
+                // Sort descending by docNo
+                data.sort((a, b) => b.docNo.localeCompare(a.docNo));
                 setApiData(data);
                 console.log('APIDATA', data);
-                const safeIndex = (currentIndex >= 0 && currentIndex < data.length) ? currentIndex : 0;
+
+                let safeIndex = 0;
+                if (targetDocNo) {
+                    const foundIndex = data.findIndex(item => item.docNo === targetDocNo);
+                    if (foundIndex !== -1) {
+                        safeIndex = foundIndex;
+                    }
+                } else if (currentIndex >= 0 && currentIndex < data.length) {
+                    safeIndex = currentIndex;
+                }
+
                 setCurrentIndex(safeIndex);
                 mapDataToState(data[safeIndex]);
             } else {
@@ -271,23 +281,33 @@ const WHTHeader = forwardRef(({ apiData, setApiData, currentIndex, setCurrentInd
             // docStatus: 0
         });
     };
-
-
     const handleSave = async () => {
         try {
             const payload = {
                 ...formData,
-                seqInForm: Number(formData.seqInForm) || 0,
-                incRate: Number(formData.incRate) || 0,
-                totalPayAmount: Number(formData.totalPayAmount) || 0,
-                totalPayTax: Number(formData.totalPayTax) || 0,
-                soLicenseAmount: Number(formData.soLicenseAmount) || 0,
-                soAccAmount: Number(formData.soAccAmount) || 0,
-                teacherAmt: Number(formData.teacherAmt) || 0,
-                formType: Number(formData.formType) || 0,
-                payTaxType: Number(formData.payTaxType) || 0,
-                isCSV: Number(formData.isCSV) || 0,
-                cancelDate: formData.cancelDate === "" ? null : formData.cancelDate
+                // seqInForm: Number(formData.seqInForm) || 0,
+                // incRate: Number(formData.incRate) || 0,
+                // totalPayAmount: Number(formData.totalPayAmount) || 0,
+                // totalPayTax: Number(formData.totalPayTax) || 0,
+                // soLicenseAmount: Number(formData.soLicenseAmount) || 0,
+                // soAccAmount: Number(formData.soAccAmount) || 0,
+                // teacherAmt: Number(formData.teacherAmt) || 0,
+                // formType: Number(formData.formType) || 0,
+                // payTaxType: Number(formData.payTaxType) || 0,
+                // isCSV: Number(formData.isCSV) || 0,
+                // cancelDate: formData.cancelDate === "" ? null : formData.cancelDate
+                docDate: formData.docDate || new Date().toISOString(),
+                seqInForm: 0,
+                incRate: 0,
+                totalPayAmount: 0,
+                totalPayTax: 0,
+                soLicenseAmount: 0,
+                soAccAmount: 0,
+                teacherAmt: 0,
+                formType: formData.formType || 4,
+                payTaxType: 1,
+                isCSV: 0,
+                cancelDate: null
             };
             // const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD?cagetory=${DocType}`, {
             const response = await authFetch(`${API_BASE}/AccWHTax/SetWHTaxHD?category=${DocType}`, {
@@ -350,7 +370,7 @@ const WHTHeader = forwardRef(({ apiData, setApiData, currentIndex, setCurrentInd
                 soAccAmount: Number(dataToSave.soAccAmount) || 0,
                 teacherAmt: Number(dataToSave.teacherAmt) || 0,
                 formType: Number(dataToSave.formType) || 0,
-                payTaxType: Number(dataToSave.payTaxType) || 0,
+                payTaxType: Number(dataToSave.payTaxType) || 1,
                 isCSV: Number(dataToSave.isCSV) || 0,
                 cancelDate: dataToSave.cancelDate === "" ? null : dataToSave.cancelDate
             };
@@ -386,8 +406,8 @@ const WHTHeader = forwardRef(({ apiData, setApiData, currentIndex, setCurrentInd
 
     const handleDelete = async () => {
         Swal.fire({
-            title: 'Cancel/Delete Document',
-            text: "Please enter the reason for cancellation:",
+            title: 'Cancel Document',
+            text: "Please enter the reason for cancel:",
             icon: 'warning',
             input: 'text',
             inputPlaceholder: 'Enter reason here...',
@@ -477,16 +497,21 @@ const WHTHeader = forwardRef(({ apiData, setApiData, currentIndex, setCurrentInd
             }
         })
     };
-
-
     const isCancelled = !!formData.cancelProve;
-
+    const handlePrint = async () => {
+        const DocType = "WHTax";
+        const DocNo = formData.docNo;
+        console.log("AccDocNo:", DocNo);
+        const printUrl = `${REPORT_BASE}/form?Form=Form${DocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${DocNo}`;
+        window.open(printUrl, "_blank");
+    };
     const buttonActions = [
         { icon: <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} />, name: "Add", onClick: handleNew },
         { icon: <FontAwesomeIcon icon={faFloppyDisk} style={{ color: isCancelled ? "gray" : "#115c02" }} />, name: "Save Data", onClick: handleSave, disabled: isCancelled },
+        { icon: <FontAwesomeIcon icon={faPrint} style={{ color: isCancelled ? "gray" : "blue" }} />, name: "Print Data", onClick: handlePrint, disabled: isCancelled },
         { icon: <FontAwesomeIcon icon={faPen} style={{ color: isCancelled ? "gray" : "#72047b" }} />, name: "Update Data", onClick: handleUpdate, disabled: isCancelled },
         { icon: <FontAwesomeIcon icon={faTrash} style={{ color: isCancelled ? "gray" : "#ae0000" }} />, name: "Cancel Data", onClick: handleDelete, disabled: isCancelled },
-        { icon: <FontAwesomeIcon icon={faDatabase} style={{ color: isCancelled ? "gray" : "#0d93b4ff" }} />, name: "Test Data", onClick: handleDataTest, disabled: isCancelled }
+        // { icon: <FontAwesomeIcon icon={faDatabase} style={{ color: isCancelled ? "gray" : "#0d93b4ff" }} />, name: "Test Data", onClick: handleDataTest, disabled: isCancelled }
     ];
 
     const buttonActionsLNPF = [

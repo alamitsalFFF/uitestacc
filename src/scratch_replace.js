@@ -1,441 +1,19 @@
-import React, { useState, useEffect } from "react";
-import axios from "../Auth/axiosConfig";
-import { useAuthFetch } from "../Auth/fetchConfig";
-import "./Cash Sale.css";
-import {
-  Row,
-  Form,
-  Col,
-  InputGroup,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import { Card, CardContent, Typography, Box, Grid } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import { faSquarePlus, faCube, faUserTie, faMoneyCheckDollar, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CashSaleData from "./AccordionCashSaleData";
-import { API_BASE, StoredProcedures_Base } from "../api/url";
-import AccordionSelectProductCS from "./AccordionSelectProductCS";
-import AccCodeModal from "./AccCode";
-import DocTypeModal from "./DocType";
-import Swal from "sweetalert2";
+const fs = require('fs');
 
-function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
-  const [data, setData] = useState([]); // เก็บข้อมูลจาก API
-  const [loading, setLoading] = useState(false);
-  const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState([]);
-  const [error, setError] = useState(null);
+const filePath = "c:\\Users\\tawan\\Desktop\\uitestacc\\src\\components\\cash management\\AccordionQuickBuyAssetMain.js";
 
-  const [product, setProduct] = useState("");
-  const [options, setOptions] = useState([]); // ข้อมูลจาก API
-  const [showDropdown, setShowDropdown] = useState(false);
-  const navigate = useNavigate();
-  const authFetch = useAuthFetch();
+const content = fs.readFileSync(filePath, 'utf-8');
 
-  const [qty, setQty] = useState(1);
-  const [price, setPrice] = useState(1);
-  const [currency, setCurrency] = useState("THB");
-  const [excrate, setExcrate] = useState(1);
+const startIndex = content.indexOf("  return (\n    <div>\n      <Form");
 
-  // const [excrate, setExcrate] = useState("1");
-  // const [excrate, setExcrate] = useState("1");
-  // const [excrate, setExcrate] = useState("1");
-  const [costprice, setCostprice] = useState("0");
-  const [profitrate, setProfitrate] = useState("0");
-  const [note, setNote] = useState("");
-  const [journalNo, setJournalNo] = useState("");
-  const initialState = {
-    productName: "",
-    qty: 1,
-    price: 1,
-    currency: "THB",
-    excrate: 1,
-    costprice: 0,
-    profitrate: 0,
-    note: "",
-    // ---
-    // productcode: "",
-    // curr: "",
-    // rate: 1,
-    // qty: 1,
-    // price: 1,
-    // ref: "",
-    // docdate date,
-    // partycode varchar(20),
-    // partytaxcode varchar(20),
-    // partyname varchar(50),
-    // partyaddr varchar(MAX),
-    // userid varchar(20),
-    // note varchar(max),
-    // vatrate int,
-    // whtrate int,
-    // vattype int,--1 exc 2 inc
-    // doctype varchar(5), --PC
-    // acctype int,--0 สด 1 เชื่อ
-    // acccode varchar(20),
-    rcpno: "",
-    trantype: "",
-    bankcode: "",
-    bankname: "",
-  };
+if (startIndex === -1) {
+    console.log("Could not find start index");
+    process.exit(1);
+}
 
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // ป้องกันการ reload หน้าเพจ
-    event.stopPropagation(); // หยุดการส่ง event ไปยัง parent element
-
-    const form = event.currentTarget;
-
-    if (form.checkValidity() === false) {
-      setValidated(true);
-      return;
-    }
-
-    // ใช้ parseFloat() เพื่อแปลงค่า string ที่ได้จาก input เป็น number
-    const excrateValue = parseFloat(excrate);
-
-    // ตรวจสอบว่าค่าที่แปลงได้เป็นตัวเลขและมากกว่า 0 หรือไม่
-    if (isNaN(excrateValue) || excrateValue <= 0) {
-      setValidated(true);
-      return; // หยุดการทำงานหากค่าไม่ถูกต้อง
-    }
-
-    // หากข้อมูลถูกต้อง
-    setValidated(false); // ลบข้อความแจ้งเตือนหากทุกอย่างเรียบร้อย
-    setError(null);
-    // await handleSetJournalDT(costprice, profitrate);
-
-    // ข้อมูลที่ต้องการส่งไปยัง API
-    const currentDate = new Date();
-    // const cleanedRate = parseFloat(event.target.rate.value).toString();
-    // const cleanedQty = parseFloat(event.target.qty.value).toString();
-    // const cleanedPrice = parseFloat(event.target.price.value).toString();
-    const cleanedRate = parseFloat(excrate).toFixed(2); // ใช้ excrate state
-    const cleanedQty = parseFloat(qty).toFixed(2); // ใช้ qty state
-    const cleanedPrice = parseFloat(price).toFixed(2); // ใช้ price state
-    // const cleanedVatrate = parseInt(event.target.vatrate.value).toString();
-    // const cleanedVatrate = parseInt(vatrate).toString(); // ใช้ vatrate state
-    const cleanedVatrate = parseInt(event.target.vatrate.value).toString();
-    const cleanedWhtrate = parseInt(event.target.whtrate.value).toString();
-    const cleanedVattype = parseInt(event.target.vattype.value).toString();
-    const cleanedAcctype = parseInt(event.target.acctype.value).toString();
-    const formattedDate = currentDate.toISOString().split("T")[0]; // จัดรูปแบบเป็น YYYY-MM-DD
-    const formData = {
-      name: "Insert_QuickBuyAsset",
-      parameters: [
-        {
-          param: "productcode",
-          // value: event.target.productcode.value,
-          value: event.target.productcode.value.split(" / ")[0].trim(),
-        },
-        {
-          param: "curr",
-          value: event.target.currency.value,
-        },
-        {
-          param: "rate",
-          // value: event.target.rate.value,
-          value: cleanedRate,
-          // value: 1,
-        },
-        {
-          param: "qty",
-          // value: event.target.qty.value,
-          value: cleanedQty,
-          // value: 1,
-        },
-        {
-          param: "price",
-          // value: event.target.price.value,
-          value: cleanedPrice,
-          // value: 10,
-        },
-        {
-          param: "ref",
-          value: event.target.ref.value,
-        },
-        {
-          param: "docdate",
-          value: event.target.docdate.value, //
-        },
-        {
-          param: "partycode",
-          value: event.target.partycode.value,
-        },
-        {
-          param: "partytaxcode",
-          value: event.target.partytaxcode.value,
-        },
-        {
-          param: "partyname",
-          value: event.target.partyname.value,
-        },
-        {
-          param: "partyaddr",
-          value: event.target.partyaddr.value,
-        },
-        {
-          param: "userid",
-          value: event.target.userid.value, //
-        },
-        {
-          param: "note",
-          value: event.target.note.value,
-        },
-        {
-          param: "vatrate",
-          // value: event.target.vatrate.value,
-          value: cleanedVatrate,
-          // value: 7,
-        },
-        {
-          param: "whtrate",
-          // value: event.target.whtrate.value,
-          value: cleanedWhtrate,
-          // value: 0,
-        },
-        {
-          param: "vattype",
-          // value: event.target.vattype.value,
-          value: cleanedVattype,
-          // value: parseInt(event.target.vattype.value).toString(),
-          // value: 2,
-        },
-        {
-          param: "doctype",
-          // value: event.target.doctype.value,
-          value: selectedDocType.code,
-        },
-        {
-          param: "acctype",
-          // value: event.target.acctype.value,
-          value: cleanedAcctype,
-          // value: 0,
-        },
-        {
-          param: "acccode",
-          // value: event.target.acccode.value,
-          value: selectedAccCode.code,
-        },
-        {
-          param: "rcpno",
-          value: event.target.rcpno.value,
-        },
-        {
-          param: "trantype",
-          value: event.target.trantype.value,
-        },
-        {
-          param: "bankcode",
-          value: event.target.bankcode.value,
-        },
-        {
-          param: "bankname",
-          value: event.target.bankname.value,
-        },
-      ],
-    };
-    try {
-      console.log("formData:", formData);
-
-      setLoading(true);
-      const response = await axios.post(`${StoredProcedures_Base}`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status === 200) {
-        setLoading(false);
-        // alert("บันทึกข้อมูลสำเสร็จ");
-        console.log("data", data);
-        setJournalNo(response.data.data[0].JournalNo);
-        onSaveSuccess(response.data.data);
-        // navigate('/CashSaleData', { state: { data } });
-      } else {
-        setLoading(false);
-        console.error("Error:", response.statusText);
-        setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-      }
-      console.log("response.data.data", response.data.data);
-      console.log("response.data.data", response.data.data[0].JournalNo);
-      Swal.fire({
-        icon: "success",
-        title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
-        showConfirmButton: false,
-        timer: 3000,
-      });
-      setLoading(false);
-      setData(response.data.data);
-      // console.log('data2',data)
-    } catch (error) {
-      console.error("Error:", error);
-      const errorMessage =
-        error.response && error.response.data
-          ? "Error 500: " + error.response.data // ดึงข้อความ error จาก backend (ถ้ามี)
-          : "เกิดข้อผิดพลาดภายใน (Error 500) กรุณาติดต่อผู้ดูแลระบบ";
-
-      alert(errorMessage);
-      console.log("error", errorMessage);
-      setError(error.message);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    // ฟังก์ชันสำหรับเรียก API และอัปเดต options
-    const fetchOptions = async () => {
-      const response = await authFetch(`${API_BASE}/Product/GetProduct`);
-      const dataproduct = await response.json();
-      setOptions(dataproduct);
-    };
-    fetchOptions();
-  }, []);
-
-  const [showEditDetailModal, setShowEditDetailModal] = useState(false);
-  const [openProductModal, setOpenProductModal] = useState(false);
-  const [productName, setProductName] = useState("");
-  // Product select handler
-  const handleProductSelect = () => {
-    setOpenProductModal(true);
-  };
-
-  // ฟังก์ชันสำหรับเปิด Modal เลือกสินค้า
-  const handleOpenProductModal = () => {
-    setOpenProductModal(true);
-  };
-
-  // ฟังก์ชันสำหรับปิด Modal เลือกสินค้า
-  const handleCloseProductModal = () => {
-    setOpenProductModal(false);
-  };
-  const handleConfirmProductSelection = (productData) => {
-    if (productData) {
-      // สร้าง string ที่รวม productCode และ productName เข้าด้วยกัน
-      const displayValue = `${productData.productCode} / ${productData.productName}`;
-
-      // อัปเดต state ด้วย string ที่สร้างขึ้น
-      setProductName(displayValue);
-    }
-    handleCloseProductModal();
-  };
-
-  // const [selectedAccCode, setSelectedAccCode] = useState(""); // เก็บค่า AccCode ที่เลือก เช่น '110001'
-  const [selectedAccCode, setSelectedAccCode] = useState({
-    code: "",
-    name: "",
-  });
-  const [openAccCodeModal, setOpenAccCodeModal] = useState(false); // สถานะการเปิด/ปิด Modal AccCode
-  // Function สำหรับเปิด Modal เลือก AccCode
-  const handleOpenAccCodeModal = () => {
-    setOpenAccCodeModal(true);
-  };
-  // Function สำหรับปิด Modal เลือก AccCode
-  const handleCloseAccCodeModal = () => {
-    setOpenAccCodeModal(false);
-  };
-
-  // 2. Function สำหรับยืนยันการเลือก AccCode
-  const handleConfirmAccCodeSelection = (accCodeData) => {
-    if (accCodeData && accCodeData.code) {
-      console.log("accCodeData:", accCodeData);
-      setSelectedAccCode(accCodeData);
-    }
-    handleCloseAccCodeModal();
-  };
-
-  const [selectedDocType, setSelectedDocType] = useState({
-    code: "JV",
-    name: "Journal Entries",
-  }); // ตั้งค่าเริ่มต้นให้เป็น "PC"
-  // const [selectedDocType, setSelectedDocType] = useState("");
-  const [openDocTypeModal, setOpenDocTypeModal] = useState(false); // สถานะการเปิด/ปิด Modal DocType
-
-  const handleOpenDocTypeModal = () => {
-    setOpenDocTypeModal(true);
-  };
-
-  // Function สำหรับปิด Modal เลือก DocType
-  const handleCloseDocTypeModal = () => {
-    setOpenDocTypeModal(false);
-  };
-
-  // Function สำหรับยืนยันการเลือก DocType
-  const handleConfirmDocTypeSelection = (docTypeData) => {
-    if (docTypeData && docTypeData.code) {
-      console.log("docTypeData:", docTypeData);
-      setSelectedDocType(docTypeData);
-    }
-    handleCloseDocTypeModal();
-  };
-
-  const currencies = [
-    { value: "THB", label: "THB - Thai Baht" },
-    { value: "USD", label: "USD - US Dollar" },
-    { value: "EUR", label: "EUR - Euro" },
-    { value: "GBP", label: "GBP - British Pound" },
-    { value: "JPY", label: "JPY - Japanese Yen" },
-    { value: "CNY", label: "CNY - Chinese Yuan" },
-    { value: "AUD", label: "AUD - Australian Dollar" },
-    { value: "CAD", label: "CAD - Canadian Dollar" },
-    { value: "CHF", label: "CHF - Swiss Franc" },
-    { value: "HKD", label: "HKD - Hong Kong Dollar" },
-    { value: "NZD", label: "NZD - New Zealand Dollar" },
-    { value: "MB", label: "Million Baht" },
-  ];
-  const vatrates = [
-    { value: "7", label: "7%" },
-    { value: "0", label: "0%" },
-  ];
-  const whtrates = [
-    { value: "0", label: "0%" },
-    { value: "1", label: "1%" },
-    { value: "3", label: "3%" },
-  ];
-
-  const vattypes = [
-    { value: "2", label: "VAT Inclusive" },
-    { value: "1", label: "VAT Exclusive" },
-    // { value: "0", label: "Non VAT" },
-  ];
-
-  const acctypes = [
-    { value: "0", label: "ซื้อสด" },
-    { value: "1", label: "ซื้อเชื่อ" },
-  ];
-
-  const transtype = [
-    { value: "TR", label: "TR" },
-    { value: "CQ", label: "CQ" },
-  ];
-
-  const handleClear = () => {
-    // รีเซ็ตค่า state ทุกตัวให้กลับไปเป็นค่าเริ่มต้น
-    setProductName(initialState.productName);
-    setQty(initialState.qty);
-    setPrice(initialState.price);
-    setCurrency(initialState.currency);
-    setExcrate(initialState.excrate);
-    setCostprice(initialState.costprice);
-    setProfitrate(initialState.profitrate);
-    setNote(initialState.note);
-    setSelectedAccCode("");
-    setSelectedDocType("");
-    setValidated(false); // ปิดการแจ้งเตือน Validation
-    setError(null); // ลบข้อความ Error
-  };
-
-  const SectionHeader = ({ icon, title, color }) => (
+const newReturnBlock = `  const SectionHeader = ({ icon, title, color }) => (
     <Typography variant="h6" style={{ color: color || "#333", display: "flex", alignItems: "center", marginBottom: "15px", fontWeight: "bold" }}>
-      <FontAwesomeIcon icon={icon} style={{ marginRight: "10px" }} /> {title}
+        <FontAwesomeIcon icon={icon} style={{ marginRight: "10px" }} /> {title}
     </Typography>
   );
 
@@ -455,7 +33,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 <SectionHeader icon={faCube} title="Product Information" color="#1976d2" />
                 <Row className="mb-4">
                   <Form.Group as={Col} md="4" controlId="productcode">
-                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
+                    <Form.Label style={{ display: "flex" }}>
                       Product &nbsp;
                       {!showEditDetailModal && (
                         <Stack direction="row" spacing={1}>
@@ -484,7 +62,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                   />
 
                   <Form.Group as={Col} md="4" controlId="currency">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Currency</Form.Label>
+                    <Form.Label>Currency</Form.Label>
                     <Form.Select required defaultValue="THB" style={{ backgroundColor: "#ffffe0" }}>
                       <option value="" disabled>
                         เลือกสกุลเงิน...
@@ -500,7 +78,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="4" controlId="rate">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Rate</Form.Label>
+                    <Form.Label>Rate</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="อัตราแลกเปลี่ยน"
@@ -516,7 +94,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="6" controlId="qty">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Qty</Form.Label>
+                    <Form.Label>Qty</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="จำนวน"
@@ -530,7 +108,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="6" controlId="price">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Price</Form.Label>
+                    <Form.Label>Price</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="ราคาต่อหน่วย"
@@ -547,7 +125,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
 
                 <Row className="mb-3">
                   <Form.Group as={Col} md="6" controlId="ref">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Ref Doc</Form.Label>
+                    <Form.Label>Ref Doc</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="เลขประจำตัวทรัพย์สิน/เลขใบสั่งซื้อ/ใบส่งของ"
@@ -559,7 +137,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="6" controlId="docdate">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Date</Form.Label>
+                    <Form.Label>Date</Form.Label>
                     <Form.Control
                       required
                       type="date"
@@ -579,7 +157,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 <SectionHeader icon={faUserTie} title="Party Information" color="#2e7d32" />
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="partycode">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyCode</Form.Label>
+                    <Form.Label>PartyCode</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="รหัสผู้จำหน่าย"
@@ -591,7 +169,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="8" controlId="partytaxcode">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyTax</Form.Label>
+                    <Form.Label>PartyTax</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="เลขประจำตัวผู้เสียภาษี/ลำดับสาขา"
@@ -605,7 +183,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12" controlId="partyname">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyName</Form.Label>
+                    <Form.Label>PartyName</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="ชื่อผู้จำหน่าย"
@@ -619,7 +197,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12" controlId="partyaddr">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyAddr</Form.Label>
+                    <Form.Label>PartyAddr</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="ที่อยู่ผู้จำหน่าย"
@@ -642,7 +220,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 <SectionHeader icon={faNoteSticky} title="Notes & Support" color="#6a1b9a" />
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12" controlId="userid">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Support By</Form.Label>
+                    <Form.Label>Support By</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -657,7 +235,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12" controlId="note">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Note</Form.Label>
+                    <Form.Label>Note</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="หมายเหตุ/สัญญาเลขที่ 1505/2566/5555"
@@ -680,7 +258,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 <SectionHeader icon={faMoneyCheckDollar} title="Financials & Tax" color="#f9a825" />
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="vatrate">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>VatRate</Form.Label>
+                    <Form.Label>VatRate</Form.Label>
                     <Form.Select required defaultValue="7" style={{ backgroundColor: "#ffffe0" }}>
                       <option value="" disabled>
                         เลือกอัตราภาษี...
@@ -696,7 +274,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="4" controlId="whtrate">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>WhtRate</Form.Label>
+                    <Form.Label>WhtRate</Form.Label>
                     <Form.Select required defaultValue="0" style={{ backgroundColor: "#ffffe0" }}>
                       <option value="" disabled>
                         เลือกอัตราภาษีหัก ณ ที่จ่าย...
@@ -712,7 +290,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="4" controlId="vattype">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>VatType</Form.Label>
+                    <Form.Label>VatType</Form.Label>
                     <Form.Select required defaultValue="1" style={{ backgroundColor: "#ffffe0" }}>
                       <option value="" disabled>
                         เลือกประเภทการคิด...
@@ -730,7 +308,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="doctype">
-                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
+                    <Form.Label style={{ display: "flex" }}>
                       DocType &nbsp;
                       <Stack direction="row" spacing={1}>
                         <FontAwesomeIcon
@@ -751,7 +329,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                         placeholder="กรุณาเลือกDocType+"
                         value={
                           selectedDocType.code
-                            ? `${selectedDocType.code} / ${selectedDocType.name}`
+                            ? \`\${selectedDocType.code} / \${selectedDocType.name}\`
                             : ""
                         }
                         required
@@ -770,7 +348,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                   />
 
                   <Form.Group as={Col} md="4" controlId="acctype">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Acctype</Form.Label>
+                    <Form.Label>Acctype</Form.Label>
                     <Form.Select required defaultValue="0" style={{ backgroundColor: "#ffffe0" }}>
                       <option value="" disabled>
                         เลือกประเภทการชำระเงิน...
@@ -787,19 +365,18 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="acccode">
-                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
-                      Acccode &nbsp;
+                    <Form.Label style={{ display: "flex" }}>
+                      Acccode  &nbsp;
                       <Stack direction="row" spacing={1}>
                         <FontAwesomeIcon
                           icon={faSquarePlus}
                           size="xl"
                           style={{
                             color: "#0300b6ff",
-                            fontWeight: 700,
                             justifyItems: "end",
                             cursor: "pointer",
                           }}
-                          onClick={handleOpenAccCodeModal}
+                          onClick={handleOpenAccCodeModal} 
                         />
                       </Stack>
                     </Form.Label>
@@ -809,7 +386,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                         placeholder="กรุณาเลือกAccCode+"
                         value={
                           selectedAccCode.code
-                            ? `${selectedAccCode.code} / ${selectedAccCode.name}`
+                            ? \`\${selectedAccCode.code} / \${selectedAccCode.name}\`
                             : ""
                         }
                         required
@@ -830,7 +407,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
 
                 <Row className="mb-3">
                   <Form.Group as={Col} md="6" controlId="rcpno">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>RCPNO</Form.Label>
+                    <Form.Label>RCPNO</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="เลขใบเสร็จ/ใบกำกับที่ได้มา"
@@ -842,7 +419,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} md="6" controlId="trantype">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Trantype</Form.Label>
+                    <Form.Label>Trantype</Form.Label>
                     <Form.Select required defaultValue="0" style={{ backgroundColor: "#ffffe0" }}>
                       <option value="" disabled>
                         เลือกประเภทTR/CQ...
@@ -856,7 +433,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                   </Form.Group>
 
                   <Form.Group as={Col} md="6" controlId="bankcode">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Bankcode</Form.Label>
+                    <Form.Label>Bankcode</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="ชื่อธนาคาร(กรณีเงินโอน)"
@@ -866,7 +443,7 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
                   </Form.Group>
 
                   <Form.Group as={Col} md="6" controlId="bankname">
-                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Bankname</Form.Label>
+                    <Form.Label>Bankname</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="ชื่อสาขา/สมุดบัญชี/เลข Ref (กรณีเงินโอน)"
@@ -897,4 +474,8 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
   );
 }
 
-export default AccordionQuickBuyAssetMain;
+export default AccordionQuickBuyAssetMain;`;
+
+const newContent = content.substring(0, startIndex) + newReturnBlock;
+fs.writeFileSync(filePath, newContent, 'utf-8');
+console.log("Replacement successful");
