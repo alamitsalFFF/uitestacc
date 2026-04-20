@@ -87,12 +87,12 @@ function ProductList() {
 
   const handleEditClick = (ProductID, idx) => {
     setActiveIndex(idx);
-    navigate(`/uitestacc/Product?productID=${ProductID}`);
+    navigate(`${URL}Product?productID=${ProductID}`);
   };
 
-  const handleAddNew = () => navigate(`/uitestacc/Product`);
-  const handleGoBack = () => navigate("/uitestacc/");
-  const handleGoMenu = () => navigate("/uitestacc/");
+  const handleAddNew = () => navigate(`${URL}Product`);
+  const handleGoBack = () => navigate(`${URL}`);
+  const handleGoMenu = () => navigate(`${URL}`);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 

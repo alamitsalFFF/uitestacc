@@ -19,7 +19,8 @@ import {
 } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { faSquarePlus, faCube, faMoneyCheckDollar, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CashSaleData from "./AccordionCashSaleData";
 import { API_BASE, StoredProcedures_Base } from "../api/url";
@@ -136,42 +137,54 @@ function AccordionCashSaleMain({ onSaveSuccess }) {
         },
       ],
     };
-    try {
-      console.log("formData:", formData);
+    const result = await Swal.fire({
+      title: "ยืนยันการบันทึกข้อมูล?",
+      text: "คุณต้องการบันทึกข้อมูลนี้ใช่หรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ตกลง",
+      cancelButtonText: "ยกเลิก",
+    });
 
-      setLoading(true);
-      const response = await axios.post(`${StoredProcedures_Base}`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status === 200) {
-        setLoading(false);
-        alert("บันทึกข้อมูลสำเสร็จ");
-        console.log("data", data);
-        setJournalNo(response.data.data[0].JournalNo);
-        onSaveSuccess(response.data.data);
-        Swal.fire({
-          icon: "success",
-          title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
-          showConfirmButton: false,
-          timer: 3000,
+    if (result.isConfirmed) {
+      try {
+        console.log("formData:", formData);
+        setLoading(true);
+        const response = await axios.post(`${StoredProcedures_Base}`, formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-        // navigate('/CashSaleData', { state: { data } });
-      } else {
+        if (response.status === 200) {
+          setLoading(false);
+          // alert("บันทึกข้อมูลสำเสร็จ");
+          console.log("data", data);
+          setJournalNo(response.data.data[0].JournalNo);
+          onSaveSuccess(response.data.data);
+          Swal.fire({
+            icon: "success",
+            title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          // navigate('/CashSaleData', { state: { data } });
+        } else {
+          setLoading(false);
+          console.error("Error:", response.statusText);
+          setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+        }
+        console.log("response.data.data", response.data.data);
+        console.log("response.data.data", response.data.data[0].JournalNo);
         setLoading(false);
-        console.error("Error:", response.statusText);
-        setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+        setData(response.data.data);
+        // console.log('data2',data)
+      } catch (error) {
+        console.error("Error:", error);
+        setError(error.message);
+        setLoading(false);
       }
-      console.log("response.data.data", response.data.data);
-      console.log("response.data.data", response.data.data[0].JournalNo);
-      setLoading(false);
-      setData(response.data.data);
-      // console.log('data2',data)
-    } catch (error) {
-      console.error("Error:", error);
-      setError(error.message);
-      setLoading(false);
     }
   };
 
@@ -245,227 +258,227 @@ function AccordionCashSaleMain({ onSaveSuccess }) {
     setError(null); // ลบข้อความ Error
   };
 
+  const SectionHeader = ({ icon, title, color }) => (
+    <Typography variant="h6" style={{ color: color || "#333", display: "flex", alignItems: "center", marginBottom: "15px", fontWeight: "bold" }}>
+      <FontAwesomeIcon icon={icon} style={{ marginRight: "10px" }} /> {title}
+    </Typography>
+  );
+
   return (
-    <div>
+    <div style={{ padding: "20px 5%" }}>
       <Form
         noValidate
         validated={validated}
         onSubmit={handleSubmit}
         className="form-pr"
       >
-        {/* <h2 className="h2-pr" style={{ textAlign: "center" }}>
-        Quick Sale
-        </h2> */}
-        <Row className="mb-3">
-          <Form.Group as={Col} md="3" controlId="userid">
-            <Form.Label>Support By</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              // defaultValue="ADMIN"
-              defaultValue={localStorage.getItem("userName")}
-            />
-            {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
-          </Form.Group>
-          <Form.Group as={Col} md="5">
-            <Form.Label>JournalNo</Form.Label>
-            <Form.Control required type="text" value={journalNo} readOnly />
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="docdate">
-            <Form.Label>Date</Form.Label>
-            <Form.Control
-              required
-              type="date"
-              defaultValue={new Date().toISOString().split("T")[0]}
-            />
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="cashbook">
-            <Form.Label>Cashbook</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="ผู้รับเงิน/ขายโดย"
-              defaultValue={localStorage.getItem("userName")}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกผู้รับเงิน/ขายโดย
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="note">
-            <Form.Label>Note</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="หมายเหตุ/สถานที่"
-              defaultValue="TAWANNA"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกหมายเหตุ/สถานที่.
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          {/* ช่อง Product */}
-          <Col xs={12} lg={12}>
-            <Form.Group controlId="product">
-              <Form.Label style={{ display: "flex" }}>
-                Product &nbsp;
-                {!showEditDetailModal && (
-                  <Stack direction="row" spacing={1}>
-                    {/* <Button
-                      variant="contained"
-                      color="warning"
-                      style={{
-                        width: "184px",
-                        height: "33px",
-                      }}
-                      onClick={handleProductSelect}
-                    > */}
-                    <FontAwesomeIcon
-                      icon={faSquarePlus}
-                      size="lg"
-                      style={{ color: "#0300b6ff", cursor: "pointer" }}
-                      onClick={handleProductSelect}
+        <Grid container spacing={3}>
+          {/* 1. General Information */}
+          <Grid item xs={12} md={5}>
+            <Card elevation={3} style={{ borderRadius: "15px", height: "100%", borderLeft: "5px solid #6a1b9a" }}>
+              <CardContent>
+                <SectionHeader icon={faNoteSticky} title="General Information" color="#6a1b9a" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="6" controlId="userid">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Support By</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      defaultValue={localStorage.getItem("userName")}
+                      readOnly
+                      style={{ backgroundColor: "#cdcdd1" }}
                     />
-                    {/* &nbsp;Product/Service */}
-                    {/* </Button> */}
-                  </Stack>
-                )}
-              </Form.Label>
-              <InputGroup>
-                <Form.Control type="text" value={productName} />
-              </InputGroup>
-            </Form.Group>
-          </Col>
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>JournalNo</Form.Label>
+                    <Form.Control required type="text" value={journalNo} readOnly style={{ backgroundColor: "#cdcdd1" }} />
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="6" controlId="docdate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Date</Form.Label>
+                    <Form.Control
+                      required
+                      type="date"
+                      defaultValue={new Date().toISOString().split("T")[0]}
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="6" controlId="cashbook">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Cashbook</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="ผู้รับเงิน/ขายโดย"
+                      defaultValue={localStorage.getItem("userName")}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      กรุณากรอกผู้รับเงิน/ขายโดย
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12" controlId="note">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Note</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="หมายเหตุ/สถานที่"
+                      defaultValue="TAWANNA"
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      กรุณากรอกหมายเหตุ/สถานที่.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          {/* ปุ่มเลือก Product */}
-          {/* <Col xs={12} lg={4} // style={{ paddingTop: '27px' }}
-          >
-          
-            {!showEditDetailModal && (
-              <Stack direction="row" spacing={1}>
-                <Button
-                  variant="contained"
-                  color="warning"
-                  style={{
-                    width: "183px",
-                    height: "33px",
-                  }}
-                  onClick={handleProductSelect}
-                >
-                  <FontAwesomeIcon
-                    icon={faSquarePlus}
-                    size="2x"
-                    style={{ color: "#fff", justifyItems: "end" }}
+          {/* 2. Product Details */}
+          <Grid item xs={12} md={7}>
+            <Card elevation={3} style={{ borderRadius: "15px", height: "100%", borderLeft: "5px solid #1976d2" }}>
+              <CardContent>
+                <SectionHeader icon={faCube} title="Product Details" color="#1976d2" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12" controlId="product">
+                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
+                      Product &nbsp;
+                      {!showEditDetailModal && (
+                        <Stack direction="row" spacing={1}>
+                          <FontAwesomeIcon
+                            icon={faSquarePlus}
+                            size="xl"
+                            style={{ color: "#0300b6ff", cursor: "pointer" }}
+                            onClick={handleProductSelect}
+                          />
+                        </Stack>
+                      )}
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control type="text" value={productName} style={{ backgroundColor: "#ffffe0" }} />
+                    </InputGroup>
+                  </Form.Group>
+                  <AccordionSelectProductCS
+                    isOpen={openProductModal}
+                    onClose={handleCloseProductModal}
+                    onSave={handleConfirmProductSelection}
                   />
-                  &nbsp;Product/Service
-                </Button>
-              </Stack>
-            )}
-          </Col> */}
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="6" controlId="qty">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Qty</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="จำนวน"
+                      value={qty}
+                      onChange={(e) => setQty(e.target.value)}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      กรุณากรอกจำนวน
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="6" controlId="price">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Price</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="ราคา"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      กรุณากรอกราคา
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <AccordionSelectProductCS
-            isOpen={openProductModal}
-            onClose={handleCloseProductModal}
-            onSave={handleConfirmProductSelection}
-          />
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="qty">
-            <Form.Label>Qty</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="จำนวน"
-              value={qty}
-              onChange={(e) => setQty(e.target.value)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกจำนวน
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="price">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="ราคา"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกราคา
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="currency">
-            <Form.Label>สกุลเงิน</Form.Label>
-            <Form.Select required defaultValue="THB">
-              <option value="" disabled>
-                เลือกสกุลเงิน...
-              </option>
-              {currencies.map((currency) => (
-                <option key={currency.value} value={currency.value}>
-                  {currency.label}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกสกุลเงิน
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="excrate">
-            <Form.Label>Rate</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="1"
-              value={excrate} // ใช้ value จาก state
-              onChange={(e) => setExcrate(e.target.value)} // อัปเดต state เมื่อค่าเปลี่ยนแปลง
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกเรต
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="costprice">
-            <Form.Label>Costprice</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="ต้นทุนต่อหน่วย"
-              value={costprice}
-              onChange={(e) => setCostprice(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="profitrate">
-            <Form.Label>Profitrate</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="อัตรากำไร"
-              value={profitrate}
-              onChange={(e) => setProfitrate(e.target.value)}
-              required
-            />
-          </Form.Group>
-        </Row>
+          {/* 3. Financials */}
+          <Grid item xs={12}>
+            <Card elevation={3} style={{ borderRadius: "15px", borderLeft: "5px solid #f9a825" }}>
+              <CardContent>
+                <SectionHeader icon={faMoneyCheckDollar} title="Financials" color="#f9a825" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="3" controlId="currency">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>สกุลเงิน</Form.Label>
+                    <Form.Select required defaultValue="THB" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>
+                        เลือกสกุลเงิน...
+                      </option>
+                      {currencies.map((currency) => (
+                        <option key={currency.value} value={currency.value}>
+                          {currency.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      กรุณากรอกสกุลเงิน
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="excrate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Rate</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="1"
+                      value={excrate}
+                      onChange={(e) => setExcrate(e.target.value)}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      กรุณากรอกเรต
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="costprice">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Costprice</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="ต้นทุนต่อหน่วย"
+                      value={costprice}
+                      onChange={(e) => setCostprice(e.target.value)}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="profitrate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Profitrate</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="อัตรากำไร"
+                      value={profitrate}
+                      onChange={(e) => setProfitrate(e.target.value)}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ marginLeft: "auto", marginRight: "10px" }}
-          onClick={handleClear}
-        >
-          Clear
-        </Button>
-        <Button variant="contained" color="primary" type="submit">
-          Save
-        </Button>
-        {/* </Link> */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ marginRight: "10px" }}
+            onClick={handleClear}
+          >
+            Clear
+          </Button>
+          <Button variant="contained" color="primary" type="submit">
+            Save
+          </Button>
+        </div>
+
       </Form>
     </div>
   );

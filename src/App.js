@@ -187,6 +187,8 @@ import DraftDataOCR from './components/Delivery/Delivery In/DraftDataOCR';
 import WHTList from './components/Withholding Tax/WHTList';
 import { URL } from './components/api/url';
 import AccountingAppMenu from './components/menu/AccountingAppMenu';
+import AccordionJV from './components/Journal Voucher/AccordionJV';
+import JVList1 from './components/Journal Voucher/JVList_BK';
 
 function App() {
   const { showLoginModal } = useAuth();
@@ -373,9 +375,9 @@ function App() {
             <Route path="uitestacc/RVEditDetail" element={<RequireAuth><RVEditDetail /></RequireAuth>} />
             <Route path="uitestacc/RVDTList" element={<RequireAuth><RVDTList /></RequireAuth>} />
 
-            <Route path="uitestacc/JVList" element={<RequireAuth><JVList /></RequireAuth>} />
             <Route path="uitestacc/JournalEntries" element={<RequireAuth><JVList /></RequireAuth>} />
-            <Route path="uitestacc/JVDTList" element={<RequireAuth><JVDTList /></RequireAuth>} />
+            <Route path="uitestacc/JVList" element={<RequireAuth><JVList1 /></RequireAuth>} />
+            <Route path="uitestacc/AccordionJV" element={<RequireAuth><AccordionJV /></RequireAuth>} />
 
             <Route path="uitestacc/TrialBalance" element={<RequireAuth><TrialBalance /></RequireAuth>} />
             <Route path="uitestacc/GLList" element={<RequireAuth><GLList /></RequireAuth>} />

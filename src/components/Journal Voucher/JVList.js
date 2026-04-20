@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "../../components/Auth/axiosConfig";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +9,8 @@ import {
   faMagnifyingGlass,
   faCircleArrowLeft,
   faCircleArrowUp,
-  faChevronRight,
-  faPrint,
+  faCalendarDays,
+  faFileArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchComponent from "../purchase/SearchComponen";
 import Status from "../purchase/Status";
@@ -22,173 +22,256 @@ import {
   setStatusName,
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
-import { blue } from "@mui/material/colors";
-import { API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL } from "../api/url";
+import { API_VIEW_RESULT, URL } from "../api/url";
+import { Box, Button } from "@mui/material";
+import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
+import ButtonAction from "../DataFilters/ButtonAction";
+import SearchModal from "../DataFilters/SearchModal";
+import DateFilterModal from "../DataFilters/DateFilterModal";
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
+import DocStatus from "../DataFilters/DocStatus";
+import DriveImagePreview from "../Delivery/DraftData/Preview";
+import Modal from '@mui/material/Modal';
+import DocStatusPoint from "../DataFilters/DocStatusPoint";
+import '../DataFilters/ConfigStatus.css';
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
 import DocConfigHeader from "../DataFilters/DocConfigHeader";
 import useDocConfiguration from "../../hooks/useDocConfiguration";
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 function JVList() {
   const [requisitions, setRequisitions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [journalall, setJournalAll] = useState([]);
+  const [transactionall, setTransactionAll] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const DocType = `JV`
-  const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(DocType);
+  const accDocType = "JV";
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isDateFilterModalOpen, setIsDateFilterModalOpen] = useState(false);
+  const [filterStartDate, setFilterStartDate] = useState(
+    dayjs().startOf("month").toDate()
+  ); // วันที่ 1 ของเดือนปัจจุบัน
+  const [filterEndDate, setFilterEndDate] = useState(
+    dayjs().endOf("month").toDate()
+  );
+  const [selectedStatusKey, setSelectedStatusKey] = useState(null);
 
-  const vJournal_All = {
-    viewName: "vJournal_All",
-    parameters: [
-      // { field: "AccDocNo", value: "JV%" }, // การกรองข้อมูล
-      //   // { field: "DocStatus", value: "0" },
-    ],
-    results: [
-      { sourceField: "EntryId" },
-      { sourceField: "JournalNo" },
-      { sourceField: "EntryDate" },
-      { sourceField: "EffectiveDate" },
-      { sourceField: "EntryBy" },
-      { sourceField: "Description" },
-      { sourceField: "TotalDebit" },
-      { sourceField: "TotalCredit" },
-      { sourceField: "DocNo" },
-      { sourceField: "Seq" },
-      { sourceField: "Text1" },
-      { sourceField: "Date1" },
-      { sourceField: "Num1" },
-      { sourceField: "Text2" },
-      { sourceField: "Date2" },
-      { sourceField: "Num2" },
-      { sourceField: "Text3" },
-      { sourceField: "Date3" },
-      { sourceField: "Num3" },
-      { sourceField: "Text4" },
-      { sourceField: "Date4" },
-      { sourceField: "Num4" },
-      { sourceField: "Text5" },
-      { sourceField: "Date5" },
-      { sourceField: "Num5" },
-      { sourceField: "Text6" },
-      { sourceField: "Date6" },
-      { sourceField: "Num6" },
-      { sourceField: "Text7" },
-      { sourceField: "Date7" },
-      { sourceField: "Num7" },
-      { sourceField: "Text8" },
-      { sourceField: "Date8" },
-      { sourceField: "Num8" },
-      { sourceField: "Text9" },
-      { sourceField: "Date9" },
-      { sourceField: "Num9" },
-      { sourceField: "Text10" },
-      { sourceField: "Date10" },
-      { sourceField: "Num10" },
-      { sourceField: "ItemNo" },
-      { sourceField: "AccCode" },
-      { sourceField: "AccName" },
-      { sourceField: "AccMainCode" },
-      { sourceField: "AccMainCodeName" },
-      { sourceField: "AccRemark" },
-      { sourceField: "AccDesc" },
-      { sourceField: "Debit" },
-      { sourceField: "Credit" },
-      { sourceField: "AccTypeID" },
-      { sourceField: "DText1" },
-      { sourceField: "DDate1" },
-      { sourceField: "DNum1" },
-      { sourceField: "DText2" },
-      { sourceField: "DDate2" },
-      { sourceField: "DNum2" },
-      { sourceField: "DText3" },
-      { sourceField: "DDate3" },
-      { sourceField: "DNum3" },
-      { sourceField: "DText4" },
-      { sourceField: "DDate4" },
-      { sourceField: "DNum4" },
-      { sourceField: "DText5" },
-      { sourceField: "DDate5" },
-      { sourceField: "DNum5" },
-      { sourceField: "DText6" },
-      { sourceField: "DDate6" },
-      { sourceField: "DNum6" },
-      { sourceField: "DText7" },
-      { sourceField: "DDate7" },
-      { sourceField: "DNum7" },
-      { sourceField: "DText8" },
-      { sourceField: "DDate8" },
-      { sourceField: "DNum8" },
-      { sourceField: "DText9" },
-      { sourceField: "DDate9" },
-      { sourceField: "DNum9" },
-      { sourceField: "DText10" },
-      { sourceField: "DDate10" },
-      { sourceField: "DNum10" },
-    ],
-  };
-  useEffect(() => {
-    (async () => {
-      try {
-        console.log("vJournal_All:", vJournal_All);
-        setLoading(true);
-        const response = await axios.post(
-          `${API_VIEW_RESULT}`,
-          vJournal_All,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+  const { categoryOptions, categoryOptionsThai } = useDocConfiguration(accDocType);
 
-        if (response.status === 200) {
-          setLoading(false);
-          console.log("data_vJournal_All", response.data);
-          const allData = response.data;
+  const fetchRequisitions = useCallback(async () => {
+    setLoading(true);
+    const dateFrom = dayjs(filterStartDate).format("YYYY-MM-DD");
+    const dateTo = dayjs(filterEndDate).format("YYYY-MM-DD");
+    console.log("Fetching data from date:", dateFrom);
+    console.log("filterEndDate:", dateTo);
 
-          // 2. กรองข้อมูลด้วย JavaScript
-          const filteredData = allData.filter(item =>
-            item.JournalNo && item.JournalNo.startsWith("JV")
-          );
-          setJournalAll(
-            filteredData.sort((a, b) => b.JournalNo.localeCompare(a.JournalNo))
-          ); // เรียงลำดับข้อมูลจากมากไปน้อย
-        } else {
-          setLoading(false);
-          console.error("Error:", response.statusText);
-          // setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        // setError(error.message);
+    const vJournal_All = {
+      viewName: "vJournal_All",
+      parameters: [
+        { field: "EntryDate", UseOperator: "BETWEEN", From: dateFrom, To: dateTo },
+      ],
+      results: [
+        { sourceField: "EntryId" },
+        { sourceField: "JournalNo" },
+        { sourceField: "EntryDate" },
+        { sourceField: "EffectiveDate" },
+        { sourceField: "EntryBy" },
+        { sourceField: "Description" },
+        { sourceField: "TotalDebit" },
+        { sourceField: "TotalCredit" },
+        { sourceField: "DocNo" },
+        { sourceField: "Seq" },
+        { sourceField: "Text1" },
+        { sourceField: "Date1" },
+        { sourceField: "Num1" },
+        { sourceField: "Text2" },
+        { sourceField: "Date2" },
+        { sourceField: "Num2" },
+        { sourceField: "Text3" },
+        { sourceField: "Date3" },
+        { sourceField: "Num3" },
+        { sourceField: "Text4" },
+        { sourceField: "Date4" },
+        { sourceField: "Num4" },
+        { sourceField: "Text5" },
+        { sourceField: "Date5" },
+        { sourceField: "Num5" },
+        { sourceField: "Text6" },
+        { sourceField: "Date6" },
+        { sourceField: "Num6" },
+        { sourceField: "Text7" },
+        { sourceField: "Date7" },
+        { sourceField: "Num7" },
+        { sourceField: "Text8" },
+        { sourceField: "Date8" },
+        { sourceField: "Num8" },
+        { sourceField: "Text9" },
+        { sourceField: "Date9" },
+        { sourceField: "Num9" },
+        { sourceField: "Text10" },
+        { sourceField: "Date10" },
+        { sourceField: "Num10" },
+        { sourceField: "ItemNo" },
+        { sourceField: "AccCode" },
+        { sourceField: "AccName" },
+        { sourceField: "AccMainCode" },
+        { sourceField: "AccMainCodeName" },
+        { sourceField: "AccRemark" },
+        { sourceField: "AccDesc" },
+        { sourceField: "Debit" },
+        { sourceField: "Credit" },
+        { sourceField: "AccTypeID" },
+        { sourceField: "DText1" },
+        { sourceField: "DDate1" },
+        { sourceField: "DNum1" },
+        { sourceField: "DText2" },
+        { sourceField: "DDate2" },
+        { sourceField: "DNum2" },
+        { sourceField: "DText3" },
+        { sourceField: "DDate3" },
+        { sourceField: "DNum3" },
+        { sourceField: "DText4" },
+        { sourceField: "DDate4" },
+        { sourceField: "DNum4" },
+        { sourceField: "DText5" },
+        { sourceField: "DDate5" },
+        { sourceField: "DNum5" },
+        { sourceField: "DText6" },
+        { sourceField: "DDate6" },
+        { sourceField: "DNum6" },
+        { sourceField: "DText7" },
+        { sourceField: "DDate7" },
+        { sourceField: "DNum7" },
+        { sourceField: "DText8" },
+        { sourceField: "DDate8" },
+        { sourceField: "DNum8" },
+        { sourceField: "DText9" },
+        { sourceField: "DDate9" },
+        { sourceField: "DNum9" },
+        { sourceField: "DText10" },
+        { sourceField: "DDate10" },
+        { sourceField: "DNum10" },
+      ],
+    };
+
+    try {
+      console.log("vJournal_All:", vJournal_All);
+      const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
         setLoading(false);
+        console.log("data_vJournal_All", response.data);
+        setTransactionAll(
+          response.data.sort((a, b) => b.JournalNo.localeCompare(a.JournalNo))
+        );
+        setSearchTerm("");
+      } else {
+        setLoading(false);
+        console.error("Error:", response.statusText);
+        setTransactionAll([]);
       }
-    })();
-  }, []);
-  const handleSearch = (term) => {
-    // ฟังก์ชันรับค่าค้นหาจาก SearchComponent
-    setSearchTerm(term);
-    if (!term) {
-      // ถ้าช่องค้นหาว่าง ให้ซ่อนช่องค้นหา
-      setShowSearch(false);
+    } catch (error) {
+      console.error("Error:", error);
+      setLoading(false);
+
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem("userToken");
+        if (window.loginModal && typeof window.loginModal === "function") {
+          window.loginModal();
+        }
+      }
     }
+  }, [filterStartDate, filterEndDate]); // เพิ่ม filterStartDate, filterEndDate ใน dependency array
+
+  useEffect(() => {
+    fetchRequisitions();
+  }, [fetchRequisitions]); // เรียก fetchRequisitions เมื่อมีการเปลี่ยนแปลง filterStartDate หรือ filterEndDate
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
-  const filtered = journalall.filter((transaction) => {
-    // กรองข้อมูล
+
+  const filtered = transactionall.filter((transaction) => {
     const searchLower = searchTerm.toLowerCase();
     const searchNumber = parseFloat(searchTerm);
-    return (
+
+    // เงื่อนไขการค้นหาข้อความ/ตัวเลข
+    const matchesSearchTerm =
       transaction.JournalNo.toLowerCase().includes(searchLower) ||
-      transaction.Description.toLowerCase().includes(searchLower) ||
-      (typeof transaction.TotalDebit === "number" &&
-        transaction.TotalDebit === searchNumber)
-    );
+      transaction.PartyName.toLowerCase().includes(searchLower) ||
+      (typeof transaction.TotalNet === "number" &&
+        transaction.TotalNet === searchNumber);
+
+    // เงื่อนไขการกรองวันที่
+    let matchesDateRange = true;
+    if (filterStartDate && filterEndDate) {
+      const transactionDate = dayjs(transaction.EntryDate);
+      const startFilterDateObj = dayjs(filterStartDate).startOf("day");
+      const endFilterDateObj = dayjs(filterEndDate).endOf("day");
+
+      // ตรวจสอบว่า Day.js object ที่สร้างขึ้น valid หรือไม่ก่อนใช้งาน
+      if (
+        transactionDate.isValid() &&
+        startFilterDateObj.isValid() &&
+        endFilterDateObj.isValid()
+      ) {
+        matchesDateRange =
+          transactionDate.isSameOrAfter(startFilterDateObj) &&
+          transactionDate.isSameOrBefore(endFilterDateObj);
+      } else {
+        // ถ้าวันที่ไม่ valid ให้ log ข้อความเพื่อ debug
+        console.warn(
+          "Invalid date encountered in filtering:",
+          transaction.EntryDate,
+          filterStartDate,
+          filterEndDate
+        );
+        matchesDateRange = false; // หรือกำหนดให้เป็น true หากต้องการรวมรายการที่มีวันที่ไม่ถูกต้อง
+      }
+    }
+
+    const matchesStatus = selectedStatusKey === null ||
+      selectedStatusKey === undefined ||
+      String(transaction.DocStatus) === selectedStatusKey;
+
+    return matchesSearchTerm && matchesDateRange && matchesStatus;
   });
-  const toggleSearch = () => {
-    // ฟังก์ชันสำหรับสลับการแสดงผลช่องค้นหา
-    setShowSearch(!showSearch);
+
+  // ฟังก์ชันเปิด/ปิด Modal
+  const handleOpenSearchModal = () => {
+    setIsSearchModalOpen(true);
+  };
+  const handleCloseSearchModal = () => {
+    setIsSearchModalOpen(false);
+  };
+
+  const handleOpenDateFilterModal = () => {
+    setIsDateFilterModalOpen(true);
+  };
+  const handleCloseDateFilterModal = () => {
+    setIsDateFilterModalOpen(false);
+  };
+
+  const handleDateRangeChange = (startDate, endDate) => {
+    setFilterStartDate(startDate);
+    setFilterEndDate(endDate);
+    // Modal จะถูกปิดโดย handleDateChangeAndClose ใน DateFilterModal.js
+  };
+
+  // ฟังก์ชันใหม่สำหรับจัดการการเลือกสถานะ
+  const handleStatusSelect = (statusKey) => {
+    // ถ้าคลิกซ้ำให้กลับไปที่ "ทั้งหมด" (null)
+    setSelectedStatusKey(prevKey => prevKey === statusKey ? null : statusKey);
   };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -199,46 +282,51 @@ function JVList() {
     });
   };
 
-  const handleEditClick = (filtered) => {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const handleEditClick = (filtered, index) => {
+    setSelectedIndex(index);
     dispatch(setAccDocNo(filtered.JournalNo));
-    dispatch(setPartyName(filtered.Description));
-    dispatch(setAccDocType(filtered.Debit));
-    dispatch(setStatusName(filtered.Credit));
-    // navigate(`/uitestacc/PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
-    navigate(`/uitestacc/PVHeader?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    dispatch(setPartyName(filtered.PartyName));
+    dispatch(setAccDocType(filtered.AccDocType));
+    dispatch(setStatusName(filtered.StatusName));
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง AccordionDI
   };
 
+  const handleEditClick1 = (filtered, index) => {
+    setSelectedIndex(index);
+    dispatch(setAccDocNo(filtered.JournalNo));
+    dispatch(setPartyName(filtered.PartyName));
+    dispatch(setAccDocType(filtered.AccDocType));
+    dispatch(setStatusName(filtered.StatusName));
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DIHeader
+  };
   const handleDetailClick = (filtered) => {
     dispatch(setAccDocNo(filtered.JournalNo));
-    // dispatch(setAccDocNo(filtered.AccCode));
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/JVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
-
-  const handlePrint = async (filtered) => {
-    dispatch(setAccDocNo(filtered.JournalNo));
-    const GL = "GL"; // กำหนดค่า PR ให้ถูกต้อง
-    // const accDocType = formData.accDocType;
-    //   const journalNo = formData.journalNo;
-    console.log("AccDocNo:", filtered.JournalNo);
-    const printUrl = `${REPORT_BASE}/form?Form=Form${GL}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${filtered.JournalNo}`;
-    // const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
-    window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
-  };
-
   const groupedTransactions = filtered.reduce((acc, transaction) => {
     const existingTransaction = acc.find(
       (item) => item.JournalNo === transaction.JournalNo
     );
     if (existingTransaction) {
-      existingTransaction.TotalDebit = transaction.TotalDebit; //ไม่รวมเพราะเอา ค่าTotalDebit มาโชว์
+      existingTransaction.TotalNet += transaction.TotalNet;
     } else {
       acc.push({ ...transaction });
     }
     return acc;
   }, []);
+
+  const handleAddNew = () => {
+    dispatch(setAccDocType(accDocType));
+    // navigate(`/uitestacc/Accordion${accDocType}?accDocType=${accDocType}`, {
+    navigate(`${URL}Accordion${accDocType}?accDoctype=${accDocType}`, {
+      state: { isNew: true },
+    }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
+  };
 
   const formatNumber = (number) => {
     return number.toLocaleString("en-US", {
@@ -247,121 +335,187 @@ function JVList() {
     });
   };
 
+  // ---------------------------------------------------
+  // เพิ่ม State สำหรับ Modal Preview
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [globalPreviewFileId, setGlobalPreviewFileId] = useState(null);
+
+  const handleDIDraftOCR = () => {
+    // const ocrFileIdToPreview = `1OnLQCmFsj-pNkzqz1kCNBkdfezRlc5y-`;
+    const ocrFileIdToPreview = `1cMIQT-StYc-9fCUB0WKKyrP7WQVqb62L`; //file ID:Input image OCR
+    // const ocrFileIdToPreview = `1JSKKav_l_-KVgF8Q2ofLsAVee4d6izch`; 
+
+    if (ocrFileIdToPreview && ocrFileIdToPreview.length > 10) {
+      console.log("Previewing OCR with File ID:", ocrFileIdToPreview);
+      setGlobalPreviewFileId(ocrFileIdToPreview);
+      setIsPreviewModalOpen(true);
+    } else {
+      alert("กรุณาตั้งค่า Google Drive File ID จริงในโค้ด handleDIDraftOCR ก่อน");
+    }
+  };
+
+  const handleClosePreviewModal = () => {
+    setIsPreviewModalOpen(false);
+    setGlobalPreviewFileId(null);
+  };
+  // ------------------------------------------------------
+
+  const buttonActions = [
+    {
+      icon: (
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
+      ),
+      name: "Add New",
+      onClick: handleAddNew, // เรียก handleAddNew โดยตรง
+    },
+    // {
+    //     icon: (
+    //       <FontAwesomeIcon icon={faFileArrowDown} style={{ color: "#0000ff" }} size="1x" />
+    //     ),
+    //     name: "Preview Document(OCR)",
+    //     onClick: handleDIDraftOCR,
+    //   },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faCalendarDays}
+          style={{ color: "#fc4704" }}
+          size="1x"
+        />
+      ),
+      name: "Filter Date",
+      onClick: handleOpenDateFilterModal, // เรียกฟังก์ชันเปิด Modal วันที่
+    },
+    {
+      icon: (
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          style={{ color: "#4301b3" }}
+          size="1x"
+        />
+      ),
+      name: "Search Data",
+      onClick: handleOpenSearchModal, // เรียกฟังก์ชันเปิด Modal ค้นหา
+    },
+  ];
+
+  const handleGoMenu = () => {
+    navigate("/uitestacc/");
+  };
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
       <DocConfigHeader
         categoryOptions={categoryOptions}
         categoryOptionsThai={categoryOptionsThai}
         handleGoMenu={handleGoMenu}
       />
-      <div style={{ display: "flex" }}>
-        {/* <div>
-          <FontAwesomeIcon
-            icon={faPlus}
-            size="2x"
-            style={{ color: "#2f9901" }}
-            onClick={handleAddNew}
-          />
-        </div> */}
-        <div style={{ marginLeft: "auto" }}>
-          {showSearch ? (
-            <SearchComponent onSearch={handleSearch} /> // แสดง SearchComponent เมื่อ showSearch เป็น true
-          ) : (
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              size="2x"
-              style={{ color: "#2f9901" }}
-              onClick={toggleSearch} // แสดงไอคอนค้นหาเมื่อ showSearch เป็น false
-            />
-          )}
-        </div>
+      <div className="top-action-bar">
+        <CircularButtonGroup actions={buttonActions} />
       </div>
-      <ul>
-        {groupedTransactions.map((transaction, index) => (
-          <div className="row" key={index}>
-            <ListItem style={{ display: "flex", alignItems: "center" }}>
-              <FontAwesomeIcon
-                icon={faPrint}
-                size="2x"
-                style={{ color: "#e56107" }}
-                onClick={() => handlePrint(transaction)}
-              />
-              {/* <FontAwesomeIcon
-                icon={faChevronRight}
-                size="2x"
-                style={{ color: "#2d01bd" }}
+      <SearchModal
+        open={isSearchModalOpen}
+        handleClose={handleCloseSearchModal}
+        onSearch={handleSearch}
+        searchTerm={searchTerm}
+      />
+      <DateFilterModal
+        open={isDateFilterModalOpen}
+        handleClose={handleCloseDateFilterModal}
+        onDateRangeChange={handleDateRangeChange}
+        filterStartDate={filterStartDate}
+        filterEndDate={filterEndDate}
+      />
+      <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none" }}
+      />
+      {loading ? (
+        <p>กำลังโหลดข้อมูล...</p>
+      ) : (
+        <ul>
+          {groupedTransactions.length > 0 ? (
+            groupedTransactions.map((transaction, index) => (
+              <div
+                className="row"
+                key={index}
                 onClick={() => handleEditClick(transaction)}
-              /> */}
-              <div>
-                <h5
-                  style={{ marginTop: "5px", marginLeft: "10px" }}
-                  onClick={() => handleDetailClick(transaction)}
-                >
-                  &nbsp; {transaction.JournalNo}&nbsp;
-                  {/* <Status status={transaction.DocStatus} /> */}
-                </h5>
-                <p>
-                  &nbsp; &nbsp; {transaction.Description}
-                  <i>
-                    &nbsp; &nbsp; Date:
-                    {formatDate(transaction.EffectiveDate)}
-                  </i>
-                </p>
+                onMouseDown={() => setActiveIndex(index)}
+                onMouseUp={() => setActiveIndex(null)}
+                onMouseLeave={() => setActiveIndex(null)}
+                style={{
+                  background: activeIndex === index ? "#e0e0e0" : "transparent",
+                  cursor: "pointer",
+                  borderRadius: "6px",
+                }}
+              >
+                <ListItem style={{ display: "flex", alignItems: "center" }}>
+                  <div>
+                    <h5 style={{ marginTop: "5px", marginLeft: "10px" }} onClick={() => handleDetailClick(transaction)}>
+                      {transaction.JournalNo}&nbsp;
+                      {/* <Status status={transaction.DocStatus} /> */}
+                      {/* <DocStatus status={transaction.StatusName} /> */}
+                    </h5>
+                    <h6 style={{ marginBottom: "1px" }}>
+                      &nbsp; {transaction.Description}
+                      <i>
+                        &nbsp; &nbsp; Date:
+                        {formatDate(transaction.EntryDate)}
+                      </i>
+                    </h6>
+                  </div>
+                  <div style={{ marginLeft: "auto" }}>
+                    <div style={{ display: "flex" }}>
+                      <h4>{formatNumber(transaction.TotalDebit)}</h4>
+                      &nbsp; &nbsp; &nbsp;
+                    </div>
+                  </div>
+                </ListItem>
+                <Divider
+                  variant="middle"
+                  component="li"
+                  style={{ listStyle: "none" }}
+                />
               </div>
-              <div style={{ marginLeft: "auto" }}>
-                <div style={{ display: "flex" }}>
-                  <h4>{formatNumber(transaction.TotalDebit)}</h4>
-                  &nbsp; &nbsp; &nbsp;
-                </div>
-              </div>
-              {/* <i style={{ color: "#2d01bd" }}>edit&nbsp;</i>
-              <FontAwesomeIcon
-                icon={faChevronRight}
-                size="1x"
-                style={{ color: "#2d01bd" }}
-                onClick={() => handleEditClick(transaction)}
-              /> */}
-            </ListItem>
-            <Divider
-              variant="middle"
-              component="li"
-              style={{ listStyle: "none" }}
-            />
-          </div>
-        ))}
-      </ul>
-      <div style={{ padding: "30px" }}>&nbsp;</div>
-      {/* <div className="row" style={{ display: "flex" }}>
-        <div className="col-6" style={{ display: "grid" }}>
-          <FontAwesomeIcon
-            icon={faCircleArrowLeft}
-            size="2x"
-            style={{
-              color: "#013898",
-              cursor: "pointer",
-              display: "grid",
-              justifyItems: "end",
-            }}
-            onClick={handleGoBack}
+            ))
+          ) : (
+            <p style={{ textAlign: "center", marginTop: "20px" }}>
+              ไม่พบรายการ {categoryOptions} ในช่วงวันที่ **{filterStartDate ?
+                formatDate(filterStartDate) : "เริ่มต้น"}** ถึง **{filterEndDate ?
+                  formatDate(filterEndDate) : "สิ้นสุด"}** {(searchTerm || selectedStatusKey)
+                    && `และไม่ตรงกับคำค้นหา/สถานะที่เลือก ${searchTerm ? `"${searchTerm}"` : ""}
+              ${selectedStatusKey ? ` (Status: ${selectedStatusKey})` : ""}`}
+              <br />
+            </p>
+          )}
+        </ul>
+      )}
+      <div>&nbsp;</div>
+      {/* Modal สำหรับ Image Preview  */}
+      <Modal
+        open={isPreviewModalOpen}
+        onClose={handleClosePreviewModal}
+        aria-labelledby="global-image-preview-modal-title"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '90%', sm: '70%', md: '50%' }, // ปรับขนาดตามต้องการ
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+          boxShadow: 24,
+          p: 4,
+          maxHeight: '90vh',
+          overflowY: 'auto'
+        }}>
+          <DriveImagePreview
+            googleDriveFileId={globalPreviewFileId} // ส่ง File ID จาก Global State
+            handleClose={handleClosePreviewModal}
           />
-        </div>
-        <div
-          className="col-6"
-          style={{ display: "grid", justifyItems: "flex-end" }}
-        >
-          <FontAwesomeIcon
-            icon={faCircleArrowUp}
-            size="2x"
-            style={{
-              color: "#013898",
-              cursor: "pointer",
-              display: "grid",
-              justifyItems: "end",
-            }}
-            onClick={scrollToTop}
-          />
-        </div>
-      </div> */}
+        </Box>
+      </Modal>
       <FloatingActionBar backPath={URL} />
     </div>
   );

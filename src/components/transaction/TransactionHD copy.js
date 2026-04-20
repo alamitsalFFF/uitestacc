@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "../../Auth/axiosConfig";
-import { useAuthFetch } from "../../Auth/fetchConfig";
+import axios from "../Auth/axiosConfig";
+import { useAuthFetch } from "../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -32,9 +32,9 @@ import {
   faTicket,
   faFileInvoice,
   faInfo,
+  faTruckMoving,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
-// import { setAccDocNo, setAccDocType } from "../../redux/TransactionDataaction";
 import { useSelector } from "react-redux";
 import {
   Modal,
@@ -46,18 +46,23 @@ import {
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-// import IconButton from "./Iconbutton";
-// import ScrollTop from "./ScrollTop";
-// import { DIfromPO } from "./DIfromPO";
-// import IconButton from "../../purchase/Purchase Order/Iconbutton";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../../api/url";
-import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
-import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
-import { CancelDI } from "./CancelDI";
-import DocStatusDI from "./DocStatusDI";
+// import IconButton from "../purchase/Purchase Order/Iconbutton";
+import { API_BASE, DATA_BASE, REPORT_BASE } from "../api/url";
+import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
+import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import Swal from "sweetalert2";
+import DocStatusDO from "../Delivery/Delivery Out/DocStatusDO";
+import { StockFromDO } from "../Delivery/Delivery Out/StockFromDO";
+import CircularButton from "../DataFilters/CircularButton";
 
-export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
+export default function TransactionHeader({
+  apiData,
+  setApiData,
+  currentIndex,
+  setCurrentIndex,
+  setCurrentAccDocNo,
+  setCurrentAccDocType,
+}) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
   const PartyName = useSelector((state) => state.partyName);
   const AccEffectiveDate = useSelector((state) => state.accEffectiveDate);
@@ -98,6 +103,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   const handleChange = (event) => {
     const selectedCategory = event.target.value;
     setDoctype(selectedCategory); // อัปเดตค่า doctype
+    console.log("Selected Category:", selectedCategory);
 
     const selectedOption = categoryOptions.find(
       (option) => option.value === selectedCategory
@@ -116,7 +122,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     setFormData({ ...formData, [id]: value }); // อัปเดต formData เสมอ
   };
 
-  const DocType = "DI";
+  const DO = "DO";
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedEName, setSelectedEName] = useState("");
@@ -134,7 +140,11 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
 
         if (Array.isArray(data)) {
           setCategoryOptions(
-            data.map((item) => ({ value: item.category, label: item.eName, docConfigID: item.docConfigID, }))
+            data.map((item) => ({
+              value: item.category,
+              label: item.eName,
+              docConfigID: item.docConfigID,
+            }))
           );
         } else {
           console.error("Category API did not return an array.");
@@ -150,11 +160,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   useEffect(() => {
     // เมื่อ formData.accDocType หรือ apiData เปลี่ยน ให้ set AccDocType และ selectedEName ใหม่
     if (formData.accDocType) {
-      // set AccDocType จาก formData
-      // ถ้าใช้ Redux dispatch(setAccDocType(formData.accDocType));
-      // ถ้าใช้ local state setDoctype(formData.accDocType);
-
-      // set selectedEName จาก categoryOptions
       const matchedOption = categoryOptions.find(
         (option) => option.value === formData.accDocType
       );
@@ -182,8 +187,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     try {
       const apiUrl = `${API_BASE}/AccTransaction/GetAccTransactionHD?accDocType=${AccDocType}`;
       const response = await authFetch(apiUrl, {
-        headers: {
-        },
+        headers: {},
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -197,7 +201,9 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         data.sort((a, b) => b.accDocNo.localeCompare(a.accDocNo));
         let matchedIndex = 0;
         if (accDocNoTarget) {
-          const foundIndex = data.findIndex((item) => item.accDocNo === accDocNoTarget);
+          const foundIndex = data.findIndex(
+            (item) => item.accDocNo === accDocNoTarget
+          );
           if (foundIndex !== -1) matchedIndex = foundIndex;
         }
         setCurrentIndex(matchedIndex);
@@ -235,10 +241,11 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   };
 
   useEffect(() => {
-    if (!doctype) {
-      setDoctype(DocType);
-    }
-    if (doctype && !isNewMode) { // เพิ่มเงื่อนไข !isNewMode
+    // if (!doctype) {
+    //   setDoctype("DO");
+    // }
+    if (doctype && !isNewMode) {
+      // เพิ่มเงื่อนไข !isNewMode
       fetchDataFromApi(doctype, accDocNoFromUrl);
     }
   }, [doctype, accDocNoFromUrl, isNewMode]);
@@ -272,7 +279,8 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         accDocType: sortedData[newIndex].accDocType || "",
         accDocNo: sortedData[newIndex].accDocNo || "",
         accBatchDate: sortedData[newIndex].accBatchDate?.split("T")[0] || "",
-        accEffectiveDate: sortedData[newIndex].accEffectiveDate?.split("T")[0] || "",
+        accEffectiveDate:
+          sortedData[newIndex].accEffectiveDate?.split("T")[0] || "",
         partyCode: sortedData[newIndex].partyCode || "",
         partyTaxCode: sortedData[newIndex].partyTaxCode || "",
         partyName: sortedData[newIndex].partyName || "",
@@ -287,9 +295,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     }
     // ถ้า apiData ไม่มีข้อมูล และไม่ใช่โหมดสร้างใหม่ (คือไม่มีข้อมูลสำหรับ AccDocType ที่เลือก)
     // การตั้งค่าเริ่มต้นจะถูกจัดการใน fetchDataFromApi แล้ว
-
   }, [apiData, accDocNoFromUrl, isNewMode]); // เพิ่ม isNewMode ใน dependency array
-
 
   const goToNext = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, apiData.length - 1));
@@ -309,11 +315,88 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   const isNavigationDisabled = () => {
     const disabled = !doctype || !apiData || apiData.length === 0;
     // console.log("Navigation disabled:", disabled); // ตรวจสอบค่า disabled
-    console.log("Current Index:", currentIndex, "of", apiData ? apiData.length : 0);
+    console.log(
+      "Current Index:",
+      currentIndex,
+      "of",
+      apiData ? apiData.length : 0
+    );
     return disabled;
   };
 
   const navigate = useNavigate();
+
+  // const handleSave = async () => {
+  //   try {
+  //     const dataToSend = { ...formData };
+  //     // ลบ accDocNo
+  //     delete dataToSend.accDocNo;
+  //     // ตรวจสอบว่า docStatus มีค่าหรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
+  //     if (!dataToSend.docStatus) {
+  //       dataToSend.docStatus = 0; // หรือค่าเริ่มต้นอื่นๆ ที่เหมาะสม
+  //     }
+  //     // ตรวจสอบ accPostDate และแก้ไขถ้าจำเป็น
+  //     if (dataToSend.accPostDate === "1900-01-01" || !dataToSend.accPostDate) {
+  //       dataToSend.accPostDate = new Date().toISOString().split("T")[0]; // หรือวันที่ที่ถูกต้องอื่นๆ
+  //     }
+
+  //     const regex = /^[0-9]{13}$/;
+
+  //     if (!regex.test(formData.partyTaxCode)) {
+  //       alert("PartyTaxCode ต้องเป็นตัวเลข (0-9) 13หลักเท่านั้น");
+  //       return; // หยุดการทำงานของฟังก์ชัน ถ้าข้อมูลไม่ถูกต้อง
+  //     }
+
+  //     console.log("DATATU:", JSON.stringify(dataToSend));
+  //     const response = await authFetch(
+  //       `${API_BASE}/AccTransaction/SetAccTransactionHD`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           // Add any other necessary headers (e.g., authorization)
+  //         },
+  //         body: JSON.stringify(dataToSend),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json(); // Try to get error details from the server
+  //       throw new Error(
+  //         `HTTP error! status: ${response.status}, message: ${
+  //           errorData.message || "Unknown error"
+  //         }`
+  //       );
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log("Data saved successfully:", responseData);
+  //     // Optionally, you can reset the form or update the UI after a successful save
+  //     alert("บันทึกข้อมูลสำเร็จ");
+  //     await fetchDataFromApi(doctype);
+  //     // ดึงค่า accDocNo และวันที่ที่ต้องการ
+  //     const accDocNo = responseData.accDocNo;
+  //     const accEffectiveDate = formData.accEffectiveDate;
+  //     const partyCode = formData.partyCode;
+  //     const partyName = formData.partyName;
+  //     const nameCategory = selectedEName;
+  //     console.log("nameEDoc:", selectedEName);
+
+  //     navigate(`/uitestacc/AccordionPR?accDocNo=${accDocNo}`, {
+  //       // state: {
+  //       //   accDocNo: accDocNo,
+  //       //   accEffectiveDate: accEffectiveDate,
+  //       //   partyCode: partyCode,
+  //       //   partyName: partyName,
+  //       //   nameCategory: nameCategory,
+  //       // },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error saving data:", error);
+  //     // Handle errors, e.g., display an error message to the user
+  //     alert("บันทึกข้อมูลไม่สำเร็จ กรุณาลองใหม่");
+  //   }
+  // };
   const handleSave = async () => {
     try {
       const dataToSendHD = { ...formData };
@@ -376,17 +459,14 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
 
       // ฟังก์ชันสำหรับเรียก API SetSupplier
       const setSupplier = async (supplierData) => {
-        const response = await authFetch(
-          `${API_BASE}/Supplier/SetSupplier`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              // Add any other necessary headers
-            },
-            body: JSON.stringify(supplierData),
-          }
-        );
+        const response = await authFetch(`${API_BASE}/Supplier/SetSupplier`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any other necessary headers
+          },
+          body: JSON.stringify(supplierData),
+        });
         if (!response.ok) {
           let errorMessage = `HTTP error during SetSupplier! status: ${response.status}`;
           try {
@@ -478,7 +558,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       // แจ้งเตือนบันทึกข้อมูลสำเร็จของ Header เสมอ
       Swal.fire({
         icon: "success",
-        title: `บันทึกข้อมูลสำเร็จ DI:${AccDocNo}`,
+        title: `บันทึกข้อมูลสำเร็จ DO:${AccDocNo}`,
         showConfirmButton: false,
         timer: 2000,
       });
@@ -489,7 +569,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       console.log("accDocNo:", AccDocNo);
 
       navigate(`/uitestacc/AccordionDI?accDocNo=${AccDocNo}`);
-
     } catch (error) {
       console.error("Error saving data (Header):", error);
       Swal.fire({
@@ -501,7 +580,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const handleUpdate = async () => {
-    console.log("Updated action from DIHeader");
+    console.log("Updated action fromDOHeader");
     try {
       const dataToSend = { ...formData };
       const accDocNo = formData.accDocNo;
@@ -536,7 +615,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       // alert("แก้ไขข้อมูลสำเร็จ");
       Swal.fire({
         icon: "success",
-        title: `แก้ไขข้อมูล DI:${accDocNo}สำเร็จ`,
+        title: `แก้ไขข้อมูล DO:${accDocNo}สำเร็จ`,
         showConfirmButton: false,
         timer: 2000,
       });
@@ -549,9 +628,9 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
 
   const AccDocNoC = formData.accDocNo;
 
-  const handleCancel = async () => {
-    await CancelDI(AccDocNoC, navigate);
-  };
+  // const handleCancel = async () => {
+  //     await CancelDI(AccDocNoC, navigate);
+  //   };
   const handleDelete = async () => {
     try {
       const accDocNo = formData.accDocNo;
@@ -612,10 +691,9 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     }
   }, [location.state]);
   const handleNew = () => {
-    const shortYear = new Date().getFullYear().toString().slice(-2);
     setFormData({
-      accDocType: DocType,
-      accDocNo: `${DocType}${shortYear}xx...`,
+      accDocType: DO,
+      accDocNo: "DO25xx...",
       accEffectiveDate: new Date().toISOString().slice(0, 10),
       partyCode: "",
       partyTaxCode: "",
@@ -632,24 +710,23 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   };
 
   // ---------------------
-  const [supplierOptions, setSupplierOptions] = useState([]); // state สำหรับข้อมูลจาก API Supplier
+  const [customerOptions, setCustomerOptions] = useState([]); // state สำหรับข้อมูลจาก API Customer
   const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
   const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
 
   useEffect(() => {
-    const fetchSupplierOptions = async () => {
+    // ดึงข้อมูลจาก API ตัวใหม่
+    const fetchCustomerOptions = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/Supplier/GetSupplier`);
-        console.log("supplierOptions:", supplierOptions);
-        setSupplierOptions(response.data); // อัปเดต state Supplier
+        const response = await axios.get(`${API_BASE}/Customer/GetCustomer`);
+        setCustomerOptions(response.data); // อัปเดต state Customer
       } catch (error) {
-        console.error("Error fetching Supplier options:", error);
+        console.error("Error fetching Customer options:", error);
       }
     };
-    fetchSupplierOptions();
+    fetchCustomerOptions();
   }, []);
-
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -658,20 +735,18 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     setOpenModal(false);
   };
 
-  const handleSupplierSelect = (partyCode) => {
-    const selectedSupplier = supplierOptions.find(
-      (supplier) => supplier.supplierCode === partyCode
+  const handleCustomerSelect = (partyCode) => {
+    const selectedCustomer = customerOptions.find(
+      (customer) => customer.customerCode === partyCode
     );
 
-    if (selectedSupplier) {
+    if (selectedCustomer) {
       setFormData({
         ...formData,
         partyCode: partyCode,
-        partyCode: selectedSupplier.supplierCode,
-        partyTaxCode:
-          selectedSupplier.taxNumber + "/" + selectedSupplier.taxBranch,
-        partyName: selectedSupplier.supplierName,
-        partyAddress: selectedSupplier.address1,
+        partyTaxCode: selectedCustomer.taxNumber,
+        partyName: selectedCustomer.customerEName,
+        partyAddress: selectedCustomer.address1,
       });
     }
 
@@ -684,21 +759,45 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return supplierOptions.slice(startIndex, endIndex);
+    return customerOptions.slice(startIndex, endIndex);
   };
   // -------------------------------
   const docStatus = formData.docStatus;
+  const accDocNo = formData.accDocNo;
+  // ใน Component ของคุณ
+  const handleStockFromDO = async (accDocNo) => {
+    // 1. แสดง Modal เพื่อรับค่า caltype จากผู้ใช้ (เลือก 0 หรือ 1)
+    const { value: calType } = await Swal.fire({
+      title: "กรุณาเลือกวิธีการคำนวณต้นทุน",
+      input: "radio",
+      inputOptions: {
+        0: "FIFO (First-In,First-Out)",
+        // "1": "AVG (Average Cost)", // ถ้าต้องการเปิดใช้งาน AVG
+      },
+      inputValue: "0", // *** กำหนดให้ 0 (FIFO) เป็นค่าเริ่มต้น ***
+      inputValidator: (value) => {
+        if (!value) {
+          return "กรุณาเลือกวิธีการคำนวณต้นทุน";
+        }
+      },
+      showCancelButton: true,
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
 
-  //   const handleDI = async (AccDocNo) => {
-  //     // const userId = "admin"; // หรือจะดึงจากระบบ login
-  //     await DIfromPO(AccDocNo);
+    // 2. ถ้าผู้ใช้กด Cancel หรือปิด Modal
+    if (calType === undefined) {
+      return; // หยุดการทำงาน
+    }
 
-  //     navigate({
-  //       state: { AccDocNo:AccDocNo },
-  //     });
-  //   };
+    // 3. ถ้าผู้ใช้เลือกค่า calType แล้ว
+    // เรียกฟังก์ชัน StockfromDO พร้อมกับส่งค่า AccDocNo และ calType (0 หรือ 1) ไป
+    // เราไม่ใช้ refno อีกต่อไป แต่ refno ยังจำเป็นต้องส่งค่าอะไรไปก็ได้ถ้า Stored Procedure ยังต้องการ
+    // ในตัวอย่างนี้ เราจะส่ง calType เป็น string/number ไป
+    await StockFromDO(accDocNo, calType, navigate); // ส่ง calType แทน refno
+  };
+
   const handlePrint = async () => {
-    // const PR = "PR"; // กำหนดค่า PR ให้ถูกต้อง
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
@@ -707,7 +806,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/DIList/");
+    navigate("/uitestacc/DOList/");
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -721,33 +820,26 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="1x"
+          size="x"
         />
       ),
-      name: "Save DI",
+      name: "Save DO",
       onClick: handleSave,
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="1x" />
+        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="x" />
       ),
-      name: "Print DI",
+      name: "Print DO",
       onClick: handlePrint, // ฟังก์ชัน onClick ถูก comment ไว้ในโค้ดเดิม
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
       ),
       name: "New",
       onClick: handleNew,
     },
-    // {
-    //    icon: (
-    //      <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
-    //    ),
-    //    name: "DO Draft(OCR)",
-    //   //  onClick: handleDODraftOCR,
-    //  },
     ...(docStatus === "0"
       ? [
         {
@@ -755,7 +847,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
             <FontAwesomeIcon
               icon={faPen}
               style={{ color: "#72047b" }}
-              size="1x"
+              size="x"
             />
           ),
           name: "Update",
@@ -766,38 +858,64 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         //      <FontAwesomeIcon
         //        icon={faTrash}
         //        style={{ color: "#ae0000" }}
-        //        size="1x"
+        //        size="x"
         //      />
         //    ),
         //    name: "Cancel",
         //    onClick: handleCancel,
         //  },
+        //  {
+        //    icon: (
+        //      <FontAwesomeIcon
+        //        icon={faTrash}
+        //        style={{ color: "#ae0000" }}
+        //        size="x"
+        //      />
+        //    ),
+        //    name: "Stock",
+        //    onClick: () => handleStockFromDO(accDocNo),
+        //  },
+      ]
+      : []),
+    ...(docStatus !== 99
+      ? [
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTruckMoving}
+              style={{ color: "#e74404ff" }}
+              size="x"
+            />
+          ),
+          name: "Stock",
+          onClick: () => handleStockFromDO(accDocNo),
+        },
       ]
       : []),
     {
       icon: (
-        <FontAwesomeIcon
-          icon={faTrash}
-          style={{ color: "#ae0000" }}
-          size="1x"
-        />
+        <FontAwesomeIcon icon={faTrash} style={{ color: "#ae0000" }} size="x" />
       ),
       name: "Cancel",
-      onClick: handleCancel,
+      onClick: handleDelete,
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal,
     },
-
   ];
   const buttonActionsLNPF = [
     {
       icon: (
-        <FontAwesomeIcon icon={faAnglesRight} style={{ color: "#2d01bd" }} size="1x" rotation={180} />
+        <FontAwesomeIcon
+          icon={faAnglesRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+          rotation={180}
+        />
       ),
       name: "ToLast",
       onClick: goToLast,
@@ -805,7 +923,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faAngleRight} style={{ color: "#2d01bd" }} size="1x" rotation={180} />
+        <FontAwesomeIcon
+          icon={faAngleRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+          rotation={180}
+        />
       ),
       name: "ToNext",
       onClick: goToNext,
@@ -813,7 +936,11 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faAngleRight} style={{ color: "#2d01bd" }} size="1x" />
+        <FontAwesomeIcon
+          icon={faAngleRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+        />
       ),
       name: "ToPrevious",
       onClick: goToPrevious,
@@ -821,7 +948,11 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faAnglesRight} style={{ color: "#2d01bd" }} size="1x" />
+        <FontAwesomeIcon
+          icon={faAnglesRight}
+          style={{ color: "#2d01bd" }}
+          size="x"
+        />
       ),
       name: "ToFirst",
       onClick: goToFirst,
@@ -840,7 +971,8 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         accDocType: apiData[currentIndex].accDocType || "",
         accDocNo: apiData[currentIndex].accDocNo || "",
         accBatchDate: apiData[currentIndex].accBatchDate?.split("T")[0] || "",
-        accEffectiveDate: apiData[currentIndex].accEffectiveDate?.split("T")[0] || "",
+        accEffectiveDate:
+          apiData[currentIndex].accEffectiveDate?.split("T")[0] || "",
         partyCode: apiData[currentIndex].partyCode || "",
         partyTaxCode: apiData[currentIndex].partyTaxCode || "",
         partyName: apiData[currentIndex].partyName || "",
@@ -852,6 +984,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         fiscalYear: apiData[currentIndex].fiscalYear?.split("T")[0] || "",
       });
       setCurrentAccDocNo(apiData[currentIndex].accDocNo);
+      setCurrentAccDocType(apiData[currentIndex].accDocType);
     }
   }, [currentIndex, apiData]);
 
@@ -862,7 +995,8 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
         try {
           const apiUrl = `${API_BASE}/AccTransaction/GetAccTransactionHD?accDocNo=${accDocNoFromUrl}`;
           const response = await authFetch(apiUrl);
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
           const data = await response.json();
           if (Array.isArray(data) && data.length > 0) {
             setApiData(data);
@@ -894,7 +1028,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
       <CircularButtonGroup actions={buttonActions} />
-      {/* <CircularButtonGroup actions={buttonActionsLNPF} /> */}
+      {/* <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none" ,paddingTop:"3px"}}
+      />
+      <CircularButton actions={buttonActionsLNPF} /> */}
       <Divider
         variant="middle"
         component="li"
@@ -932,7 +1071,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
             },
           }}
         >
-          <MenuItem value={DI}>Delivery In</MenuItem>
+          <MenuItem value={DO}>Delivery In</MenuItem>
         </TextField>
       </div>
       <div>&nbsp;</div> */}
@@ -948,7 +1087,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
               readOnly: true,
             },
           }}
-          style={{ width: "100%", backgroundColor: "#cdcdd1" }}
+          style={{ width: "100%" }}
           // onChange={handleInputChange}
           onChange={handleChange}
         />
@@ -964,12 +1103,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
       </div>
 
@@ -977,18 +1110,12 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6" style={{ display: "flex" }}>
         <TextField
           id="partyCode"
-          label="Supplier Code"
+          label="PartyCode"
           value={formData.partyCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1014,19 +1141,19 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           }}
         >
           <List>
-            <h4 style={{ textAlign: "center" }}>Select Supplier</h4>
+            <h4 style={{ textAlign: "center" }}>Select Customer</h4>
             <Divider
               variant="middle"
               component="li"
               style={{ listStyle: "none" }}
             />
-            {getPaginatedData().map((supplier) => (
-              <ListItem key={supplier.supplierID} disablePadding>
+            {getPaginatedData().map((customer) => (
+              <ListItem key={customer.customerID} disablePadding>
                 <ListItemButton
-                  onClick={() => handleSupplierSelect(supplier.supplierCode)}
+                  onClick={() => handleCustomerSelect(customer.customerCode)}
                 >
-                  <ListItemText primary={supplier.supplierCode} />
-                  <h5>{supplier.supplierName}</h5>
+                  <ListItemText primary={customer.customerCode} />
+                  <h5>{customer.customerName}</h5>
                 </ListItemButton>
               </ListItem>
             ))}
@@ -1046,7 +1173,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           >
             <Stack spacing={2}>
               <Pagination
-                count={Math.ceil(supplierOptions.length / itemsPerPage)} // คำนวณจำนวนหน้า
+                count={Math.ceil(customerOptions.length / itemsPerPage)} // คำนวณจำนวนหน้า
                 page={currentPage} // กำหนดหน้าปัจจุบัน
                 onChange={handlePageChange} // ใช้ onChange เพื่อจัดการการเปลี่ยนหน้า
               />
@@ -1075,12 +1202,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
       </div>
 
@@ -1088,37 +1209,25 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-12">
         <TextField
           id="partyName"
-          label="Supplier Name"
+          label="PartyName"
           value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
       </div>
       <div>&nbsp;</div>
       <div className="col-md-12">
         <TextField
           id="partyAddress"
-          label="Address"
+          label="PartyAddress"
           value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
       </div>
 
@@ -1126,23 +1235,28 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-6">
         <TextField
           id="docRefNo"
-          label="DocNo Inv."
+          label="DocRefNo"
           value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
+      {/* <div className="col-md-5">
+        <DocStatusDO accDocNo={formData.accDocNo} />
+      </div> */}
       <div className="col-md-5">
-        <DocStatusDI accDocNo={formData.accDocNo} DocType={formData.accDocType} />
+        <TextField
+          id="docStatus"
+          label="DocStatus"
+          value={formData.docStatus}
+          type="number"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+        />
       </div>
 
       <div>&nbsp;</div>
@@ -1156,12 +1270,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1173,12 +1281,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           type="text"
           variant="standard"
           onChange={handleInputChange}
-          InputProps={{
-            readOnly: true,
-            style: {
-              backgroundColor: "#cdcdd1",
-            }
-          }}
           style={{ width: "100%" }}
         />
       </div>
@@ -1192,12 +1294,6 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           type="date"
           variant="standard"
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
           onChange={handleInputChange}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
@@ -1212,23 +1308,19 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
+
       <div>&nbsp;</div>
+
       <Divider
         variant="middle"
         component="li"
         style={{ listStyle: "none", paddingTop: "3px" }}
       />
       <div style={{ display: "grid", justifyContent: "flex-end" }}>
-        <CircularButtonGroup actions={buttonActionsLNPF} />
+        <CircularButton actions={buttonActionsLNPF} />
       </div>
     </div>
   );

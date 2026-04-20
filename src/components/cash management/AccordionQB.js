@@ -34,12 +34,17 @@ export default function AccordionQB() {
 
   const DocType = `QB`
   const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(DocType);
+
   const handleOpenHeaderPanel = () => {
     setExpandedPanels((prev) => ({
       ...prev,
       panel1: true,
     }));
   };
+
+  const handleGoBack = () => {
+    navigate(`${URL}`);
+  }
 
   // ฟังก์ชันนี้จะถูกเรียกจาก Component ลูก (AccordionCashSaleMain)
   const handleSaveSuccess = (data) => {
@@ -55,14 +60,8 @@ export default function AccordionQB() {
       <DocConfigHeader
         categoryOptions={categoryOptions}
         categoryOptionsThai={categoryOptionsThai}
-        handleGoMenu={handleGoMenu}
+        handleGoMenu={handleGoBack}
       />
-      {/* <h2
-        style={{ textAlign: "center", textDecorationLine: "underline" }}
-        onClick={handleGoMenu}
-      >
-        QuickBuy (รายวันซื้อ)
-      </h2> */}
       <Accordion
         expanded={expandedPanels.panel1}
         onChange={() =>

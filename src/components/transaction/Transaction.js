@@ -1,182 +1,181 @@
-// import React, { Component } from "react";
-import React, { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import PR from "./Purchase Requisition";
+import * as React from "react";
+import Accordion from "@mui/material/Accordion";
+import AccordionActions from "@mui/material/AccordionActions";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Button from "@mui/material/Button";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
+import { Box } from "@mui/material";
+import { useState, useEffect } from "react";
+import AccordionPOHD from "../purchase/Purchase Order/AccordionPOHD";
+import AccordionPODT from "../purchase/Purchase Order/AccordionPODT";
+import { useAuthFetch } from "../Auth/fetchConfig";
+import { API_BASE, URL } from "../api/url";
+import FloatingActionBar from "../DataFilters/FloatingActionBar";
+import DocConfigHeader from "../DataFilters/DocConfigHeader";
+import useDocConfiguration from "../../hooks/useDocConfiguration";
 
 export default function Transaction() {
-  const [doctype, setDoctype] = React.useState("");
-  const [formData, setFormData] = useState({
-    // เก็บข้อมูลในฟอร์ม
-    AccDocNo: "",
-    AccEffectiveCate: new Date().toISOString().slice(0, 10),
-    PartyCode: "",
-    PartyTaxCode: "",
-    PartyName: "",
-    PartyAddress: "",
-    DocRefNo: "",
-    DocStatus: "",
-    AccBatchDate: new Date().toISOString().slice(0, 10),
-    IssueBy: "ADMIN",
-    AccPostDate: new Date().toISOString().slice(0, 10),
-    FiscalYear: new Date().toISOString().slice(0, 10),
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const accDocNo = params.get("accDocNo");
+  const [expandedPanels, setExpandedPanels] = useState({
+    panel1: true,
+    panel2: false,
   });
-  const [apiData, setApiData] = useState(null);
+  const [apiData, setApiData] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentAccDocNo, setCurrentAccDocNo] = useState("");
+  const DocType = "PO";
 
-  const handleChange = (event) => {
-    const selectedCategory = event.target.value;
-    setDoctype(selectedCategory); // อัปเดตค่า doctype
+  const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(DocType);
 
-    const selectedOption = categoryOptions.find(option => option.value === selectedCategory);
-    if (selectedOption) {
-      setSelectedEName(selectedOption.label);
-    } else {
-      setSelectedEName(""); // ถ้าไม่พบ eName ให้ตั้งค่าว่าง
-    }
-    fetchDataFromApi(selectedCategory);
+  // const [categoryOptions, setCategoryOptions] = useState([]);
+  // const [categoryOptionsThai, setCategoryOptionsThai] = useState([]);
+  // console.log("Category Options:", categoryOptions);
+  // const authFetch = useAuthFetch();
 
-  };
+  // useEffect(() => {
+  //   const fetchCategoryOptions = async () => {
+  //     try {
+  //       const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig?category=${DocType}`; //TYPEDOC
+  //       const response = await authFetch(categoryApiUrl);
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       console.log(data);
 
+  //       // if (Array.isArray(data)) {
+  //       //   setCategoryOptions(
+  //       //     data.map((item) => ({ value: item.category, label: item.eName,docConfigID: item.docConfigID, }))
+  //       //   );
+  //       if (data && data.length > 0) {
+  //         setCategoryOptions(data[0].eName);
+  //         setCategoryOptionsThai(data[0].tName);
+  //       } else {
+  //         console.error("Category API did not return an array.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching category options:", error);
+  //     }
+  //   };
 
-  const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    setFormData({ ...formData, [id]: value });
-  };
+  //   fetchCategoryOptions();
+  // }, []);
 
+  // const [ModuleMenu, setModuleMenu] = useState([]);
+  // console.log("ModuleMenu:", ModuleMenu);
+  // const [WebAddress, setWebAddress] = useState([]);
+  // console.log("WebAddress:", WebAddress);
+  // useEffect(() => {
+  //   const fetchWebAddress = async () => {
+  //     try {
+  //       const WebAddressAPI = `${API_BASE}/Module/GetModuleMenu?MenuID=${DocType}`;
+  //       const response = await authFetch(WebAddressAPI);
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       console.log('WebAddress from ModuleMenu', data);
+  //       if (data && data.length > 0) {
+  //         setModuleMenu(data);
+  //         setWebAddress(data[0].webAddress);
+  //       } else {
+  //         console.error("Category API did not return an array.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching category options:", error);
+  //     }
+  //   };
 
-  const PR = "PR";
-  const SR = "SR";
-  const PI = "PI";
-  const SI = "SI";
+  //   fetchWebAddress();
+  // }, []);
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedEName, setSelectedEName] = useState("");
-  useEffect(() => {
-    const fetchCategoryOptions = async () => {
-      try {
-        const categoryApiUrl = `http://103.225.168.137/apiaccbk2/api/Prototype/DocConfig/GetDocConfig`; // Replace with your actual API URL
-        const response = await fetch(categoryApiUrl);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log(data);
+  // const handleGoMenu = () => {
+  //   navigate(URL + WebAddress);
+  // };
 
-       
-        if (Array.isArray(data)) {
-          setCategoryOptions(
-            data.map((item) => ({ value: item.category, label: item.eName }))
-          );
-        } else {
-          console.error("Category API did not return an array.");
-        }
-      } catch (error) {
-        console.error("Error fetching category options:", error);
-      }
-    };
-
-    fetchCategoryOptions();
-  }, []);
-
-  const [showButton, setShowButton] = useState(false);
-
-  const fetchDataFromApi = async (doctype) => {
-    try {
-      // สร้าง URL ของ API ตามประเภทเอกสาร (doctype)
-      const apiUrl = `http://103.225.168.137/apiaccbk2/api/Prototype/AccTransaction/GetAccTransactionHD?accDocType=${doctype}`; // ตัวอย่าง URL, แก้ไขตาม API จริง
-      // const apiUrl = `http://103.225.168.137/apiaccbk2/api/Prototype/AccTransaction/GetAccTransactionHD`; // ตัวอย่าง URL, แก้ไขตาม API จริง
-
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log(data);
-      setApiData(data); // Update state ด้วยข้อมูลจาก API
-
-      // อัปเดตค่าในฟอร์มด้วยข้อมูลจาก API (ถ้ามี)
-      setFormData({
-        ...formData,
-        AccDocNo: data.accDocNo || "", // ถ้า API ส่งค่า AccDocNo มา ให้ใช้ค่าจาก API, ถ้าไม่ ให้ใช้ค่าว่าง
-        AccBatchDate: data.accBatchDate || "",
-        AccEffectiveDate: data.accEffectiveDate || "",
-        PartyCode: data.partyCode || "",
-        PartyTaxCode: data.partyTaxCode || "",
-        PartyName: data.partyName || "",
-        PartyAddress: data.partyAddress || "",
-        
-        DocRefNo: data.docRefNo || "",
-        DocStatus: data.docStatus || "",
-        IssueBy: data.issueBy || "",
-        AccPostDate: data.accPostDate || "",
-        FiscalYear: data.fiscalYear || "",
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      // จัดการ error เช่น แสดงข้อความให้ผู้ใช้
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  // const scrollToTop = () => {
+  // ฟังก์ชันสำหรับเปิด Panel Header
+  const handleOpenHeaderPanel = () => {
+    setExpandedPanels((prev) => ({
+      ...prev,
+      panel1: true,
+    }));
   };
 
   return (
-    <div className="row" style={{ padding: "5%" }}>
-      <div>&nbsp;</div>
-      <div className="col-md-3">
-        <Box sx={{ minWidth: 30 }} style={{ width: "100%" }}>
-          <FormControl fullWidth>
-            <InputLabel id="category-label">Category</InputLabel>
-            <Select
-              labelId="category-label"
-              id="category-select"
-              value={doctype} // Make sure doctype is still used if needed elsewhere
-              label="Category"
-              onChange={handleChange}
-              style={{ fontSize: "18px" }}
-            >
-              {categoryOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {/* {option.label} */}
-                  {option.value}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
-      <div className="col-md-9">
-        <div>&nbsp;</div>
-        <TextField
-          className="fonts"
-          variant="standard"
-          id="demo-simple-select"
-          onChange={handleChange}
-          // value={doctype}
-          value={selectedEName}
-          style={{ width: "100%" }}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
+    <div style={{ paddingTop: "10px" }}>
+      <DocConfigHeader
+        categoryOptions={categoryOptions}
+        categoryOptionsThai={categoryOptionsThai}
+        handleGoMenu={handleGoMenu}
+      />
+      <Accordion
+        expanded={expandedPanels.panel1}
+        onChange={() =>
+          setExpandedPanels((prev) => ({
+            ...prev,
+            panel1: !prev.panel1,
+          }))
+        }
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+          style={{ backgroundColor: "#00008b" }}
         >
-          <MenuItem value={PR}>Purchase Requisition</MenuItem>
-          <MenuItem value={SR}>Sales Requisition</MenuItem>
-          <MenuItem value={PI}>Payment Invoice</MenuItem>
-          <MenuItem value={SI}>Sale Invoice</MenuItem>
-        </TextField>
-      </div>
-      <div>&nbsp;</div>
-          <PR />
+          <Typography component="span" style={{ textAlign: "center", color: "white" }}>
+            Header
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {/* <AccordionPOHD /> */}
+          <AccordionPOHD
+            apiData={apiData}
+            setApiData={setApiData}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            setCurrentAccDocNo={setCurrentAccDocNo}
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expandedPanels.panel2}
+        onChange={() =>
+          setExpandedPanels((prev) => ({
+            ...prev,
+            panel2: !prev.panel2,
+          }))
+        }
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+          style={{ backgroundColor: "#00008b" }}
+        >
+          <Typography component="span" style={{ justifyContent: "center", color: "white" }}>
+            Detail
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {/* <AccordionPODT accDocNo={accDocNo} onSaveSuccess={handleOpenHeaderPanel} /> */}
+          <AccordionPODT
+            accDocNo={currentAccDocNo}
+            onSaveSuccess={handleOpenHeaderPanel}
+          />
+        </AccordionDetails>
+      </Accordion>
+
+      <div style={{ padding: "30px" }}>&nbsp;</div>
+      <FloatingActionBar backPath={URL + webAddress} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
-import { API_BASE, API_VIEW_RESULT, URL } from "../api/url";
+import { useAuthFetch } from "../Auth/fetchConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,23 +11,20 @@ import {
   faCircleArrowLeft,
   faCircleArrowUp,
   faCalendarDays,
-  faFileArrowDown,
-  faFileArrowUp,
-  faFileCsv,
-  faExpandArrowsAlt,
-  faExpand,
-  faFileHalfDashed,
 } from "@fortawesome/free-solid-svg-icons";
-// import SearchComponent from "../purchase/SearchComponen";
-// import Status from "../purchase/Status";
+import SearchComponent from "../purchase/SearchComponen";
+import Status from "../purchase/Status";
 import { useNavigate } from "react-router-dom";
 import {
   setAccDocNo,
   setPartyName,
   setAccDocType,
-  setStatusName
+  setStatusName,
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
+import { API_BASE, API_VIEW_RESULT } from "../api/url";
+import { Box, Button } from "@mui/material";
+import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 import ButtonAction from "../DataFilters/ButtonAction";
 import SearchModal from "../DataFilters/SearchModal";
 import DateFilterModal from "../DataFilters/DateFilterModal";
@@ -35,21 +32,14 @@ import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
-import { Box, Button } from "@mui/material";
-import Modal from '@mui/material/Modal';
-import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 import DocStatus from "../DataFilters/DocStatus";
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
 import DocStatusPoint from "../DataFilters/DocStatusPoint";
-import "../DataFilters/ConfigStatus.css";
-import DocConfigHeader from "../DataFilters/DocConfigHeader";
-import useDocConfiguration from "../../hooks/useDocConfiguration";
-import PreviewData from "../Delivery/DraftData/PreviewData";
-import HeaderBar from "../menu/HeaderBar";
+import '../DataFilters/ConfigStatus.css';
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-function TransList() {
+function TransList1() {
   const [requisitions, setRequisitions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [transactionall, setTransactionAll] = useState([]);
@@ -59,38 +49,116 @@ function TransList() {
   const dispatch = useDispatch();
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isDateFilterModalOpen, setIsDateFilterModalOpen] = useState(false);
-  // const [filterStartDate, setFilterStartDate] = useState(dayjs().startOf('month').toDate()); // วันที่ 1 ของเดือนปัจจุบัน
-  // const [filterEndDate, setFilterEndDate] = useState(dayjs().endOf('month').toDate());
+  // const [filterStartDate, setFilterStartDate] = useState(
+  //   dayjs().startOf("month").toDate()
+  // ); // วันที่ 1 ของเดือนปัจจุบัน
+  // const [filterEndDate, setFilterEndDate] = useState(
+  //   dayjs().endOf("month").toDate()
+  // );
+  // เปลี่ยนจาก .toDate() เป็นแบบนี้
   const [filterStartDate, setFilterStartDate] = useState(dayjs().startOf('month'));
   const [filterEndDate, setFilterEndDate] = useState(dayjs().endOf('month'));
+
   const [selectedStatusKey, setSelectedStatusKey] = useState(null);
-  // const accDocType = "PO";
+  // const accDocType = "DO";
 
-  // const { categoryOptions, categoryOptionsThai } = useDocConfiguration(accDocType);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  console.log("Category Options:", categoryOptions);
+  const authFetch = useAuthFetch();
 
-  const fetchDataFromApi = useCallback(async () => {
+  useEffect(() => {
+    const fetchCategoryOptions = async () => {
+      try {
+        // const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig?category=${accDocType}`;
+        const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig`;
+        const response = await authFetch(categoryApiUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+
+        // if (Array.isArray(data)) {
+        //   setCategoryOptions(
+        //     data.map((item) => ({ value: item.category, label: item.eName,docConfigID: item.docConfigID, }))
+        //   );
+        if (data && data.length > 0) {
+          setCategoryOptions(data[0].eName);
+        } else {
+          console.error("Category API did not return an array.");
+        }
+      } catch (error) {
+        console.error("Error fetching category options:", error);
+      }
+    };
+
+    fetchCategoryOptions();
+  }, []);
+
+  const fetchRequisitions = useCallback(async () => {
     setLoading(true);
     let CurrentMonth = new Date().toISOString().split("T")[0];
-    let parameters1 = [{ field: "AccBatchDate", value: `${CurrentMonth}` }];
     console.log("CurrentMonth:", CurrentMonth);
     const dateFrom = dayjs(filterStartDate).format("YYYY-MM-DD");
     const dateTo = dayjs(filterEndDate).format("YYYY-MM-DD");
     console.log("Fetching data from date:", dateFrom);
     console.log("filterEndDate:", dateTo);
+
     const vTransaction_H = {
       viewName: "vTransaction_H",
       parameters: [
+        // { field: "AccBatchDate", value: dateForApi},
         { field: "AccBatchDate", UseOperator: "BETWEEN", From: dateFrom, To: dateTo },
       ],
       results: [
         { sourceField: "AccDocNo" },
-        { sourceField: "PartyName" },
-        { sourceField: "AccEffectiveDate" },
         { sourceField: "AccBatchDate" },
-        { sourceField: "DocStatus" },
-        { sourceField: "TotalNet" },
+        { sourceField: "AccEffectiveDate" },
+        { sourceField: "PartyCode" },
+        { sourceField: "PartyTaxCode" },
+        { sourceField: "PartyName" },
+        { sourceField: "PartyAddress" },
+        { sourceField: "IssueBy" },
         { sourceField: "AccDocType" },
-        // { sourceField: "StatusName" },
+        { sourceField: "AccPostDate" },
+        { sourceField: "FiscalYear" },
+        { sourceField: "DocStatus" },
+        { sourceField: "DocRefNo" },
+        { sourceField: "Text1" },
+        { sourceField: "Date1" },
+        { sourceField: "Num1" },
+        { sourceField: "Text2" },
+        { sourceField: "Date2" },
+        { sourceField: "Num2" },
+        { sourceField: "Text3" },
+        { sourceField: "Date3" },
+        { sourceField: "Num3" },
+        { sourceField: "Text4" },
+        { sourceField: "Date4" },
+        { sourceField: "Num4" },
+        { sourceField: "Text5" },
+        { sourceField: "Date5" },
+        { sourceField: "Num5" },
+        { sourceField: "Text6" },
+        { sourceField: "Date6" },
+        { sourceField: "Num6" },
+        { sourceField: "Text7" },
+        { sourceField: "Date7" },
+        { sourceField: "Num7" },
+        { sourceField: "Text8" },
+        { sourceField: "Date8" },
+        { sourceField: "Num8" },
+        { sourceField: "Text9" },
+        { sourceField: "Date9" },
+        { sourceField: "Num9" },
+        { sourceField: "Text10" },
+        { sourceField: "Date10" },
+        { sourceField: "Num10" },
+        { sourceField: "TotalAmount" },
+        { sourceField: "TotalVat" },
+        { sourceField: "TotalWht" },
+        { sourceField: "TotalNet" },
+
       ],
     };
 
@@ -103,19 +171,12 @@ function TransList() {
       });
 
       if (response.status === 200) {
-        if (response.data && response.data.length === 0) {
-          const currentStartOfMonth = dayjs().startOf('month');
-          if (dayjs(filterStartDate).isSame(currentStartOfMonth, 'day')) {
-            setFilterStartDate(dayjs().subtract(1, 'month').startOf('month'));
-            return; // Trigger re-fetch with new date range
-          }
-        }
-
         setLoading(false);
         console.log("data_vTransaction_H", response.data);
-        // console.log("localStorage:", localStorage.getItem("userToken"));
         setTransactionAll(
-          response.data.sort((a, b) => b.AccDocNo.localeCompare(a.AccDocNo))
+          response.data
+            .sort((a, b) => b.AccDocNo.localeCompare(a.AccDocNo)) // เรียงลำดับจากมากไปน้อย
+            .slice(0, 30) // เลือกเอาเฉพาะ 30 รายการแรกหลังจากเรียงแล้ว
         );
         setSearchTerm("");
       } else {
@@ -137,8 +198,8 @@ function TransList() {
   }, [filterStartDate, filterEndDate]); // เพิ่ม filterStartDate, filterEndDate ใน dependency array
 
   useEffect(() => {
-    fetchDataFromApi();
-  }, [fetchDataFromApi]); // เรียก fetchDataFromApi เมื่อมีการเปลี่ยนแปลง filterStartDate หรือ filterEndDate
+    fetchRequisitions();
+  }, [fetchRequisitions]); // เรียก fetchRequisitions เมื่อมีการเปลี่ยนแปลง filterStartDate หรือ filterEndDate
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -149,40 +210,46 @@ function TransList() {
     const searchNumber = parseFloat(searchTerm);
 
     // เงื่อนไขการค้นหาข้อความ/ตัวเลข
-    const matchesSearchTerm = (
+    const matchesSearchTerm =
       transaction.AccDocNo.toLowerCase().includes(searchLower) ||
       transaction.PartyName.toLowerCase().includes(searchLower) ||
       (typeof transaction.TotalNet === "number" &&
-        transaction.TotalNet === searchNumber)
-    );
+        transaction.TotalNet === searchNumber);
 
     // เงื่อนไขการกรองวันที่
     let matchesDateRange = true;
     if (filterStartDate && filterEndDate) {
       const transactionDate = dayjs(transaction.AccBatchDate);
-      const startFilterDateObj = dayjs(filterStartDate).startOf('day');
-      const endFilterDateObj = dayjs(filterEndDate).endOf('day');
+      const startFilterDateObj = dayjs(filterStartDate).startOf("day");
+      const endFilterDateObj = dayjs(filterEndDate).endOf("day");
 
       // ตรวจสอบว่า Day.js object ที่สร้างขึ้น valid หรือไม่ก่อนใช้งาน
-      if (transactionDate.isValid() && startFilterDateObj.isValid() && endFilterDateObj.isValid()) {
-        matchesDateRange = transactionDate.isSameOrAfter(startFilterDateObj) &&
+      if (
+        transactionDate.isValid() &&
+        startFilterDateObj.isValid() &&
+        endFilterDateObj.isValid()
+      ) {
+        matchesDateRange =
+          transactionDate.isSameOrAfter(startFilterDateObj) &&
           transactionDate.isSameOrBefore(endFilterDateObj);
       } else {
         // ถ้าวันที่ไม่ valid ให้ log ข้อความเพื่อ debug
-        console.warn("Invalid date encountered in filtering:",
+        console.warn(
+          "Invalid date encountered in filtering:",
           transaction.AccBatchDate,
           filterStartDate,
-          filterEndDate);
+          filterEndDate
+        );
         matchesDateRange = false; // หรือกำหนดให้เป็น true หากต้องการรวมรายการที่มีวันที่ไม่ถูกต้อง
       }
     }
+
     const matchesStatus = selectedStatusKey === null ||
       selectedStatusKey === undefined ||
       String(transaction.DocStatus) === selectedStatusKey;
 
     return matchesSearchTerm && matchesDateRange && matchesStatus;
   });
-
 
   // ฟังก์ชันเปิด/ปิด Modal
   const handleOpenSearchModal = () => {
@@ -204,12 +271,12 @@ function TransList() {
     setFilterEndDate(endDate);
     // Modal จะถูกปิดโดย handleDateChangeAndClose ใน DateFilterModal.js
   };
-
-  // สำหรับจัดการการเลือกสถานะ
+  // ฟังก์ชันใหม่สำหรับจัดการการเลือกสถานะ
   const handleStatusSelect = (statusKey) => {
     // ถ้าคลิกซ้ำให้กลับไปที่ "ทั้งหมด" (null)
     setSelectedStatusKey(prevKey => prevKey === statusKey ? null : statusKey);
   };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("th-TH", {
@@ -218,6 +285,7 @@ function TransList() {
       year: "numeric",
     });
   };
+
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
   const handleEditClick = (filtered, index) => {
@@ -226,12 +294,13 @@ function TransList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    // navigate(`${URL}Transaction?accDocNo=${filtered.AccDocNo}`); /*กรณีที่ใช้ของTransactionหลายเอกสาร และยังไม่ได้ปรับสมบรูณ์*/
-    navigate(`${URL}Accordion${filtered.AccDocType}?accDocNo=${filtered.AccDocNo}`); /*กรณีที่ใช้ของAccordionแต่ละไทป์ข้อเสียคือจะไม่กลับมาTransactionListหน้านี้แล้ว*/
+    navigate(`/uitestacc/Transaction?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionDI
   };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
-    const existingTransaction = acc.find(item => item.AccDocNo === transaction.AccDocNo);
+    const existingTransaction = acc.find(
+      (item) => item.AccDocNo === transaction.AccDocNo
+    );
     if (existingTransaction) {
       existingTransaction.TotalNet += transaction.TotalNet;
     } else {
@@ -241,10 +310,9 @@ function TransList() {
   }, []);
 
   const handleAddNew = () => {
-    // const accDocType = "PO";
-    // dispatch(setAccDocType(accDocType));
-    // navigate(`${URL}Transaction?accDocType=${accDocType}`, {
-    navigate(`${URL}Transaction`, {
+    const accDocType = "DO";
+    dispatch(setAccDocType(accDocType));
+    navigate(`/uitestacc/AccordionDO?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -255,26 +323,7 @@ function TransList() {
       maximumFractionDigits: 2,
     });
   };
-  // ---------------------------------------------------
-  // เพิ่ม State สำหรับ Modal Preview
-  const [isPreviewModalOpenDraft, setIsPreviewModalOpenDraft] = useState(false);
-  const [globalPreviewFileIdDraft, setGlobalPreviewFileIdDraft] = useState(null);
 
-  const handleDraftOCR = () => {
-    // ไม่ต้องเช็ค File ID แล้ว เพราะ PreviewData จะไปดึง List จาก API เอง
-    setIsPreviewModalOpenDraft(true);
-  };
-
-  const handleClosePreviewDraft = () => {
-    setIsPreviewModalOpenDraft(false);
-    setGlobalPreviewFileIdDraft(null);
-  };
-  // ------------------------------------------------------
-  const handleUploadOCR = async () => {
-    const OCR = `https://vision-pipeline.com/upload`;
-    window.open(OCR, "_blank");
-  };
-  //--------------------------------------------------------
   const buttonActions = [
     {
       icon: (
@@ -285,71 +334,55 @@ function TransList() {
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faFileHalfDashed} style={{ color: "#c6803c" }} size="1x" />
-      ),
-      name: "Upload OCR",
-      onClick: handleUploadOCR,
-    },
-    {
-      icon: (
-        <FontAwesomeIcon icon={faFileArrowDown} style={{ color: "#138888ff" }} size="1x" />
-      ),
-      name: "Preview Document(Draft)",
-      onClick: handleDraftOCR,
-    },
-    {
-      icon: (
-        <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#fc4704" }} size="x" />
+        <FontAwesomeIcon
+          icon={faCalendarDays}
+          style={{ color: "#fc4704" }}
+          size="x"
+        />
       ),
       name: "Filter Date",
       onClick: handleOpenDateFilterModal, // เรียกฟังก์ชันเปิด Modal วันที่
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#4301b3" }} size="x" />
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          style={{ color: "#4301b3" }}
+          size="x"
+        />
       ),
       name: "Search Data",
       onClick: handleOpenSearchModal, // เรียกฟังก์ชันเปิด Modal ค้นหา
     },
   ];
 
-  const handleGoMenu = () => {
-    navigate(`${URL}`);
+  const handleGoBack = () => {
+    navigate("/uitestacc/");
   };
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
-      {/* <DocConfigHeader
-        categoryOptions={categoryOptions}
-        categoryOptionsThai={categoryOptionsThai}
-        handleGoMenu={handleGoMenu}
-      /> */}
-      <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
-        <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="col-8">
-            <div className="docconfig-header">
-              <h4 className="docconfig-title" onClick={handleGoMenu}>
-                TransactionList
-              </h4>
-              <p className="docconfig-subtitle">รายการเอกสาร</p>
-            </div>
-          </div>
-          <div className="col-4">
-            <HeaderBar />
-          </div>
-        </div>
-      </div>
+      <h2
+        style={{ textAlign: "center", textDecorationLine: "underline" }}
+        onClick={handleGoBack}
+      >
+        {/* {categoryOptions} */}
+        Transaction List
+      </h2>
       <div className="top-action-bar">
         <CircularButtonGroup actions={buttonActions} />
 
         {/* <div className="status-legend-wrapper">
-          <DocStatusPoint accConfigCode={accDocType}
-            onStatusSelect={handleStatusSelect}
-            selectedKey={selectedStatusKey} />
+          <DocStatusPoint accConfigCode={accDocType} 
+                          onStatusSelect={handleStatusSelect}
+                          selectedKey={selectedStatusKey} />
         </div> */}
       </div>
-
-      {/* Render Modal components ที่ซ่อนไว้ */}
       <SearchModal
         open={isSearchModalOpen}
         handleClose={handleCloseSearchModal}
@@ -363,11 +396,7 @@ function TransList() {
         filterStartDate={filterStartDate}
         filterEndDate={filterEndDate}
       />
-      <Divider
-        variant="middle"
-        component="li"
-        style={{ listStyle: "none" }}
-      />
+
       {loading ? (
         <p>กำลังโหลดข้อมูล...</p>
       ) : (
@@ -389,15 +418,15 @@ function TransList() {
               >
                 <ListItem style={{ display: "flex", alignItems: "center" }}>
                   <div>
-                    <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-                      {index + 1}. {transaction.AccDocNo}&nbsp;
+                    <h5 style={{ marginTop: "5px", marginLeft: "10px" }} >
+                      {transaction.AccDocNo}&nbsp;
                       {/* <DocStatus status={transaction.StatusName} /> */}
                     </h5>
                     <h6 style={{ marginBottom: "1px" }}>
                       &nbsp; {transaction.PartyName}
                       <i>
                         &nbsp; &nbsp; Date:
-                        {formatDate(transaction.AccBatchDate)} {/*ตามวันที่เปิด*/}
+                        {formatDate(transaction.AccBatchDate)}
                       </i>
                     </h6>
                   </div>
@@ -417,8 +446,9 @@ function TransList() {
             ))
           ) : (
             <p style={{ textAlign: "center", marginTop: "20px" }}>
-              {/* ไม่พบรายการ {categoryOptions} ในช่วงวันที่ **{filterStartDate ? */}
-              ไม่พบรายการในช่วงวันที่ **{filterStartDate ?
+              ไม่พบรายการ
+              {/* {categoryOptions} */}
+              ในช่วงวันที่ **{filterStartDate ?
                 formatDate(filterStartDate) : "เริ่มต้น"}** ถึง **{filterEndDate ?
                   formatDate(filterEndDate) : "สิ้นสุด"}** {(searchTerm || selectedStatusKey)
                     && `และไม่ตรงกับคำค้นหา/สถานะที่เลือก ${searchTerm ? `"${searchTerm}"` : ""}
@@ -429,35 +459,9 @@ function TransList() {
         </ul>
       )}
       <div>&nbsp;</div>
-      {/* Modal สำหรับ Preview Data from OCR */}
-      <Modal
-        open={isPreviewModalOpenDraft}
-        onClose={handleClosePreviewDraft}
-        aria-labelledby="global-image-preview-modal-title"
-      >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: { xs: '90%', sm: '70%', md: '50%' }, // ปรับขนาดตามต้องการ
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          boxShadow: 24,
-          p: 4,
-          maxHeight: '90vh',
-          overflowY: 'auto'
-        }}>
-          <PreviewData
-            googleDriveFileId={globalPreviewFileIdDraft}
-            // accDocType={accDocType}
-            handleClose={handleClosePreviewDraft}
-          />
-        </Box>
-      </Modal>
-      <FloatingActionBar backPath={URL} />
+      <FloatingActionBar backPath="/uitestacc" />
     </div>
   );
 }
 
-export default TransList;
+export default TransList1;

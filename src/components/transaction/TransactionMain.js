@@ -12,7 +12,7 @@ import { Box } from "@mui/material";
 import PRDTAU from "../purchase/Purchase Requisition/PRDTAU";
 import { useState, useEffect } from "react";
 import { useAuthFetch } from "../Auth/fetchConfig";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL } from "../api/url";
 import AccordionDIHD from "../Delivery/Delivery In/AccordionDIHD";
 import AccordionDIDT from "../Delivery/Delivery In/AccordionDIDT";
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
@@ -20,6 +20,9 @@ import AccordionDOHD from "../Delivery/Delivery Out/AccordionDOHD";
 import AccordionDODT from "../Delivery/Delivery Out/AccordionDODT";
 import TransactionHeader from "./TransactionHD";
 import TransactionDetail from "./TransactionDetail";
+import DocConfigHeader from "../DataFilters/DocConfigHeader";
+import useDocConfiguration from "../../hooks/useDocConfiguration";
+import HeaderBar from "../menu/HeaderBar";
 
 export default function TransactionMain() {
   const navigate = useNavigate();
@@ -38,45 +41,41 @@ export default function TransactionMain() {
   console.log("currentAccDocNo", currentAccDocNo);
   console.log("currentAccDocType", currentAccDocType);
 
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  console.log("Category Options:", categoryOptions);
-  console.log("Fetching category options for:", currentAccDocType);
-  const authFetch = useAuthFetch();
-  useEffect(() => {
-    const fetchCategoryOptions = async () => {
-      console.log("Fetching category options for:", currentAccDocType);
-      try {
-        const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig?category=${currentAccDocType}`;
-        // const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig`;
-        const response = await authFetch(categoryApiUrl);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log(data);
-        if (data && data.length > 0) {
-          setCategoryOptions(data[0].eName);
-        } else {
-          console.error("Category API did not return an array.");
-        }
-      } catch (error) {
-        console.error("Error fetching category options:", error);
-      }
-    };
+  const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(currentAccDocType);
 
-    fetchCategoryOptions();
-  }, []);
+  // const [categoryOptions, setCategoryOptions] = useState([]);
+  // console.log("Category Options:", categoryOptions);
+  // console.log("Fetching category options for:", currentAccDocType);
+  // const authFetch = useAuthFetch();
+  // useEffect(() => {
+  //   const fetchCategoryOptions = async () => {
+  //     console.log("Fetching category options for:", currentAccDocType);
+  //     try {
+  //       const categoryApiUrl = `${API_BASE}/DocConfig/GetDocConfig?category=${currentAccDocType}`;
+  //       const response = await authFetch(categoryApiUrl);
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       console.log(data);
+  //       if (data && data.length > 0) {
+  //         setCategoryOptions(data[0].eName);
+  //       } else {
+  //         console.error("Category API did not return an array.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching category options:", error);
+  //     }
+  //   };
+
+  //   fetchCategoryOptions();
+  // }, []);
 
 
-  const handleGoMenu = () => {
-    navigate("/uitestacc/TransList/");
+  const handleGoBack = () => {
+    navigate(`${URL}TransList`);
   };
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+
   // ฟังก์ชันสำหรับเปิด Panel Header
   const handleOpenHeaderPanel = () => {
     setExpandedPanels((prev) => ({
@@ -86,14 +85,29 @@ export default function TransactionMain() {
   };
 
   return (
-    <div>
-      <h2
+    <div style={{ paddingTop: "10px" }}>
+      {/* <h2
         style={{ textAlign: "center", textDecorationLine: "underline" }}
         onClick={handleGoMenu}
       >
         {categoryOptions}
-        {/* Transaction */}
-      </h2>
+        
+      </h2> */}
+      <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
+        <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="col-8">
+            <div className="docconfig-header">
+              <h4 className="docconfig-title" onClick={handleGoBack}>
+                TransactionList
+              </h4>
+              <p className="docconfig-subtitle">รายการเอกสาร</p>
+            </div>
+          </div>
+          <div className="col-4">
+            <HeaderBar />
+          </div>
+        </div>
+      </div>
       <Accordion
         expanded={expandedPanels.panel1}
         onChange={() =>
@@ -104,13 +118,13 @@ export default function TransactionMain() {
         }
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
           aria-controls="panel1-content"
           id="panel1-header"
           style={{ backgroundColor: "#00008b" }}
-          style={{ backgroundColor: "#7bf4a9ab" }}
+        // style={{ backgroundColor: "#7bf4a9ab" }}
         >
-          <Typography component="span" style={{ textAlign: "center" }}>
+          <Typography component="span" style={{ textAlign: "center", color: "white" }}>
             Header
           </Typography>
         </AccordionSummary>
@@ -135,12 +149,13 @@ export default function TransactionMain() {
         }
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
           aria-controls="panel2-content"
           id="panel2-header"
-          style={{ backgroundColor: "#00008b" }} style={{ backgroundColor: "#7bf4a9ab" }}
+          style={{ backgroundColor: "#00008b" }}
+        // style={{ backgroundColor: "#7bf4a9ab" }}
         >
-          <Typography component="span" style={{ justifyContent: "center" }}>
+          <Typography component="span" style={{ justifyContent: "center", color: "white" }}>
             Detail
           </Typography>
         </AccordionSummary>
@@ -153,7 +168,7 @@ export default function TransactionMain() {
       </Accordion>
 
       <div style={{ padding: "30px" }}>&nbsp;</div>
-      <FloatingActionBar backPath="/uitestacc/TransList/" />
+      <FloatingActionBar backPath={`${URL}TransList/`} />
     </div>
   );
 }

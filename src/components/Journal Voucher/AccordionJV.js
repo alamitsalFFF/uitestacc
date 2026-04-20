@@ -9,34 +9,32 @@ import Button from "@mui/material/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 import { Box } from "@mui/material";
-import PRDTAU from "../purchase/Purchase Requisition/PRDTAU";
 import { useState, useEffect } from "react";
-import AccordionCashSaleMain from "./AccordionCashSaleMain";
-import AccordionCashSaleData from "./AccordionCashSaleData";
-import { URL } from "../api/url";
-import HeaderBar from "../menu/HeaderBar";
+import { useAuthFetch } from "../Auth/fetchConfig";
+import { API_BASE, URL } from "../api/url";
+import AccordionPVHD from "../Payment Voucher/AccordionPVHD";
+import AccordionPVDT from "../Payment Voucher/AccordionPVDT";
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
-import DocConfigHeader from "../DataFilters/DocConfigHeader";
 import useDocConfiguration from "../../hooks/useDocConfiguration";
+import DocConfigHeader from "../DataFilters/DocConfigHeader";
 
-export default function AccordionCS() {
+export default function AccordionJV() {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const accDocNo = params.get("accDocNo");
+  const params = new URLSearchParams(location.search || "");
+  const journalNoFromUrl = params.get("journalNo") || null;
+
+  // parent-managed current document (initialized from URL)
+  const [currentAccDocNo, setCurrentAccDocNo] = useState(journalNoFromUrl || "");
+
   const [expandedPanels, setExpandedPanels] = useState({
     panel1: true,
     panel2: false,
   });
-  const [apiData, setApiData] = useState([null]);
+  const [apiData, setApiData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentAccDocNo, setCurrentAccDocNo] = useState("");
-  const DocType = `QC`
+  const DocType = `PV`
   const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(DocType);
-  const handleGoBack = () => {
-    navigate(`${URL}`);
-  };
-
   // ฟังก์ชันสำหรับเปิด Panel Header
   const handleOpenHeaderPanel = () => {
     setExpandedPanels((prev) => ({
@@ -45,37 +43,44 @@ export default function AccordionCS() {
     }));
   };
 
-  // ฟังก์ชันนี้จะถูกเรียกจาก Component ลูก (AccordionCashSaleMain)
-  const handleSaveSuccess = (data) => {
-    setApiData(data); // นำข้อมูลมาเก็บใน State ของ Component แม่
-    setExpandedPanels({
-      panel1: false, // ซ่อนฟอร์ม
-      panel2: true,  // แสดงตารางข้อมูล
-    });
-  };
+  // When page loaded/URL changed, if query param contains journalNo
+  // set currentAccDocNo (used by children) and open panels so header + detail show that document.
+  useEffect(() => {
+    if (journalNoFromUrl) {
+      setCurrentAccDocNo(journalNoFromUrl); // keep prop name for children compatibility
+      setExpandedPanels({ panel1: true, panel2: true });
+
+      // If apiData is available, try to find the matching index by JournalNo only
+      if (Array.isArray(apiData) && apiData.length > 0) {
+        const idx = apiData.findIndex((d) => d.JournalNo === journalNoFromUrl);
+        if (idx >= 0) setCurrentIndex(idx);
+      }
+
+      // If apiData isn't loaded here and header/detail components fetch by accDocNo (we pass journalNo),
+      // they will react to currentAccDocNo prop and load their data.
+    }
+    // re-run when URL search or apiData changes (to try find index once data available)
+  }, [location.search, journalNoFromUrl, apiData]);
+
+  useEffect(() => {
+    // init from URL when location.search changes
+    const p = new URLSearchParams(location.search || "");
+    const j = p.get("journalNo");
+    if (j && j !== currentAccDocNo) {
+      setCurrentAccDocNo(j);
+      // expand panels if needed
+      setExpandedPanels?.({ panel1: true, panel2: true });
+      console.log("AccordionPV: init currentAccDocNo from URL:", j);
+    }
+  }, [location.search]);
 
   return (
     <div style={{ paddingTop: "10px" }}>
-      <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
-        <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="col-8">
-            <div className="docconfig-header">
-              <h4 className="docconfig-title" onClick={handleGoBack}>
-                Quick CashSale
-              </h4>
-              <p className="docconfig-subtitle">รายวันขาย</p>
-            </div>
-          </div>
-          <div className="col-4">
-            <HeaderBar />
-          </div>
-        </div>
-      </div>
-      {/* <DocConfigHeader
+      <DocConfigHeader
         categoryOptions={categoryOptions}
         categoryOptionsThai={categoryOptionsThai}
-        handleGoMenu={handleGoBack}
-      /> */}
+        handleGoMenu={handleGoMenu}
+      />
       <Accordion
         expanded={expandedPanels.panel1}
         onChange={() =>
@@ -96,8 +101,13 @@ export default function AccordionCS() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <AccordionCashSaleMain
-            onSaveSuccess={handleSaveSuccess} // ส่งฟังก์ชันไปเป็น Props
+          <AccordionPVHD
+            apiData={apiData}
+            setApiData={setApiData}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            setCurrentAccDocNo={setCurrentAccDocNo}
+            currentAccDocNo={currentAccDocNo}
           />
         </AccordionDetails>
       </Accordion>
@@ -121,16 +131,15 @@ export default function AccordionCS() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {apiData ? ( // แสดงตารางก็ต่อเมื่อมีข้อมูลแล้ว
-            <AccordionCashSaleData data={apiData} /> // ส่งข้อมูลไปเป็น Props
-          ) : (
-            <Typography>กรุณากรอกและบันทึกข้อมูลด้านบน</Typography>
-          )}
+          <AccordionPVDT
+            accDocNo={currentAccDocNo}
+            onSaveSuccess={handleOpenHeaderPanel}
+          />
         </AccordionDetails>
       </Accordion>
 
       <div style={{ padding: "30px" }}>&nbsp;</div>
-      <FloatingActionBar backPath={`${URL}`} />
+      <FloatingActionBar backPath={`${URL}${webAddress}`} />
     </div>
   );
 }

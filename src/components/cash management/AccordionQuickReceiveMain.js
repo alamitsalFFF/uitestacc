@@ -19,7 +19,8 @@ import {
 } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { faSquarePlus, faMoneyBillWave, faUserTie, faMoneyCheckDollar, faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CashSaleData from "./AccordionCashSaleData";
 import { API_BASE, StoredProcedures_Base } from "../api/url";
@@ -228,49 +229,62 @@ function AccordionQuickReceiveMain({ onSaveSuccess }) {
         },
       ],
     };
-    try {
-      console.log("formData:", formData);
+    const result = await Swal.fire({
+      title: "ยืนยันการบันทึกข้อมูล?",
+      text: "คุณต้องการบันทึกข้อมูลนี้ใช่หรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ตกลง",
+      cancelButtonText: "ยกเลิก",
+    });
 
-      setLoading(true);
-      const response = await axios.post(`${StoredProcedures_Base}`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status === 200) {
+    if (result.isConfirmed) {
+      try {
+        console.log("formData:", formData);
+
+        setLoading(true);
+        const response = await axios.post(`${StoredProcedures_Base}`, formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          setLoading(false);
+          // alert("บันทึกข้อมูลสำเสร็จ");
+          console.log("data", data);
+          setJournalNo(response.data.data[0].JournalNo);
+          onSaveSuccess(response.data.data);
+          // navigate('/CashSaleData', { state: { data } });
+        } else {
+          setLoading(false);
+          console.error("Error:", response.statusText);
+          setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+        }
+        console.log("response.data.data", response.data.data);
+        console.log("response.data.data", response.data.data[0].JournalNo);
+        Swal.fire({
+          icon: "success",
+          title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
         setLoading(false);
-        alert("บันทึกข้อมูลสำเสร็จ");
-        console.log("data", data);
-        setJournalNo(response.data.data[0].JournalNo);
-        onSaveSuccess(response.data.data);
-        // navigate('/CashSaleData', { state: { data } });
-      } else {
+        setData(response.data.data);
+        // console.log('data2',data)
+      } catch (error) {
+        console.error("Error:", error);
+        const errorMessage =
+          error.response && error.response.data
+            ? "Error 500: " + error.response.data
+            : "เกิดข้อผิดพลาดภายใน (Error 500) กรุณาติดต่อผู้ดูแลระบบ";
+
+        alert(errorMessage);
+        console.log("error", errorMessage);
+        setError(error.message);
         setLoading(false);
-        console.error("Error:", response.statusText);
-        setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
       }
-      console.log("response.data.data", response.data.data);
-      console.log("response.data.data", response.data.data[0].JournalNo);
-      Swal.fire({
-        icon: "success",
-        title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
-        showConfirmButton: false,
-        timer: 3000,
-      });
-      setLoading(false);
-      setData(response.data.data);
-      // console.log('data2',data)
-    } catch (error) {
-      console.error("Error:", error);
-      const errorMessage =
-        error.response && error.response.data
-          ? "Error 500: " + error.response.data // ดึงข้อความ error จาก backend (ถ้ามี)
-          : "เกิดข้อผิดพลาดภายใน (Error 500) กรุณาติดต่อผู้ดูแลระบบ";
-
-      alert(errorMessage);
-      console.log("error", errorMessage);
-      setError(error.message);
-      setLoading(false);
     }
   };
 
@@ -459,413 +473,250 @@ function AccordionQuickReceiveMain({ onSaveSuccess }) {
     setError(null); // ลบข้อความ Error
   };
 
+  const SectionHeader = ({ icon, title, color }) => (
+    <Typography variant="h6" style={{ color: color || "#333", display: "flex", alignItems: "center", marginBottom: "15px", fontWeight: "bold" }}>
+      <FontAwesomeIcon icon={icon} style={{ marginRight: "10px" }} /> {title}
+    </Typography>
+  );
+
   return (
-    <div>
+    <div style={{ padding: "20px 5%" }}>
       <Form
         noValidate
         validated={validated}
         onSubmit={handleSubmit}
         className="form-pr"
       >
-        <Row className="mb-4">
-          <Form.Group as={Col} md="6" controlId="inccode">
-            <Form.Label style={{ display: "flex" }}>
-              INCCODE &nbsp;
-              <Stack direction="row" spacing={1}>
-                <FontAwesomeIcon
-                  icon={faSquarePlus}
-                  size="lg"
-                  style={{ color: "#0300b6ff", cursor: "pointer" }}
-                  onClick={() => handleOpenAccCodeModal("inc")}
-                />
-              </Stack>
-            </Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                name="inccode"
-                placeholder="รหัสครายได้"
-                value={
-                  selectedIncCode.code
-                    ? `${selectedIncCode.code} / ${selectedIncCode.name}`
-                    : ""
-                }
-                readOnly
-              />
-            </InputGroup>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="price">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="ราคาต่อหน่วย"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอราคาต่อหน่วย
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="currency">
-            <Form.Label>Currency</Form.Label>
-            <Form.Select required defaultValue="THB">
-              <option value="" disabled>
-                เลือกสกุลเงิน...
-              </option>
-              {currencies.map((currency) => (
-                <option key={currency.value} value={currency.value}>
-                  {currency.label}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกสกุลเงิน
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="rate">
-            <Form.Label>Rate</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="อัตราแลกเปลี่ยน"
-              value={excrate}
-              onChange={(e) => setExcrate(e.target.value)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกอัตราแลกเปลี่ยน
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
+        <Grid container spacing={3}>
+          {/* 1. Income & Amount */}
+          <Grid item xs={12}>
+            <Card elevation={3} style={{ borderRadius: "15px", borderLeft: "5px solid #1976d2" }}>
+              <CardContent>
+                <SectionHeader icon={faMoneyBillWave} title="Income & Amount" color="#1976d2" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="6" controlId="inccode">
+                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
+                      INCCODE &nbsp;
+                      <Stack direction="row" spacing={1}>
+                        <FontAwesomeIcon
+                          icon={faSquarePlus}
+                          size="xl"
+                          style={{ color: "#0300b6ff", cursor: "pointer" }}
+                          onClick={() => handleOpenAccCodeModal("inc")}
+                        />
+                      </Stack>
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        type="text"
+                        name="inccode"
+                        placeholder="รหัสรายได้"
+                        value={
+                          selectedIncCode.code
+                            ? `${selectedIncCode.code} / ${selectedIncCode.name}`
+                            : ""
+                        }
+                        readOnly
+                        style={{ backgroundColor: "#ffffe0" }}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="price">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Price</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="ราคาต่อหน่วย"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      required
+                      style={{ backgroundColor: "#ffffe0" }}
+                    />
+                    <Form.Control.Feedback type="invalid">กรุณากรอราคาต่อหน่วย</Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="2" controlId="currency">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Currency</Form.Label>
+                    <Form.Select required defaultValue="THB" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>เลือกสกุลเงิน...</option>
+                      {currencies.map((currency) => (<option key={currency.value} value={currency.value}>{currency.label}</option>))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group as={Col} md="1" controlId="rate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Rate</Form.Label>
+                    <Form.Control type="number" placeholder="Rate" value={excrate} onChange={(e) => setExcrate(e.target.value)} required style={{ backgroundColor: "#ffffe0" }} />
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="6" controlId="ref">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Ref Doc</Form.Label>
+                    <Form.Control type="text" placeholder="เลขใบสั่งซื้อ/ใบส่งของ" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกเลขอ้างอิง</Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="6" controlId="docdate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Date</Form.Label>
+                    <Form.Control required type="date" defaultValue={new Date().toISOString().split("T")[0]} style={{ backgroundColor: "#ffffe0" }} />
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="ref">
-            <Form.Label>Ref Doc</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="เลขประจำตัวทรัพย์สิน/เลขใบสั่งซื้อ/ใบส่งของ"
-              // defaultValue="ASBKK240100001"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกเลขประจำตัวทรัพย์สิน/เลขใบสั่งซื้อ/ใบส่งของ
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="docdate">
-            <Form.Label>Date</Form.Label>
-            <Form.Control
-              required
-              type="date"
-              defaultValue={new Date().toISOString().split("T")[0]}
-            />
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="2" controlId="partycode">
-            <Form.Label>PartyCode</Form.Label> {/*Mas_Supplier*/}
-            <Form.Control
-              type="text"
-              placeholder="รหัสผู้จำหน่าย"
-              // defaultValue="SANSIRI"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกรหัสผู้จำหน่าย
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="2" controlId="partytaxcode">
-            <Form.Label>PartyTax</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="เลขประจำตัวผู้เสียภาษี/ลำดับสาขา"
-              // defaultValue="000000000/0000"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกเลขประจำตัวผู้เสียภาษี/ลำดับสาขา
-            </Form.Control.Feedback>
-          </Form.Group>
+          {/* 2. Party Information */}
+          <Grid item xs={12} md={7}>
+            <Card elevation={3} style={{ borderRadius: "15px", height: "100%", borderLeft: "5px solid #2e7d32" }}>
+              <CardContent>
+                <SectionHeader icon={faUserTie} title="Party Information" color="#2e7d32" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="4" controlId="partycode">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyCode</Form.Label>
+                    <Form.Control type="text" placeholder="รหัสผู้จำหน่าย" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกรหัสผู้จำหน่าย</Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="8" controlId="partytaxcode">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyTax</Form.Label>
+                    <Form.Control type="text" placeholder="เลขประจำตัวผู้เสียภาษี/ลำดับสาขา" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกเลขประจำตัวผู้เสียภาษี</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12" controlId="partyname">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyName</Form.Label>
+                    <Form.Control type="text" placeholder="ชื่อผู้จำหน่าย" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกชื่อผู้จำหน่าย</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12" controlId="partyaddr">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>PartyAddr</Form.Label>
+                    <Form.Control type="text" placeholder="ที่อยู่ผู้จำหน่าย" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกที่อยู่ผู้จำหน่าย</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Form.Group as={Col} md="3" controlId="partyname">
-            <Form.Label>PartyName</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="ชื่อผู้จำหน่าย"
-              // defaultValue="บริษัท แสนสิริ จำกัด (มหาชน)"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกชื่อผู้จำหน่าย
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="5" controlId="partyaddr">
-            <Form.Label>PartyAddr</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="ที่อยู่ผู้จำหน่าย"
-              // defaultValue="123 ถนนสุขุมวิท แขวงคลองตันเหนือ เขตวัฒนา"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกที่อยู่ผู้จำหน่าย
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="userid">
-            <Form.Label>Support By</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              // defaultValue="ADMIN"
-              defaultValue={localStorage.getItem("userName")}
-              readOnly
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกผู้บันทึก
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="note">
-            <Form.Label>Note</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="หมายเหตุ/สัญญาเลขที่ 1505/2566/5555"
-              // defaultValue="สัญญาเลขที่ 1505/2566/5555"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกหมายเหตุ.
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="4" controlId="vatrate">
-            <Form.Label>VatRate</Form.Label>
-            <Form.Select required defaultValue="7">
-              <option value="" disabled>
-                เลือกอัตราภาษี...
-              </option>
-              {vatrates.map((vatrate) => (
-                <option key={vatrate.value} value={vatrate.value}>
-                  {vatrate.label}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกอัตราภาษี
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="whtrate">
-            <Form.Label>WhtRate</Form.Label>
-            <Form.Select required defaultValue="0">
-              <option value="" disabled>
-                เลือกอัตราภาษีหัก ณ ที่จ่าย...
-              </option>
-              {whtrates.map((whtrate) => (
-                <option key={whtrate.value} value={whtrate.value}>
-                  {whtrate.label}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกอัตราภาษีหัก ณ ที่จ่าย
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="vattype">
-            <Form.Label>VatType</Form.Label>
-            <Form.Select required defaultValue="1">
-              <option value="" disabled>
-                เลือกประเภทการคิด...
-              </option>
-              {vattypes.map((vattype) => (
-                <option key={vattype.value} value={vattype.value}>
-                  {vattype.label}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              กรุณาเลือกประเภทการคิด
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          {/* <Col xs={4} lg={4}> */}
-          <Form.Group as={Col} md="4" controlId="doctype">
-            <Form.Label style={{ display: "flex" }}>
-              DocType &nbsp;
-              <Stack direction="row" spacing={1}>
-                <FontAwesomeIcon
-                  icon={faSquarePlus}
-                  size="xl"
-                  style={{
-                    color: "#0300b6ff",
-                    justifyItems: "end",
-                    cursor: "pointer",
-                  }}
-                  onClick={handleOpenDocTypeModal}
-                />
-              </Stack>
-            </Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="กรุณาเลือกDocType+"
-                value={
-                  selectedDocType.code
-                    ? `${selectedDocType.code} / ${selectedDocType.name}`
-                    : ""
-                }
-                // readOnly
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                กรุณาเลือก DocType
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
+          {/* 3. Notes & Support */}
+          <Grid item xs={12} md={5}>
+            <Card elevation={3} style={{ borderRadius: "15px", height: "100%", borderLeft: "5px solid #6a1b9a" }}>
+              <CardContent>
+                <SectionHeader icon={faNoteSticky} title="Notes & Support" color="#6a1b9a" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12" controlId="userid">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Support By</Form.Label>
+                    <Form.Control required type="text" defaultValue={localStorage.getItem("userName")} readOnly style={{ backgroundColor: "#cdcdd1" }} />
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="12" controlId="note">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Note</Form.Label>
+                    <Form.Control type="text" placeholder="หมายเหตุ/สัญญาเลขที่" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกหมายเหตุ</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <DocTypeModal
-            isOpen={openDocTypeModal}
-            onClose={handleCloseDocTypeModal}
-            onSelect={handleConfirmDocTypeSelection}
-          />
+          {/* 4. Financials & Tax */}
+          <Grid item xs={12}>
+            <Card elevation={3} style={{ borderRadius: "15px", borderLeft: "5px solid #f9a825" }}>
+              <CardContent>
+                <SectionHeader icon={faMoneyCheckDollar} title="Financials & Tax" color="#f9a825" />
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="3" controlId="vatrate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>VatRate</Form.Label>
+                    <Form.Select required defaultValue="7" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>เลือกอัตราภาษี...</option>
+                      {vatrates.map((vatrate) => (<option key={vatrate.value} value={vatrate.value}>{vatrate.label}</option>))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="whtrate">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>WhtRate</Form.Label>
+                    <Form.Select required defaultValue="0" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>เลือกอัตราภาษีหัก ณ ที่จ่าย...</option>
+                      {whtrates.map((whtrate) => (<option key={whtrate.value} value={whtrate.value}>{whtrate.label}</option>))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="vattype">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>VatType</Form.Label>
+                    <Form.Select required defaultValue="1" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>เลือกประเภทการคิด...</option>
+                      {vattypes.map((vattype) => (<option key={vattype.value} value={vattype.value}>{vattype.label}</option>))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3" controlId="acctype">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Acctype</Form.Label>
+                    <Form.Select required defaultValue="0" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>เลือกประเภทการชำระเงิน...</option>
+                      {acctypes.map((acctype) => (<option key={acctype.value} value={acctype.value}>{acctype.label}</option>))}
+                    </Form.Select>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="4" controlId="doctype">
+                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
+                      DocType &nbsp;
+                      <Stack direction="row" spacing={1}>
+                        <FontAwesomeIcon icon={faSquarePlus} size="xl" style={{ color: "#0300b6ff", cursor: "pointer" }} onClick={handleOpenDocTypeModal} />
+                      </Stack>
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control type="text" placeholder="กรุณาเลือกDocType+" value={selectedDocType.code ? `${selectedDocType.code} / ${selectedDocType.name}` : ""} required style={{ backgroundColor: "#ffffe0" }} />
+                      <Form.Control.Feedback type="invalid">กรุณาเลือก DocType</Form.Control.Feedback>
+                    </InputGroup>
+                    <DocTypeModal isOpen={openDocTypeModal} onClose={handleCloseDocTypeModal} onSelect={handleConfirmDocTypeSelection} />
+                  </Form.Group>
+                  <Form.Group as={Col} md="4" controlId="acccode">
+                    <Form.Label style={{ display: "flex", color: "#00008b", fontWeight: 700 }}>
+                      Acccode &nbsp;
+                      <Stack direction="row" spacing={1}>
+                        <FontAwesomeIcon icon={faSquarePlus} size="xl" style={{ color: "#0300b6ff", cursor: "pointer" }} onClick={() => handleOpenAccCodeModal("primary")} />
+                      </Stack>
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control type="text" placeholder="กรุณาเลือกAccCode+" value={selectedAccCode.code ? `${selectedAccCode.code} / ${selectedAccCode.name}` : ""} required style={{ backgroundColor: "#ffffe0" }} />
+                      <Form.Control.Feedback type="invalid">กรุณาเลือก AccCode</Form.Control.Feedback>
+                    </InputGroup>
+                    <AccCodeModal isOpen={openAccCodeModal} onClose={handleCloseAccCodeModal} onSelect={handleConfirmAccCodeSelection} categoryFilter={accCodeModalFilter} />
+                  </Form.Group>
+                  <Form.Group as={Col} md="4" controlId="rcpno">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>RCPNO</Form.Label>
+                    <Form.Control type="text" placeholder="เลขใบเสร็จ/ใบกำกับที่ได้มา" required style={{ backgroundColor: "#ffffe0" }} />
+                    <Form.Control.Feedback type="invalid">กรุณากรอกเลขใบเสร็จ</Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
+                  <Form.Group as={Col} md="4" controlId="trantype">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Trantype</Form.Label>
+                    <Form.Select required defaultValue="0" style={{ backgroundColor: "#ffffe0" }}>
+                      <option value="" disabled>เลือกประเภท...</option>
+                      {transtype.map((trantype) => (<option key={trantype.value} value={trantype.value}>{trantype.label}</option>))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group as={Col} md="4" controlId="bankcode">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Bank Account</Form.Label>
+                    <Form.Control type="text" placeholder="ชื่อธนาคาร(กรณีเงินโอน)" required style={{ backgroundColor: "#ffffe0" }} />
+                  </Form.Group>
+                  <Form.Group as={Col} md="4" controlId="bankname">
+                    <Form.Label style={{ color: "#00008b", fontWeight: 700 }}>Bankname</Form.Label>
+                    <Form.Control type="text" placeholder="ชื่อสาขา/สมุดบัญชี/เลข Ref" required style={{ backgroundColor: "#ffffe0" }} />
+                  </Form.Group>
+                </Row>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
 
-          <Form.Group as={Col} md="4" controlId="acctype">
-            <Form.Label>Acctype</Form.Label>
-            <Form.Select required defaultValue="0">
-              <option value="" disabled>
-                เลือกประเภทการชำระเงิน...
-              </option>
-              {acctypes.map((acctype) => (
-                <option key={acctype.value} value={acctype.value}>
-                  {acctype.label}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              กรุณาเลือกประเภทการชำระเงิน
-            </Form.Control.Feedback>
-          </Form.Group>
-
-          <Form.Group as={Col} md="4" controlId="acccode">
-            <Form.Label style={{ display: "flex" }}>
-              Acccode &nbsp;
-              <Stack direction="row" spacing={1}>
-                <FontAwesomeIcon
-                  icon={faSquarePlus}
-                  size="xl"
-                  style={{
-                    color: "#0300b6ff",
-                    justifyItems: "end",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => handleOpenAccCodeModal("primary")} // <--- เรียก function เปิด Modal
-                />
-              </Stack>
-            </Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="กรุณาเลือกAccCode+"
-                // แสดง AccCode และ ชื่อบัญชี
-                value={
-                  selectedAccCode.code
-                    ? `${selectedAccCode.code} / ${selectedAccCode.name}`
-                    : ""
-                }
-                // readOnly
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                กรุณาเลือก AccCode
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
-
-          {/* 4. เพิ่ม Modal Component ที่ด้านล่างของ return */}
-          <AccCodeModal
-            isOpen={openAccCodeModal}
-            onClose={handleCloseAccCodeModal}
-            onSelect={handleConfirmAccCodeSelection}
-            categoryFilter={accCodeModalFilter}
-          />
-        </Row>
-
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="rcpno">
-            <Form.Label>RCPNO</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="เลขใบเสร็จ/ใบกำกับที่ได้มา"
-              // value={rcpno}
-              // onChange={(e) => setRcpno(e.target.value)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              กรุณากรอกเลขใบเสร็จ/ใบกำกับที่ได้มา
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="6" controlId="trantype">
-            <Form.Label>Trantype</Form.Label>
-            <Form.Select required defaultValue="0">
-              <option value="" disabled>
-                เลือกประเภท...
-              </option>
-              {transtype.map((trantype) => (
-                <option key={trantype.value} value={trantype.value}>
-                  {trantype.label}
-                </option>
-              ))}
-            </Form.Select>
-            {/* <Form.Control.Feedback type="invalid">
-              กรุณาเลือก
-            </Form.Control.Feedback> */}
-          </Form.Group>
-          {/* --- */}
-          <Form.Group as={Col} md="6" controlId="bankcode">
-            <Form.Label>Bank Account</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="ชื่อธนาคาร(กรณีเงินโอน)"
-              required
-            />
-            {/* <Form.Control.Feedback type="invalid">
-              กรุณากรอก bankcode
-            </Form.Control.Feedback> */}
-          </Form.Group>
-
-          <Form.Group as={Col} md="6" controlId="bankname">
-            <Form.Label>Bankname</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="ชื่อสาขา/สมุดบัญชี/เลข Ref (กรณีเงินโอน)"
-              // value={price}
-              // onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-            {/* <Form.Control.Feedback type="invalid">
-              กรุณากรอก bankname
-            </Form.Control.Feedback> */}
-          </Form.Group>
-        </Row>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ marginLeft: "auto", marginRight: "10px" }}
-          onClick={handleClear}
-        >
-          Clear
-        </Button>
-        <Button variant="contained" color="primary" type="submit">
-          Save
-        </Button>
-        {/* </Link> */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+          <Button variant="contained" color="secondary" style={{ marginRight: "10px" }} onClick={handleClear}>
+            Clear
+          </Button>
+          <Button variant="contained" color="primary" type="submit">
+            Save
+          </Button>
+        </div>
       </Form>
     </div>
   );
 }
-
 export default AccordionQuickReceiveMain;

@@ -47,9 +47,6 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
   const [currency, setCurrency] = useState("THB");
   const [excrate, setExcrate] = useState(1);
 
-  // const [excrate, setExcrate] = useState("1");
-  // const [excrate, setExcrate] = useState("1");
-  // const [excrate, setExcrate] = useState("1");
   const [costprice, setCostprice] = useState("0");
   const [profitrate, setProfitrate] = useState("0");
   const [note, setNote] = useState("");
@@ -244,49 +241,62 @@ function AccordionQuickBuyAssetMain({ onSaveSuccess }) {
         },
       ],
     };
-    try {
-      console.log("formData:", formData);
+    const result = await Swal.fire({
+      title: "ยืนยันการบันทึกข้อมูล?",
+      text: "คุณต้องการบันทึกข้อมูลนี้ใช่หรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ตกลง",
+      cancelButtonText: "ยกเลิก",
+    });
 
-      setLoading(true);
-      const response = await axios.post(`${StoredProcedures_Base}`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status === 200) {
+    if (result.isConfirmed) {
+      try {
+        console.log("formData:", formData);
+
+        setLoading(true);
+        const response = await axios.post(`${StoredProcedures_Base}`, formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 200) {
+          setLoading(false);
+          // alert("บันทึกข้อมูลสำเสร็จ");
+          console.log("data", data);
+          setJournalNo(response.data.data[0].JournalNo);
+          onSaveSuccess(response.data.data);
+          // navigate('/CashSaleData', { state: { data } });
+        } else {
+          setLoading(false);
+          console.error("Error:", response.statusText);
+          setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+        }
+        console.log("response.data.data", response.data.data);
+        console.log("response.data.data", response.data.data[0].JournalNo);
+        Swal.fire({
+          icon: "success",
+          title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
         setLoading(false);
-        // alert("บันทึกข้อมูลสำเสร็จ");
-        console.log("data", data);
-        setJournalNo(response.data.data[0].JournalNo);
-        onSaveSuccess(response.data.data);
-        // navigate('/CashSaleData', { state: { data } });
-      } else {
+        setData(response.data.data);
+        // console.log('data2',data)
+      } catch (error) {
+        console.error("Error:", error);
+        const errorMessage =
+          error.response && error.response.data
+            ? "Error 500: " + error.response.data // ดึงข้อความ error จาก backend (ถ้ามี)
+            : "เกิดข้อผิดพลาดภายใน (Error 500) กรุณาติดต่อผู้ดูแลระบบ";
+
+        alert(errorMessage);
+        console.log("error", errorMessage);
+        setError(error.message);
         setLoading(false);
-        console.error("Error:", response.statusText);
-        setError("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
       }
-      console.log("response.data.data", response.data.data);
-      console.log("response.data.data", response.data.data[0].JournalNo);
-      Swal.fire({
-        icon: "success",
-        title: `บันทึก ${response.data.data[0].JournalNo} เรียบร้อยแล้ว`,
-        showConfirmButton: false,
-        timer: 3000,
-      });
-      setLoading(false);
-      setData(response.data.data);
-      // console.log('data2',data)
-    } catch (error) {
-      console.error("Error:", error);
-      const errorMessage =
-        error.response && error.response.data
-          ? "Error 500: " + error.response.data // ดึงข้อความ error จาก backend (ถ้ามี)
-          : "เกิดข้อผิดพลาดภายใน (Error 500) กรุณาติดต่อผู้ดูแลระบบ";
-
-      alert(errorMessage);
-      console.log("error", errorMessage);
-      setError(error.message);
-      setLoading(false);
     }
   };
 

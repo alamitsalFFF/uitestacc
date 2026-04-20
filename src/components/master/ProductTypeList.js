@@ -99,7 +99,8 @@ function ProductTypeList() {
     const searchLower = searchTerm.toLowerCase();
     return (
       producttype.ProductTypeName.toLowerCase().includes(searchLower) ||
-      producttype.ProductTypeID.toString().toLowerCase().includes(searchLower)
+      producttype.ProductTypeID.toString().toLowerCase().includes(searchLower) ||
+      producttype.ProductTypeCode.toString().toLowerCase().includes(searchLower)
     );
   });
   const toggleSearch = () => {
@@ -157,7 +158,6 @@ function ProductTypeList() {
 
   return (
     <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "10px" }}>
-      {/* <h2 style={{ textAlign: "center" }} onClick={handleGoMenu}>TypeProduct</h2> */}
       <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="col-8">
           <div className="docconfig-header">
