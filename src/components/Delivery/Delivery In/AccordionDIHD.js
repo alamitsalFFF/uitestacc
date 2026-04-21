@@ -50,7 +50,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "./ScrollTop";
 // import { DIfromPO } from "./DIfromPO";
 // import IconButton from "../../purchase/Purchase Order/Iconbutton";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../../api/url";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
 import { CancelDI } from "./CancelDI";
@@ -488,7 +488,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
 
-      navigate(`/uitestacc/AccordionDI?accDocNo=${AccDocNo}`);
+      navigate(`${URL}AccordionDI?accDocNo=${AccDocNo}`);
 
     } catch (error) {
       console.error("Error saving data (Header):", error);
@@ -590,8 +590,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}DIDTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -707,7 +706,7 @@ export default function AccordionDIHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/DIList/");
+    navigate(`${URL}DIList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

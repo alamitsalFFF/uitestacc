@@ -48,7 +48,7 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../purchase/formatNumber.js";
 import Abbreviation from "../purchase/Abbreviation.js";
 import { FormatDate } from "../purchase/FormatData.js";
-import { API_VIEW_RESULT } from "../api/url.js";
+import { API_VIEW_RESULT, URL } from "../api/url.js";
 import AccordiionDIAddDT from "../Delivery/Delivery In/AccordiionDIAddDT.js";
 import AccordionSelectProductDI from "../Delivery/Delivery In/AccordionSelectProductDI.js";
 import AccordionDIEditDT from "../Delivery/Delivery In/AccordionDIEditDT.js";
@@ -513,7 +513,7 @@ function AccordionRCDT({ accDocNo, onSaveSuccess }) {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {

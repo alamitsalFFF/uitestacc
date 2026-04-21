@@ -8,8 +8,8 @@ export const Base = `Acctest2`;
 export const URL = `/uitestacc/`;
 
 // export const API_BASE = Acctest;
-export const API = Acctest2; //*******
-// export const API = AcctestMNL; //#######
+// export const API = Acctest2; //*******
+export const API = AcctestMNL; //#######
 // export const API = AccConcept ; 
 
 export const API_BASE = API + `/Prototype`;
@@ -18,8 +18,8 @@ export const GET_VIEW_RESULT = `${API_BASE}/View/GetViewResult/`;
 export const VIEW_RESULT = `/View/GetViewResult/`;
 export const StoredProcedures = `/StoredProcedures/GetResult/`;
 
-export const REPORT_BASE = "http://203.154.140.51/AccReport";//*******
-// export const REPORT_BASE = "http://203.150.142.56/AccReport"; //#######
+// export const REPORT_BASE = "http://203.154.140.51/AccReport";//*******
+export const REPORT_BASE = "http://203.150.142.56/AccReport"; //#######
 export const BASE = "AccConcept";
 
 export const ViewResult_AccConcept = `${AccConcept}${VIEW_RESULT}`;

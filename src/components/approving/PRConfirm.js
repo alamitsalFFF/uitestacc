@@ -22,6 +22,10 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Chip from "@mui/material/Chip";
 import Swal from "sweetalert2";
+import { API_BASE, GET_VIEW_RESULT, URL, VIEW_RESULT } from "../api/url";
+import { Tooltip, Typography, IconButton } from "@mui/material";
+import HeaderBar from "../menu/HeaderBar";
+import FloatingActionBar from "../DataFilters/FloatingActionBar";
 
 function PRConfirm() {
   const [requisitions, setRequisitions] = useState([]);
@@ -66,7 +70,7 @@ function PRConfirm() {
         console.log("vPR_H:", vPR_H);
         setLoading(true);
         const response = await axios.post(
-          "http://103.225.168.137/apiaccbk2/api/Prototype/View/GetViewResult/",
+          `${GET_VIEW_RESULT}`,
           vPR_H,
           {
             headers: {
@@ -162,12 +166,13 @@ function PRConfirm() {
       const accDocNo = transaction.AccDocNo;
 
       const response = await fetch(
-        `http://103.225.168.137/apiaccbk2/api/Prototype/AccTransaction/EditAccTransactionHD`,
+        // `http://103.225.168.137/apiaccbk2/api/Prototype/AccTransaction/EditAccTransactionHD`,
+        `${API_BASE}/AccTransaction/EditAccTransactionHD`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`, 
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
           },
           body: JSON.stringify(dataToSend),
         }
@@ -176,8 +181,7 @@ function PRConfirm() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -246,7 +250,8 @@ function PRConfirm() {
       console.log("formData:", formData);
 
       const response = await axios.post(
-        "http://103.225.168.137/apiaccbk2/api/Prototype/StoredProcedures/GetResult/",
+        // "http://103.225.168.137/apiaccbk2/api/Prototype/StoredProcedures/GetResult/",
+        `${API_BASE}/StoredProcedures/GetResult/`,
         formData,
         {
           headers: {
@@ -258,17 +263,16 @@ function PRConfirm() {
       if (response.status === 200) {
 
         // if (response.data && response.data.length > 0 && response.data[0] && response.data[0].PONo) {
-          console.log("PO Header create successfully");
-          console.log("PO:", response.data.data[0].PONo);
-          // setPoNo(response.data.data.PONo); // อัปเดต state poNo
-          Swal.fire({
-            icon: "success",
-            title: `Created PO: ${response.data.data[0].PONo}`, // ใช้ค่า poNo จาก state
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          // navigate(`/uitestacc/POHeader?accDocNo=${response.data.data[0].PONo}`);
-          navigate(`/uitestacc/POList?accDocNo=${response.data.data[0].PONo}`);
+        console.log("PO Header create successfully");
+        console.log("PO:", response.data.data[0].PONo);
+        // setPoNo(response.data.data.PONo); // อัปเดต state poNo
+        Swal.fire({
+          icon: "success",
+          title: `Created PO: ${response.data.data[0].PONo}`, // ใช้ค่า poNo จาก state
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        navigate(`${URL}CreditPurchaseOrder?accDocNo=${response.data.data[0].PONo}`); //Pathยังไม่ถูก
         // } else {
         //   console.error("Error: Invalid response data", response.data);
         //   alert("เกิดข้อผิดพลาด: ข้อมูลตอบกลับไม่ถูกต้อง");
@@ -284,10 +288,10 @@ function PRConfirm() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/MenuCardAP/");
+    navigate(`${URL}MenuCardAP/`);
   };
-   const handleGoMenu = () => {
-    navigate("/uitestacc/PurchaseRequisition/");
+  const handleGoMenu = () => {
+    navigate(`${URL}PurchaseRequisition/`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -297,10 +301,24 @@ function PRConfirm() {
   };
 
   return (
-    <div>
-      <h2 style={{ textAlign: "center" }} onClick={handleGoMenu}>Approve Purchase Requisition</h2>
-      <div style={{ display: "flex" }}>
-        <div style={{ marginLeft: "auto" }}>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
+      {/* <h2 style={{ textAlign: "center" }} onClick={handleGoMenu}>Approve Purchase Requisition</h2> */}
+      <div className="col-12" style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="col-8">
+          <div className="docconfig-header">
+            <h4 className="docconfig-title" onClick={handleGoMenu}>
+              Approve PR
+            </h4>
+            <p className="docconfig-subtitle">อนุมัติใบสั่งซื้อ</p>
+          </div>
+        </div>
+        <div className="col-4">
+          <HeaderBar />
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", marginBottom: "10px" }}>
+        {/* <div style={{ display: "flex" }}> */}
+        {/* <div style={{ marginLeft: "auto" }}>
           {showSearch ? (
             <SearchComponent onSearch={handleSearch} /> // แสดง SearchComponent เมื่อ showSearch เป็น true
           ) : (
@@ -311,8 +329,46 @@ function PRConfirm() {
               onClick={toggleSearch} // แสดงไอคอนค้นหาเมื่อ showSearch เป็น false
             />
           )}
+        </div> */}
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
+          {showSearch ? (
+            <SearchComponent onSearch={handleSearch} />
+          ) : (
+            <Tooltip
+              title={<Typography variant="caption" sx={{ fontSize: "0.9rem" }}>Search Data</Typography>}
+              arrow
+              placement="top"
+            >
+              <IconButton
+                aria-label="Search Data"
+                onClick={toggleSearch}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  boxShadow: 2,
+                  bgcolor: "background.paper",
+                  color: "text.primary",
+                  "&:hover": { bgcolor: "action.hover" },
+                  flexShrink: 0,
+                  p: 0.5,
+                }}
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#4301b3" }} size="1x" />
+              </IconButton>
+            </Tooltip>
+          )}
         </div>
       </div>
+      <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none" }}
+      />
       <ul>
         {groupedTransactions.map((transaction, index) => (
           <div className="row" key={index}>
@@ -363,37 +419,7 @@ function PRConfirm() {
         ))}
       </ul>
       <div>&nbsp;</div>
-      <div className="row" style={{ display: "flex" }}>
-        <div className="col-6" style={{ display: "grid" }}>
-          <FontAwesomeIcon
-            icon={faCircleArrowLeft}
-            size="2x"
-            style={{
-              color: "#013898",
-              cursor: "pointer",
-              display: "grid",
-              justifyItems: "end",
-            }}
-            onClick={handleGoBack}
-          />
-        </div>
-        <div
-          className="col-6"
-          style={{ display: "grid", justifyItems: "flex-end" }}
-        >
-          <FontAwesomeIcon
-            icon={faCircleArrowUp}
-            size="2x"
-            style={{
-              color: "#013898",
-              cursor: "pointer",
-              display: "grid",
-              justifyItems: "end",
-            }}
-            onClick={scrollToTop}
-          />
-        </div>
-      </div>
+      <FloatingActionBar backPath={URL} />
     </div>
   );
 }

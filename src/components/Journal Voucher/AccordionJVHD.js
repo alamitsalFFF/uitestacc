@@ -173,14 +173,14 @@ export default function AccordionJVHD({
   const [journalNoFromApi, setJournalNoFromApi] = useState(null);
   // const [currentIndex, setCurrentIndex] = useState(0);
 
-  // refactored: fetch via view API (vPV_All). If journalNoParam provided, pass as parameter to filter.
+  // refactored: fetch via view API (vJournal_All). If journalNoParam provided, pass as parameter to filter.
   const fetchDataFromApi = async (journalNoParam = null) => {
     if (isNewMode) {
       return;
     }
     try {
-      const vPV_All = {
-        viewName: "vPV_All",
+      const vJournal_All = {
+        viewName: "vJournal_All",
         parameters: journalNoParam ? [{ field: "JournalNo", value: journalNoParam }] : [],
         results: [
           { sourceField: "EntryId" },
@@ -191,20 +191,86 @@ export default function AccordionJVHD({
           { sourceField: "Description" },
           { sourceField: "TotalDebit" },
           { sourceField: "TotalCredit" },
+          { sourceField: "DocNo" },
           { sourceField: "Seq" },
+          { sourceField: "Text1" },
+          { sourceField: "Date1" },
+          { sourceField: "Num1" },
+          { sourceField: "Text2" },
+          { sourceField: "Date2" },
+          { sourceField: "Num2" },
+          { sourceField: "Text3" },
+          { sourceField: "Date3" },
+          { sourceField: "Num3" },
+          { sourceField: "Text4" },
+          { sourceField: "Date4" },
+          { sourceField: "Num4" },
+          { sourceField: "Text5" },
+          { sourceField: "Date5" },
+          { sourceField: "Num5" },
+          { sourceField: "Text6" },
+          { sourceField: "Date6" },
+          { sourceField: "Num6" },
+          { sourceField: "Text7" },
+          { sourceField: "Date7" },
+          { sourceField: "Num7" },
+          { sourceField: "Text8" },
+          { sourceField: "Date8" },
+          { sourceField: "Num8" },
+          { sourceField: "Text9" },
+          { sourceField: "Date9" },
+          { sourceField: "Num9" },
+          { sourceField: "Text10" },
+          { sourceField: "Date10" },
+          { sourceField: "Num10" },
+          { sourceField: "ItemNo" },
           { sourceField: "AccCode" },
-          { sourceField: "Description" },
+          { sourceField: "AccName" },
+          { sourceField: "AccMainCode" },
+          { sourceField: "AccMainCodeName" },
+          { sourceField: "AccRemark" },
           { sourceField: "AccDesc" },
           { sourceField: "Debit" },
           { sourceField: "Credit" },
+          { sourceField: "AccTypeID" },
+          { sourceField: "DText1" },
+          { sourceField: "DDate1" },
+          { sourceField: "DNum1" },
+          { sourceField: "DText2" },
+          { sourceField: "DDate2" },
+          { sourceField: "DNum2" },
+          { sourceField: "DText3" },
+          { sourceField: "DDate3" },
+          { sourceField: "DNum3" },
+          { sourceField: "DText4" },
+          { sourceField: "DDate4" },
+          { sourceField: "DNum4" },
+          { sourceField: "DText5" },
+          { sourceField: "DDate5" },
+          { sourceField: "DNum5" },
+          { sourceField: "DText6" },
+          { sourceField: "DDate6" },
+          { sourceField: "DNum6" },
+          { sourceField: "DText7" },
+          { sourceField: "DDate7" },
+          { sourceField: "DNum7" },
+          { sourceField: "DText8" },
+          { sourceField: "DDate8" },
+          { sourceField: "DNum8" },
+          { sourceField: "DText9" },
+          { sourceField: "DDate9" },
+          { sourceField: "DNum9" },
+          { sourceField: "DText10" },
+          { sourceField: "DDate10" },
+          { sourceField: "DNum10" },
         ],
       };
 
-      const response = await axios.post(API_VIEW_RESULT, vPV_All, {
+      const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
         headers: { "Content-Type": "application/json" },
       });
       if (response.status !== 200) {
-        console.error("Error fetching vPV_All:", response.statusText);
+        console.error("Error fetching vJournal_All:", response.statusText);
         setApiData([]);
         return [];
       }
@@ -269,7 +335,7 @@ export default function AccordionJVHD({
       setJournalNoFromApi(sorted[0]?.JournalNo || sorted[0]?.journalNo || null);
       return sorted;
     } catch (error) {
-      console.error("Error fetching data via vPV_All:", error);
+      console.error("Error fetching data via vJournal_All:", error);
       setApiData([]);
       return [];
     }
@@ -688,11 +754,11 @@ export default function AccordionJVHD({
   const docStatus = formData.docStatus;
 
   const handlePrint = async () => {
-    const PV = "PV"; // กำหนดค่า PR ให้ถูกต้อง
+    const DocType = "GL"; // กำหนดค่า PR ให้ถูกต้อง
     // const accDocType = formData.accDocType;
     const journalNo = formData.journalNo;
     console.log("AccDocNo:", journalNo);
-    const printUrl = `${REPORT_BASE}/Form?Form=Form${PV}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${journalNo}`;
+    const printUrl = `${REPORT_BASE}/Form?Form=Form${DocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${journalNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };
 
@@ -805,7 +871,7 @@ export default function AccordionJVHD({
     },
   ];
 
-  // ถ้ามี currentAccDocNo ให้ดึงรายการทั้งหมดแล้วหา index ของ journalNo โดยใช้ vPV_All -> API_VIEW_RESULT
+  // ถ้ามี currentAccDocNo ให้ดึงรายการทั้งหมดแล้วหา index ของ journalNo โดยใช้ vJournal_All -> API_VIEW_RESULT
   useEffect(() => {
     if (!currentAccDocNo) return;
     if (isFetchingRef.current) return;
@@ -814,8 +880,8 @@ export default function AccordionJVHD({
     const fetchWithView = async () => {
       isFetchingRef.current = true;
       try {
-        const vPV_All = {
-          viewName: "vPV_All",
+        const vJournal_All = {
+          viewName: "vJournal_All",
           results: [
             { sourceField: "EntryId" },
             { sourceField: "JournalNo" },
@@ -825,21 +891,87 @@ export default function AccordionJVHD({
             { sourceField: "Description" },
             { sourceField: "TotalDebit" },
             { sourceField: "TotalCredit" },
+            { sourceField: "DocNo" },
             { sourceField: "Seq" },
+            { sourceField: "Text1" },
+            { sourceField: "Date1" },
+            { sourceField: "Num1" },
+            { sourceField: "Text2" },
+            { sourceField: "Date2" },
+            { sourceField: "Num2" },
+            { sourceField: "Text3" },
+            { sourceField: "Date3" },
+            { sourceField: "Num3" },
+            { sourceField: "Text4" },
+            { sourceField: "Date4" },
+            { sourceField: "Num4" },
+            { sourceField: "Text5" },
+            { sourceField: "Date5" },
+            { sourceField: "Num5" },
+            { sourceField: "Text6" },
+            { sourceField: "Date6" },
+            { sourceField: "Num6" },
+            { sourceField: "Text7" },
+            { sourceField: "Date7" },
+            { sourceField: "Num7" },
+            { sourceField: "Text8" },
+            { sourceField: "Date8" },
+            { sourceField: "Num8" },
+            { sourceField: "Text9" },
+            { sourceField: "Date9" },
+            { sourceField: "Num9" },
+            { sourceField: "Text10" },
+            { sourceField: "Date10" },
+            { sourceField: "Num10" },
+            { sourceField: "ItemNo" },
             { sourceField: "AccCode" },
-            { sourceField: "Description" },
+            { sourceField: "AccName" },
+            { sourceField: "AccMainCode" },
+            { sourceField: "AccMainCodeName" },
+            { sourceField: "AccRemark" },
             { sourceField: "AccDesc" },
             { sourceField: "Debit" },
             { sourceField: "Credit" },
+            { sourceField: "AccTypeID" },
+            { sourceField: "DText1" },
+            { sourceField: "DDate1" },
+            { sourceField: "DNum1" },
+            { sourceField: "DText2" },
+            { sourceField: "DDate2" },
+            { sourceField: "DNum2" },
+            { sourceField: "DText3" },
+            { sourceField: "DDate3" },
+            { sourceField: "DNum3" },
+            { sourceField: "DText4" },
+            { sourceField: "DDate4" },
+            { sourceField: "DNum4" },
+            { sourceField: "DText5" },
+            { sourceField: "DDate5" },
+            { sourceField: "DNum5" },
+            { sourceField: "DText6" },
+            { sourceField: "DDate6" },
+            { sourceField: "DNum6" },
+            { sourceField: "DText7" },
+            { sourceField: "DDate7" },
+            { sourceField: "DNum7" },
+            { sourceField: "DText8" },
+            { sourceField: "DDate8" },
+            { sourceField: "DNum8" },
+            { sourceField: "DText9" },
+            { sourceField: "DDate9" },
+            { sourceField: "DNum9" },
+            { sourceField: "DText10" },
+            { sourceField: "DDate10" },
+            { sourceField: "DNum10" },
           ],
         };
 
-        const response = await axios.post(API_VIEW_RESULT, vPV_All, {
+        const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
           headers: { "Content-Type": "application/json" },
         });
 
         if (response.status !== 200) {
-          console.error("Error fetching vPV_All:", response.statusText);
+          console.error("Error fetching vJournal_All:", response.statusText);
           setApiData([]);
           lastFetchedRef.current = currentAccDocNo;
           return;
@@ -895,7 +1027,7 @@ export default function AccordionJVHD({
 
         lastFetchedRef.current = currentAccDocNo;
       } catch (err) {
-        console.error("Error fetching HD list via vPV_All:", err);
+        console.error("Error fetching HD list via vJournal_All:", err);
       } finally {
         isFetchingRef.current = false;
       }
@@ -954,39 +1086,6 @@ export default function AccordionJVHD({
         style={{ listStyle: "none", paddingTop: "3px" }}
       />
       <div>&nbsp;</div>
-      {/* <div className="col-md-3">
-        <TextField
-          className="fonts"
-          variant="outlined"
-          id="demo-simple-select"
-          value="PV"
-          style={{ width: "100%" }}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
-        ></TextField>
-      </div>
-      <div className="col-md-9">
-        <div>&nbsp;</div>
-        <TextField
-          className="fonts"
-          variant="standard"
-          id="demo-simple-select"
-          value={selectedEName}
-          style={{ width: "100%" }}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
-        >
-          <MenuItem value={DocType}>Payment Voucher</MenuItem>
-        </TextField>
-      </div>
-      <div>&nbsp;</div> */}
-
       <div className="col-md-4" style={{ paddingTop: "5px" }}>
         <TextField
           id="journalNo"

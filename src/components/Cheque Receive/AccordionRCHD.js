@@ -51,7 +51,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "./ScrollTop";
 // import { DIfromPO } from "./DIfromPO";
 // import IconButton from "../purchase/Purchase Order/Iconbutton";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import Swal from "sweetalert2";
@@ -496,7 +496,7 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
 
-      navigate(`/uitestacc/AccordionRC?accDocNo=${AccDocNo}`);
+      navigate(`${URL}AccordionRC?accDocNo=${AccDocNo}`);
 
     } catch (error) {
       console.error("Error saving data (Header):", error);
@@ -588,31 +588,30 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
     }
   };
 
-  const handleDetail = async () => {
-    try {
-      await fetchDataFromApi(doctype); // รอผลลัพธ์จาก fetchDataFromApi
+  // const handleDetail = async () => {
+  //   try {
+  //     await fetchDataFromApi(doctype); // รอผลลัพธ์จาก fetchDataFromApi
 
-      // const accDocNo = accDocNoFromApi; // เข้าถึง accDocNo จาก state
-      const accDocNo = formData.accDocNo;
-      const accEffectiveDate = formData.accEffectiveDate;
-      const partyCode = formData.partyCode;
-      const partyName = formData.partyName;
-      const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`, {
-        state: {
-          accDocNo: accDocNo,
-          accEffectiveDate: accEffectiveDate,
-          partyCode: partyCode,
-          partyName: partyName,
-          nameCategory: nameCategory,
-        },
-      });
-    } catch (error) {
-      // จัดการ error ที่อาจเกิดขึ้นจาก fetchDataFromApi
-      console.error("Error in handleDetail:", error);
-    }
-  };
+  //     // const accDocNo = accDocNoFromApi; // เข้าถึง accDocNo จาก state
+  //     const accDocNo = formData.accDocNo;
+  //     const accEffectiveDate = formData.accEffectiveDate;
+  //     const partyCode = formData.partyCode;
+  //     const partyName = formData.partyName;
+  //     const nameCategory = selectedEName;
+  //     navigate(`${URL}DIDTList?accDocNo=${accDocNo}`, {
+  //       state: {
+  //         accDocNo: accDocNo,
+  //         accEffectiveDate: accEffectiveDate,
+  //         partyCode: partyCode,
+  //         partyName: partyName,
+  //         nameCategory: nameCategory,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     // จัดการ error ที่อาจเกิดขึ้นจาก fetchDataFromApi
+  //     console.error("Error in handleDetail:", error);
+  //   }
+  // };
 
   useEffect(() => {
     if (location.state && location.state.isNew) {

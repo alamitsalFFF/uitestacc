@@ -12,11 +12,11 @@ import { Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import { API_BASE, URL } from "../api/url";
-import AccordionPVHD from "../Payment Voucher/AccordionPVHD";
-import AccordionPVDT from "../Payment Voucher/AccordionPVDT";
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
 import useDocConfiguration from "../../hooks/useDocConfiguration";
 import DocConfigHeader from "../DataFilters/DocConfigHeader";
+import AccordionJVHD from "./AccordionJVHD";
+import AccordionJVDT from "./AccordionJVDT";
 
 export default function AccordionJV() {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function AccordionJV() {
   });
   const [apiData, setApiData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const DocType = `PV`
+  const DocType = `JV`
   const { categoryOptions, categoryOptionsThai, webAddress, handleGoMenu } = useDocConfiguration(DocType);
   // ฟังก์ชันสำหรับเปิด Panel Header
   const handleOpenHeaderPanel = () => {
@@ -70,7 +70,7 @@ export default function AccordionJV() {
       setCurrentAccDocNo(j);
       // expand panels if needed
       setExpandedPanels?.({ panel1: true, panel2: true });
-      console.log("AccordionPV: init currentAccDocNo from URL:", j);
+      console.log("AccordionJV: init currentAccDocNo from URL:", j);
     }
   }, [location.search]);
 
@@ -101,7 +101,7 @@ export default function AccordionJV() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <AccordionPVHD
+          <AccordionJVHD
             apiData={apiData}
             setApiData={setApiData}
             currentIndex={currentIndex}
@@ -131,7 +131,7 @@ export default function AccordionJV() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <AccordionPVDT
+          <AccordionJVDT
             accDocNo={currentAccDocNo}
             onSaveSuccess={handleOpenHeaderPanel}
           />

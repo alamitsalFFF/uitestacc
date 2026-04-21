@@ -141,10 +141,13 @@ function PVHDList() {
 
     // เงื่อนไขการค้นหาข้อความ/ตัวเลข
     const matchesSearchTerm =
-      transaction.JournalNo.toLowerCase().includes(searchLower) ||
-      transaction.PartyName.toLowerCase().includes(searchLower) ||
-      (typeof transaction.TotalNet === "number" &&
-        transaction.TotalNet === searchNumber);
+      (transaction.JournalNo?.toLowerCase() || "").includes(searchLower) ||
+      (transaction.PartyName?.toLowerCase() || "").includes(searchLower) ||
+      (transaction.Description?.toLowerCase() || "").includes(searchLower) ||
+      (typeof transaction.TotalDebit === "number" &&
+        transaction.TotalDebit === searchNumber) ||
+      (typeof transaction.TotalCredit === "number" &&
+        transaction.TotalCredit === searchNumber);
 
     // เงื่อนไขการกรองวันที่
     let matchesDateRange = true;
@@ -334,7 +337,7 @@ function PVHDList() {
   ];
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>

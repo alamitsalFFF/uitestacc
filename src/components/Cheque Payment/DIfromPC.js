@@ -129,7 +129,6 @@ export const DIfromPC = async (AccDocNo, refno, navigate, duedate, authFetch, we
         timer: 3000,
       });
       setTimeout(() => {
-        // navigate(`/uitestacc/DIList/`);
         navigate(`${URL}${webAddress}`);
       }, 3000);
     } else {

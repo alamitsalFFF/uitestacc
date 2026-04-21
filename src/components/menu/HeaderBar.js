@@ -5,11 +5,12 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import TAWAN_logo from "../../components/img/TAWAN_logo.png";
-import tawan from "../../components/img/tawan.jpg";
+import tawan1 from "../../components/img/tawan1.jpg";
+import tawan from "../../components/img/tawan.png";
 import logo_chmt from "../../components/img/logo_chmt.png";
 import en from "../../components/img/en.png";
 import th from "../../components/img/thai.png";
-import ENus from "../../components/img/tawan.jpg";
+// import ENus from "../../components/img/tawan1.jpg"; // tawan.jpg ถูกลบแล้ว
 import THAI_LOGO from "../../components/img/THAI_LOGO.png";
 import EN_LOGO from "../../components/img/EN_LOGO.png";
 import { URL } from "../api/url";

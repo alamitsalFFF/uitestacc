@@ -51,7 +51,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "./ScrollTop";
 // import { DIfromPO } from "./DIfromPO";
 // import IconButton from "../purchase/Purchase Order/Iconbutton";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import Swal from "sweetalert2";
@@ -510,7 +510,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
 
-      navigate(`/uitestacc/AccordionPC?accDocNo=${AccDocNo}`);
+      navigate(`${URL}AccordionPC?accDocNo=${AccDocNo}`);
 
     } catch (error) {
       console.error("Error saving data (Header):", error);
@@ -812,7 +812,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/DIList/");
+    navigate(`${URL}DIList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

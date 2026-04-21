@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -48,7 +48,7 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../purchase/formatNumber.js";
 import Abbreviation from "../purchase/Abbreviation.js";
 import { FormatDate } from "../purchase/FormatData.js";
-import { API_VIEW_RESULT } from "../api/url.js";
+import { API_VIEW_RESULT, URL } from "../api/url.js";
 import AccordiionDIAddDT from "../Delivery/Delivery In/AccordiionDIAddDT.js";
 import AccordionSelectProductDI from "../Delivery/Delivery In/AccordionSelectProductDI.js";
 import AccordionDIEditDT from "../Delivery/Delivery In/AccordionDIEditDT.js";
@@ -56,7 +56,7 @@ import AccordiionPIAddDT from "./AccordiionPIAddDT.js";
 import AccordionSelectProductPI from "./AccordionSelectProductPI.js";
 import AccordionPIEditDT from "./AccordionPIEditDT.js";
 
-function AccordionPCDT({ accDocNo,onSaveSuccess }) {
+function AccordionPCDT({ accDocNo, onSaveSuccess }) {
   const location = useLocation('');
   const dispatch = useDispatch();
   // const accDocNo = useSelector((state) => state.accDocNo);
@@ -84,7 +84,7 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
   const [openAddDTModal, setOpenAddDTModal] = useState(false);
 
   const fetchDataPCDetails = useCallback(() => {
-  // useEffect(() => {
+    // useEffect(() => {
     if (accDocNo) {
       // ตรวจสอบว่า accDocNo มีค่าหรือไม่
       console.log("accDocNo from store:", accDocNo);
@@ -94,35 +94,35 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
         parameters: [
           { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
         ],
-      results: [
-        { sourceField: "AccDocNo" },
-        { sourceField: "AccBatchDate" },
-        { sourceField: "AccEffectiveDate" },
-        { sourceField: "PartyCode" },
-        { sourceField: "PartyTaxCode" },
-        { sourceField: "PartyName" },
-        { sourceField: "PartyAddress" },
-        { sourceField: "IssueBy" },
-        { sourceField: "AccDocType" },
-        { sourceField: "AccPostDate" },
-        { sourceField: "FiscalYear" },
-        { sourceField: "DocStatus" },
-        { sourceField: "DocRefNo" },
-        { sourceField: "TotalAmount" },
-        { sourceField: "TotalVat" },
-        { sourceField: "TotalWht" },
-        { sourceField: "TotalNet" },
-        { sourceField: "StatusName" },
-        { sourceField: "DocNo" },
-        { sourceField: "SupRcpNo" },
-        { sourceField: "TransType" },
-        { sourceField: "BookDetail" },
-        { sourceField: "TransDetail" },
-        { sourceField: "VoucherDate" },
-        { sourceField: "Voucher" },
-        { sourceField: "CancelBy" },
-        { sourceField: "CancelDate" },
-        { sourceField: "CancelReason" },
+        results: [
+          { sourceField: "AccDocNo" },
+          { sourceField: "AccBatchDate" },
+          { sourceField: "AccEffectiveDate" },
+          { sourceField: "PartyCode" },
+          { sourceField: "PartyTaxCode" },
+          { sourceField: "PartyName" },
+          { sourceField: "PartyAddress" },
+          { sourceField: "IssueBy" },
+          { sourceField: "AccDocType" },
+          { sourceField: "AccPostDate" },
+          { sourceField: "FiscalYear" },
+          { sourceField: "DocStatus" },
+          { sourceField: "DocRefNo" },
+          { sourceField: "TotalAmount" },
+          { sourceField: "TotalVat" },
+          { sourceField: "TotalWht" },
+          { sourceField: "TotalNet" },
+          { sourceField: "StatusName" },
+          { sourceField: "DocNo" },
+          { sourceField: "SupRcpNo" },
+          { sourceField: "TransType" },
+          { sourceField: "BookDetail" },
+          { sourceField: "TransDetail" },
+          { sourceField: "VoucherDate" },
+          { sourceField: "Voucher" },
+          { sourceField: "CancelBy" },
+          { sourceField: "CancelDate" },
+          { sourceField: "CancelReason" },
         ],
       };
 
@@ -131,7 +131,7 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
         parameters: [
           { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
         ],
-       results: [
+        results: [
           { sourceField: "DocRefNo" },
           { sourceField: "DocStatus" },
           { sourceField: "FiscalYear" },
@@ -247,7 +247,7 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
       })();
     }
   }
-  ,[accDocNo]);
+    , [accDocNo]);
   useEffect(() => {
     if (location.state && location.state.accDocNo) {
       const accDocNoFromState = location.state.accDocNo;
@@ -273,35 +273,35 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
         parameters: [
           { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
         ],
-         results: [
-        { sourceField: "AccDocNo" },
-        { sourceField: "AccBatchDate" },
-        { sourceField: "AccEffectiveDate" },
-        { sourceField: "PartyCode" },
-        { sourceField: "PartyTaxCode" },
-        { sourceField: "PartyName" },
-        { sourceField: "PartyAddress" },
-        { sourceField: "IssueBy" },
-        { sourceField: "AccDocType" },
-        { sourceField: "AccPostDate" },
-        { sourceField: "FiscalYear" },
-        { sourceField: "DocStatus" },
-        { sourceField: "DocRefNo" },
-        { sourceField: "TotalAmount" },
-        { sourceField: "TotalVat" },
-        { sourceField: "TotalWht" },
-        { sourceField: "TotalNet" },
-        { sourceField: "StatusName" },
-        { sourceField: "DocNo" },
-        { sourceField: "SupRcpNo" },
-        { sourceField: "TransType" },
-        { sourceField: "BookDetail" },
-        { sourceField: "TransDetail" },
-        { sourceField: "VoucherDate" },
-        { sourceField: "Voucher" },
-        { sourceField: "CancelBy" },
-        { sourceField: "CancelDate" },
-        { sourceField: "CancelReason" },
+        results: [
+          { sourceField: "AccDocNo" },
+          { sourceField: "AccBatchDate" },
+          { sourceField: "AccEffectiveDate" },
+          { sourceField: "PartyCode" },
+          { sourceField: "PartyTaxCode" },
+          { sourceField: "PartyName" },
+          { sourceField: "PartyAddress" },
+          { sourceField: "IssueBy" },
+          { sourceField: "AccDocType" },
+          { sourceField: "AccPostDate" },
+          { sourceField: "FiscalYear" },
+          { sourceField: "DocStatus" },
+          { sourceField: "DocRefNo" },
+          { sourceField: "TotalAmount" },
+          { sourceField: "TotalVat" },
+          { sourceField: "TotalWht" },
+          { sourceField: "TotalNet" },
+          { sourceField: "StatusName" },
+          { sourceField: "DocNo" },
+          { sourceField: "SupRcpNo" },
+          { sourceField: "TransType" },
+          { sourceField: "BookDetail" },
+          { sourceField: "TransDetail" },
+          { sourceField: "VoucherDate" },
+          { sourceField: "Voucher" },
+          { sourceField: "CancelBy" },
+          { sourceField: "CancelDate" },
+          { sourceField: "CancelReason" },
         ],
       };
 
@@ -310,7 +310,7 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
         parameters: [
           { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
         ],
-       results: [
+        results: [
           { sourceField: "DocRefNo" },
           { sourceField: "DocStatus" },
           { sourceField: "FiscalYear" },
@@ -430,44 +430,44 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
         }
       })();
     }
-  }, [location.state?.addProducts,accDocNo]); 
-  
+  }, [location.state?.addProducts, accDocNo]);
+
   // Product select handler
-    const handleProductSelect = () => {
-      setOpenProductModal(true);
-    };
-  
-    // ฟังก์ชันสำหรับเปิด Modal เลือกสินค้า
-    const handleOpenProductModal = () => {
-      setOpenProductModal(true);
-    };
-  
-    // ฟังก์ชันสำหรับปิด Modal เลือกสินค้า
-    const handleCloseProductModal = () => {
-      setOpenProductModal(false);
-    };
-  
-    const handleConfirmProductSelection = () => {
-      handleCloseProductModal(); // Close the product selection modal
-      setOpenAddDTModal(true); // Open the detail modal
-    };
-    // ฟังก์ชันสำหรับปิด Modal เพิ่มรายละเอียด
-    const handleCloseAddDTModal = () => {
-      setOpenAddDTModal(false);
-      dispatch(clearSelectedProducts()); // เคลียร์ค่าที่เลือกเมื่อปิด Modal
-    };
-  
-    // ฟังก์ชันที่ถูกเรียกเมื่อกด "Save" ที่ Modal เพิ่มรายละเอียด
-    const handleSaveDetail = () => {
-      handleCloseAddDTModal();
-      fetchDataPCDetails();
-      const numberOfSavedItems = selectedProducts.length;
-      setItemCounter((prevCounter) => prevCounter + numberOfSavedItems);
-      if (onSaveSuccess) {
-        onSaveSuccess();
-      }
-    };
-    // ---------------------------------------
+  const handleProductSelect = () => {
+    setOpenProductModal(true);
+  };
+
+  // ฟังก์ชันสำหรับเปิด Modal เลือกสินค้า
+  const handleOpenProductModal = () => {
+    setOpenProductModal(true);
+  };
+
+  // ฟังก์ชันสำหรับปิด Modal เลือกสินค้า
+  const handleCloseProductModal = () => {
+    setOpenProductModal(false);
+  };
+
+  const handleConfirmProductSelection = () => {
+    handleCloseProductModal(); // Close the product selection modal
+    setOpenAddDTModal(true); // Open the detail modal
+  };
+  // ฟังก์ชันสำหรับปิด Modal เพิ่มรายละเอียด
+  const handleCloseAddDTModal = () => {
+    setOpenAddDTModal(false);
+    dispatch(clearSelectedProducts()); // เคลียร์ค่าที่เลือกเมื่อปิด Modal
+  };
+
+  // ฟังก์ชันที่ถูกเรียกเมื่อกด "Save" ที่ Modal เพิ่มรายละเอียด
+  const handleSaveDetail = () => {
+    handleCloseAddDTModal();
+    fetchDataPCDetails();
+    const numberOfSavedItems = selectedProducts.length;
+    setItemCounter((prevCounter) => prevCounter + numberOfSavedItems);
+    if (onSaveSuccess) {
+      onSaveSuccess();
+    }
+  };
+  // ---------------------------------------
 
   useEffect(() => {
     if (
@@ -528,9 +528,9 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
-    navigate(`/uitestacc/PCHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}PCHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -542,7 +542,7 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -632,53 +632,53 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
   const [addDetail, setAddDetail] = useState([]);
 
 
-   useEffect(() => {
+  useEffect(() => {
     fetchDataPCDetails();
-  }, [fetchDataPCDetails, location.state?.addProducts]); 
-  
-    const handleEditDetail = (AccItemNo) => {
-      const docStatus = pch[0]?.DocStatus;
-      const accDocType = pch[0]?.AccDocType;
-      setItemToEdit({
-        accDocNo,
-        accItemNo: AccItemNo,
-        docStatus,
-        accDocType,
-        selectedDocConfigID: location.state?.selectedDocConfigID || null 
-      ,
-      });
-      setShowEditDetailModal(true);
-       console.log("itemToEdit:", {
-    accDocNo,
-    accItemNo: AccItemNo,
-    docStatus,
-    accDocType,
-    selectedDocConfigID: location.state?.selectedDocConfigID || null 
-    ,
-  });
-   console.log("handleEditDetail called. Modal state:", true);
-    };
-  
-    const handleCloseEditDetailModal = useCallback(() => {
-      setShowEditDetailModal(false);
-      setItemToEdit(null);
-    }, []);
-  
-    const handleDetailUpdatedOrDeleted = useCallback(() => {
-      fetchDataPCDetails();
-      handleCloseEditDetailModal();
-    }, [fetchDataPCDetails, handleCloseEditDetailModal]);
+  }, [fetchDataPCDetails, location.state?.addProducts]);
 
-    // คำนวณ itemCounter
-    useEffect(() => {
-      if (pcd && pcd.length > 0) {
-        const itemNo = pcd.map((item) => item.AccItemNo);
-        const maxItemNo = Math.max(...itemNo);
-        setItemCounter(maxItemNo + 1);
-      } else {
-        setItemCounter(1);
-      }
-    }, [pcd]);
+  const handleEditDetail = (AccItemNo) => {
+    const docStatus = pch[0]?.DocStatus;
+    const accDocType = pch[0]?.AccDocType;
+    setItemToEdit({
+      accDocNo,
+      accItemNo: AccItemNo,
+      docStatus,
+      accDocType,
+      selectedDocConfigID: location.state?.selectedDocConfigID || null
+      ,
+    });
+    setShowEditDetailModal(true);
+    console.log("itemToEdit:", {
+      accDocNo,
+      accItemNo: AccItemNo,
+      docStatus,
+      accDocType,
+      selectedDocConfigID: location.state?.selectedDocConfigID || null
+      ,
+    });
+    console.log("handleEditDetail called. Modal state:", true);
+  };
+
+  const handleCloseEditDetailModal = useCallback(() => {
+    setShowEditDetailModal(false);
+    setItemToEdit(null);
+  }, []);
+
+  const handleDetailUpdatedOrDeleted = useCallback(() => {
+    fetchDataPCDetails();
+    handleCloseEditDetailModal();
+  }, [fetchDataPCDetails, handleCloseEditDetailModal]);
+
+  // คำนวณ itemCounter
+  useEffect(() => {
+    if (pcd && pcd.length > 0) {
+      const itemNo = pcd.map((item) => item.AccItemNo);
+      const maxItemNo = Math.max(...itemNo);
+      setItemCounter(maxItemNo + 1);
+    } else {
+      setItemCounter(1);
+    }
+  }, [pcd]);
 
   return (
     <div>
@@ -727,8 +727,8 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
               <h5>
                 &nbsp; {index + 1}.&nbsp;
                 {product.ProductCode}/
-                <Abbreviation textName={product.SalesDescription} /> 
-                &nbsp; <i style={{fontSize:"13px"}}>{product.AccSourceDocNo}</i>
+                <Abbreviation textName={product.SalesDescription} />
+                &nbsp; <i style={{ fontSize: "13px" }}>{product.AccSourceDocNo}</i>
               </h5>
               <h>
                 &nbsp; &nbsp; {formatNumber(product.Price)}
@@ -751,27 +751,27 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
           </ListItem>
         </div>
       ))}
-        {showEditDetailModal && itemToEdit && (
-              <>
-                <AccordionPIEditDT
-                  open={showEditDetailModal}
-                  onClose={handleCloseEditDetailModal}
-                  onBackdropClick={handleCloseEditDetailModal}
-                  onSave={handleDetailUpdatedOrDeleted}
-                  onDelete={handleDetailUpdatedOrDeleted}
-                  accDocNo={itemToEdit.accDocNo}
-                  accItemNo={itemToEdit.accItemNo}
-                  docStatus={itemToEdit.docStatus}
-                  accDocType={itemToEdit.accDocType}
-                  selectedDocConfigID={itemToEdit.selectedDocConfigID}
-                  isproductName={itemToEdit.isproductName}
-                  price={itemToEdit.price}
-                  qty={itemToEdit.qty}
-                />
-              </>
-            )}
+      {showEditDetailModal && itemToEdit && (
+        <>
+          <AccordionPIEditDT
+            open={showEditDetailModal}
+            onClose={handleCloseEditDetailModal}
+            onBackdropClick={handleCloseEditDetailModal}
+            onSave={handleDetailUpdatedOrDeleted}
+            onDelete={handleDetailUpdatedOrDeleted}
+            accDocNo={itemToEdit.accDocNo}
+            accItemNo={itemToEdit.accItemNo}
+            docStatus={itemToEdit.docStatus}
+            accDocType={itemToEdit.accDocType}
+            selectedDocConfigID={itemToEdit.selectedDocConfigID}
+            isproductName={itemToEdit.isproductName}
+            price={itemToEdit.price}
+            qty={itemToEdit.qty}
+          />
+        </>
+      )}
 
-       {(!pch || pch.length === 0 || pch[0]?.DocStatus === 0) && (
+      {(!pch || pch.length === 0 || pch[0]?.DocStatus === 0) && (
         <>
           <Divider
             variant="middle"
@@ -787,24 +787,24 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
               flexWrap: "wrap",
             }}
           >
-             {!showEditDetailModal && (
-            <Stack direction="row" spacing={1}>
-              <Button //variant="outlined"
-                variant="contained"
-                color="warning"
-                style={{ width: "183px", height: "33px", borderRadius: "20px" }}
-                onClick={handleProductSelect}
-              >
-                <FontAwesomeIcon
-                  icon={faSquarePlus}
-                  size="2x"
-                  style={{ color: "#fff", justifyItems: "end" }}
-                />
-                &nbsp;Product/Service
-                {/* &nbsp;Choose PO */}
-              </Button>
-            </Stack>
-          )}
+            {!showEditDetailModal && (
+              <Stack direction="row" spacing={1}>
+                <Button //variant="outlined"
+                  variant="contained"
+                  color="warning"
+                  style={{ width: "183px", height: "33px", borderRadius: "20px" }}
+                  onClick={handleProductSelect}
+                >
+                  <FontAwesomeIcon
+                    icon={faSquarePlus}
+                    size="2x"
+                    style={{ color: "#fff", justifyItems: "end" }}
+                  />
+                  &nbsp;Product/Service
+                  {/* &nbsp;Choose PO */}
+                </Button>
+              </Stack>
+            )}
             <AccordionSelectProductPI
               isOpen={openProductModal}
               onClose={handleCloseProductModal}
@@ -874,7 +874,7 @@ function AccordionPCDT({ accDocNo,onSaveSuccess }) {
           </div>
         ))}
         <div>&nbsp;</div>
-       
+
       </div>
     </div>
   );

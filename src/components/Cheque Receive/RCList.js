@@ -291,7 +291,7 @@ function RCList() {
   ];
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>

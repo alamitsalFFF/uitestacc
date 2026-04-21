@@ -207,10 +207,13 @@ function JVList() {
 
     // เงื่อนไขการค้นหาข้อความ/ตัวเลข
     const matchesSearchTerm =
-      transaction.JournalNo.toLowerCase().includes(searchLower) ||
-      transaction.PartyName.toLowerCase().includes(searchLower) ||
-      (typeof transaction.TotalNet === "number" &&
-        transaction.TotalNet === searchNumber);
+      (transaction.JournalNo?.toLowerCase() || "").includes(searchLower) ||
+      (transaction.PartyName?.toLowerCase() || "").includes(searchLower) ||
+      (transaction.Description?.toLowerCase() || "").includes(searchLower) ||
+      (typeof transaction.TotalDebit === "number" &&
+        transaction.TotalDebit === searchNumber) ||
+      (typeof transaction.TotalCredit === "number" &&
+        transaction.TotalCredit === searchNumber);
 
     // เงื่อนไขการกรองวันที่
     let matchesDateRange = true;
@@ -290,7 +293,7 @@ function JVList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง AccordionDI
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`);
   };
 
   const handleEditClick1 = (filtered, index) => {
@@ -299,14 +302,14 @@ function JVList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DIHeader
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`);
   };
   const handleDetailClick = (filtered) => {
     dispatch(setAccDocNo(filtered.JournalNo));
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`);
   };
   const groupedTransactions = filtered.reduce((acc, transaction) => {
     const existingTransaction = acc.find(
@@ -452,9 +455,7 @@ function JVList() {
                 <ListItem style={{ display: "flex", alignItems: "center" }}>
                   <div>
                     <h5 style={{ marginTop: "5px", marginLeft: "10px" }} onClick={() => handleDetailClick(transaction)}>
-                      {transaction.JournalNo}&nbsp;
-                      {/* <Status status={transaction.DocStatus} /> */}
-                      {/* <DocStatus status={transaction.StatusName} /> */}
+                      {index + 1}. {transaction.JournalNo}&nbsp;
                     </h5>
                     <h6 style={{ marginBottom: "1px" }}>
                       &nbsp; {transaction.Description}

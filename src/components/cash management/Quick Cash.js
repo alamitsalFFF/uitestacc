@@ -17,13 +17,14 @@ import {
   TextField,
   Autocomplete,
 } from "@mui/material";
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { URL } from "../api/url";
 
 function QuickCash() {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate('/uitestacc/QCSupplier');
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -188,16 +189,16 @@ function QuickCash() {
             {/* <label htmlFor="discount">Total discount</label> */}
             {/* <label htmlFor="totalAfterDiscount">Total after discount</label> */}
 
-            <FormControlLabel 
-            label="VAT 7%"
-            className="vat-label-left"
+            <FormControlLabel
+              label="VAT 7%"
+              className="vat-label-left"
               control={
                 <Switch
                   checked={!formData.isVatExempt}
                   onChange={handleVatChange}
                 />
               }
-              
+
             />
 
             <label htmlFor="grandTotal">Grand Total</label>

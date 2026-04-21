@@ -127,7 +127,6 @@ export const DOfromRC = async (accDocNo, refno, navigate, duedate, authFetch, we
         timer: 3000,
       });
       setTimeout(() => {
-        // navigate(`/uitestacc/DOList/`);
         navigate(`${URL}${webAddress}`);
       }, 3000);
     } else {

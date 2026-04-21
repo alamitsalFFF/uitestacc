@@ -236,14 +236,14 @@ function PCList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/AccordionPC?accDocNo=${filtered.AccDocNo}`);
+    navigate(`${URL}Accordion${filtered.AccDocType}?accDocNo=${filtered.AccDocNo}`);
   };
   const handleEditClick1 = (filtered) => {
     dispatch(setAccDocNo(filtered.AccDocNo));
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/PIHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง PIHeader
+    navigate(`${URL}PIHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง PIHeader
   };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
@@ -260,7 +260,7 @@ function PCList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/AccordionPC?accDocType=${accDocType}`, {
+    navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };

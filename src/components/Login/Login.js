@@ -16,7 +16,8 @@ import {
 } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { API_BASE, URL } from '../api/url';
-import tawan from '../../components/img/tawan.jpg';
+// import tawan from '../../components/img/tawan.jpg';
+import tawan from '../../components/img/tawan.png';
 import tawanlogo1 from '../../components/img/tawanlogo1.png';
 
 function LoginForm() {

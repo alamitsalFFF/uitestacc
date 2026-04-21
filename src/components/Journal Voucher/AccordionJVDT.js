@@ -44,9 +44,8 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../purchase/formatNumber.js";
 import Abbreviation from "../purchase/Abbreviation.js";
 import { FormatDate } from "../purchase/FormatData.js";
-import { API_VIEW_RESULT } from "../api/url.js";
-import PVEditDetail from "../Payment Voucher/PVEditDetail.js";
-// import AccordionPVEditDT from "./AccordionPVEditDT"; 
+import { API_VIEW_RESULT, URL } from "../api/url.js";
+import JVEditDetail from "./JVEditDetail.js";
 
 function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   const location = useLocation();
@@ -98,9 +97,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   }, [location.state, dispatch]);
 
   const [loading, setLoading] = useState(false);
-  const [pvh, setPVH] = useState([]);
-  const [pvd, setPVD] = useState([]);
-  const [pvall, setPVAll] = useState([]);
+  const [jvall, setJVAll] = useState([]);
   const [seq, setSeq] = useState([]);
 
   // load detail when parent passes accDocNo OR when redux accDocNo changes
@@ -108,9 +105,9 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     const journal = accDocNo ?? JournalNoFromStore;
     if (!journal) return;
 
-    const vPV_All = {
-      viewName: "vPV_All",
-      parameters: [{ field: "JournalNo", value: JournalNo }],
+    const vJournal_All = {
+      viewName: "vJournal_All",
+      parameters: [{ field: "JournalNo", value: journal }],
       results: [
         { sourceField: "EntryId" },
         { sourceField: "JournalNo" },
@@ -120,51 +117,103 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         { sourceField: "Description" },
         { sourceField: "TotalDebit" },
         { sourceField: "TotalCredit" },
+        { sourceField: "DocNo" },
         { sourceField: "Seq" },
+        { sourceField: "Text1" },
+        { sourceField: "Date1" },
+        { sourceField: "Num1" },
+        { sourceField: "Text2" },
+        { sourceField: "Date2" },
+        { sourceField: "Num2" },
+        { sourceField: "Text3" },
+        { sourceField: "Date3" },
+        { sourceField: "Num3" },
+        { sourceField: "Text4" },
+        { sourceField: "Date4" },
+        { sourceField: "Num4" },
+        { sourceField: "Text5" },
+        { sourceField: "Date5" },
+        { sourceField: "Num5" },
+        { sourceField: "Text6" },
+        { sourceField: "Date6" },
+        { sourceField: "Num6" },
+        { sourceField: "Text7" },
+        { sourceField: "Date7" },
+        { sourceField: "Num7" },
+        { sourceField: "Text8" },
+        { sourceField: "Date8" },
+        { sourceField: "Num8" },
+        { sourceField: "Text9" },
+        { sourceField: "Date9" },
+        { sourceField: "Num9" },
+        { sourceField: "Text10" },
+        { sourceField: "Date10" },
+        { sourceField: "Num10" },
+        { sourceField: "ItemNo" },
         { sourceField: "AccCode" },
         { sourceField: "AccName" },
+        { sourceField: "AccMainCode" },
+        { sourceField: "AccMainCodeName" },
+        { sourceField: "AccRemark" },
         { sourceField: "AccDesc" },
         { sourceField: "Debit" },
         { sourceField: "Credit" },
+        { sourceField: "AccTypeID" },
+        { sourceField: "DText1" },
+        { sourceField: "DDate1" },
+        { sourceField: "DNum1" },
+        { sourceField: "DText2" },
+        { sourceField: "DDate2" },
+        { sourceField: "DNum2" },
+        { sourceField: "DText3" },
+        { sourceField: "DDate3" },
+        { sourceField: "DNum3" },
+        { sourceField: "DText4" },
+        { sourceField: "DDate4" },
+        { sourceField: "DNum4" },
+        { sourceField: "DText5" },
+        { sourceField: "DDate5" },
+        { sourceField: "DNum5" },
+        { sourceField: "DText6" },
+        { sourceField: "DDate6" },
+        { sourceField: "DNum6" },
+        { sourceField: "DText7" },
+        { sourceField: "DDate7" },
+        { sourceField: "DNum7" },
+        { sourceField: "DText8" },
+        { sourceField: "DDate8" },
+        { sourceField: "DNum8" },
+        { sourceField: "DText9" },
+        { sourceField: "DDate9" },
+        { sourceField: "DNum9" },
+        { sourceField: "DText10" },
+        { sourceField: "DDate10" },
+        { sourceField: "DNum10" },
       ],
     };
 
     (async () => {
       try {
         setLoading(true);
-        const response = await axios.post(API_VIEW_RESULT, vPV_All, {
+        const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
           headers: { "Content-Type": "application/json" },
         });
         if (response.status === 200) {
           const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
-          setPVAll(sortedData);
+          console.log("sortedData:", sortedData);
+          setJVAll(sortedData);
         } else {
           console.error("Error fetching data");
-          setPVAll([]);
+          setJVAll([]);
         }
       } catch (err) {
-        console.error("Error fetching PV detail:", err);
-        setPVAll([]);
+        console.error("Error fetching JV detail:", err);
+        setJVAll([]);
       } finally {
         setLoading(false);
       }
     })();
   }, [accDocNo, JournalNoFromStore]);
-
-  const handleAccCodeSelect = () => {
-    // const handleProductSelect = () => {
-    navigate("/uitestacc/PVselectAccCode/", {
-      state: {
-        // selectedProducts,
-        JournalNo,
-        accEffectiveDate: accEffectiveDate,
-        partyCode: partyCode,
-        partyName: partyName,
-        isnameCategory: nameCategory,
-        selectedProducts: selectedProducts,
-      },
-    });
-  };
 
   useEffect(() => {
     if (
@@ -226,21 +275,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     }
   }, [detailData]);
 
-  const handleGoBack = () => {
-    navigate(`/uitestacc/PVHeader?journalNo=${JournalNo}`);
-  };
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   const navigate = useNavigate();
-
-  // const handlePlusClick = () => {
-  //   navigate("/uitestacc/QCSupplier");
-  // };
 
   const style = {
     p: 0,
@@ -314,8 +349,8 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
 
   const [editDetail, setEditDetail] = useState([]);
 
-  const EntryId = pvall.EntryId;
-  const Seq = pvall.Seq;
+  const EntryId = jvall.EntryId;
+  const Seq = jvall.Seq;
 
   // เพิ่ม state สำหรับ modal / item ที่จะแก้ไข
   const [showEditDetailModal, setShowEditDetailModal] = useState(false);
@@ -323,12 +358,13 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
 
   const handleEditDetail = async (index) => {
     try {
-      const journalNo = pvall && pvall.length > 0 ? pvall[0].JournalNo : JournalNo;
-      const entryId = pvall && pvall.length > 0 ? pvall[0].EntryId : null;
-      const seq = pvall && pvall[index] ? pvall[index].Seq : null;
+      const journalNo = jvall && jvall.length > 0 ? jvall[0].JournalNo : JournalNo;
+      const entryId = jvall && jvall.length > 0 ? jvall[0].EntryId : null;
+      const seq = jvall && jvall[index] ? jvall[index].ItemNo : null;
       if (!entryId || seq == null) return console.error("missing entryId/seq");
 
       setItemToEdit({ entryId, journalNo, seq, index });
+      console.log("itemToEdit:", 'entryId', entryId, 'journalNo', journalNo, 'seq', seq, 'index', index);
       setShowEditDetailModal(true);
     } catch (error) {
       console.error("Error in handleEditDetail:", error);
@@ -345,26 +381,101 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     setShowEditDetailModal(false);
     setItemToEdit(null);
     if (refresh) {
-      // รีเฟรชข้อมูล vPV_All (เหมือนที่มีใน useEffect) โดยเรียก API อีกครั้ง
+      // รีเฟรชข้อมูล vJournal_All (เหมือนที่มีใน useEffect) โดยเรียก API อีกครั้ง
       if (JournalNo) {
         try {
-          const vPV_All = {
-            viewName: "vPV_All",
+          const vJournal_All = {
+            viewName: "vJournal_All",
             parameters: [{ field: "JournalNo", value: JournalNo }],
             results: [
-              { sourceField: "EntryId" }, { sourceField: "JournalNo" }, { sourceField: "EntryDate" },
-              { sourceField: "EffectiveDate" }, { sourceField: "EntryBy" }, { sourceField: "Description" },
-              { sourceField: "TotalDebit" }, { sourceField: "TotalCredit" }, { sourceField: "Seq" },
-              { sourceField: "AccCode" }, { sourceField: "AccName" }, { sourceField: "AccDesc" },
-              { sourceField: "Debit" }, { sourceField: "Credit" },
+              { sourceField: "EntryId" },
+              { sourceField: "JournalNo" },
+              { sourceField: "EntryDate" },
+              { sourceField: "EffectiveDate" },
+              { sourceField: "EntryBy" },
+              { sourceField: "Description" },
+              { sourceField: "TotalDebit" },
+              { sourceField: "TotalCredit" },
+              { sourceField: "DocNo" },
+              { sourceField: "Seq" },
+              { sourceField: "Text1" },
+              { sourceField: "Date1" },
+              { sourceField: "Num1" },
+              { sourceField: "Text2" },
+              { sourceField: "Date2" },
+              { sourceField: "Num2" },
+              { sourceField: "Text3" },
+              { sourceField: "Date3" },
+              { sourceField: "Num3" },
+              { sourceField: "Text4" },
+              { sourceField: "Date4" },
+              { sourceField: "Num4" },
+              { sourceField: "Text5" },
+              { sourceField: "Date5" },
+              { sourceField: "Num5" },
+              { sourceField: "Text6" },
+              { sourceField: "Date6" },
+              { sourceField: "Num6" },
+              { sourceField: "Text7" },
+              { sourceField: "Date7" },
+              { sourceField: "Num7" },
+              { sourceField: "Text8" },
+              { sourceField: "Date8" },
+              { sourceField: "Num8" },
+              { sourceField: "Text9" },
+              { sourceField: "Date9" },
+              { sourceField: "Num9" },
+              { sourceField: "Text10" },
+              { sourceField: "Date10" },
+              { sourceField: "Num10" },
+              { sourceField: "ItemNo" },
+              { sourceField: "AccCode" },
+              { sourceField: "AccName" },
+              { sourceField: "AccMainCode" },
+              { sourceField: "AccMainCodeName" },
+              { sourceField: "AccRemark" },
+              { sourceField: "AccDesc" },
+              { sourceField: "Debit" },
+              { sourceField: "Credit" },
+              { sourceField: "AccTypeID" },
+              { sourceField: "DText1" },
+              { sourceField: "DDate1" },
+              { sourceField: "DNum1" },
+              { sourceField: "DText2" },
+              { sourceField: "DDate2" },
+              { sourceField: "DNum2" },
+              { sourceField: "DText3" },
+              { sourceField: "DDate3" },
+              { sourceField: "DNum3" },
+              { sourceField: "DText4" },
+              { sourceField: "DDate4" },
+              { sourceField: "DNum4" },
+              { sourceField: "DText5" },
+              { sourceField: "DDate5" },
+              { sourceField: "DNum5" },
+              { sourceField: "DText6" },
+              { sourceField: "DDate6" },
+              { sourceField: "DNum6" },
+              { sourceField: "DText7" },
+              { sourceField: "DDate7" },
+              { sourceField: "DNum7" },
+              { sourceField: "DText8" },
+              { sourceField: "DDate8" },
+              { sourceField: "DNum8" },
+              { sourceField: "DText9" },
+              { sourceField: "DDate9" },
+              { sourceField: "DNum9" },
+              { sourceField: "DText10" },
+              { sourceField: "DDate10" },
+              { sourceField: "DNum10" },
             ],
           };
-          const response = await axios.post(API_VIEW_RESULT, vPV_All, {
+          const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
             headers: { "Content-Type": "application/json" },
           });
           if (response.status === 200) {
             const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
-            setPVAll(sortedData);
+            setJVAll(sortedData);
           }
         } catch (err) {
           console.error("Error refreshing data:", err);
@@ -373,32 +484,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     }
   };
 
-  useEffect(() => {
-    if (!accDocNo) return;
-    const fetchDetails = async () => {
-      try {
-        const vPV_All = {
-          viewName: "vPV_All",
-          parameters: [{ field: "JournalNo", value: accDocNo }],
-          results: [
-            { sourceField: "EntryId" }, { sourceField: "JournalNo" }, { sourceField: "Seq" },
-            { sourceField: "AccCode" }, { sourceField: "AccName" },
-            { sourceField: "Debit" }, { sourceField: "Credit" },
-            { sourceField: "TotalDebit" }, { sourceField: "TotalCredit" },
-            // ... ตามที่ต้องการ
-          ],
-        };
-        const response = await axios.post(API_VIEW_RESULT, vPV_All, { headers: { "Content-Type": "application/json" } });
-        if (response.status === 200) {
-          const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
-          setPVAll(sortedData); // ชื่อ state ตามไฟล์เดิม
-        }
-      } catch (err) {
-        console.error("Error fetching PV detail:", err);
-      }
-    };
-    fetchDetails();
-  }, [accDocNo]);
+
 
   return (
     <div>
@@ -423,7 +509,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
             }}
           >
             <h5>
-              Description:{pvall && pvall.length > 0 && (pvall[0].Description)}
+              Description:{jvall && jvall.length > 0 && (jvall[0].Description)}
             </h5>
           </ListItem>
           <ListItem
@@ -435,8 +521,8 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
           >
             <p>
               Date:
-              {pvall && pvall.length > 0 && (
-                <FormatDate dateString={pvall[0].EffectiveDate} />
+              {jvall && jvall.length > 0 && (
+                <FormatDate dateString={jvall[0].EffectiveDate} />
               )}
             </p>
           </ListItem>
@@ -463,7 +549,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
           </div>
         </div>
       </div>
-      {pvall.map((pvall, index) => (
+      {jvall.map((jvall, index) => (
         <div key={index}>
           <Divider
             variant="middle"
@@ -473,27 +559,27 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
           <ListItem style={{ display: "flex", alignItems: "center" }}>
             <div className="col-4">
               <h5>
-                &nbsp; {pvall.Seq}.&nbsp;{pvall.AccCode} &nbsp;
-                {pvall.AccName}
+                &nbsp; {jvall.ItemNo}.&nbsp;{jvall.AccCode} &nbsp;
+                {jvall.AccName}
               </h5>
             </div>
             <div className="col-2">
               <h5>
-                &nbsp; {pvall.AccDesc}
+                &nbsp; {jvall.AccDesc}
               </h5>
             </div>
             <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
-              {pvall.Debit !== 0.00 && <h4>{formatNumber(pvall.Debit)}</h4>}
+              {jvall.Debit !== 0.00 && <h4>{formatNumber(jvall.Debit)}</h4>}
             </div>
             <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
               <div style={{ display: "flex" }}>
-                {pvall.Credit !== 0.00 && <h4>{formatNumber(pvall.Credit)} &nbsp;</h4>}
+                {jvall.Credit !== 0.00 && <h4>{formatNumber(jvall.Credit)} &nbsp;</h4>}
                 &nbsp; &nbsp;
                 <FontAwesomeIcon
                   icon={faChevronRight}
                   size="1x"
                   style={{ color: "#0310ce", paddingTop: "10px" }}
-                  // onClick={() => handleEditDetail(pvall.seq)}
+                  // onClick={() => handleEditDetail(jvall.seq)}
                   onClick={() => handleEditDetail(index)}
                 />
               </div>
@@ -510,12 +596,12 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         <div className="col-4"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
         >
-          <h3 style={{ textAlign: "center" }}>{pvall && pvall.length > 0 && formatNumber(pvall[0].TotalDebit)}&nbsp;</h3>
+          <h3 style={{ textAlign: "center" }}>{jvall && jvall.length > 0 && formatNumber(jvall[0].TotalDebit)}&nbsp;</h3>
         </div>
 
         <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
           <div style={{ display: "flex" }}>
-            <h3 style={{ textAlign: "center" }}>{pvall && pvall.length > 0 && formatNumber(pvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
+            <h3 style={{ textAlign: "center" }}>{jvall && jvall.length > 0 && formatNumber(jvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
             </h3>
           </div>
         </div>
@@ -525,7 +611,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
       {/* </div> */}
 
       {showEditDetailModal && itemToEdit && (
-        <PVEditDetail
+        <JVEditDetail
           open={showEditDetailModal}
           onClose={handleCloseEditDetailModal}
           onSave={() => handleDetailUpdatedOrDeleted(true)}
