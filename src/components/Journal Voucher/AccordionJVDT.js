@@ -100,6 +100,10 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   const [jvall, setJVAll] = useState([]);
   const [seq, setSeq] = useState([]);
 
+  // pagination
+  const PAGE_SIZE = 50;
+  const [currentPage, setCurrentPage] = useState(0);
+
   // load detail when parent passes accDocNo OR when redux accDocNo changes
   useEffect(() => {
     const journal = accDocNo ?? JournalNoFromStore;
@@ -119,36 +123,36 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         { sourceField: "TotalCredit" },
         { sourceField: "DocNo" },
         { sourceField: "Seq" },
-        { sourceField: "Text1" },
-        { sourceField: "Date1" },
-        { sourceField: "Num1" },
-        { sourceField: "Text2" },
-        { sourceField: "Date2" },
-        { sourceField: "Num2" },
-        { sourceField: "Text3" },
-        { sourceField: "Date3" },
-        { sourceField: "Num3" },
-        { sourceField: "Text4" },
-        { sourceField: "Date4" },
-        { sourceField: "Num4" },
-        { sourceField: "Text5" },
-        { sourceField: "Date5" },
-        { sourceField: "Num5" },
-        { sourceField: "Text6" },
-        { sourceField: "Date6" },
-        { sourceField: "Num6" },
-        { sourceField: "Text7" },
-        { sourceField: "Date7" },
-        { sourceField: "Num7" },
-        { sourceField: "Text8" },
-        { sourceField: "Date8" },
-        { sourceField: "Num8" },
-        { sourceField: "Text9" },
-        { sourceField: "Date9" },
-        { sourceField: "Num9" },
-        { sourceField: "Text10" },
-        { sourceField: "Date10" },
-        { sourceField: "Num10" },
+        // { sourceField: "Text1" },
+        // { sourceField: "Date1" },
+        // { sourceField: "Num1" },
+        // { sourceField: "Text2" },
+        // { sourceField: "Date2" },
+        // { sourceField: "Num2" },
+        // { sourceField: "Text3" },
+        // { sourceField: "Date3" },
+        // { sourceField: "Num3" },
+        // { sourceField: "Text4" },
+        // { sourceField: "Date4" },
+        // { sourceField: "Num4" },
+        // { sourceField: "Text5" },
+        // { sourceField: "Date5" },
+        // { sourceField: "Num5" },
+        // { sourceField: "Text6" },
+        // { sourceField: "Date6" },
+        // { sourceField: "Num6" },
+        // { sourceField: "Text7" },
+        // { sourceField: "Date7" },
+        // { sourceField: "Num7" },
+        // { sourceField: "Text8" },
+        // { sourceField: "Date8" },
+        // { sourceField: "Num8" },
+        // { sourceField: "Text9" },
+        // { sourceField: "Date9" },
+        // { sourceField: "Num9" },
+        // { sourceField: "Text10" },
+        // { sourceField: "Date10" },
+        // { sourceField: "Num10" },
         { sourceField: "ItemNo" },
         { sourceField: "AccCode" },
         { sourceField: "AccName" },
@@ -159,36 +163,36 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         { sourceField: "Debit" },
         { sourceField: "Credit" },
         { sourceField: "AccTypeID" },
-        { sourceField: "DText1" },
-        { sourceField: "DDate1" },
-        { sourceField: "DNum1" },
-        { sourceField: "DText2" },
-        { sourceField: "DDate2" },
-        { sourceField: "DNum2" },
-        { sourceField: "DText3" },
-        { sourceField: "DDate3" },
-        { sourceField: "DNum3" },
-        { sourceField: "DText4" },
-        { sourceField: "DDate4" },
-        { sourceField: "DNum4" },
-        { sourceField: "DText5" },
-        { sourceField: "DDate5" },
-        { sourceField: "DNum5" },
-        { sourceField: "DText6" },
-        { sourceField: "DDate6" },
-        { sourceField: "DNum6" },
-        { sourceField: "DText7" },
-        { sourceField: "DDate7" },
-        { sourceField: "DNum7" },
-        { sourceField: "DText8" },
-        { sourceField: "DDate8" },
-        { sourceField: "DNum8" },
-        { sourceField: "DText9" },
-        { sourceField: "DDate9" },
-        { sourceField: "DNum9" },
-        { sourceField: "DText10" },
-        { sourceField: "DDate10" },
-        { sourceField: "DNum10" },
+        // { sourceField: "DText1" },
+        // { sourceField: "DDate1" },
+        // { sourceField: "DNum1" },
+        // { sourceField: "DText2" },
+        // { sourceField: "DDate2" },
+        // { sourceField: "DNum2" },
+        // { sourceField: "DText3" },
+        // { sourceField: "DDate3" },
+        // { sourceField: "DNum3" },
+        // { sourceField: "DText4" },
+        // { sourceField: "DDate4" },
+        // { sourceField: "DNum4" },
+        // { sourceField: "DText5" },
+        // { sourceField: "DDate5" },
+        // { sourceField: "DNum5" },
+        // { sourceField: "DText6" },
+        // { sourceField: "DDate6" },
+        // { sourceField: "DNum6" },
+        // { sourceField: "DText7" },
+        // { sourceField: "DDate7" },
+        // { sourceField: "DNum7" },
+        // { sourceField: "DText8" },
+        // { sourceField: "DDate8" },
+        // { sourceField: "DNum8" },
+        // { sourceField: "DText9" },
+        // { sourceField: "DDate9" },
+        // { sourceField: "DNum9" },
+        // { sourceField: "DText10" },
+        // { sourceField: "DDate10" },
+        // { sourceField: "DNum10" },
       ],
     };
 
@@ -202,6 +206,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
           const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
           console.log("sortedData:", sortedData);
           setJVAll(sortedData);
+          setCurrentPage(0); // reset to first page on new data load
         } else {
           console.error("Error fetching data");
           setJVAll([]);
@@ -398,36 +403,36 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
               { sourceField: "TotalCredit" },
               { sourceField: "DocNo" },
               { sourceField: "Seq" },
-              { sourceField: "Text1" },
-              { sourceField: "Date1" },
-              { sourceField: "Num1" },
-              { sourceField: "Text2" },
-              { sourceField: "Date2" },
-              { sourceField: "Num2" },
-              { sourceField: "Text3" },
-              { sourceField: "Date3" },
-              { sourceField: "Num3" },
-              { sourceField: "Text4" },
-              { sourceField: "Date4" },
-              { sourceField: "Num4" },
-              { sourceField: "Text5" },
-              { sourceField: "Date5" },
-              { sourceField: "Num5" },
-              { sourceField: "Text6" },
-              { sourceField: "Date6" },
-              { sourceField: "Num6" },
-              { sourceField: "Text7" },
-              { sourceField: "Date7" },
-              { sourceField: "Num7" },
-              { sourceField: "Text8" },
-              { sourceField: "Date8" },
-              { sourceField: "Num8" },
-              { sourceField: "Text9" },
-              { sourceField: "Date9" },
-              { sourceField: "Num9" },
-              { sourceField: "Text10" },
-              { sourceField: "Date10" },
-              { sourceField: "Num10" },
+              // { sourceField: "Text1" },
+              // { sourceField: "Date1" },
+              // { sourceField: "Num1" },
+              // { sourceField: "Text2" },
+              // { sourceField: "Date2" },
+              // { sourceField: "Num2" },
+              // { sourceField: "Text3" },
+              // { sourceField: "Date3" },
+              // { sourceField: "Num3" },
+              // { sourceField: "Text4" },
+              // { sourceField: "Date4" },
+              // { sourceField: "Num4" },
+              // { sourceField: "Text5" },
+              // { sourceField: "Date5" },
+              // { sourceField: "Num5" },
+              // { sourceField: "Text6" },
+              // { sourceField: "Date6" },
+              // { sourceField: "Num6" },
+              // { sourceField: "Text7" },
+              // { sourceField: "Date7" },
+              // { sourceField: "Num7" },
+              // { sourceField: "Text8" },
+              // { sourceField: "Date8" },
+              // { sourceField: "Num8" },
+              // { sourceField: "Text9" },
+              // { sourceField: "Date9" },
+              // { sourceField: "Num9" },
+              // { sourceField: "Text10" },
+              // { sourceField: "Date10" },
+              // { sourceField: "Num10" },
               { sourceField: "ItemNo" },
               { sourceField: "AccCode" },
               { sourceField: "AccName" },
@@ -438,36 +443,36 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
               { sourceField: "Debit" },
               { sourceField: "Credit" },
               { sourceField: "AccTypeID" },
-              { sourceField: "DText1" },
-              { sourceField: "DDate1" },
-              { sourceField: "DNum1" },
-              { sourceField: "DText2" },
-              { sourceField: "DDate2" },
-              { sourceField: "DNum2" },
-              { sourceField: "DText3" },
-              { sourceField: "DDate3" },
-              { sourceField: "DNum3" },
-              { sourceField: "DText4" },
-              { sourceField: "DDate4" },
-              { sourceField: "DNum4" },
-              { sourceField: "DText5" },
-              { sourceField: "DDate5" },
-              { sourceField: "DNum5" },
-              { sourceField: "DText6" },
-              { sourceField: "DDate6" },
-              { sourceField: "DNum6" },
-              { sourceField: "DText7" },
-              { sourceField: "DDate7" },
-              { sourceField: "DNum7" },
-              { sourceField: "DText8" },
-              { sourceField: "DDate8" },
-              { sourceField: "DNum8" },
-              { sourceField: "DText9" },
-              { sourceField: "DDate9" },
-              { sourceField: "DNum9" },
-              { sourceField: "DText10" },
-              { sourceField: "DDate10" },
-              { sourceField: "DNum10" },
+              // { sourceField: "DText1" },
+              // { sourceField: "DDate1" },
+              // { sourceField: "DNum1" },
+              // { sourceField: "DText2" },
+              // { sourceField: "DDate2" },
+              // { sourceField: "DNum2" },
+              // { sourceField: "DText3" },
+              // { sourceField: "DDate3" },
+              // { sourceField: "DNum3" },
+              // { sourceField: "DText4" },
+              // { sourceField: "DDate4" },
+              // { sourceField: "DNum4" },
+              // { sourceField: "DText5" },
+              // { sourceField: "DDate5" },
+              // { sourceField: "DNum5" },
+              // { sourceField: "DText6" },
+              // { sourceField: "DDate6" },
+              // { sourceField: "DNum6" },
+              // { sourceField: "DText7" },
+              // { sourceField: "DDate7" },
+              // { sourceField: "DNum7" },
+              // { sourceField: "DText8" },
+              // { sourceField: "DDate8" },
+              // { sourceField: "DNum8" },
+              // { sourceField: "DText9" },
+              // { sourceField: "DDate9" },
+              // { sourceField: "DNum9" },
+              // { sourceField: "DText10" },
+              // { sourceField: "DDate10" },
+              // { sourceField: "DNum10" },
             ],
           };
           const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
@@ -549,44 +554,86 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
           </div>
         </div>
       </div>
-      {jvall.map((jvall, index) => (
-        <div key={index}>
-          <Divider
-            variant="middle"
-            component="li"
-            style={{ listStyle: "none" }}
-          />
-          <ListItem style={{ display: "flex", alignItems: "center" }}>
-            <div className="col-4">
-              <h5>
-                &nbsp; {jvall.ItemNo}.&nbsp;{jvall.AccCode} &nbsp;
-                {jvall.AccName}
-              </h5>
-            </div>
-            <div className="col-2">
-              <h5>
-                &nbsp; {jvall.AccDesc}
-              </h5>
-            </div>
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
-              {jvall.Debit !== 0.00 && <h4>{formatNumber(jvall.Debit)}</h4>}
-            </div>
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
-              <div style={{ display: "flex" }}>
-                {jvall.Credit !== 0.00 && <h4>{formatNumber(jvall.Credit)} &nbsp;</h4>}
-                &nbsp; &nbsp;
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size="1x"
-                  style={{ color: "#0310ce", paddingTop: "10px" }}
-                  // onClick={() => handleEditDetail(jvall.seq)}
-                  onClick={() => handleEditDetail(index)}
-                />
+      {/* paginated rows */}
+      {jvall.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map((item, pageIndex) => {
+        const globalIndex = currentPage * PAGE_SIZE + pageIndex;
+        return (
+          <div key={globalIndex}>
+            <Divider
+              variant="middle"
+              component="li"
+              style={{ listStyle: "none" }}
+            />
+            <ListItem style={{ display: "flex", alignItems: "center" }}>
+              <div className="col-4">
+                <h5>
+                  &nbsp; {item.ItemNo}.&nbsp;{item.AccCode} &nbsp;
+                  {item.AccName}
+                </h5>
               </div>
-            </div>
-          </ListItem>
+              <div className="col-2">
+                <h5>
+                  &nbsp; {item.AccDesc}
+                </h5>
+              </div>
+              <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
+                {item.Debit !== 0.00 && <h4>{formatNumber(item.Debit)}</h4>}
+              </div>
+              <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
+                <div style={{ display: "flex" }}>
+                  {item.Credit !== 0.00 && <h4>{formatNumber(item.Credit)} &nbsp;</h4>}
+                  &nbsp; &nbsp;
+                  <FontAwesomeIcon
+                    icon={faChevronRight}
+                    size="1x"
+                    style={{ color: "#0310ce", paddingTop: "10px" }}
+                    onClick={() => handleEditDetail(globalIndex)}
+                  />
+                </div>
+              </div>
+            </ListItem>
+          </div>
+        );
+      })}
+      {/* pagination controls — show only when there are multiple pages */}
+      {jvall.length > PAGE_SIZE && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", padding: "8px 0" }}>
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+            disabled={currentPage === 0}
+            style={{
+              padding: "4px 14px",
+              borderRadius: "6px",
+              border: "1px solid #0310ce",
+              background: currentPage === 0 ? "#e0e0e0" : "#0310ce",
+              color: currentPage === 0 ? "#888" : "#fff",
+              cursor: currentPage === 0 ? "default" : "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            &laquo; Prev
+          </button>
+          <span style={{ fontSize: "14px", color: "#555" }}>
+            {currentPage + 1} / {Math.ceil(jvall.length / PAGE_SIZE)}
+            &nbsp;({jvall.length} rows)
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(Math.ceil(jvall.length / PAGE_SIZE) - 1, p + 1))}
+            disabled={currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1}
+            style={{
+              padding: "4px 14px",
+              borderRadius: "6px",
+              border: "1px solid #0310ce",
+              background: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#e0e0e0" : "#0310ce",
+              color: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#888" : "#fff",
+              cursor: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "default" : "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Next &raquo;
+          </button>
         </div>
-      ))}
+      )}
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
 
       <div style={{ display: "flex", paddingTop: "8px" }}>

@@ -50,7 +50,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "../purchase/Purchase Order/ScrollTop";
 import { DIfromPO } from "../purchase/Purchase Order/DIfromPO";
 import { PVfromPI } from "../Payment Invoice/PVFromPI";
-import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE } from "../api/url";
+import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import { CancelJournal } from "../Payment Voucher/CancelJournal";
@@ -78,7 +78,7 @@ export default function AccordionJVHD({
   const dispatch = useDispatch();
   const isNewMode = location.state && location.state.isNew;
 
-  const [doctype, setDoctype] = React.useState("PV"); // ตั้งค่าเริ่มต้นเป็น PV
+  const [doctype, setDoctype] = React.useState("JV"); // ตั้งค่าเริ่มต้น
 
   const [formData, setFormData] = useState({
     // เก็บข้อมูลในฟอร์ม
@@ -123,7 +123,7 @@ export default function AccordionJVHD({
     setFormData({ ...formData, [id]: value }); // อัปเดต formData เสมอ
   };
 
-  const DocType = "PV";
+  const DocType = "JV";
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedEName, setSelectedEName] = useState("");
 
@@ -193,36 +193,36 @@ export default function AccordionJVHD({
           { sourceField: "TotalCredit" },
           { sourceField: "DocNo" },
           { sourceField: "Seq" },
-          { sourceField: "Text1" },
-          { sourceField: "Date1" },
-          { sourceField: "Num1" },
-          { sourceField: "Text2" },
-          { sourceField: "Date2" },
-          { sourceField: "Num2" },
-          { sourceField: "Text3" },
-          { sourceField: "Date3" },
-          { sourceField: "Num3" },
-          { sourceField: "Text4" },
-          { sourceField: "Date4" },
-          { sourceField: "Num4" },
-          { sourceField: "Text5" },
-          { sourceField: "Date5" },
-          { sourceField: "Num5" },
-          { sourceField: "Text6" },
-          { sourceField: "Date6" },
-          { sourceField: "Num6" },
-          { sourceField: "Text7" },
-          { sourceField: "Date7" },
-          { sourceField: "Num7" },
-          { sourceField: "Text8" },
-          { sourceField: "Date8" },
-          { sourceField: "Num8" },
-          { sourceField: "Text9" },
-          { sourceField: "Date9" },
-          { sourceField: "Num9" },
-          { sourceField: "Text10" },
-          { sourceField: "Date10" },
-          { sourceField: "Num10" },
+          // { sourceField: "Text1" },
+          // { sourceField: "Date1" },
+          // { sourceField: "Num1" },
+          // { sourceField: "Text2" },
+          // { sourceField: "Date2" },
+          // { sourceField: "Num2" },
+          // { sourceField: "Text3" },
+          // { sourceField: "Date3" },
+          // { sourceField: "Num3" },
+          // { sourceField: "Text4" },
+          // { sourceField: "Date4" },
+          // { sourceField: "Num4" },
+          // { sourceField: "Text5" },
+          // { sourceField: "Date5" },
+          // { sourceField: "Num5" },
+          // { sourceField: "Text6" },
+          // { sourceField: "Date6" },
+          // { sourceField: "Num6" },
+          // { sourceField: "Text7" },
+          // { sourceField: "Date7" },
+          // { sourceField: "Num7" },
+          // { sourceField: "Text8" },
+          // { sourceField: "Date8" },
+          // { sourceField: "Num8" },
+          // { sourceField: "Text9" },
+          // { sourceField: "Date9" },
+          // { sourceField: "Num9" },
+          // { sourceField: "Text10" },
+          // { sourceField: "Date10" },
+          // { sourceField: "Num10" },
           { sourceField: "ItemNo" },
           { sourceField: "AccCode" },
           { sourceField: "AccName" },
@@ -233,36 +233,36 @@ export default function AccordionJVHD({
           { sourceField: "Debit" },
           { sourceField: "Credit" },
           { sourceField: "AccTypeID" },
-          { sourceField: "DText1" },
-          { sourceField: "DDate1" },
-          { sourceField: "DNum1" },
-          { sourceField: "DText2" },
-          { sourceField: "DDate2" },
-          { sourceField: "DNum2" },
-          { sourceField: "DText3" },
-          { sourceField: "DDate3" },
-          { sourceField: "DNum3" },
-          { sourceField: "DText4" },
-          { sourceField: "DDate4" },
-          { sourceField: "DNum4" },
-          { sourceField: "DText5" },
-          { sourceField: "DDate5" },
-          { sourceField: "DNum5" },
-          { sourceField: "DText6" },
-          { sourceField: "DDate6" },
-          { sourceField: "DNum6" },
-          { sourceField: "DText7" },
-          { sourceField: "DDate7" },
-          { sourceField: "DNum7" },
-          { sourceField: "DText8" },
-          { sourceField: "DDate8" },
-          { sourceField: "DNum8" },
-          { sourceField: "DText9" },
-          { sourceField: "DDate9" },
-          { sourceField: "DNum9" },
-          { sourceField: "DText10" },
-          { sourceField: "DDate10" },
-          { sourceField: "DNum10" },
+          // { sourceField: "DText1" },
+          // { sourceField: "DDate1" },
+          // { sourceField: "DNum1" },
+          // { sourceField: "DText2" },
+          // { sourceField: "DDate2" },
+          // { sourceField: "DNum2" },
+          // { sourceField: "DText3" },
+          // { sourceField: "DDate3" },
+          // { sourceField: "DNum3" },
+          // { sourceField: "DText4" },
+          // { sourceField: "DDate4" },
+          // { sourceField: "DNum4" },
+          // { sourceField: "DText5" },
+          // { sourceField: "DDate5" },
+          // { sourceField: "DNum5" },
+          // { sourceField: "DText6" },
+          // { sourceField: "DDate6" },
+          // { sourceField: "DNum6" },
+          // { sourceField: "DText7" },
+          // { sourceField: "DDate7" },
+          // { sourceField: "DNum7" },
+          // { sourceField: "DText8" },
+          // { sourceField: "DDate8" },
+          // { sourceField: "DNum8" },
+          // { sourceField: "DText9" },
+          // { sourceField: "DDate9" },
+          // { sourceField: "DNum9" },
+          // { sourceField: "DText10" },
+          // { sourceField: "DDate10" },
+          // { sourceField: "DNum10" },
         ],
       };
 
@@ -293,8 +293,17 @@ export default function AccordionJVHD({
         return [];
       }
 
+      // deduplicate by JournalNo (view returns one row per detail line)
+      const seen = new Set();
+      const unique = data.filter((row) => {
+        const key = row.JournalNo ?? row.journalNo ?? "";
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
       // sort newest -> oldest by JournalNo
-      const sorted = [...data].sort((a, b) => (b.JournalNo || "").localeCompare(a.JournalNo || ""));
+      const sorted = [...unique].sort((a, b) => (b.JournalNo || "").localeCompare(a.JournalNo || ""));
       setApiData(sorted);
 
       // if caller asked for specific journalNo, find index and set currentIndex/formData
@@ -341,7 +350,7 @@ export default function AccordionJVHD({
     }
   };
 
-  // โหลดรายการทั้งหมดตอน component mount (อย่าใช้ PV เป็น journalNo)
+  // โหลดรายการทั้งหมดตอน component mount (อย่าใช้ JV เป็น journalNo)
   useEffect(() => {
     fetchDataFromApi(); // fetch ทั้งหมดเพื่อให้ navigation (Next/Prev) ทำงานได้
   }, []);
@@ -403,40 +412,7 @@ export default function AccordionJVHD({
   // debug: ดูค่า formData ในทุก render
   console.log("render formData:", formData);
 
-  useEffect(() => {
-    if (
-      apiData &&
-      apiData.length > 0 &&
-      currentIndex >= 0 &&
-      currentIndex < apiData.length
-    ) {
-      const formatDate = (dateString) => {
-        if (!dateString) return "";
-        const datePart = dateString.split("T")[0]; // แยกส่วนวันที่ออกจากส่วนเวลา
-        return datePart;
-      };
-      if (currentIndex >= apiData.length) {
-        setCurrentIndex(apiData.length - 1); // ปรับ currentIndex ให้ชี้ไปยังข้อมูลสุดท้าย
-      } else if (currentIndex < 0) {
-        setCurrentIndex(0); // ปรับ currentIndex ให้ชี้ไปยังข้อมูลแรก
-      }
-      // อัปเดตค่าในฟอร์มด้วยข้อมูลจาก API (ถ้ามี)
-      setFormData({
-        ...formData,
-        entryId: apiData[currentIndex].entryId || "", // ถ้า API ส่งค่า accDocNo มา ให้ใช้ค่าจาก API, ถ้าไม่ ให้ใช้ค่าว่าง
-        journalNo: apiData[currentIndex].journalNo || "",
-        entryDate: formatDate(apiData[currentIndex].entryDate) || "",
-        effectiveDate: formatDate(apiData[currentIndex].effectiveDate) || "",
-
-        entryBy: apiData[currentIndex].entryBy || "",
-        description: apiData[currentIndex].description || "",
-
-        totalDebit: Number(apiData[currentIndex].totalDebit) || "0",
-        totalCredit: Number(apiData[currentIndex].totalCredit) || "0",
-      });
-      console.log("formData:", formData);
-    }
-  }, [currentIndex, apiData]);
+  // (removed duplicate useEffect that read lowercase-only keys and caused formData to stay empty)
 
   useEffect(() => {
     if (!apiData || apiData.length === 0) return;
@@ -472,7 +448,7 @@ export default function AccordionJVHD({
     const newJournal = item.JournalNo ?? item.journalNo ?? "";
     if (newJournal && newJournal !== currentAccDocNo) {
       setCurrentAccDocNo(newJournal);
-      console.log("AccordionPVHD setCurrentAccDocNo ->", newJournal);
+      console.log("AccordionJVHD setCurrentAccDocNo ->", newJournal);
     }
     // Update Redux so Detail component can see it too
     if (newJournal) {
@@ -552,7 +528,7 @@ export default function AccordionJVHD({
   };
 
   const handleUpdate = async () => {
-    console.log("Updated action from PVHeader");
+    console.log("Updated action from JVHeader");
     try {
       const dataToSend = { ...formData };
       const journalNo = formData.journalNo;
@@ -657,10 +633,7 @@ export default function AccordionJVHD({
       const effectiveDate = formData.effectiveDate;
       const entryBy = formData.entryBy;
       const description = formData.description;
-
-      // navigate(`/uitestacc/PVDTList?journalNo=${journalNo}`, {
-      navigate(`/uitestacc/PVListDT?journalNo=${journalNo}`, {
-        // navigate(`/uitestacc/PVListDT?entryId=${entryId}`, {
+      navigate(`${URL}JVListDT?journalNo=${journalNo}`, {
         state: {
           entryId,
           journalNo,
@@ -877,11 +850,12 @@ export default function AccordionJVHD({
     if (isFetchingRef.current) return;
     if (lastFetchedRef.current === currentAccDocNo) return;
 
-    const fetchWithView = async () => {
+    const fetchWithView = async (journalNoParam = null) => {
       isFetchingRef.current = true;
       try {
         const vJournal_All = {
           viewName: "vJournal_All",
+          // parameters: journalNoParam ? [{ field: "JournalNo", value: journalNoParam }] : [],
           results: [
             { sourceField: "EntryId" },
             { sourceField: "JournalNo" },
@@ -893,36 +867,36 @@ export default function AccordionJVHD({
             { sourceField: "TotalCredit" },
             { sourceField: "DocNo" },
             { sourceField: "Seq" },
-            { sourceField: "Text1" },
-            { sourceField: "Date1" },
-            { sourceField: "Num1" },
-            { sourceField: "Text2" },
-            { sourceField: "Date2" },
-            { sourceField: "Num2" },
-            { sourceField: "Text3" },
-            { sourceField: "Date3" },
-            { sourceField: "Num3" },
-            { sourceField: "Text4" },
-            { sourceField: "Date4" },
-            { sourceField: "Num4" },
-            { sourceField: "Text5" },
-            { sourceField: "Date5" },
-            { sourceField: "Num5" },
-            { sourceField: "Text6" },
-            { sourceField: "Date6" },
-            { sourceField: "Num6" },
-            { sourceField: "Text7" },
-            { sourceField: "Date7" },
-            { sourceField: "Num7" },
-            { sourceField: "Text8" },
-            { sourceField: "Date8" },
-            { sourceField: "Num8" },
-            { sourceField: "Text9" },
-            { sourceField: "Date9" },
-            { sourceField: "Num9" },
-            { sourceField: "Text10" },
-            { sourceField: "Date10" },
-            { sourceField: "Num10" },
+            // { sourceField: "Text1" },
+            // { sourceField: "Date1" },
+            // { sourceField: "Num1" },
+            // { sourceField: "Text2" },
+            // { sourceField: "Date2" },
+            // { sourceField: "Num2" },
+            // { sourceField: "Text3" },
+            // { sourceField: "Date3" },
+            // { sourceField: "Num3" },
+            // { sourceField: "Text4" },
+            // { sourceField: "Date4" },
+            // { sourceField: "Num4" },
+            // { sourceField: "Text5" },
+            // { sourceField: "Date5" },
+            // { sourceField: "Num5" },
+            // { sourceField: "Text6" },
+            // { sourceField: "Date6" },
+            // { sourceField: "Num6" },
+            // { sourceField: "Text7" },
+            // { sourceField: "Date7" },
+            // { sourceField: "Num7" },
+            // { sourceField: "Text8" },
+            // { sourceField: "Date8" },
+            // { sourceField: "Num8" },
+            // { sourceField: "Text9" },
+            // { sourceField: "Date9" },
+            // { sourceField: "Num9" },
+            // { sourceField: "Text10" },
+            // { sourceField: "Date10" },
+            // { sourceField: "Num10" },
             { sourceField: "ItemNo" },
             { sourceField: "AccCode" },
             { sourceField: "AccName" },
@@ -933,36 +907,36 @@ export default function AccordionJVHD({
             { sourceField: "Debit" },
             { sourceField: "Credit" },
             { sourceField: "AccTypeID" },
-            { sourceField: "DText1" },
-            { sourceField: "DDate1" },
-            { sourceField: "DNum1" },
-            { sourceField: "DText2" },
-            { sourceField: "DDate2" },
-            { sourceField: "DNum2" },
-            { sourceField: "DText3" },
-            { sourceField: "DDate3" },
-            { sourceField: "DNum3" },
-            { sourceField: "DText4" },
-            { sourceField: "DDate4" },
-            { sourceField: "DNum4" },
-            { sourceField: "DText5" },
-            { sourceField: "DDate5" },
-            { sourceField: "DNum5" },
-            { sourceField: "DText6" },
-            { sourceField: "DDate6" },
-            { sourceField: "DNum6" },
-            { sourceField: "DText7" },
-            { sourceField: "DDate7" },
-            { sourceField: "DNum7" },
-            { sourceField: "DText8" },
-            { sourceField: "DDate8" },
-            { sourceField: "DNum8" },
-            { sourceField: "DText9" },
-            { sourceField: "DDate9" },
-            { sourceField: "DNum9" },
-            { sourceField: "DText10" },
-            { sourceField: "DDate10" },
-            { sourceField: "DNum10" },
+            // { sourceField: "DText1" },
+            // { sourceField: "DDate1" },
+            // { sourceField: "DNum1" },
+            // { sourceField: "DText2" },
+            // { sourceField: "DDate2" },
+            // { sourceField: "DNum2" },
+            // { sourceField: "DText3" },
+            // { sourceField: "DDate3" },
+            // { sourceField: "DNum3" },
+            // { sourceField: "DText4" },
+            // { sourceField: "DDate4" },
+            // { sourceField: "DNum4" },
+            // { sourceField: "DText5" },
+            // { sourceField: "DDate5" },
+            // { sourceField: "DNum5" },
+            // { sourceField: "DText6" },
+            // { sourceField: "DDate6" },
+            // { sourceField: "DNum6" },
+            // { sourceField: "DText7" },
+            // { sourceField: "DDate7" },
+            // { sourceField: "DNum7" },
+            // { sourceField: "DText8" },
+            // { sourceField: "DDate8" },
+            // { sourceField: "DNum8" },
+            // { sourceField: "DText9" },
+            // { sourceField: "DDate9" },
+            // { sourceField: "DNum9" },
+            // { sourceField: "DText10" },
+            // { sourceField: "DDate10" },
+            // { sourceField: "DNum10" },
           ],
         };
 
