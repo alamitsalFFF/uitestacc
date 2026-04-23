@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -502,8 +502,8 @@ export default function SOAccordionHD({
 
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
-      navigate(`/uitestacc/AccordionSO?accDocNo=${AccDocNo}`);
-      // navigate(`/uitestacc/SOListDT?accDocNo=${AccDocNo}`, {
+      navigate(`${URL}AccordionSO?accDocNo=${AccDocNo}`);
+      // navigate(`${URL}SOListDT?accDocNo=${AccDocNo}`, {
       //   state: {
       //     accDocNo: AccDocNo,
       //     accEffectiveDate: accEffectiveDate,
@@ -659,7 +659,7 @@ export default function SOAccordionHD({
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
       navigate(`${URL}SOListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
@@ -886,10 +886,10 @@ export default function SOAccordionHD({
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SOList/`);
+    navigate(`${URL}SOList/`);
   };
   const handleGoMenu = () => {
-    navigate(`/uitestacc/`);
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

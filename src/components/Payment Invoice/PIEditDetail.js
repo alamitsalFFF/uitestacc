@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthFetch } from "../../components/Auth/fetchConfig";
-import { API_BASE,API_VIEW_RESULT } from "../../components/api/url";
+import { API_BASE,API_VIEW_RESULT, URL} from "../../components/api/url";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ButtonGroup } from "@mui/material";
@@ -190,7 +190,7 @@ function PIEditDetail() {
         });
 
       navigate(
-        `/uitestacc/PIDTList?accDocNo=${accDocNo}`
+        `${URL}PIDTList?accDocNo=${accDocNo}`
         //   , {
         //   state: {
         //     accDocNo: accDocNo,
@@ -237,7 +237,7 @@ function PIEditDetail() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/PIDTList?accDocNo=${accDocNo}`);
+      navigate(`${URL}PIDTList?accDocNo=${accDocNo}`);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -248,7 +248,7 @@ function PIEditDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PIDTList?accDocNo=${accDocNo}`);
+    navigate(`${URL}PIDTList?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

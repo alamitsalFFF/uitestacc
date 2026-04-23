@@ -1,9 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import Swal from "sweetalert2";
 import axios from "../Auth/axiosConfig";
 import { values } from "lodash";
 import { useNavigate } from 'react-router-dom';
-import { StoredProcedures_Base } from "../api/url";
+import { StoredProcedures_Base, URL} from "../api/url";
 
 export const POfromPR = async (AccDocNo, refno, navigate) => {
   console.log("AccDocNo:", AccDocNo);
@@ -74,11 +74,11 @@ export const POfromPR = async (AccDocNo, refno, navigate) => {
                  showConfirmButton: false,
                  timer: 3000,
                 //  willClose: () => { // เพิ่ม willClose event
-                //     navigate(`/uitestacc/ListPOHD/`); 
+                //     navigate(`${URL}ListPOHD/`); 
                 //   }
                });
                setTimeout(() => {
-                 navigate(`/uitestacc/POList/`);
+                 navigate(`${URL}POList/`);
                 }, 3000);
            } else {
              console.error("Error creating PO Header:", responsePOFromPR.status, responsePOFromPR.statusText);

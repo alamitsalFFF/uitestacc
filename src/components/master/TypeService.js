@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,7 +41,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 import AccCodeModal from "../DataFilters/AccCodeModal";
 
 function TypeService() {
@@ -466,7 +466,7 @@ function TypeService() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/uitestacc/TypeServiceList/");
+    navigate(`${URL}TypeServiceList/`);
   };
 
   const scrollToTop = () => {
@@ -477,7 +477,7 @@ function TypeService() {
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   return (

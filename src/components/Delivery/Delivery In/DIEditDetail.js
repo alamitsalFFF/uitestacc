@@ -27,8 +27,8 @@ import Swal from "sweetalert2";
 import { setAddProducts, setAccDocNo } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { formatNumber, formatInteger } from "../../purchase/formatNumber";
-import { API_BASE, API_VIEW_RESULT } from "../../api/url";
-import {useAuthFetch} from "../../Auth/fetchConfig"; 
+import { API_BASE, API_VIEW_RESULT, URL } from "../../api/url";
+import { useAuthFetch } from "../../Auth/fetchConfig";
 
 function DIEditDetail() {
   const location = useLocation('');
@@ -113,7 +113,7 @@ function DIEditDetail() {
   }, [accDocNo, accItemNo]);
 
   const saveDataToAPI = async (data) => {
-    console.log("DATA UPDATE:",data)
+    console.log("DATA UPDATE:", data)
     try {
       const response = await authFetch(
         `${API_BASE}/AccTransaction/EditAccTransactionDT`,
@@ -190,15 +190,16 @@ function DIEditDetail() {
           timer: 2000,
         });
 
-      navigate(
-        `/uitestacc/DIDTList?accDocNo=${accDocNo}`
-        //   , {
-        //   state: {
-        //     accDocNo: accDocNo,
-        //     addProducts: [updatedProduct],
-        //   },
-        // }
-      );}
+        navigate(
+          `${URL}DIDTList?accDocNo=${accDocNo}`
+          //   , {
+          //   state: {
+          //     accDocNo: accDocNo,
+          //     addProducts: [updatedProduct],
+          //   },
+          // }
+        );
+      }
       else {
         Swal.fire({
           icon: "error",
@@ -206,7 +207,7 @@ function DIEditDetail() {
           text: "โปรดลองใหม่อีกครั้ง",
         });
       }
-    
+
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -238,7 +239,7 @@ function DIEditDetail() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`);
+      navigate(`${URL}DIDTList?accDocNo=${accDocNo}`);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -249,7 +250,7 @@ function DIEditDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`);
+    navigate(`${URL}DIDTList?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -318,7 +319,7 @@ function DIEditDetail() {
   // }, [selectedProducts[0].accDocNo]);
 
   return (
-    <div className="row" style={{ padding: "5%",paddingTop:"1px" }}>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
       <h1 style={{ textAlign: "center" }}>Edit DI Detail</h1>
       {/* <div>&nbsp;</div> */}
       {/* <div>&nbsp;</div> */}
@@ -333,7 +334,7 @@ function DIEditDetail() {
               // onClick={handlePrint}
             /> */}
           </div>
-  
+
           <div
             className="col-5"
             style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
@@ -485,37 +486,37 @@ function DIEditDetail() {
         {/* </div> */}
       </div>
       <div>&nbsp;</div>
-   <div className="row" style={{ display: "flex" }}>
-          <div className="col-6" style={{ display: "grid" }}>
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={handleGoBack}
-            />
-          </div>
-          <div
-            className="col-6"
-            style={{ display: "grid", justifyItems: "flex-end" }}
-          >
-            <FontAwesomeIcon
-              icon={faCircleArrowUp}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={scrollToTop}
-            />
-          </div>
+      <div className="row" style={{ display: "flex" }}>
+        <div className="col-6" style={{ display: "grid" }}>
+          <FontAwesomeIcon
+            icon={faCircleArrowLeft}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={handleGoBack}
+          />
         </div>
+        <div
+          className="col-6"
+          style={{ display: "grid", justifyItems: "flex-end" }}
+        >
+          <FontAwesomeIcon
+            icon={faCircleArrowUp}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={scrollToTop}
+          />
+        </div>
+      </div>
     </div>
   );
 }

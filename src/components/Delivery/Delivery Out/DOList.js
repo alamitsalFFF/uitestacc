@@ -234,7 +234,7 @@ function DOHDList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/Accordion${accDocType}?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionDI
+    navigate(`${URL}Accordion${accDocType}?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionDI
   };
 
   const handleEditClick1 = (filtered, index) => {
@@ -243,7 +243,7 @@ function DOHDList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/DOHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง DIHeader
+    navigate(`${URL}DOHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง DIHeader
   };
   const groupedTransactions = filtered.reduce((acc, transaction) => {
     const existingTransaction = acc.find(
@@ -260,7 +260,7 @@ function DOHDList() {
   const handleAddNew = () => {
     const accDocType = "DO";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/AccordionDO?accDocType=${accDocType}`, {
+    navigate(`${URL}AccordionDO?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -305,7 +305,7 @@ function DOHDList() {
   ];
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>

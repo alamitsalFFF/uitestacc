@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,7 +28,7 @@ import { setAddProducts, setAccDocNo } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { formatNumber, formatInteger } from "../purchase/formatNumber";
 import { useAuthFetch } from "../Auth/fetchConfig";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 
 function EditDetail() {
   const authFetch = useAuthFetch();
@@ -198,7 +198,7 @@ function EditDetail() {
         });
 
         navigate(
-          `/uitestacc/PRListDT?accDocNo=${accDocNo}`
+          `${URL}PRListDT?accDocNo=${accDocNo}`
           //   , {
           //   state: {
           //     accDocNo: accDocNo,
@@ -243,7 +243,7 @@ function EditDetail() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/PRListDT?accDocNo=${accDocNo}`);
+      navigate(`${URL}PRListDT?accDocNo=${accDocNo}`);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -254,7 +254,7 @@ function EditDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PRListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}PRListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

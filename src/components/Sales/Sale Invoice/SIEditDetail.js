@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,7 +28,7 @@ import { setAddProducts, setAccDocNo } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { formatNumber, formatInteger } from "../../purchase/formatNumber";
 import { useAuthFetch } from "../../Auth/fetchConfig";
-import { API_BASE } from "../../api/url";
+import { API_BASE, URL} from "../../api/url";
 
 function SIEditDetail() {
   const location = useLocation();
@@ -198,7 +198,7 @@ function SIEditDetail() {
         });
 
         navigate(
-          `/uitestacc/SIListDT?accDocNo=${accDocNo}`
+          `${URL}SIListDT?accDocNo=${accDocNo}`
           //   , {
           //   state: {
           //     accDocNo: accDocNo,
@@ -253,7 +253,7 @@ function SIEditDetail() {
             timer: 2000,
           });
 
-          navigate(`/uitestacc/SIListDT?accDocNo=${accDocNo}`);
+          navigate(`${URL}SIListDT?accDocNo=${accDocNo}`);
         } catch (error) {
           Swal.fire({
             icon: "error",
@@ -266,7 +266,7 @@ function SIEditDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SIListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}SIListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

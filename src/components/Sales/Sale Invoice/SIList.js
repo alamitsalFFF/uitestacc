@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 import { API_BASE, API_VIEW_RESULT, URL } from "../../api/url";
@@ -260,7 +260,7 @@ function SIList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    // navigate(`/uitestacc/POHeader?accDocType=${accDocType}`, {
+    // navigate(`${URL}POHeader?accDocType=${accDocType}`, {
     navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่

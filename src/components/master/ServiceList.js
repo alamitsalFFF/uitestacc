@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -13,7 +13,7 @@ import {
 import SearchComponent from "../purchase/SearchComponen";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { API_VIEW_RESULT } from "../api/url";
+import { API_VIEW_RESULT, URL} from "../api/url";
 import { Box, Button } from "@mui/material";
 import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 
@@ -140,15 +140,15 @@ function ServiceList() {
 
   const handleEditClick = (ProductID) => {
     // ฟังก์ชันสำหรับนำทางไปยังหน้า Product พร้อมส่ง Product เป็นพารามิเตอร์
-    navigate(`/uitestacc/Service?productID=${ProductID}`);
+    navigate(`${URL}Service?productID=${ProductID}`);
   };
   const handleAddNew = () => {
     // ฟังก์ชันสำหรับนำทางไปยังหน้า Product พร้อมล้าง query parameter
-    navigate(`/uitestacc/Service`);
+    navigate(`${URL}Service`);
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   const scrollToTop = () => {
@@ -158,7 +158,7 @@ function ServiceList() {
     });
   };
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   return (

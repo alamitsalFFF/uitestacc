@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
 import { values } from "lodash";
@@ -71,7 +71,7 @@ export const SIfromSO = async (AccDocNo, navigate, duedate, webAddressSI) => {
         willClose: () => {
           // เพิ่ม willClose event
           navigate(`${URL}${webAddressSI}`);
-          // navigate("/uitestacc/SIList/");
+          // navigate(`${URL}SIList/`);
         },
       });
     } else {

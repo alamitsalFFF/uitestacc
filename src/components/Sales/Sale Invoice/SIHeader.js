@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import {useAuthFetch} from "../../Auth/fetchConfig";
-import { API_BASE, REPORT_BASE,BASE, DATA_BASE } from "../../api/url";
+import { API_BASE, REPORT_BASE,BASE, DATA_BASE, URL} from "../../api/url";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -470,7 +470,7 @@ export default function SIHeader() {
       // const accDocNo = formData.accDocNo;
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
-      navigate(`/uitestacc/SIListDT?accDocNo=${AccDocNo}`, {
+      navigate(`${URL}SIListDT?accDocNo=${AccDocNo}`, {
         state: {
           accDocNo: AccDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -636,8 +636,8 @@ export default function SIHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/SIListDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}SIListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -764,11 +764,11 @@ export default function SIHeader() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/SIList/");
+    navigate(`${URL}SIList/`);
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/SIList/");
+    navigate(`${URL}SIList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

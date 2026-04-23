@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect,useCallback } from "react";
 import axios from "../Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -529,7 +530,7 @@ function AccordionPIDT({ accDocNo,onSaveSuccess }) {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/PIHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}PIHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -541,7 +542,7 @@ function AccordionPIDT({ accDocNo,onSaveSuccess }) {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {

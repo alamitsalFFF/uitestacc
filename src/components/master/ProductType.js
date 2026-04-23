@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,7 +27,7 @@ import {
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import FloatingActionBar from "../DataFilters/FloatingActionBar";
 import HeaderBar from "../menu/HeaderBar";
@@ -277,7 +277,7 @@ function ProductType() {
   const goToLast = () => { setCurrentIndex(allProductType.length - 1); setFormData(allProductType[allProductType.length - 1]); };
 
   const navigate = useNavigate();
-  const handleGoBack = () => navigate("/uitestacc/ProductTypeList/");
+  const handleGoBack = () => navigate(`${URL}ProductTypeList/`);
 
   // -------- Button configs --------
   const buttonActions = [
@@ -582,7 +582,7 @@ function ProductType() {
       <div style={{ marginTop: "40px" }}>&nbsp;</div>
 
       {/* Floating Action Bar */}
-      <FloatingActionBar backPath="/uitestacc/ProductTypeList/" />
+      <FloatingActionBar backPath={`${URL}ProductTypeList/`} />
     </div>
   );
 }

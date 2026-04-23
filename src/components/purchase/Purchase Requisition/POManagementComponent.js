@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React from "react";
 import { useNavigate } from "react-router-dom"; // ใช้ useNavigate ที่นี่
 import Swal from "sweetalert2";
@@ -45,7 +46,7 @@ const POManagementComponent = ({ AccDocNo, onClose }) => {
         timer: 3000,
         willClose: () => {
           onClose();
-          navigate(`/uitestacc/POList/`);
+          navigate(`${URL}POList/`);
         },
       });
     } catch (error) {

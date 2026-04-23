@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../../Auth/axiosConfig'; 
-import { API_VIEW_RESULT } from '../../api/url';
+import { API_VIEW_RESULT, URL} from '../../api/url';
 import {
   FormControl,
   InputLabel,
@@ -198,7 +198,7 @@ function SRDropdowns() {
         color="secondary"
         onClick={() => {
           if (selectedHeaderAccDocNo && selectedDetailLineID) {
-            navigate(`/uitestacc/SRListDT?accDocNo=${selectedHeaderAccNo}&lineId=${selectedDetailLineID}`);
+            navigate(`${URL}SRListDT?accDocNo=${selectedHeaderAccNo}&lineId=${selectedDetailLineID}`);
           }
         }}
         disabled={!selectedDetailLineID}

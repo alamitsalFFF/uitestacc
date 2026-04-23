@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -259,7 +259,7 @@ function PVHDList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    // navigate(`/uitestacc/Accordion${accDocType}?accDocType=${accDocType}`, {
+    // navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
     navigate(`${URL}Accordion${accDocType}?accDoctype=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่

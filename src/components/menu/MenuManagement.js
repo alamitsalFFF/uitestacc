@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 import { Link, redirect } from "react-router-dom";
 import "./Menu.css";
@@ -26,7 +27,7 @@ function MenuManagement() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/CashSale" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}CashSale`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                   <FontAwesomeIcon icon={faShop} size="2x" style={{color: "#2d01bd",}} />
@@ -48,7 +49,7 @@ function MenuManagement() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/QuickBuy" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}QuickBuy`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                   <FontAwesomeIcon icon={faCartShopping} size="2x" style={{color: "#2d01bd",}} />
@@ -72,7 +73,7 @@ function MenuManagement() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Cash" style={{color:"black",textDecoration: "none"}}>
+              <Link to={`${URL}Cash`} style={{color:"black",textDecoration: "none"}}>
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faCoins} size="2x" style={{ color: "#2d01bd" }}/>
@@ -94,7 +95,7 @@ function MenuManagement() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Cash" style={{color:"black",textDecoration: "none"}}>
+              <Link to={`${URL}Cash`} style={{color:"black",textDecoration: "none"}}>
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faMoneyCheckDollar} size="2x" style={{ color: "#2d01bd" }}/>
@@ -118,7 +119,7 @@ function MenuManagement() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Cash" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Cash`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faTruckPlane} size="2x" style={{ color: "#2d01bd" }}/>

@@ -22,6 +22,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Chip from "@mui/material/Chip";
 import Swal from "sweetalert2";
+import { URL } from "../api/url";
 
 function POConfirm() {
   const [requisitions, setRequisitions] = useState([]);
@@ -175,8 +176,7 @@ function POConfirm() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -200,89 +200,8 @@ function POConfirm() {
     }
   };
 
-  // const handlePO = async (accDocNo) => {
-  //   try {
-  //     const currentDate = new Date();
-  //     const formattedDate = currentDate.toISOString().split("T")[0]; // จัดรูปแบบเป็น YYYY-MM-DD
-
-  //     const formData = {
-  //       name: "Insert_POFromPR",
-  //       parameters: [
-  //         {
-  //           param: "prno",
-  //           value: accDocNo,
-  //         },
-  //         {
-  //           param: "docdate",
-  //           value: formattedDate, // ใช้ค่าวันที่ปัจจุบัน
-  //         },
-  //         {
-  //           param: "duedate",
-  //           value: formattedDate, // ใช้ค่าวันที่ปัจจุบัน
-  //         },
-  //         // {
-  //         //   param: "refno",
-  //         //   value: "",
-  //         // },
-  //         {
-  //           param: "refno",
-  //           value: accDocNo, // ส่งเลขPRเป็นเลขเเท็กเอกสาร
-  //         },
-  //         {
-  //           param: "userid",
-  //           value: "ADMIN", //ต้องแก้เมื่อทำระบบlogin
-  //         }// ,
-  //         // {
-  //         // param: "itemno", //ถ้าไม่ส่งitemno จะนำPRทุกitemno,ponoไปทำPO param ไว้ใช้ตอนคีย์เอกสารนอกที่ไม่ใช่เอสกสารจากบัญชี
-  //         //   value: 0,
-  //         // },
-  //         // {
-  //         //   param: "pono",
-  //         //   value: "",
-  //         // },
-  //       ],
-  //     };
-  //     console.log("formData:", formData);
-
-  //     const response = await axios.post(
-  //       "http://103.225.168.137/apiaccbk2/api/Prototype/StoredProcedures/GetResult/",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 200) {
-
-  //       // if (response.data && response.data.length > 0 && response.data[0] && response.data[0].PONo) {
-  //         console.log("PO Header create successfully");
-  //         console.log("PO:", response.data.data[0].PONo);
-  //         // setPoNo(response.data.data.PONo); // อัปเดต state poNo
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: `Created PO: ${response.data.data[0].PONo}`, // ใช้ค่า poNo จาก state
-  //           showConfirmButton: false,
-  //           timer: 2000,
-  //         });
-  //         navigate(`/uitestacc/POHeader?accDocNo=${response.data.data[0].PONo}`);
-  //       // } else {
-  //       //   console.error("Error: Invalid response data", response.data);
-  //       //   alert("เกิดข้อผิดพลาด: ข้อมูลตอบกลับไม่ถูกต้อง");
-  //       // }
-  //     } else {
-  //       console.error("Error creating PO Header:", response.status, response.statusText);
-  //       alert(`สร้าง PO Header ไม่สำเร็จ กรุณาลองใหม่ (Status: ${response.status})`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error creating PO Header:", error);
-  //     alert("เกิดข้อผิดพลาดในการสร้าง PO Header: " + error.message);
-  //   }
-  // };
-
   const handleGoBack = () => {
-    navigate("/uitestacc/MenuCardAP/");
+    navigate(`${URL}MenuCardAP/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

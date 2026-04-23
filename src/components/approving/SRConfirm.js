@@ -22,6 +22,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Chip from "@mui/material/Chip";
 import Swal from "sweetalert2";
+import { URL } from "../api/url";
 
 function SRConfirm() {
   const [requisitions, setRequisitions] = useState([]);
@@ -176,8 +177,7 @@ function SRConfirm() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -258,17 +258,16 @@ function SRConfirm() {
       if (response.status === 200) {
 
         // if (response.data && response.data.length > 0 && response.data[0] && response.data[0]SONo) {
-          console.log("SO Header create successfully");
-          console.log("SO:", response.data.data[0].SONo);
-          // setPoNo(response.data.data.SONo); // อัปเดต state soNo
-          Swal.fire({
-            icon: "success",
-            title: `Created SO: ${response.data.data[0].SONo}`, // ใช้ค่า soNo จาก state
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          // navigate(`/uitestacc/SOHeader?accDocNo=${response.data.data[0].SONo}`);
-          navigate(`/uitestacc/SOList?accDocNo=${response.data.data[0].SONo}`);
+        console.log("SO Header create successfully");
+        console.log("SO:", response.data.data[0].SONo);
+        // setPoNo(response.data.data.SONo); // อัปเดต state soNo
+        Swal.fire({
+          icon: "success",
+          title: `Created SO: ${response.data.data[0].SONo}`, // ใช้ค่า soNo จาก state
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        navigate(`${URL}SOList?accDocNo=${response.data.data[0].SONo}`);
         // } else {
         //   console.error("Error: Invalid response data", response.data);
         //   alert("เกิดข้อผิดพลาด: ข้อมูลตอบกลับไม่ถูกต้อง");
@@ -284,7 +283,7 @@ function SRConfirm() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/MenuCardAP/");
+    navigate(`${URL}MenuCardAP/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

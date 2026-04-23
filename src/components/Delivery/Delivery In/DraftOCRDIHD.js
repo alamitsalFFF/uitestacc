@@ -33,7 +33,7 @@ import {
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE } from "../../api/url";
+import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL } from "../../api/url";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
 import { CancelDI } from "./CancelDI";
@@ -602,7 +602,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
 
-      navigate(`/uitestacc/AccordionDI?accDocNo=${AccDocNo}`);
+      navigate(`${URL}AccordionDI?accDocNo=${AccDocNo}`);
 
     } catch (error) {
       console.error("Error saving data (Header):", error);

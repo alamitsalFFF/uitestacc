@@ -16,9 +16,8 @@ import {
 } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { API_BASE, URL } from '../api/url';
-import companyLogoFile from '../../components/img/logo_acc1.png'; //mnl,chmt
-// import companyLogoFile from '../../components/img/logo_acc.jpg'; //tawan
-const COMPANY_LOGO = companyLogoFile;
+const COMPANY_LOGO = 'imges/logo_acc.png'; //mnl,chmt // เปลี่ยนชื่อไฟล์ รองรับทุกนามสกุล
+// const COMPANY_LOGO = 'imges/logo_acc.jpg'; //tawan
 
 function LoginForm() {
     const [username, setUserID] = useState('');
@@ -26,7 +25,6 @@ function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [loginSuccess, setLoginSuccess] = useState(false);
 
     // สร้าง ref สำหรับ TextField ของ Password
     const passwordRef = useRef(null);
@@ -69,16 +67,24 @@ function LoginForm() {
             const data = await response.json();
 
             if (data && data.token) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'เข้าสู่ระบบสำเร็จ',
+                    text: `ยินดีต้อนรับคุณ ${username}`,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+
                 localStorage.setItem('userToken', data.token);
                 localStorage.setItem("userName", username);
                 localStorage.setItem("src", data.src);
 
-                setLoginSuccess(true); // แสดง loading overlay
                 setTimeout(() => {
                     window.location.href = `${URL}`;
-                }, 3000);
+                }, 2000);
 
-                //console.log('Login successful, token:', data.token);
+                console.log('Login successful, token:', data.token);
             } else {
                 throw new Error('เข้าสู่ระบบสำเร็จแต่ไม่ได้รับ Token จากระบบ');
             }
@@ -128,75 +134,6 @@ function LoginForm() {
                 alignItems: 'center',
             }}
         >
-            {/* Loading Overlay หลัง Login สำเร็จ */}
-            {loginSuccess && (
-                <Box sx={{
-                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-                    backgroundColor: '#e90b0b',
-                    display: 'flex', flexDirection: 'column',
-                    justifyContent: 'center', alignItems: 'center',
-                    zIndex: 9999,
-                    animation: 'fadeIn 0.3s ease',
-                    '@keyframes fadeIn': { from: { opacity: 0 }, to: { opacity: 1 } },
-                }}>
-                    {/* Loading text */}
-                    <Typography sx={{
-                        color: 'white',
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                        letterSpacing: 3,
-                        mb: 2,
-                        fontFamily: 'monospace',
-                    }}>
-                        loading...
-                    </Typography>
-
-                    {/* Loading Bar Container */}
-                    <Box sx={{
-                        width: 280,
-                        height: 36,
-                        borderRadius: '18px',
-                        border: '2px solid white',
-                        overflow: 'hidden',
-                        position: 'relative',
-                        backgroundColor: 'transparent',
-                        boxShadow: '0 0 12px rgba(255,255,255,0.4)',
-                    }}>
-                        {/* Animated fill bar */}
-                        <Box sx={{
-                            position: 'absolute',
-                            top: 0, left: 0,
-                            height: '100%',
-                            width: '100%',
-                            background: 'linear-gradient(90deg, transparent 0%, white 50%, transparent 100%)',
-                            animation: 'loadingBar 1.2s ease-in-out infinite',
-                            '@keyframes loadingBar': {
-                                '0%': { transform: 'translateX(-100%)' },
-                                '100%': { transform: 'translateX(100%)' },
-                            },
-                        }} />
-                        {/* Tick marks inside bar */}
-                        <Box sx={{
-                            position: 'absolute',
-                            top: 0, left: 0,
-                            width: '100%', height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-evenly',
-                            px: '6px',
-                        }}>
-                            {Array.from({ length: 20 }).map((_, i) => (
-                                <Box key={i} sx={{
-                                    width: '2px',
-                                    height: '60%',
-                                    backgroundColor: 'rgba(255,255,255,0.35)',
-                                    borderRadius: '1px',
-                                }} />
-                            ))}
-                        </Box>
-                    </Box>
-                </Box>
-            )}
             {/* Circles */}
             <Box
                 sx={{
@@ -245,8 +182,7 @@ function LoginForm() {
                         flexDirection: 'column',
                         justifyContent: 'space-between',
                         zIndex: 1,
-                        // backgroundColor: '#00008b',
-                        backgroundColor: '#e90b0bff',
+                        backgroundColor: '#00008b',
                         boxShadow: '0 4px 6px rgba(0, 0, 139, 0.5)',
                     }}
                 >
@@ -267,7 +203,7 @@ function LoginForm() {
                                 mb: 3,
                                 '& .MuiInputBase-input': { color: 'white' },
                                 '& .MuiInputLabel-root': { color: 'white' },
-                                '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                '& .MuiInputLabel-root.Mui-focused': { color: 'red' },
                                 '& .MuiInput-underline:before': { borderBottomColor: 'white' },
                                 '& .MuiInput-underline:hover:not(.Mui-disabled):before': { borderBottomColor: 'white' },
                                 '& .MuiInput-underline:after': { borderBottomColor: 'white' },
@@ -290,7 +226,7 @@ function LoginForm() {
                                 mb: 1,
                                 '& .MuiInputBase-input': { color: 'white' },
                                 '& .MuiInputLabel-root': { color: 'white' },
-                                '& .MuiInputLabel-root.Mui-focused': { color: 'white' },
+                                '& .MuiInputLabel-root.Mui-focused': { color: 'red' },
                                 '& .MuiInput-underline:before': { borderBottomColor: 'white' },
                                 '& .MuiInput-underline:hover:not(.Mui-disabled):before': { borderBottomColor: 'white' },
                                 '& .MuiInput-underline:after': { borderBottomColor: 'white' },
@@ -333,12 +269,10 @@ function LoginForm() {
                                 borderRadius: '16px',
                                 fontWeight: 'bold',
                                 fontSize: '1.1rem',
-                                background: 'white',
-                                color: '#e90b0b',
+                                background: 'linear-gradient(to right bottom,hsla(347, 90%, 55%, 1.00),#f70300)',
                                 boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
                                 '&:hover': {
-                                    background: 'white',
-                                    color: '#e90b0b',
+                                    background: 'linear-gradient(to right bottom,hsla(347, 90%, 55%, 1.00),#f70300)',
                                     boxShadow: '0 6px 15px rgba(0,0,0,0.3)',
                                 },
                             }}

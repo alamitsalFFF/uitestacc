@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
-import { API_VIEW_RESULT, StoredProcedures_Base } from "../../api/url";
+import { API_VIEW_RESULT, StoredProcedures_Base, URL } from "../../api/url";
 // import { values } from "lodash";
 
 const fetchJournalNo = async (entryIdtoString) => {
@@ -120,58 +120,58 @@ const fetchJournalNo = async (entryIdtoString) => {
 
 export const StockFromDO = async (accDocNo, calType, navigate) => {
   console.log("accDocNo:", accDocNo);
-  console.log("accDocNo:", typeof accDocNo );
+  console.log("accDocNo:", typeof accDocNo);
   console.log("calType:", calType);
   console.log("calType:", typeof calType);
   try {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split("T")[0]; // จัดรูปแบบเป็น YYYY-MM-DD
     const loginUser = localStorage.getItem("userName") || "";
-     const StockFromDOData = {
-        name: "Insert_StockFromDO",
-        parameters: [
-          {
-            param: "dono",
-            value: accDocNo, // ใช้เลขที่ DO ที่ได้จาก API ก่อนหน้า
-          },
-          {
-            param: "userid",
-            value: loginUser,
-          },
-          {
-            param: "caltype",
-            value: calType, //0=FIFO,1=AVG
-          },
-          {
-            param: "docdate",
-            value: formattedDate, // ใช้ค่าวันที่ปัจจุบัน
-          },
-        ],
-      };
-      console.log("StockFromDOData:", StockFromDOData);
-
-      const responseStockFrom = await axios.post(
-        `${StoredProcedures_Base}`,
-        StockFromDOData,
+    const StockFromDOData = {
+      name: "Insert_StockFromDO",
+      parameters: [
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+          param: "dono",
+          value: accDocNo, // ใช้เลขที่ DO ที่ได้จาก API ก่อนหน้า
+        },
+        {
+          param: "userid",
+          value: loginUser,
+        },
+        {
+          param: "caltype",
+          value: calType, //0=FIFO,1=AVG
+        },
+        {
+          param: "docdate",
+          value: formattedDate, // ใช้ค่าวันที่ปัจจุบัน
+        },
+      ],
+    };
+    console.log("StockFromDOData:", StockFromDOData);
 
-      if (responseStockFrom.status === 200) {
-        console.log("Created JV successfully",responseStockFrom);
-        console.log("Created JV successfully",responseStockFrom.data);
-        console.log("Created successfully",responseStockFrom.data.data[0].EntryId);
-        const entryId = responseStockFrom.data.data[0].EntryId;
-        const entryIdtoString = entryId.toString();
-        console.log("entryId0:", entryIdtoString);
-        console.log("entryId1:", typeof entryIdtoString);
-        const journalId = await fetchJournalNo(entryIdtoString);
+    const responseStockFrom = await axios.post(
+      `${StoredProcedures_Base}`,
+      StockFromDOData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-        if (accDocNo) {
-        const journalText = journalId ? ` และ JV: ${journalId}` : ""; 
+    if (responseStockFrom.status === 200) {
+      console.log("Created JV successfully", responseStockFrom);
+      console.log("Created JV successfully", responseStockFrom.data);
+      console.log("Created successfully", responseStockFrom.data.data[0].EntryId);
+      const entryId = responseStockFrom.data.data[0].EntryId;
+      const entryIdtoString = entryId.toString();
+      console.log("entryId0:", entryIdtoString);
+      console.log("entryId1:", typeof entryIdtoString);
+      const journalId = await fetchJournalNo(entryIdtoString);
+
+      if (accDocNo) {
+        const journalText = journalId ? ` และ JV: ${journalId}` : "";
 
         Swal.fire({
           icon: "success",
@@ -179,30 +179,30 @@ export const StockFromDO = async (accDocNo, calType, navigate) => {
           html: `DO: ${accDocNo}${journalText}<br>คุณต้องการไปที่รายการใด?`,
           // กำหนดปุ่มที่ 1 (Confirm Button)
           showConfirmButton: true,
-          confirmButtonText: `อยู่ที่ ${accDocNo}`, 
+          confirmButtonText: `อยู่ที่ ${accDocNo}`,
           // กำหนดปุ่มที่ 2 (Cancel Button)
           showCancelButton: true,
-          cancelButtonText: `ไปที่ ${journalId}`, 
+          cancelButtonText: `ไปที่ ${journalId}`,
         }).then((result) => {
           if (result.isConfirmed) {
             // เมื่อผู้ใช้กดปุ่ม "ไปรายการ DO" (Confirm Button)
-            navigate(`/uitestacc/AccordionDO?accDocNo=${accDocNo}`); //ถ้าทำหน้า DO ให้แก้ไปที่หน้าเอกสารเลย
+            navigate(`${URL}AccordionDO?accDocNo=${accDocNo}`); //ถ้าทำหน้า DO ให้แก้ไปที่หน้าเอกสารเลย
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             // เมื่อผู้ใช้กดปุ่ม "ไปรายการ JV" (Cancel Button)
-            navigate(`/uitestacc/JVList/`);
+            navigate(`${URL}JournalEntries/`);
           }
         });
 
       }
-        else {
-          Swal.fire({
-            icon: "warning",
-            title: `Created  (Journal ID not found): ${accDocNo}`, 
-            showConfirmButton: false,
-            timer: 3000,
-          });
-        }
-      } else {
+      else {
+        Swal.fire({
+          icon: "warning",
+          title: `Created  (Journal ID not found): ${accDocNo}`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      }
+    } else {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาดในการสร้าง SO",

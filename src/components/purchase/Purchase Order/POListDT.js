@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig.js";
 import { API_VIEW_RESULT } from "../../api/url.js";
@@ -340,7 +341,7 @@ function POListDT() {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/POHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}POHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -352,7 +353,7 @@ function POListDT() {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -434,7 +435,7 @@ function POListDT() {
     console.log("accDocType:", accDocType);
     console.log("docStatus:", docStatus);
     navigate(
-      `/uitestacc/POEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+      `${URL}POEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {
@@ -495,7 +496,7 @@ function POListDT() {
     setItemCounter(newItemNo + 1);
 
     navigate(
-      `/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
+      `${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {

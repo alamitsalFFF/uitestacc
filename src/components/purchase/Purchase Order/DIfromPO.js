@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
 import { StoredProcedures_Base, URL } from "../../api/url";
@@ -50,11 +50,11 @@ export const DIfromPO = async (AccDocNoC, refno, navigate, duedate, authFetch, w
         showConfirmButton: false,
         timer: 2000,
         willClose: () => { // เพิ่ม willClose event
-          // navigate('/uitestacc/DIList/');
+          // navigate(`${URL}DIList/`);
           navigate(`${URL}${webAddress}`);
         }
       });
-      //   navigate(`/uitestacc/POHeader?accDocNo=${response.data.data[0].PONo}`);
+      //   navigate(`${URL}POHeader?accDocNo=${response.data.data[0].PONo}`);
       // } else {
       //   console.error("Error: Invalid response data", response.data);
       //   alert("เกิดข้อผิดพลาด: ข้อมูลตอบกลับไม่ถูกต้อง");

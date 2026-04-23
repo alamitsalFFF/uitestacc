@@ -22,29 +22,29 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Swal from "sweetalert2";
-import { setAddProducts,setAccDocNo } from "../../redux/TransactionDataaction";
+import { setAddProducts, setAccDocNo } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from 'react-redux';
-import { API_BASE } from "../../api/url";
-import {useAuthFetch} from "../../Auth/fetchConfig"; 
+import { API_BASE, URL } from "../../api/url";
+import { useAuthFetch } from "../../Auth/fetchConfig";
 
 function DIAddDetail() {
   // const location = useLocation();
   const dispatch = useDispatch();
   const accDocNo = useSelector((state) => state.accDocNo);
   const selectedProducts = useSelector((state) => state.selectedProducts);
-  
+
   const [price, setPrice] = useState(""); // Declare price state
   const navigate = useNavigate();
- const authFetch = useAuthFetch();
+  const authFetch = useAuthFetch();
   const newaccItemNo = 0;
 
-const [rateVatValue, setRateVatValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.rateVat) : []);
-const [rateWhtValue, setRateWhtValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.rateWht) : []);
-const [vatTypeValue, setVatTypeValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.vatType) : []);
-// const [unitStockValue, setunitStockValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.unitStock) : []);
-const [productSizeUnitValue, setProductSizeUnitValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.ProductSizeUnit) : []);
-const [productCode, setproductCode] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.productCode) : []);
-console.log("productCode:",productCode);
+  const [rateVatValue, setRateVatValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.rateVat) : []);
+  const [rateWhtValue, setRateWhtValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.rateWht) : []);
+  const [vatTypeValue, setVatTypeValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.vatType) : []);
+  // const [unitStockValue, setunitStockValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.unitStock) : []);
+  const [productSizeUnitValue, setProductSizeUnitValue] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.ProductSizeUnit) : []);
+  const [productCode, setproductCode] = useState(selectedProducts && selectedProducts.length > 0 ? selectedProducts.map(p => p.productCode) : []);
+  console.log("productCode:", productCode);
 
   const [adddatadetail, setdAddataDetail] = useState({
     price: "1",
@@ -56,7 +56,7 @@ console.log("productCode:",productCode);
     productSizeUnitValue: "",
   });
 
-  
+
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     setdAddataDetail({ ...adddatadetail, [id]: value });
@@ -65,7 +65,7 @@ console.log("productCode:",productCode);
   const [newData, setNewData] = useState(null);
 
   const saveDataToAPI = async (data) => {
-console.log("Data to be sent to API:", data);
+    console.log("Data to be sent to API:", data);
     try {
       const response = await authFetch(
         `${API_BASE}/AccTransaction/SetAccTransactionDT`,
@@ -79,11 +79,11 @@ console.log("Data to be sent to API:", data);
       );
 
       if (!response.ok) {
-             // ตรวจสอบ status code และแสดงข้อความผิดพลาด
-      console.error(`HTTP error! status: ${response.status}`);
-      const errorText = await response.text(); // รับข้อความ error จาก response
-      console.error("API error message:", errorText);
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        // ตรวจสอบ status code และแสดงข้อความผิดพลาด
+        console.error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text(); // รับข้อความ error จาก response
+        console.error("API error message:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
 
       const contentType = response.headers.get("content-type");
@@ -99,7 +99,7 @@ console.log("Data to be sent to API:", data);
           throw new Error("Response is not JSON");
         }
       }
-  
+
       const responseData = await response.json();
       console.log("API response:", responseData);
       return responseData;
@@ -166,7 +166,7 @@ console.log("Data to be sent to API:", data);
         timer: 2000,
       });
 
-      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}DeliveryIn?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: selectedProducts[0].accDocNo,
           addProducts: addProducts,
@@ -183,7 +183,7 @@ console.log("Data to be sent to API:", data);
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`);
+    navigate(`${URL}DeliveryIn?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -248,48 +248,48 @@ console.log("Data to be sent to API:", data);
     }
   };
   useEffect(() => {
-    console.log("accDocNo from Redux:", selectedProducts[0].accDocNo); 
+    console.log("accDocNo from Redux:", selectedProducts[0].accDocNo);
   }, [selectedProducts[0].accDocNo]);
 
   return (
-    <div className="row" style={{ padding: "5%" ,paddingTop:"1px"}}>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
       <h1 style={{ textAlign: "center" }}>Add DI Detail</h1>
       {/* <div>&nbsp;</div> */}
       {/* <div>&nbsp;</div> */}
       <div className="row">
-              <div style={{ display: "flex" }}>
-                <div className="col-6" style={{ cursor: "pointer", display: "grid" }}>
-                  {/* <FontAwesomeIcon
+        <div style={{ display: "flex" }}>
+          <div className="col-6" style={{ cursor: "pointer", display: "grid" }}>
+            {/* <FontAwesomeIcon
                     icon={faFloppyDisk}
                     size="2x"
                     style={{ color: "green" }}
                     onClick={handleSave}
                   /> */}
-                </div>
-        
-                <div
-                  className="col-5"
-                  style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-                >
-                  {/* <FontAwesomeIcon
+          </div>
+
+          <div
+            className="col-5"
+            style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
+          >
+            {/* <FontAwesomeIcon
                     icon={faPen}
                     size="2x"
                     style={{ color: "#72047b" }}
                     // onClick={handleUpdate}
                   /> */}
-                </div>
-                <div
-                  className="col-1"
-                  style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-                >
-                  <FontAwesomeIcon
-                    icon={faFloppyDisk}
-                    size="2x"
-                    style={{ color: "green" }}
-                    onClick={handleSave}
-                  />
-                </div>
-              </div>
+          </div>
+          <div
+            className="col-1"
+            style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
+          >
+            <FontAwesomeIcon
+              icon={faFloppyDisk}
+              size="2x"
+              style={{ color: "green" }}
+              onClick={handleSave}
+            />
+          </div>
+        </div>
 
         <ListItem style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flexGrow: 1 }}>
@@ -312,8 +312,8 @@ console.log("Data to be sent to API:", data);
           </div>
         </ListItem>
         {/* <div>&nbsp; &nbsp;</div> */}
-        <div className="col-md-12" 
-        style={{ display: "flex" }}
+        <div className="col-md-12"
+          style={{ display: "flex" }}
         >
           <ListItem style={{ display: "flex", alignItems: "center" }}>
             <TextField

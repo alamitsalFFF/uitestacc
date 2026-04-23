@@ -1,6 +1,6 @@
-import Swal from "sweetalert2";
+﻿import Swal from "sweetalert2";
 import axios from "../Auth/axiosConfig";
-import { API_BASE, StoredProcedures } from "../api/url";
+import { API_BASE, StoredProcedures, URL} from "../api/url";
 
 export const CancelPR = async (AccDocNoC, navigate) => {
   // แสดงกล่องข้อความให้กรอกเหตุผลการยกเลิก
@@ -71,7 +71,7 @@ export const CancelPR = async (AccDocNoC, navigate) => {
 
         // นำทางผู้ใช้กลับไปที่หน้ารายการหลังจาก 3 วินาที
         setTimeout(() => {
-          navigate(`/uitestacc/PRList/`);
+          navigate(`${URL}PRList/`);
         }, 3000);
       } else {
         console.error("Error creating CancelPR:", response.status, response.statusText);

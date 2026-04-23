@@ -1,7 +1,7 @@
-// import React from "react";
+﻿// import React from "react";
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
-import { API_VIEW_RESULT, StoredProcedures_Base } from "../../api/url";
+import { API_VIEW_RESULT, StoredProcedures_Base, URL} from "../../api/url";
 // import { values } from "lodash";
 
 const fetchJournalNo = async (entryIdtoString) => {
@@ -122,7 +122,7 @@ export const DOfromSI = async (AccDocNo,refno, navigate) => {
         timer: 3000,
       });
       setTimeout(() => {
-        navigate(`/uitestacc/DOList/`);
+        navigate(`${URL}DOList/`);
       }, 3000);
     } else {
       console.error("Error creating DO Header:", responseDOFromSI.status, responseDOFromSI.statusText);

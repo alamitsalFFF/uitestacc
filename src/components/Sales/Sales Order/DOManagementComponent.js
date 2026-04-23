@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React from "react";
 import { useNavigate } from "react-router-dom"; // ใช้ useNavigate ที่นี่
 import Swal from "sweetalert2";
@@ -69,7 +70,7 @@ const DOManagementComponent = ({ AccDocNo, onClose }) => {
         timer: 3000,
         willClose: () => {
           onClose();
-          navigate(`/uitestacc/DOList/`);
+          navigate(`${URL}DOList/`);
         },
       });
     } catch (error) {

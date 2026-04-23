@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import { useAuthFetch } from "../../Auth/fetchConfig";
-import { API_BASE, BASE, DATA_BASE, REPORT_BASE } from "../../api/url";
+import { API_BASE, BASE, DATA_BASE, REPORT_BASE, URL} from "../../api/url";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -512,7 +512,7 @@ export default function POHeader() {
 
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
-      navigate(`/uitestacc/POListDT?accDocNo=${AccDocNo}`, {
+      navigate(`${URL}POListDT?accDocNo=${AccDocNo}`, {
         state: {
           accDocNo: AccDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -656,8 +656,8 @@ export default function POHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/POListDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}POListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -800,7 +800,7 @@ export default function POHeader() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/ListPOHD/`);
+    navigate(`${URL}ListPOHD/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

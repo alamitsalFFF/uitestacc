@@ -1,8 +1,8 @@
-import React from "react";
+﻿import React from "react";
 import Swal from "sweetalert2";
 import axios from "../Auth/axiosConfig";
 import { values } from "lodash";
-import { API_VIEW_RESULT, StoredProcedures_Base } from "../api/url";
+import { API_VIEW_RESULT, StoredProcedures_Base, URL} from "../api/url";
 // const navigate = useNavigate();
 
 const fetchJournalNo = async (entryIdtoString) => {
@@ -116,7 +116,7 @@ export const PIToJournal = async (AccDocNo,navigate) => {
             timer: 3000,
           });
           setTimeout(() => {
-            navigate(`/uitestacc/JVList/`);
+            navigate(`${URL}JVList/`);
             }, 3000);
         } else {
           Swal.fire({

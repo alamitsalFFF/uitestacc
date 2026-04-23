@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
@@ -213,7 +214,7 @@ function SREditDetail() {
           timer: 2000,
         });
 
-        navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`);
+        navigate(`${URL}SRListDT?accDocNo=${accDocNo}`);
       } else {
         Swal.fire({
           icon: "error",
@@ -265,7 +266,7 @@ function SREditDetail() {
             timer: 2000,
           });
 
-          navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`);
+          navigate(`${URL}SRListDT?accDocNo=${accDocNo}`);
         } catch (error) {
           Swal.fire({
             icon: "error",
@@ -288,7 +289,7 @@ function SREditDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}SRListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

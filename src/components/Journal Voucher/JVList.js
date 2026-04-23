@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -325,7 +325,7 @@ function JVList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    // navigate(`/uitestacc/Accordion${accDocType}?accDocType=${accDocType}`, {
+    // navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
     navigate(`${URL}Accordion${accDocType}?accDoctype=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
@@ -403,7 +403,7 @@ function JVList() {
   ];
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>

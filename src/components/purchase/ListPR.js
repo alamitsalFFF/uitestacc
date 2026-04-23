@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -139,7 +139,7 @@ function PurchaseRequisitionList() {
     dispatch(setPartyName(filteredPR.PartyName));
     dispatch(setAccDocType(filteredPR.AccDocType));
     dispatch(setStatusName(filteredPR.StatusName));
-    navigate(`/uitestacc/PRHeader?accDocNo=${filteredPR.AccDocNo}`); // นำทางไปยัง PRHeader
+    navigate(`${URL}PRHeader?accDocNo=${filteredPR.AccDocNo}`); // นำทางไปยัง PRHeader
   };
 
   const groupedTransactions = filteredPR.reduce((acc, transaction) => {
@@ -157,7 +157,7 @@ function PurchaseRequisitionList() {
   const handleAddNew = () => {
     const accDocType = "PR";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/PRHeader?accDocType=${accDocType}`, {
+    navigate(`${URL}PRHeader?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -170,7 +170,7 @@ function PurchaseRequisitionList() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/MenuCardPC/");
+    navigate(`${URL}MenuCardPC/`);
   };
   const handleGoMenu = () => {
     navigate(URL);
@@ -289,7 +289,7 @@ function PurchaseRequisitionList() {
         ))}
       </ul>
       <div>&nbsp;</div>
-      <FloatingActionBar backPath="/uitestacc/" />
+      <FloatingActionBar backPath={`${URL}`} />
     </div>
   );
 }

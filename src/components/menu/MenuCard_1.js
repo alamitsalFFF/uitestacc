@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
@@ -17,14 +18,14 @@ const cards = [
     id: "AC",
     title: "Account Control",
     description: "ระบบบัญชี",
-    address:"/uitestacc/MenuCardAC",
+    address: `${URL}MenuCardAC`,
   },
 
   {
     id: "FC",
     title: "Financial Control",
     description: "ระบบการเงิน",
-    address:"/uitestacc/MenuCardFC",
+    address: `${URL}MenuCardFC`,
 
   },
 
@@ -32,46 +33,46 @@ const cards = [
     id: "M1",
     title: "Module1",
     description: "Module 1.",
-    address:"/uitestacc/MenuCardM1",
+    address: `${URL}MenuCardM1`,
   },
 
   {
     id: "MA",
     title: "Master Files",
     description: "ข้อมูลมาตรฐาน",
-    address:"/uitestacc/MenuCardMA",
+    address: `${URL}MenuCardMA`,
   },
 
   {
     id: "PC",
     title: "Purchase Control",
     description: "ระบบจัดซื้อ",
-    address:"/uitestacc/MenuCardPC",
+    address: `${URL}MenuCardPC`,
   },
 
   {
     id: "SC",
     title: "Sales Control",
     description: "ระบบขาย",
-    address:"/uitestacc/MenuCardSC",
+    address: `${URL}MenuCardSC`,
   },
   {
     id: "DC",
     title: "Delivery",
     description: "Delivery",
-    address:"/uitestacc/MenuCardDC",
+    address: `${URL}MenuCardDC`,
   },
   {
     id: "AP",
     title: "Appove Control",
     description: "การอนุมัติ",
-    address:"/uitestacc/MenuCardAP",
+    address: `${URL}MenuCardAP`,
   },
   {
     id: "FP",
     title: "Form Print",
     description: "เอกสาร",
-    address:"/uitestacc/TransactionList",
+    address: `${URL}TransactionList`,
   },
   
 ];

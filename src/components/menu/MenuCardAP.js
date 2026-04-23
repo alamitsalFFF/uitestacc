@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
@@ -23,19 +24,19 @@ const cardssub = [
     id: "PAPR",
     title: "Purchase Requisition",
     description: "อนุมัติใบขอซื้อ",
-    address: "/uitestacc/PRConfirm",
+    address: `${URL}PRConfirm`,
   },
   {
     id: "APSO",
     title: "Sales Requisition",
     description: "อนุมัติใบสั่งขาย",
-    address: "/uitestacc/SRConfirm",
+    address: `${URL}SRConfirm`,
   },
   // {
   //   id: "APCP",
   //   title: "Cash Purchase",
   //   description: "อนุมัติใบซื้อสด",
-  //   address: "/uitestacc/",
+  //   address: `${URL}`,
   // },
 ];
 function MenuCardAP() {
@@ -43,7 +44,7 @@ function MenuCardAP() {
   // const tawanImage = "./img/tawan.jpg";
   const navigate = useNavigate();
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

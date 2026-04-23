@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -234,7 +234,7 @@ function WHTList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(DocType));
-    // navigate(`/uitestacc/Accordion${DocType}?DocType=${DocType}`, {
+    // navigate(`${URL}Accordion${DocType}?DocType=${DocType}`, {
     navigate(`${URL}WHT3?DocType=${DocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่

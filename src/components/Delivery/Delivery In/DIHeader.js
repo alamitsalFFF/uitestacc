@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
-import {useAuthFetch} from "../../Auth/fetchConfig";
+import { useAuthFetch } from "../../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -49,7 +49,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "./ScrollTop";
 // import { DIfromPO } from "./DIfromPO";
 // import IconButton from "../../purchase/Purchase Order/Iconbutton";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../../api/url";
 
 export default function DIHeader() {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -343,8 +343,7 @@ export default function DIHeader() {
       if (!response.ok) {
         const errorData = await response.json(); // Try to get error details from the server
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -362,7 +361,7 @@ export default function DIHeader() {
       const nameCategory = selectedEName;
       console.log("nameEDoc:", selectedEName);
 
-      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}DIDTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -405,8 +404,7 @@ export default function DIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -423,7 +421,7 @@ export default function DIHeader() {
 
   const handleCancel = async () => {
     try {
-      const dataCancel = { ...formData ,docStatus:99 };
+      const dataCancel = { ...formData, docStatus: 99 };
       const accDocNo = formData.accDocNo;
 
       // ตรวจสอบข้อมูลก่อนส่ง
@@ -447,8 +445,7 @@ export default function DIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -477,8 +474,7 @@ export default function DIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -502,8 +498,7 @@ export default function DIHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/DIDTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}DIDTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -599,25 +594,25 @@ export default function DIHeader() {
   // -------------------------------
   const docStatus = formData.docStatus;
 
-//   const handleDI = async (AccDocNo) => {
-//     // const userId = "admin"; // หรือจะดึงจากระบบ login
-//     await DIfromPO(AccDocNo);
-  
-//     navigate({
-//       state: { AccDocNo:AccDocNo },
-//     });
-//   };
+  //   const handleDI = async (AccDocNo) => {
+  //     // const userId = "admin"; // หรือจะดึงจากระบบ login
+  //     await DIfromPO(AccDocNo);
+
+  //     navigate({
+  //       state: { AccDocNo:AccDocNo },
+  //     });
+  //   };
   const handlePrint = async () => {
     // const PR = "PR"; // กำหนดค่า PR ให้ถูกต้อง
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
     const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
-    window.open(printUrl, "_blank"); 
+    window.open(printUrl, "_blank");
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/DIList/");
+    navigate(`${URL}DeliveryIn`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -627,7 +622,7 @@ export default function DIHeader() {
   };
 
   return (
-    <div className="row" style={{ padding: "5%" ,paddingTop:"1px"}}>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
       <h2 style={{ textAlign: "center" }}>Delivery In</h2>
       <div style={{ display: "flex" }}>
         <div className="col-1" style={{ cursor: "pointer", display: "grid" }}>
@@ -658,7 +653,7 @@ export default function DIHeader() {
             icon={faPrint}
             size="2x"
             style={{ color: "blue" }}
-             onClick={handlePrint}
+            onClick={handlePrint}
           />
         </div>
 
@@ -747,19 +742,19 @@ export default function DIHeader() {
             onClick={handleUpdate}
           />
         </div>
-        {docStatus ==="0" &&(
-        <div
-          className="col-1"
-          style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-        >
-          <FontAwesomeIcon
-            icon={faTrash}
-            size="2x"
-            style={{ color: "#ae0000" }}
-            // onClick={handleDelete}
-            onClick={handleCancel}
-          />
-        </div>
+        {docStatus === "0" && (
+          <div
+            className="col-1"
+            style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
+          >
+            <FontAwesomeIcon
+              icon={faTrash}
+              size="2x"
+              style={{ color: "#ae0000" }}
+              // onClick={handleDelete}
+              onClick={handleCancel}
+            />
+          </div>
         )}
       </div>
       {/* <div>
@@ -1018,7 +1013,7 @@ export default function DIHeader() {
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1031,7 +1026,7 @@ export default function DIHeader() {
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div>&nbsp;</div>

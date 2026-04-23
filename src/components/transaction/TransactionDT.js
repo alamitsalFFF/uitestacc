@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import Button from "@mui/material/Button";
 import { ButtonGroup } from "@mui/material";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -236,7 +237,7 @@ useEffect(() => {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -386,7 +387,7 @@ useEffect(() => {
 const [editDetail, setEditDetail] = useState([]);
 
 const handleEditDetail = () => {
-  navigate(`/uitestacc/TransactionDTEdit?accDocNo=${accDocNo}&Item=${accItemNo}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
+  navigate(`${URL}TransactionDTEdit?accDocNo=${accDocNo}&Item=${accItemNo}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
       state: { 
           editDetail,
           accDocNo: accDocNo, // ส่ง accDocNo ไปด้วย
@@ -439,7 +440,7 @@ useEffect(() => {
 //   setAccItemNo([...accItemNo, newItemNo]);
 //   setItemCounter(newItemNo + 1);
   
-//     navigate(`/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}&Item=${itemCounter}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
+//     navigate(`${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${itemCounter}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
 //     state: {
 //       // addDetail: addDetail,
 //       accDocNo: accDocNo,

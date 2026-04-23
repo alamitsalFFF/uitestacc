@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig"; // ใช้ axiosConfig ที่มี interceptor
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,7 +29,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 
 function AccountCode() {
   const [searchParams] = useSearchParams();
@@ -342,7 +342,7 @@ function AccountCode() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/uitestacc/AccCodeList/");
+    navigate(`${URL}AccCodeList/`);
   };
 
   const scrollToTop = () => {

@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 //หน้านี้สำหรับเลือก product มาจาก VMas_Product
 // import React, { useState, useEffect } from "react";
 import React, { useState, useEffect, createContext, useContext } from "react";
@@ -225,7 +226,7 @@ function PRSelection() {
       );
       setNextItemNo(nextItemNo + 1);
     }
-    navigate(`/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}`
+    navigate(`${URL}TransactionDTAdd?accDocNo=${accDocNo}`
 );
   };
 
@@ -264,7 +265,7 @@ function PRSelection() {
         )
       );
 
-      navigate(`/uitestacc/AddDetail`
+      navigate(`${URL}AddDetail`
       //   , {
       //   state: {
       //     accDocNo: accDocNo,
@@ -300,7 +301,7 @@ function PRSelection() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/POHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}POHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

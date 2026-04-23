@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import axios from "../Auth/axiosConfig";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -50,7 +50,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "../purchase/Purchase Order/ScrollTop";
 import { DIfromPO } from "../purchase/Purchase Order/DIfromPO";
 import { PVfromPI } from "../Payment Invoice/PVFromPI";
-import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE } from "../api/url";
+import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL} from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import { CancelJournal } from "../Payment Voucher/CancelJournal";
@@ -576,9 +576,9 @@ export default function AccordionRVHD({
       const entryBy = formData.entryBy;
       const description = formData.description;
 
-      // navigate(`/uitestacc/PVDTList?journalNo=${journalNo}`, {
-      navigate(`/uitestacc/RVListDT?journalNo=${journalNo}`, {
-        // navigate(`/uitestacc/PVListDT?entryId=${entryId}`, {
+      // navigate(`${URL}PVDTList?journalNo=${journalNo}`, {
+      navigate(`${URL}RVListDT?journalNo=${journalNo}`, {
+        // navigate(`${URL}PVListDT?entryId=${entryId}`, {
         state: {
           entryId,
           journalNo,

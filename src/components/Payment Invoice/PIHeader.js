@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig";
 import { useAuthFetch } from "../../components/Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -49,7 +49,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "../purchase/Purchase Order/ScrollTop";
 import { DIfromPO } from "../purchase/Purchase Order/DIfromPO";
 import { PVfromPI } from "./PVFromPI";
-import { API_BASE, BASE, DATA_BASE, REPORT_BASE } from "../api/url";
+import { API_BASE, BASE, DATA_BASE, REPORT_BASE, URL} from "../api/url";
 import { GetGLTemplate } from "../purchase/Purchase Order/GetGLTemplate";
 import GLTemplateModal from "../purchase/Purchase Order/GLTemplateModal";
 import { FaDochub, FaDocker } from "react-icons/fa";
@@ -372,7 +372,7 @@ export default function PIHeader() {
       const nameCategory = selectedEName;
       console.log("nameEDoc:", selectedEName);
 
-      navigate(`/uitestacc/PIDTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}PIDTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -514,8 +514,8 @@ export default function PIHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/PIDTList?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}PIDTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -647,7 +647,7 @@ export default function PIHeader() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PIList/`);
+    navigate(`${URL}PIList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

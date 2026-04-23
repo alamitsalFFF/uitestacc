@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -215,10 +216,10 @@ function PVDTList() {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/PVList?journalNo=${JournalNo}`);
+    navigate(`${URL}PVList?journalNo=${JournalNo}`);
   };
   const handleGoMenu = () => {
-    navigate(`/uitestacc/`);
+    navigate(`${URL}`);
   };
 
   const scrollToTop = () => {
@@ -447,7 +448,7 @@ function PVDTList() {
       <div className="row">
 
         <div style={{paddingTop:"50px"}}>&nbsp;</div>
-        <FloatingActionBar backPath="/uitestacc/"/>
+        <FloatingActionBar backPath={`${URL}`}/>
       </div>
     </div>
   );

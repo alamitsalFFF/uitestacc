@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { useAuthFetch } from "../../Auth/fetchConfig";
+import { URL } from "../../api/url";
 
 // const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhPl6X7YOKy44P72aWZmdMrkzVcZB0lr8qP_Wao-zG2L22RM5r0qtn3lyP10MuWY49/exec";
 const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzllsXgyVHMfAMpH1_cyFeRRR4vd66owtrpEu42oEIQXGc5tQJUQmpp0AVOUxviKwqM/exec";
@@ -67,7 +68,7 @@ function DraftDataFromOCR() {
       console.log("[DraftDataFromOCR] mapped:", mapped);
 
       // ส่งไปหน้า DraftOCRDIHD
-      navigate("/uitestacc/DraftOCRDI", {
+      navigate(`${URL}DraftOCRDI`, {
         state: {
           mappedOCR: mapped,
           fromOCRData: true,

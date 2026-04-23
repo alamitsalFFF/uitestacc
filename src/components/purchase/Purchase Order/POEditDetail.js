@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,7 +28,7 @@ import Swal from "sweetalert2";
 import { setAddProducts, setAccDocNo } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { formatNumber, formatInteger } from "../formatNumber";
-import { API_BASE,API_VIEW_RESULT } from "../../api/url";
+import { API_BASE,API_VIEW_RESULT, URL} from "../../api/url";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 import ButtonAction from "../../DataFilters/ButtonAction";
 import MoreInfoDT from "../../AdditionData/AdditionDataTD/MoreInfoDT";
@@ -207,7 +207,7 @@ function POEditDetail() {
         });
 
       navigate(
-        `/uitestacc/POListDT?accDocNo=${accDocNo}`
+        `${URL}POListDT?accDocNo=${accDocNo}`
         //   , {
         //   state: {
         //     accDocNo: accDocNo,
@@ -254,7 +254,7 @@ function POEditDetail() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/POListDT?accDocNo=${accDocNo}`);
+      navigate(`${URL}POListDT?accDocNo=${accDocNo}`);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -265,7 +265,7 @@ function POEditDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/POListDT?accDocno=${accDocNo}`);
+    navigate(`${URL}POListDT?accDocno=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

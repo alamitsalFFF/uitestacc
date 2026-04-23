@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig"; // ใช้ axios ที่กำหนดเอง
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -18,7 +18,7 @@ import {
   setAccDocType,
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
-import { API_VIEW_RESULT } from "../api/url";
+import { API_VIEW_RESULT, URL} from "../api/url";
 import { Box, Button } from "@mui/material";
 import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 
@@ -106,14 +106,14 @@ function TypeIngredientList() {
 
   const handleEditClick = (ProductTypeID) => {
     // ฟังก์ชันสำหรับนำทางไปยังหน้า ProductType พร้อมส่ง ProductType เป็นพารามิเตอร์
-    navigate(`/uitestacc/TypeIngredient?productTypeID=${ProductTypeID}`);
+    navigate(`${URL}TypeIngredient?productTypeID=${ProductTypeID}`);
   };
   const handleAddNew = () => {
     // ฟังก์ชันสำหรับนำทางไปยังหน้า ProductType พร้อมล้าง query parameter
-    navigate(`/uitestacc/TypeIngredient`);
+    navigate(`${URL}TypeIngredient`);
   };
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   const scrollToTop = () => {
@@ -124,7 +124,7 @@ function TypeIngredientList() {
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   return (

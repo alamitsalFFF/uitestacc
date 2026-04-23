@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -19,7 +19,7 @@ import {
   setAccDocType,
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
-import { API_VIEW_RESULT } from "../api/url";
+import { API_VIEW_RESULT, URL} from "../api/url";
 
 function TransactionList() {
   const [requisitions, setRequisitions] = useState([]);
@@ -117,7 +117,7 @@ function TransactionList() {
 
   const handlePrint = (filteredTransactions) => {
     dispatch(setAccDocNotran(filteredTransactions.AccDocNo));
-    navigate(`/uitestacc/TransactionPrint?accDocNo=${filteredTransactions.AccDocNo}`);
+    navigate(`${URL}TransactionPrint?accDocNo=${filteredTransactions.AccDocNo}`);
   };
 
     const groupedTransactions = filteredTransactions.reduce((acc, transaction) => {

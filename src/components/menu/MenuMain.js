@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 import { Link, redirect } from "react-router-dom";
 import "./Menu.css";
@@ -25,7 +26,7 @@ function MenuMain() {
                 borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Cash" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Cash`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon
@@ -117,7 +118,7 @@ function MenuMain() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Entries" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Entries`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faFileInvoiceDollar} size="2x" style={{ color: "#2d01bd" }}/>
@@ -140,7 +141,7 @@ function MenuMain() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/"style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}`}style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faChartLine} size="2x" style={{ color: "#2d01bd" }}/>
@@ -165,7 +166,7 @@ function MenuMain() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Master" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Master`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon

@@ -44,7 +44,7 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../../purchase/formatNumber";
 import Abbreviation from "../../purchase/Abbreviation.js";
 import { FormatDate } from "../../purchase/FormatData.js";
-import { API_VIEW_RESULT } from "../../api/url.js";
+import { API_VIEW_RESULT, URL } from "../../api/url.js";
 
 function DIDTList() {
   const location = useLocation('');
@@ -258,7 +258,7 @@ function DIDTList() {
   }, [location.state?.addProducts]);
   //ส่งค่าไปด้วยตอนไปเลือกรายการ
   const handleProductSelect = () => {
-    navigate("/uitestacc/DIselectProduct/", {
+    navigate(`${URL}DIselectProduct/`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -330,9 +330,9 @@ function DIDTList() {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
-    navigate(`/uitestacc/DIHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}DeliveryIn?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -344,7 +344,7 @@ function DIDTList() {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -486,7 +486,7 @@ function DIDTList() {
 
   const handleEditDetail = (AccItemNo) => {
     navigate(
-      `/uitestacc/DIEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+      `${URL}DIEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {
@@ -526,43 +526,6 @@ function DIDTList() {
     }
   }, [detailData]);
 
-  // const handleAddDetail = () => {
-  //   const productNames = selectedProducts.map((product) => product.productName);
-  //   const rateVats = selectedProducts.map((product) => product.rateVat);
-  //   const rateWhts = selectedProducts.map((product) => product.rateWht);
-  //   const unitStocks = selectedProducts.map((product) => product.unitStock);
-  //   let newItemNo = itemCounter;
-  //   while (accItemNo.includes(newItemNo)) {
-  //     newItemNo++;
-  //   }
-  //   const newItem = {
-  //     ...selectedProducts,
-  //     itemNo: newItemNo,
-  //   };
-  //   dispatch(setSelectedProducts([...selectedProducts, newItem]));
-  //   setAccItemNo([...accItemNo, newItemNo]);
-  //   setItemCounter(newItemNo + 1);
-
-  //   navigate(
-  //     `/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
-  //     {
-  //       //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
-  //       state: {
-  //         // addDetail: addDetail,
-  //         accDocNo: accDocNo,
-  //         productNames: productNames,
-  //         rateVats: rateVats,
-  //         rateWhts: rateWhts,
-  //         unitStocks: unitStocks,
-
-  //         accEffectiveDate: accEffectiveDate,
-  //         partyCode: partyCode,
-  //         partyName: partyName,
-  //         nameCategory: nameCategory,
-  //       },
-  //     }
-  //   );
-  // };
 
   return (
     // <div className="row" style={{ padding: "5%" }}>
@@ -634,7 +597,7 @@ function DIDTList() {
                 &nbsp; {product.AccItemNo}.&nbsp;
                 <Abbreviation textName={product.ProductName} />
                 {/* {product.ProductName}  */}
-                &nbsp; <i style={{fontSize:"13px"}}>{product.AccSourceDocNo}</i>
+                &nbsp; <i style={{ fontSize: "13px" }}>{product.AccSourceDocNo}</i>
               </h5>
               <h>
                 &nbsp; &nbsp; {formatNumber(product.Price)}

@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 // src/components/SOManagementComponent.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom"; // ใช้ useNavigate ที่นี่
@@ -51,7 +52,7 @@ const SOManagementComponent = ({ AccDocNo, onClose }) => {
         timer: 3000,
         willClose: () => {
           onClose();
-          navigate(`/uitestacc/SOList/`);
+          navigate(`${URL}SOList/`);
         },
       });
     } catch (error) {

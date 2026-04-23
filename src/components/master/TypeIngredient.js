@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,7 +41,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 
 function TypeIngredient() {
   const [searchParams] = useSearchParams();
@@ -398,7 +398,7 @@ function TypeIngredient() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/uitestacc/FixedAssetsType/");
+    navigate(`${URL}FixedAssetsType/`);
   };
 
   const scrollToTop = () => {
@@ -409,7 +409,7 @@ function TypeIngredient() {
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   return (

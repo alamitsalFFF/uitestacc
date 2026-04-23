@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
@@ -46,28 +47,28 @@ const cardssub = {
       menuid: "SP",
       title: "Suppliers",
       description: "ผู้ให้บริการ",
-      address: "/uitestacc/SupplierList",
+      address: `${URL}SupplierList`,
     },
     {
       id: "AC",
       menuid: "CU",
       title: "Customers",
       description: "ผู้รับบริการ/ลูกค้า",
-      address: "/uitestacc/CustomerList",
+      address: `${URL}CustomerList`,
     },
     {
       id: "AC",
       menuid: "ACC1",
       title: "Accounts1",
       description: "Accounts1",
-      address: "/uitestacc/AccCode/",
+      address: `${URL}AccCode/`,
     },
     {
       id: "AC",
       menuid: "ACC2",
       title: "Accounts2",
       description: "Accounts2",
-      address: "/uitestacc/AccCodeList/",
+      address: `${URL}AccCodeList/`,
     },
   ],
   PD: [
@@ -76,28 +77,28 @@ const cardssub = {
       menuid: "PT",
       title: "Product Type",
       description: "ประเภทสินค้า",
-      address: "/uitestacc/ProductTypeList",
+      address: `${URL}ProductTypeList`,
     },
     // {
     //   id: "PD",
     //   menuid: "PG",
     //   title: "Product Group",
     //   description: "กลุ่มสินค้า",
-    //   address: "/uitestacc/MenuCard",
+    //   address: `${URL}MenuCard`,
     // },
     {
       id: "PD",
       menuid: "PS",
       title: "Product And Services",
       description: "รหัสสินค้า/บริการ",
-      address: "/uitestacc/ProductList",
+      address: `${URL}ProductList`,
     },
     {
       id: "PD",
       menuid: "WA",
       title: "Warehouse",
       description: "คลังสินค้า",
-      address: "/uitestacc/WarehouseList",
+      address: `${URL}WarehouseList`,
     },
   ],
   SYS: [
@@ -106,28 +107,28 @@ const cardssub = {
       menuid: "US",
       title: "Users",
       description: "ข้อมูลผู้ใช้งาน",
-      address: "/uitestacc/",
+      address: `${URL}`,
     },
     {
       id: "SYS",
       menuid: "COM",
       title: "Company Profiles",
       description: "ข้อมูลกิจการ",
-      address: "/uitestacc/",
+      address: `${URL}`,
     },
     {
       id: "SYS",
       menuid: "AC",
       title: "AccConfig",
       description: "การตั้งค่าระบบบัญชี",
-      address: "/uitestacc/AccConfigList/",
+      address: `${URL}AccConfigList/`,
     },
     {
       id: "SYS",
       menuid: "DS",
       title: "DocConfigSchema",
       description: "DocConfigSchema",
-      address: "/uitestacc/DocConfigSchemaList/",
+      address: `${URL}DocConfigSchemaList/`,
     },
   ],
 };
@@ -147,7 +148,7 @@ function MenuCardMA() {
   // };
   const navigate = useNavigate();
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

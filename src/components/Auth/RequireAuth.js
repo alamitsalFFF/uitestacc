@@ -2,6 +2,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { URL } from '../api/url';
 
 function isTokenExpired(token) {
   if (!token) return true;
@@ -32,7 +33,7 @@ export default function RequireAuth({ children }) {
 
   if (!token) {
     // ยังไม่ login เลย ให้ไปหน้า LoginForm
-    return <Navigate to="/uitestacc/Login" state={{ from: location }} replace />;
+    return <Navigate to={`${URL}Login`} state={{ from: location }} replace />;
   }
 
   if (isTokenExpired(token)) {

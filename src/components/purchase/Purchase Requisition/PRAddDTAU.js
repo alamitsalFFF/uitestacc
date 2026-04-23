@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +25,7 @@ import Select from "@mui/material/Select";
 import Swal from "sweetalert2";
 import { setAddProducts,setAccDocNo ,setSelectedProducts } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from 'react-redux';
-import { API_BASE } from "../../api/url";
+import { API_BASE, URL} from "../../api/url";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 
 function PRAddDTAU() {
@@ -171,13 +171,13 @@ console.log("productCode:",productCode);
         timer: 2000,
       });
 
-      // navigate(`/uitestacc/PRListDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}PRListDT?accDocNo=${accDocNo}`, {
       //   state: {
       //     accDocNo: selectedProducts[0].accDocNo,
       //     addProducts: addProducts,
       //   },
       // });
-      navigate(`/uitestacc/AccordionPR?accDocNo=${accDocNo}`);
+      navigate(`${URL}AccordionPR?accDocNo=${accDocNo}`);
 
     } catch (error) {
       Swal.fire({
@@ -189,8 +189,8 @@ console.log("productCode:",productCode);
   };
 
   const handleGoBack = () => {
-    // navigate(`/uitestacc/PRListDT?accDocNo=${accDocNo}`);
-    navigate(`/uitestacc/AccordionPR?accDocNo=${accDocNo}`);
+    // navigate(`${URL}PRListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}AccordionPR?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

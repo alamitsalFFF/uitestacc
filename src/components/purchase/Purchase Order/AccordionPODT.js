@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig.js";
 import { API_VIEW_RESULT } from "../../api/url.js";
@@ -453,7 +454,7 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
     console.log("accDocType:", accDocType);
     console.log("docStatus:", docStatus);
     navigate(
-      `/uitestacc/POEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+      `${URL}POEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {
@@ -514,7 +515,7 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
     setItemCounter(newItemNo + 1);
 
     navigate(
-      `/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
+      `${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {

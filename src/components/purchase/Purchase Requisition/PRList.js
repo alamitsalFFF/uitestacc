@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 // import axios from "axios";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -268,7 +268,7 @@ function PRList() {
     dispatch(setAccDocType(transaction.AccDocType));
     dispatch(setStatusName(transaction.StatusName));
     navigate(`${URL}PRHeader?accDocNo=${transaction.AccDocNo}`);
-    // navigate(`/uitestacc/AccordionPR`, { state: { initialAccDocNo: transaction.AccDocNo } });
+    // navigate(`${URL}AccordionPR`, { state: { initialAccDocNo: transaction.AccDocNo } });
   };
 
   const handleEditClickAU = (transaction, index) => {
@@ -277,7 +277,7 @@ function PRList() {
     dispatch(setPartyName(transaction.PartyName));
     dispatch(setAccDocType(transaction.AccDocType));
     dispatch(setStatusName(transaction.StatusName));
-    // navigate(`/uitestacc/AccordionPR`, { state: { initialAccDocNo: transaction.AccDocNo } });
+    // navigate(`${URL}AccordionPR`, { state: { initialAccDocNo: transaction.AccDocNo } });
     navigate(`${URL}AccordionPR?accDocNo=${transaction.AccDocNo}`);
   };
 
@@ -296,7 +296,7 @@ function PRList() {
   const handleAddNew = () => {
     const accDocType = "PR";
     dispatch(setAccDocType(accDocType));
-    // navigate(`/uitestacc/PRHeader?accDocType=${accDocType}`, {
+    // navigate(`${URL}PRHeader?accDocType=${accDocType}`, {
     navigate(`${URL}AccordionPR?accDocType=${accDocType}`, {
       state: { isNew: true },
     });

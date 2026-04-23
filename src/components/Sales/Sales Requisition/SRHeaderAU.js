@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -49,13 +49,12 @@ import Swal from "sweetalert2";
 import { SOfromSR } from "./SOFromSR";
 import ButtonSR from "./ButtonSR";
 import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
-import { Acctets2, DATA_BASE, REPORT_BASE } from "../../api/url";
+import { Acctets2, DATA_BASE, REPORT_BASE, URL, API_BASE } from "../../api/url";
 // import ApproveButton from "../../approving/SRApproveButton";
-import { API_BASE } from "../../api/url";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 // import { SOfromSRP } from "./SOFromSRP";
 import SOManagementComponent from "./SOManagementComponent";
-// import { SOfromSRPartial } from "./SOFromSRPartial";
+// import { SOfromSRPartial } from "./SOFromSRPartial";0
 import DocStatusDisplay from "./DocStatusDisplay";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
 
@@ -514,8 +513,8 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
 
-      navigate(`/uitestacc/AccordionSR?accDocNo=${AccDocNo}`);
-      // navigate(`/uitestacc/SRListDT?accDocNo=${AccDocNo}`, {
+      navigate(`${URL}AccordionSR?accDocNo=${AccDocNo}`);
+      // navigate(`${URL}SRListDT?accDocNo=${AccDocNo}`, {
       //   state: {
       //     accDocNo: AccDocNo,
       //     accEffectiveDate: accEffectiveDate,
@@ -681,8 +680,8 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}SRListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -841,11 +840,11 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/SRList/");
+    navigate(`${URL}SRList/`);
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/SRList/");
+    navigate(`${URL}SRList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

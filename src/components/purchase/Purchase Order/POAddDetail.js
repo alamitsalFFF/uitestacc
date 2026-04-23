@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +25,7 @@ import Swal from "sweetalert2";
 import { setAddProducts,setAccDocNo } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuthFetch } from "../../Auth/fetchConfig";
-import { API_BASE } from "../../api/url";
+import { API_BASE, URL} from "../../api/url";
 
 function POAddDetail() {
   // const location = useLocation();
@@ -169,7 +169,7 @@ console.log("productCode:",productCode);
         timer: 2000,
       });
 
-      navigate(`/uitestacc/POListDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}POListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: selectedProducts[0].accDocNo,
           addProducts: addProducts,
@@ -186,7 +186,7 @@ console.log("productCode:",productCode);
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/POListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}POListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

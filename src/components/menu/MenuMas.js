@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 import { Link, redirect } from "react-router-dom";
 import "./Menu.css";
@@ -26,7 +27,7 @@ function MenuMaster() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Warehouse" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Warehouse`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                   <FontAwesomeIcon icon={faHouseChimney} size="2x" style={{color: "#2d01bd",}} />
@@ -48,7 +49,7 @@ function MenuMaster() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Master" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Master`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                   <FontAwesomeIcon icon={faHandsHoldingCircle} size="2x" style={{color: "#2d01bd",}} />
@@ -72,7 +73,7 @@ function MenuMaster() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Master" style={{color:"black",textDecoration: "none"}}>
+              <Link to={`${URL}Master`} style={{color:"black",textDecoration: "none"}}>
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faObjectGroup} size="2x" style={{ color: "#2d01bd" }}/>
@@ -94,7 +95,7 @@ function MenuMaster() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Master" style={{color:"black",textDecoration: "none"}}>
+              <Link to={`${URL}Master`} style={{color:"black",textDecoration: "none"}}>
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faCubes} size="2x" style={{ color: "#2d01bd" }}/>
@@ -118,7 +119,7 @@ function MenuMaster() {
                 textAlign:"center",borderBottom:"inset"
               }}
             >
-              <Link to="/uitestacc/Master" style={{color:"black",textDecoration: "none"}}> 
+              <Link to={`${URL}Master`} style={{color:"black",textDecoration: "none"}}> 
                 <Card.Body>
                   <Card.Title>
                     <FontAwesomeIcon icon={faUsersLine} size="2x" style={{ color: "#2d01bd" }}/>

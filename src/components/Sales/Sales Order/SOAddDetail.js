@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -30,7 +30,7 @@ import {
 } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuthFetch } from "../../Auth/fetchConfig";
-import { API_BASE } from "../../api/url";
+import { API_BASE, URL} from "../../api/url";
 
 function SOAddDetail() {
   // const location = useLocation();
@@ -196,7 +196,7 @@ function SOAddDetail() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/SOListDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}SOListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: selectedProducts[0].accDocNo,
           addProducts: addProducts,
@@ -212,7 +212,7 @@ function SOAddDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SOListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}SOListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

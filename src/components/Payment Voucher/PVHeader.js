@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig";
 import {useAuthFetch} from "../../components/Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -49,7 +49,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "../purchase/Purchase Order/ScrollTop";
 import { DIfromPO } from "../purchase/Purchase Order/DIfromPO";
 import { PVfromPI } from "../Payment Invoice/PVFromPI";
-import { API_BASE, DATA_BASE } from "../api/url";
+import { API_BASE, DATA_BASE, URL} from "../api/url";
 // import { PVfromPO } from "../purchase/Purchase Order/PVFromPO";
 // import { PIfromPO } from "../purchase/Purchase Order/PIFromPO";
 
@@ -368,7 +368,7 @@ export default function PVHeader() {
       // const entryBy = formData.entryBy;
       // const description = formData.description;
 
-      // navigate(`/uitestacc/PVDTList?journalNo=${journalNo}`, {
+      // navigate(`${URL}PVDTList?journalNo=${journalNo}`, {
       //   state: {
       //     journalNo,
       //     entryDate,
@@ -513,9 +513,9 @@ export default function PVHeader() {
       const entryBy = formData.entryBy;
       const description = formData.description;
 
-      // navigate(`/uitestacc/PVDTList?journalNo=${journalNo}`, {
-      navigate(`/uitestacc/PVListDT?journalNo=${journalNo}`, {
-        // navigate(`/uitestacc/PVListDT?entryId=${entryId}`, {
+      // navigate(`${URL}PVDTList?journalNo=${journalNo}`, {
+      navigate(`${URL}PVListDT?journalNo=${journalNo}`, {
+        // navigate(`${URL}PVListDT?entryId=${entryId}`, {
         state: {
           entryId,
           journalNo,
@@ -627,7 +627,7 @@ export default function PVHeader() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PVList/`);
+    navigate(`${URL}PVList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

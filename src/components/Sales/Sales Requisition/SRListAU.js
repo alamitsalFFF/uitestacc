@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from "react";
+﻿import React, { useState, useEffect,useCallback } from "react";
 // import axios from "axios";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -23,7 +23,7 @@ import {
 } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "../../Auth/axiosConfig";
-import { API_VIEW_RESULT } from "../../api/url";
+import { API_VIEW_RESULT, URL} from "../../api/url";
 import DateRangePicker from "../../DataFilters/DateRangePicker";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -213,8 +213,8 @@ function SRListAU() {
     dispatch(setPartyName(transaction.PartyName));
     dispatch(setAccDocType(transaction.AccDocType));
     dispatch(setStatusName(transaction.StatusName));
-    // navigate(`/uitestacc/SRHeader?accDocNo=${transaction.AccDocNo}`);
-    navigate(`/uitestacc/AccordionUsage`, { state: { initialAccDocNo: transaction.AccDocNo } });
+    // navigate(`${URL}SRHeader?accDocNo=${transaction.AccDocNo}`);
+    navigate(`${URL}AccordionUsage`, { state: { initialAccDocNo: transaction.AccDocNo } });
   };
 
   const groupedTransactions = filteredSR.reduce((acc, transaction) => {
@@ -232,7 +232,7 @@ function SRListAU() {
   const handleAddNew = () => {
     const accDocType = "SR";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/SRHeader?accDocType=${accDocType}`, {
+    navigate(`${URL}SRHeader?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -269,10 +269,10 @@ const buttonActions = [
   ];
 
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

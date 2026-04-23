@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -204,8 +204,8 @@ function JVList1() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    // navigate(`/uitestacc/PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
-    navigate(`/uitestacc/PVHeader?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    // navigate(`${URL}PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}PVHeader?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
   const handleDetailClick = (filtered) => {
@@ -214,7 +214,7 @@ function JVList1() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/JVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}JVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
   const handlePrint = async (filtered) => {

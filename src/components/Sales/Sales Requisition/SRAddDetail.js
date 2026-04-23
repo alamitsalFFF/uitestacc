@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
@@ -196,7 +197,7 @@ function SRAddDetail() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}SRListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: selectedProducts[0].accDocNo,
           addProducts: addProducts,
@@ -212,7 +213,7 @@ function SRAddDetail() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}SRListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

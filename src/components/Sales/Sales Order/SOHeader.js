@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -52,7 +52,7 @@ import { SIfromSO } from "./SIFromSO";
 import { RVfromSO } from "./RVFromSO";
 import ButtonSO from "./ButtonSO";
 import { useAuthFetch } from "../../Auth/fetchConfig";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL} from "../../api/url";
 
 export default function SOHeader() {
   const authFetch = useAuthFetch();
@@ -490,7 +490,7 @@ export default function SOHeader() {
 
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
-      navigate(`/uitestacc/SOListDT?accDocNo=${AccDocNo}`, {
+      navigate(`${URL}SOListDT?accDocNo=${AccDocNo}`, {
         state: {
           accDocNo: AccDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -649,8 +649,8 @@ export default function SOHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/SOListDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}SOListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -793,10 +793,10 @@ export default function SOHeader() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SOList/`);
+    navigate(`${URL}SOList/`);
   };
     const handleGoMenu = () => {
-    navigate(`/uitestacc/`);
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

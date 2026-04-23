@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -22,7 +22,7 @@ import {
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { blue } from "@mui/material/colors";
-import { API_VIEW_RESULT } from "../api/url";
+import { API_VIEW_RESULT, URL} from "../api/url";
 
 function RVList1() {
   const [requisitions, setRequisitions] = useState([]);
@@ -125,8 +125,8 @@ function RVList1() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    // navigate(`/uitestacc/PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
-    navigate(`/uitestacc/AccordionRV?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    // navigate(`${URL}PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}AccordionRV?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
   const handleDetailClick = (filtered) => {
@@ -134,7 +134,7 @@ function RVList1() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/RVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}RVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
@@ -152,7 +152,7 @@ function RVList1() {
   const handleAddNew = () => {
     const accDocType = "RV";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/RVHeader?accDocType=${accDocType}`, {
+    navigate(`${URL}RVHeader?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -165,10 +165,10 @@ function RVList1() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

@@ -204,199 +204,199 @@ function App() {
         <div className="dashboard">
           {/* <HeaderBar /> */}
           <Routes>
-            <Route path="uitestacc/Login" element={<LoginForm />} />
+            <Route path={`${URL}Login`} element={<LoginForm />} />
             <Route path="..." element={<RequireAuth>...</RequireAuth>} />          {/* <Route path="/"element={<RequireAuth><Navigate to="uitestacc/CashSale" replace /></RequireAuth>} /> Redirect to Home by default */}
-            <Route path="/" element={<RequireAuth><Navigate to="uitestacc/Login" replace /></RequireAuth>} /> Redirect to Home by default
+            <Route path="/" element={<RequireAuth><Navigate to={`${URL}Login`} replace /></RequireAuth>} /> Redirect to Home by default
             <Route path="Home" element={<RequireAuth><Home /></RequireAuth>} />
-            <Route path="uitestacc/MenuCard" element={<RequireAuth><MenuCard /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardAC" element={<RequireAuth><MenuCardAC /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardFC" element={<RequireAuth><MenuCardFC /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardM1" element={<RequireAuth><MenuCardM1 /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardMA" element={<RequireAuth><MenuCardMA /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardPC" element={<RequireAuth><MenuCardPC /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardSC" element={<RequireAuth><MenuCardSC /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardAP" element={<RequireAuth><MenuCardAP /></RequireAuth>} />
-            <Route path="uitestacc/MenuCardDC" element={<RequireAuth><MenuCardDC /></RequireAuth>} />
+            <Route path={`${URL}MenuCard`} element={<RequireAuth><MenuCard /></RequireAuth>} />
+            <Route path={`${URL}MenuCardAC`} element={<RequireAuth><MenuCardAC /></RequireAuth>} />
+            <Route path={`${URL}MenuCardFC`} element={<RequireAuth><MenuCardFC /></RequireAuth>} />
+            <Route path={`${URL}MenuCardM1`} element={<RequireAuth><MenuCardM1 /></RequireAuth>} />
+            <Route path={`${URL}MenuCardMA`} element={<RequireAuth><MenuCardMA /></RequireAuth>} />
+            <Route path={`${URL}MenuCardPC`} element={<RequireAuth><MenuCardPC /></RequireAuth>} />
+            <Route path={`${URL}MenuCardSC`} element={<RequireAuth><MenuCardSC /></RequireAuth>} />
+            <Route path={`${URL}MenuCardAP`} element={<RequireAuth><MenuCardAP /></RequireAuth>} />
+            <Route path={`${URL}MenuCardDC`} element={<RequireAuth><MenuCardDC /></RequireAuth>} />
 
-            <Route path="uitestacc/ProductListcard" element={<RequireAuth><ProductListcard /></RequireAuth>} />
-            <Route path="uitestacc/ProductsBK" element={<RequireAuth><Products /></RequireAuth>} />  {/* testformDLO */}
-            <Route path="uitestacc/ProductTypeBK" element={<RequireAuth><ProductTypes /></RequireAuth>} />
+            <Route path={`${URL}ProductListcard`} element={<RequireAuth><ProductListcard /></RequireAuth>} />
+            <Route path={`${URL}ProductsBK`} element={<RequireAuth><Products /></RequireAuth>} />  {/* testformDLO */}
+            <Route path={`${URL}ProductTypeBK`} element={<RequireAuth><ProductTypes /></RequireAuth>} />
             {/*<Route path="uitestacc/Warehouse"element={<RequireAuth><Warehouse /></RequireAuth>} /> */} {/* testformDLO */}
-            <Route path="uitestacc/WarehouseList" element={<RequireAuth><WarehouseList /></RequireAuth>} />
-            <Route path="uitestacc/Warehouses" element={<RequireAuth><WarehouseList /></RequireAuth>} />
-            <Route path="uitestacc/Warehouse" element={<RequireAuth><Warehouses /></RequireAuth>} />
-            <Route path="uitestacc/ProductTypeList" element={<RequireAuth><ProductTypeList /></RequireAuth>} />
-            <Route path="uitestacc/ProductTypes" element={<RequireAuth><ProductTypeList /></RequireAuth>} />
-            <Route path="uitestacc/ProductType" element={<RequireAuth><ProductType /></RequireAuth>} />
-            <Route path="uitestacc/ProductList" element={<RequireAuth><ProductList /></RequireAuth>} />
-            <Route path="uitestacc/Products" element={<RequireAuth><ProductList /></RequireAuth>} />
-            <Route path="uitestacc/Product" element={<RequireAuth><Product /></RequireAuth>} />
+            <Route path={`${URL}WarehouseList`} element={<RequireAuth><WarehouseList /></RequireAuth>} />
+            <Route path={`${URL}Warehouses`} element={<RequireAuth><WarehouseList /></RequireAuth>} />
+            <Route path={`${URL}Warehouse`} element={<RequireAuth><Warehouses /></RequireAuth>} />
+            <Route path={`${URL}ProductTypeList`} element={<RequireAuth><ProductTypeList /></RequireAuth>} />
+            <Route path={`${URL}ProductTypes`} element={<RequireAuth><ProductTypeList /></RequireAuth>} />
+            <Route path={`${URL}ProductType`} element={<RequireAuth><ProductType /></RequireAuth>} />
+            <Route path={`${URL}ProductList`} element={<RequireAuth><ProductList /></RequireAuth>} />
+            <Route path={`${URL}Products`} element={<RequireAuth><ProductList /></RequireAuth>} />
+            <Route path={`${URL}Product`} element={<RequireAuth><Product /></RequireAuth>} />
 
-            <Route path="uitestacc/ServiceList" element={<RequireAuth><ServiceList /></RequireAuth>} />
-            <Route path="uitestacc/Services" element={<RequireAuth><ServiceList /></RequireAuth>} />
-            <Route path="uitestacc/Service" element={<RequireAuth><Service /></RequireAuth>} />
+            <Route path={`${URL}ServiceList`} element={<RequireAuth><ServiceList /></RequireAuth>} />
+            <Route path={`${URL}Services`} element={<RequireAuth><ServiceList /></RequireAuth>} />
+            <Route path={`${URL}Service`} element={<RequireAuth><Service /></RequireAuth>} />
 
-            <Route path="uitestacc/IngredientList" element={<RequireAuth><IngredientList /></RequireAuth>} />
-            <Route path="uitestacc/FixedAssets" element={<RequireAuth><IngredientList /></RequireAuth>} />
-            <Route path="uitestacc/FixedAsset" element={<RequireAuth><Ingredient /></RequireAuth>} />
+            <Route path={`${URL}IngredientList`} element={<RequireAuth><IngredientList /></RequireAuth>} />
+            <Route path={`${URL}FixedAssets`} element={<RequireAuth><IngredientList /></RequireAuth>} />
+            <Route path={`${URL}FixedAsset`} element={<RequireAuth><Ingredient /></RequireAuth>} />
 
-            <Route path="uitestacc/PR" element={<RequireAuth><PurchaseRequisition /></RequireAuth>} />
-            <Route path="uitestacc/PurchaseOrder" element={<RequireAuth><PurchaseOrder /></RequireAuth>} />
+            <Route path={`${URL}PR`} element={<RequireAuth><PurchaseRequisition /></RequireAuth>} />
+            <Route path={`${URL}PurchaseOrder`} element={<RequireAuth><PurchaseOrder /></RequireAuth>} />
             {/* <Route path="JournalEntries"element={<RequireAuth><JournalEntries /></RequireAuth>} />  */}
-            {/* <Route path="uitestacc/Transaction"element={<RequireAuth><FromTransaction /></RequireAuth>} /> */}
-            <Route path="uitestacc/Transaction2" element={<RequireAuth><Transaction /></RequireAuth>} />
-            <Route path="uitestacc/TransactionDT" element={<RequireAuth><TransactionDT /></RequireAuth>} />
-            <Route path="uitestacc/PRListDT" element={<RequireAuth><PRListDT /></RequireAuth>} />
-            <Route path="uitestacc/PRDT" element={<RequireAuth><PRDT /></RequireAuth>} />
-            <Route path="uitestacc/PREditDetail" element={<RequireAuth><PREditDetail /></RequireAuth>} />
+            {/* <Route path={`${URL}Transaction`}element={<RequireAuth><FromTransaction /></RequireAuth>} /> */}
+            <Route path={`${URL}Transaction2`} element={<RequireAuth><Transaction /></RequireAuth>} />
+            <Route path={`${URL}TransactionDT`} element={<RequireAuth><TransactionDT /></RequireAuth>} />
+            <Route path={`${URL}PRListDT`} element={<RequireAuth><PRListDT /></RequireAuth>} />
+            <Route path={`${URL}PRDT`} element={<RequireAuth><PRDT /></RequireAuth>} />
+            <Route path={`${URL}PREditDetail`} element={<RequireAuth><PREditDetail /></RequireAuth>} />
 
-            <Route path="/uitestacc/TransactionList" element={<RequireAuth><TransactionList /></RequireAuth>} />
-            <Route path="/uitestacc/TransactionPrint" element={<RequireAuth><FromPrint /></RequireAuth>} />
-            <Route path="/uitestacc/Report" element={<RequireAuth><ReportPage /></RequireAuth>} />
+            <Route path={`${URL}TransactionList`} element={<RequireAuth><TransactionList /></RequireAuth>} />
+            <Route path={`${URL}TransactionPrint`} element={<RequireAuth><FromPrint /></RequireAuth>} />
+            <Route path={`${URL}Report`} element={<RequireAuth><ReportPage /></RequireAuth>} />
 
-            <Route path="/uitestacc/TransactionDTEdit" element={<RequireAuth><EditDetail /></RequireAuth>} />
-            <Route path="/uitestacc/TransactionDTAdd" element={<RequireAuth><AddDetail /></RequireAuth>} />
+            <Route path={`${URL}TransactionDTEdit`} element={<RequireAuth><EditDetail /></RequireAuth>} />
+            <Route path={`${URL}TransactionDTAdd`} element={<RequireAuth><AddDetail /></RequireAuth>} />
 
-            <Route path="uitestacc/MeuMain" element={<RequireAuth><MenuMain /></RequireAuth>} />
-            <Route path="uitestacc/Cash" element={<RequireAuth><MenuManagement /></RequireAuth>} />
-            <Route path="uitestacc/Master" element={<RequireAuth><MenuMaster /></RequireAuth>} />
-            <Route path="uitestacc/Entries" element={<RequireAuth><MenuEntries /></RequireAuth>} />
-            <Route path="uitestacc/MenuAPI2" element={<RequireAuth><MenuAPI2 /></RequireAuth>} />
-            <Route path="uitestacc/APIMenu" element={<RequireAuth><APIMenu /></RequireAuth>} />
+            <Route path={`${URL}MeuMain`} element={<RequireAuth><MenuMain /></RequireAuth>} />
+            <Route path={`${URL}Cash`} element={<RequireAuth><MenuManagement /></RequireAuth>} />
+            <Route path={`${URL}Master`} element={<RequireAuth><MenuMaster /></RequireAuth>} />
+            <Route path={`${URL}Entries`} element={<RequireAuth><MenuEntries /></RequireAuth>} />
+            <Route path={`${URL}MenuAPI2`} element={<RequireAuth><MenuAPI2 /></RequireAuth>} />
+            <Route path={`${URL}APIMenu`} element={<RequireAuth><APIMenu /></RequireAuth>} />
 
-            <Route path="uitestacc/CashSale" element={<RequireAuth><CashSale /></RequireAuth>} />
-            <Route path="uitestacc/CashSaleData" element={<RequireAuth><CashSaleData /></RequireAuth>} />
+            <Route path={`${URL}CashSale`} element={<RequireAuth><CashSale /></RequireAuth>} />
+            <Route path={`${URL}CashSaleData`} element={<RequireAuth><CashSaleData /></RequireAuth>} />
 
-            <Route path="uitestacc/QuickBuyBK" element={<RequireAuth><QuickBuy /></RequireAuth>} />
-            <Route path="uitestacc/QuickCash" element={<RequireAuth><QuickCash /></RequireAuth>} />
-            <Route path="uitestacc/QCSupplier" element={<RequireAuth><QCSupplier /></RequireAuth>} />
-            <Route path="uitestacc/ProductSelct" element={<RequireAuth><ProductSelection /></RequireAuth>} />
-            <Route path="uitestacc/ProductSelectPR" element={<RequireAuth><ProductSelectPR /></RequireAuth>} />
+            <Route path={`${URL}QuickBuyBK`} element={<RequireAuth><QuickBuy /></RequireAuth>} />
+            <Route path={`${URL}QuickCash`} element={<RequireAuth><QuickCash /></RequireAuth>} />
+            <Route path={`${URL}QCSupplier`} element={<RequireAuth><QCSupplier /></RequireAuth>} />
+            <Route path={`${URL}ProductSelct`} element={<RequireAuth><ProductSelection /></RequireAuth>} />
+            <Route path={`${URL}ProductSelectPR`} element={<RequireAuth><ProductSelectPR /></RequireAuth>} />
 
             {/* PC */}
-            <Route path="uitestacc/PRList" element={<RequireAuth><PurchaseRequisitionList /></RequireAuth>} />
-            <Route path="uitestacc/PurchaseRequisition" element={<RequireAuth><PRList /></RequireAuth>} /> {/*ซื้อเชื่อ*/}
-            <Route path="uitestacc/PRHeader" element={<RequireAuth><PRHeader /></RequireAuth>} />
+            <Route path={`${URL}PRList`} element={<RequireAuth><PurchaseRequisitionList /></RequireAuth>} />
+            <Route path={`${URL}PurchaseRequisition`} element={<RequireAuth><PRList /></RequireAuth>} /> {/*ซื้อเชื่อ*/}
+            <Route path={`${URL}PRHeader`} element={<RequireAuth><PRHeader /></RequireAuth>} />
 
-            <Route path="uitestacc/PRConfirm" element={<RequireAuth><PRConfirm /></RequireAuth>} />
-            <Route path="uitestacc/POConfirm" element={<RequireAuth><POConfirm /></RequireAuth>} />
-            <Route path="uitestacc/SRConfirm" element={<RequireAuth><SRConfirm /></RequireAuth>} />
+            <Route path={`${URL}PRConfirm`} element={<RequireAuth><PRConfirm /></RequireAuth>} />
+            <Route path={`${URL}POConfirm`} element={<RequireAuth><POConfirm /></RequireAuth>} />
+            <Route path={`${URL}SRConfirm`} element={<RequireAuth><SRConfirm /></RequireAuth>} />
 
-            <Route path="uitestacc/POList" element={<RequireAuth><ListPOHD /></RequireAuth>} />
-            <Route path="uitestacc/CreditPurchaseOrder" element={<RequireAuth><ListPOHD /></RequireAuth>} />
-            <Route path="uitestacc/CashPurchaseOrder" element={<RequireAuth><ListPOHD /></RequireAuth>} />
-            <Route path="uitestacc/POHeader" element={<RequireAuth><POHeader /></RequireAuth>} />
-            <Route path="uitestacc/PRSelection" element={<RequireAuth><PRSelection /></RequireAuth>} />
-            <Route path="uitestacc/POListDT" element={<RequireAuth><POListDT /></RequireAuth>} />
-            <Route path="uitestacc/POAddDetail" element={<RequireAuth><POAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/POEditDetail" element={<RequireAuth><POEditDetail /></RequireAuth>} />
-            <Route path="uitestacc/POselectProduct" element={<RequireAuth><POselectProduct /></RequireAuth>} />
-            <Route path="uitestacc/POForm" element={<RequireAuth><POForm /></RequireAuth>} />
+            <Route path={`${URL}POList`} element={<RequireAuth><ListPOHD /></RequireAuth>} />
+            <Route path={`${URL}CreditPurchaseOrder`} element={<RequireAuth><ListPOHD /></RequireAuth>} />
+            <Route path={`${URL}CashPurchaseOrder`} element={<RequireAuth><ListPOHD /></RequireAuth>} />
+            <Route path={`${URL}POHeader`} element={<RequireAuth><POHeader /></RequireAuth>} />
+            <Route path={`${URL}PRSelection`} element={<RequireAuth><PRSelection /></RequireAuth>} />
+            <Route path={`${URL}POListDT`} element={<RequireAuth><POListDT /></RequireAuth>} />
+            <Route path={`${URL}POAddDetail`} element={<RequireAuth><POAddDetail /></RequireAuth>} />
+            <Route path={`${URL}POEditDetail`} element={<RequireAuth><POEditDetail /></RequireAuth>} />
+            <Route path={`${URL}POselectProduct`} element={<RequireAuth><POselectProduct /></RequireAuth>} />
+            <Route path={`${URL}POForm`} element={<RequireAuth><POForm /></RequireAuth>} />
 
-            <Route path="uitestacc/DIList" element={<RequireAuth><DIHDList /></RequireAuth>} />
-            <Route path="uitestacc/DeliveryIn" element={<RequireAuth><DIHDList /></RequireAuth>} />
-            <Route path="uitestacc/DIHeader" element={<RequireAuth><DIHeader /></RequireAuth>} />
-            <Route path="uitestacc/DIDTList" element={<RequireAuth><DIDTList /></RequireAuth>} />
-            <Route path="uitestacc/DIAddDetail" element={<RequireAuth><DIAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/DIEditDetail" element={<RequireAuth><DIEditDetail /></RequireAuth>} />
-            <Route path="uitestacc/DIselectProduct" element={<RequireAuth><DIselectProduct /></RequireAuth>} />
+            <Route path={`${URL}DIList`} element={<RequireAuth><DIHDList /></RequireAuth>} />
+            <Route path={`${URL}DeliveryIn`} element={<RequireAuth><DIHDList /></RequireAuth>} />
+            <Route path={`${URL}DIHeader`} element={<RequireAuth><DIHeader /></RequireAuth>} />
+            <Route path={`${URL}DIDTList`} element={<RequireAuth><DIDTList /></RequireAuth>} />
+            <Route path={`${URL}DIAddDetail`} element={<RequireAuth><DIAddDetail /></RequireAuth>} />
+            <Route path={`${URL}DIEditDetail`} element={<RequireAuth><DIEditDetail /></RequireAuth>} />
+            <Route path={`${URL}DIselectProduct`} element={<RequireAuth><DIselectProduct /></RequireAuth>} />
 
-            <Route path="uitestacc/DOList" element={<RequireAuth><DOHDList /></RequireAuth>} />
-            <Route path="uitestacc/DeliveryOut" element={<RequireAuth><DOHDList /></RequireAuth>} />
-            <Route path="uitestacc/DOHeader" element={<RequireAuth><DOHeader /></RequireAuth>} />
-            <Route path="uitestacc/DODTList" element={<RequireAuth><DODTList /></RequireAuth>} />
-            <Route path="uitestacc/DOAddDetail" element={<RequireAuth><DOAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/DOEditDetail" element={<RequireAuth><DOEditDetail /></RequireAuth>} />
+            <Route path={`${URL}DOList`} element={<RequireAuth><DOHDList /></RequireAuth>} />
+            <Route path={`${URL}DeliveryOut`} element={<RequireAuth><DOHDList /></RequireAuth>} />
+            <Route path={`${URL}DOHeader`} element={<RequireAuth><DOHeader /></RequireAuth>} />
+            <Route path={`${URL}DODTList`} element={<RequireAuth><DODTList /></RequireAuth>} />
+            <Route path={`${URL}DOAddDetail`} element={<RequireAuth><DOAddDetail /></RequireAuth>} />
+            <Route path={`${URL}DOEditDetail`} element={<RequireAuth><DOEditDetail /></RequireAuth>} />
 
-            <Route path="uitestacc/CustomerList" element={<RequireAuth><CustomerList /></RequireAuth>} />
-            <Route path="uitestacc/Customers" element={<RequireAuth><CustomerList /></RequireAuth>} />
-            <Route path="uitestacc/Customer" element={<RequireAuth><Customer /></RequireAuth>} />
-            <Route path="uitestacc/Suppliers" element={<RequireAuth><SupplierList /></RequireAuth>} />
-            <Route path="uitestacc/Supplier" element={<RequireAuth><Supplier /></RequireAuth>} />
+            <Route path={`${URL}CustomerList`} element={<RequireAuth><CustomerList /></RequireAuth>} />
+            <Route path={`${URL}Customers`} element={<RequireAuth><CustomerList /></RequireAuth>} />
+            <Route path={`${URL}Customer`} element={<RequireAuth><Customer /></RequireAuth>} />
+            <Route path={`${URL}Suppliers`} element={<RequireAuth><SupplierList /></RequireAuth>} />
+            <Route path={`${URL}Supplier`} element={<RequireAuth><Supplier /></RequireAuth>} />
 
-            <Route path="uitestacc/PIList" element={<RequireAuth><PIList /></RequireAuth>} />
-            <Route path="uitestacc/PaymentInputNote" element={<RequireAuth><PIList /></RequireAuth>} />
+            <Route path={`${URL}PIList`} element={<RequireAuth><PIList /></RequireAuth>} />
+            <Route path={`${URL}PaymentInputNote`} element={<RequireAuth><PIList /></RequireAuth>} />
             {/* <Route path="uitestacc/PaymentInputNote" element={<RequireAuth><PIHDList /></RequireAuth>} /> */}
-            <Route path="uitestacc/PIHeader" element={<RequireAuth><PIHeader /></RequireAuth>} />
-            <Route path="uitestacc/PIDTList" element={<RequireAuth><PIDTList /></RequireAuth>} />
-            <Route path="uitestacc/PIAddDetail" element={<RequireAuth><PIAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/PIEditDetail" element={<RequireAuth><PIEditDetail /></RequireAuth>} />
-            <Route path="uitestacc/AccordionPI" element={<RequireAuth><AccordionPI /></RequireAuth>} />
-            <Route path="uitestacc/AccordionPIHD" element={<RequireAuth><AccordionPIHD /></RequireAuth>} />
-            <Route path="uitestacc/AccordionPIDT" element={<RequireAuth><AccordionPIDT /></RequireAuth>} />
-            <Route path="uitestacc/AccordionPV" element={<RequireAuth><AccordionPV /></RequireAuth>} />
+            <Route path={`${URL}PIHeader`} element={<RequireAuth><PIHeader /></RequireAuth>} />
+            <Route path={`${URL}PIDTList`} element={<RequireAuth><PIDTList /></RequireAuth>} />
+            <Route path={`${URL}PIAddDetail`} element={<RequireAuth><PIAddDetail /></RequireAuth>} />
+            <Route path={`${URL}PIEditDetail`} element={<RequireAuth><PIEditDetail /></RequireAuth>} />
+            <Route path={`${URL}AccordionPI`} element={<RequireAuth><AccordionPI /></RequireAuth>} />
+            <Route path={`${URL}AccordionPIHD`} element={<RequireAuth><AccordionPIHD /></RequireAuth>} />
+            <Route path={`${URL}AccordionPIDT`} element={<RequireAuth><AccordionPIDT /></RequireAuth>} />
+            <Route path={`${URL}AccordionPV`} element={<RequireAuth><AccordionPV /></RequireAuth>} />
 
-            <Route path="uitestacc/PVList" element={<RequireAuth><PVHDList /></RequireAuth>} />
-            <Route path="uitestacc/PaymentVoucher" element={<RequireAuth><PVHDList /></RequireAuth>} />
-            <Route path="uitestacc/PVList1" element={<RequireAuth><PVHDList1 /></RequireAuth>} />
-            <Route path="uitestacc/PVDTList" element={<RequireAuth><PVDTList /></RequireAuth>} />
-            <Route path="uitestacc/PVHeader" element={<RequireAuth><PVHeader /></RequireAuth>} />
-            <Route path="uitestacc/PVListDT" element={<RequireAuth><PVListDT /></RequireAuth>} />
-            <Route path="uitestacc/PVEditDetail" element={<RequireAuth><PVEditDetail /></RequireAuth>} />
+            <Route path={`${URL}PVList`} element={<RequireAuth><PVHDList /></RequireAuth>} />
+            <Route path={`${URL}PaymentVoucher`} element={<RequireAuth><PVHDList /></RequireAuth>} />
+            <Route path={`${URL}PVList1`} element={<RequireAuth><PVHDList1 /></RequireAuth>} />
+            <Route path={`${URL}PVDTList`} element={<RequireAuth><PVDTList /></RequireAuth>} />
+            <Route path={`${URL}PVHeader`} element={<RequireAuth><PVHeader /></RequireAuth>} />
+            <Route path={`${URL}PVListDT`} element={<RequireAuth><PVListDT /></RequireAuth>} />
+            <Route path={`${URL}PVEditDetail`} element={<RequireAuth><PVEditDetail /></RequireAuth>} />
 
             {/* <Route path="uitestacc/SIList"element={<RequireAuth><SIHDList /></RequireAuth>} /> */}
-            <Route path="uitestacc/SIList" element={<RequireAuth><SIList /></RequireAuth>} />
-            <Route path="uitestacc/SalesInvoice" element={<RequireAuth><SIList /></RequireAuth>} />
-            <Route path="uitestacc/SIHeader" element={<RequireAuth><SIHeader /></RequireAuth>} />
-            <Route path="uitestacc/SIListDT" element={<RequireAuth><SIListDT /></RequireAuth>} />
-            <Route path="uitestacc/SIAddDetail" element={<RequireAuth><SIAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/SIEditDetail" element={<RequireAuth><SIEditDetail /></RequireAuth>} />
-            <Route path="uitestacc/SIProductSelect" element={<RequireAuth><SIProductSelection /></RequireAuth>} />
-            <Route path="uitestacc/AccordionSI" element={<RequireAuth><AccordionSI /></RequireAuth>} />
+            <Route path={`${URL}SIList`} element={<RequireAuth><SIList /></RequireAuth>} />
+            <Route path={`${URL}SalesInvoice`} element={<RequireAuth><SIList /></RequireAuth>} />
+            <Route path={`${URL}SIHeader`} element={<RequireAuth><SIHeader /></RequireAuth>} />
+            <Route path={`${URL}SIListDT`} element={<RequireAuth><SIListDT /></RequireAuth>} />
+            <Route path={`${URL}SIAddDetail`} element={<RequireAuth><SIAddDetail /></RequireAuth>} />
+            <Route path={`${URL}SIEditDetail`} element={<RequireAuth><SIEditDetail /></RequireAuth>} />
+            <Route path={`${URL}SIProductSelect`} element={<RequireAuth><SIProductSelection /></RequireAuth>} />
+            <Route path={`${URL}AccordionSI`} element={<RequireAuth><AccordionSI /></RequireAuth>} />
 
-            <Route path="uitestacc/SRList" element={<RequireAuth><SRList /></RequireAuth>} />
-            <Route path="uitestacc/SalesRequisition" element={<RequireAuth><SRList /></RequireAuth>} />
-            <Route path="uitestacc/SRHeader" element={<RequireAuth><SRHeader /></RequireAuth>} />
-            <Route path="uitestacc/SRListDT" element={<RequireAuth><SRListDT /></RequireAuth>} />
-            <Route path="uitestacc/SREditDetail" element={<RequireAuth><SREditDetail /></RequireAuth>} />
-            <Route path="uitestacc/SRAddDetail" element={<RequireAuth><SRAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/SRProductSelect" element={<RequireAuth><SRProductSelection /></RequireAuth>} />
+            <Route path={`${URL}SRList`} element={<RequireAuth><SRList /></RequireAuth>} />
+            <Route path={`${URL}SalesRequisition`} element={<RequireAuth><SRList /></RequireAuth>} />
+            <Route path={`${URL}SRHeader`} element={<RequireAuth><SRHeader /></RequireAuth>} />
+            <Route path={`${URL}SRListDT`} element={<RequireAuth><SRListDT /></RequireAuth>} />
+            <Route path={`${URL}SREditDetail`} element={<RequireAuth><SREditDetail /></RequireAuth>} />
+            <Route path={`${URL}SRAddDetail`} element={<RequireAuth><SRAddDetail /></RequireAuth>} />
+            <Route path={`${URL}SRProductSelect`} element={<RequireAuth><SRProductSelection /></RequireAuth>} />
 
-            <Route path="uitestacc/SOList" element={<RequireAuth><SOList /></RequireAuth>} />
-            <Route path="uitestacc/CashSalesOrder" element={<RequireAuth><SOList /></RequireAuth>} />
-            <Route path="uitestacc/CreditSalesOrder" element={<RequireAuth><SOList /></RequireAuth>} />
-            <Route path="uitestacc/SOHeader" element={<RequireAuth><SOHeader /></RequireAuth>} />
-            <Route path="uitestacc/SOListDT" element={<RequireAuth><SOListDT /></RequireAuth>} />
-            <Route path="uitestacc/SOProductSelect" element={<RequireAuth><SOProductSelection /></RequireAuth>} />
-            <Route path="uitestacc/SOAddDetail" element={<RequireAuth><SOAddDetail /></RequireAuth>} />
-            <Route path="uitestacc/SOEditDetail" element={<RequireAuth><SOEditDetail /></RequireAuth>} />
+            <Route path={`${URL}SOList`} element={<RequireAuth><SOList /></RequireAuth>} />
+            <Route path={`${URL}CashSalesOrder`} element={<RequireAuth><SOList /></RequireAuth>} />
+            <Route path={`${URL}CreditSalesOrder`} element={<RequireAuth><SOList /></RequireAuth>} />
+            <Route path={`${URL}SOHeader`} element={<RequireAuth><SOHeader /></RequireAuth>} />
+            <Route path={`${URL}SOListDT`} element={<RequireAuth><SOListDT /></RequireAuth>} />
+            <Route path={`${URL}SOProductSelect`} element={<RequireAuth><SOProductSelection /></RequireAuth>} />
+            <Route path={`${URL}SOAddDetail`} element={<RequireAuth><SOAddDetail /></RequireAuth>} />
+            <Route path={`${URL}SOEditDetail`} element={<RequireAuth><SOEditDetail /></RequireAuth>} />
 
-            <Route path="uitestacc/AccCode" element={<RequireAuth><AccCode /></RequireAuth>} />
-            <Route path="uitestacc/AccCodeList" element={<RequireAuth><AccCodeList /></RequireAuth>} />
-            <Route path="uitestacc/AccountCode" element={<RequireAuth><AccountCode /></RequireAuth>} />
-            <Route path="uitestacc/AccCodefull" element={<RequireAuth><AccCodefull /></RequireAuth>} />
-            <Route path="uitestacc/AccCodes" element={<RequireAuth><AccCodefull /></RequireAuth>} />
+            <Route path={`${URL}AccCode`} element={<RequireAuth><AccCode /></RequireAuth>} />
+            <Route path={`${URL}AccCodeList`} element={<RequireAuth><AccCodeList /></RequireAuth>} />
+            <Route path={`${URL}AccountCode`} element={<RequireAuth><AccountCode /></RequireAuth>} />
+            <Route path={`${URL}AccCodefull`} element={<RequireAuth><AccCodefull /></RequireAuth>} />
+            <Route path={`${URL}AccCodes`} element={<RequireAuth><AccCodefull /></RequireAuth>} />
 
-            <Route path="uitestacc/RVHeader" element={<RequireAuth><RVHeader /></RequireAuth>} />
-            <Route path="uitestacc/RVList" element={<RequireAuth><RVList /></RequireAuth>} />
-            <Route path="uitestacc/ReceiveVoucher" element={<RequireAuth><RVList /></RequireAuth>} />
-            <Route path="uitestacc/RVList1" element={<RequireAuth><RVList1 /></RequireAuth>} />
-            <Route path="uitestacc/RVListDT" element={<RequireAuth><RVListDT /></RequireAuth>} />
-            <Route path="uitestacc/RVEditDetail" element={<RequireAuth><RVEditDetail /></RequireAuth>} />
-            <Route path="uitestacc/RVDTList" element={<RequireAuth><RVDTList /></RequireAuth>} />
+            <Route path={`${URL}RVHeader`} element={<RequireAuth><RVHeader /></RequireAuth>} />
+            <Route path={`${URL}RVList`} element={<RequireAuth><RVList /></RequireAuth>} />
+            <Route path={`${URL}ReceiveVoucher`} element={<RequireAuth><RVList /></RequireAuth>} />
+            <Route path={`${URL}RVList1`} element={<RequireAuth><RVList1 /></RequireAuth>} />
+            <Route path={`${URL}RVListDT`} element={<RequireAuth><RVListDT /></RequireAuth>} />
+            <Route path={`${URL}RVEditDetail`} element={<RequireAuth><RVEditDetail /></RequireAuth>} />
+            <Route path={`${URL}RVDTList`} element={<RequireAuth><RVDTList /></RequireAuth>} />
 
-            <Route path="uitestacc/JournalEntries" element={<RequireAuth><JVList /></RequireAuth>} />
-            <Route path="uitestacc/JVList" element={<RequireAuth><JVList1 /></RequireAuth>} />
-            <Route path="uitestacc/AccordionJV" element={<RequireAuth><AccordionJV /></RequireAuth>} />
+            <Route path={`${URL}JournalEntries`} element={<RequireAuth><JVList /></RequireAuth>} />
+            <Route path={`${URL}JVList`} element={<RequireAuth><JVList1 /></RequireAuth>} />
+            <Route path={`${URL}AccordionJV`} element={<RequireAuth><AccordionJV /></RequireAuth>} />
 
-            <Route path="uitestacc/TrialBalance" element={<RequireAuth><TrialBalance /></RequireAuth>} />
-            <Route path="uitestacc/GLList" element={<RequireAuth><GLList /></RequireAuth>} />
-            <Route path="uitestacc/TBList" element={<RequireAuth><TBList /></RequireAuth>} />
+            <Route path={`${URL}TrialBalance`} element={<RequireAuth><TrialBalance /></RequireAuth>} />
+            <Route path={`${URL}GLList`} element={<RequireAuth><GLList /></RequireAuth>} />
+            <Route path={`${URL}TBList`} element={<RequireAuth><TBList /></RequireAuth>} />
 
-            <Route path="uitestacc/AccConfigList" element={<RequireAuth><AccConfigList /></RequireAuth>} />
-            <Route path="uitestacc/AccConfigs" element={<RequireAuth><AccConfigList /></RequireAuth>} />
-            <Route path="uitestacc/AccConfig" element={<RequireAuth><AccConfig /></RequireAuth>} />
+            <Route path={`${URL}AccConfigList`} element={<RequireAuth><AccConfigList /></RequireAuth>} />
+            <Route path={`${URL}AccConfigs`} element={<RequireAuth><AccConfigList /></RequireAuth>} />
+            <Route path={`${URL}AccConfig`} element={<RequireAuth><AccConfig /></RequireAuth>} />
 
-            <Route path="uitestacc/DocConfigSchema" element={<RequireAuth><DocConfigSchema /></RequireAuth>} />
-            <Route path="uitestacc/DocConfigSchemaList" element={<RequireAuth><DocConfigSchemaList /></RequireAuth>} />
-            <Route path="uitestacc/OptionalFieldSchemas" element={<RequireAuth><DocConfigSchemaList /></RequireAuth>} />
+            <Route path={`${URL}DocConfigSchema`} element={<RequireAuth><DocConfigSchema /></RequireAuth>} />
+            <Route path={`${URL}DocConfigSchemaList`} element={<RequireAuth><DocConfigSchemaList /></RequireAuth>} />
+            <Route path={`${URL}OptionalFieldSchemas`} element={<RequireAuth><DocConfigSchemaList /></RequireAuth>} />
 
-            <Route path="uitestacc/MoreInfoHD" element={<RequireAuth><MoreInfoHD /></RequireAuth>} />
-            <Route path="uitestacc/MoreInfoDT" element={<RequireAuth><MoreInfoDT /></RequireAuth>} />
+            <Route path={`${URL}MoreInfoHD`} element={<RequireAuth><MoreInfoHD /></RequireAuth>} />
+            <Route path={`${URL}MoreInfoDT`} element={<RequireAuth><MoreInfoDT /></RequireAuth>} />
 
             {/* <Route path="uitestacc/Login"element={<LoginForm /> }/> */}
 
-            <Route path="uitestacc/PlatinumMenu" element={<RequireAuth><PlatinumMenu /></RequireAuth>} />
+            <Route path={`${URL}PlatinumMenu`} element={<RequireAuth><PlatinumMenu /></RequireAuth>} />
             <Route path={`${URL}index`} element={<RequireAuth><AccountingAppGreen /></RequireAuth>} /> {/*MENU*/}
             <Route path={`${URL}`} element={<RequireAuth><AccountingAppMenu /></RequireAuth>} /> {/*MENU*/}
             {/* <Route path="uitestacc/LoginModal"element={<RequireAuth><LoginModal/></RequireAuth>} /> */}
@@ -404,57 +404,57 @@ function App() {
             {/* <Route path="uitestacc/UF"element={<RequireAuth><UserForm /></RequireAuth>} />
           <Route path="uitestacc/FUD"element={<RequireAuth><FormUserDetails /></RequireAuth>} /> */}
 
-            <Route path="uitestacc/SRDD" element={<RequireAuth><SRDropdowns /></RequireAuth>} />
-            <Route path="uitestacc/AccordionSR" element={<RequireAuth><AccordionSR /></RequireAuth>} />
-            <Route path="uitestacc/SRListAU" element={<RequireAuth><SRListAU /></RequireAuth>} />
-            <Route path="uitestacc/AccordionPR" element={<RequireAuth><AccordionPR /></RequireAuth>} />
-            <Route path="uitestacc/PRAddDTAU" element={<RequireAuth><PRAddDTAU /></RequireAuth>} />
+            <Route path={`${URL}SRDD`} element={<RequireAuth><SRDropdowns /></RequireAuth>} />
+            <Route path={`${URL}AccordionSR`} element={<RequireAuth><AccordionSR /></RequireAuth>} />
+            <Route path={`${URL}SRListAU`} element={<RequireAuth><SRListAU /></RequireAuth>} />
+            <Route path={`${URL}AccordionPR`} element={<RequireAuth><AccordionPR /></RequireAuth>} />
+            <Route path={`${URL}PRAddDTAU`} element={<RequireAuth><PRAddDTAU /></RequireAuth>} />
 
-            <Route path="uitestacc/AccordionCS" element={<RequireAuth><AccordionCS /></RequireAuth>} />
-            <Route path="uitestacc/QuickCashSale" element={<RequireAuth><AccordionCS /></RequireAuth>} />
+            <Route path={`${URL}AccordionCS`} element={<RequireAuth><AccordionCS /></RequireAuth>} />
+            <Route path={`${URL}QuickCashSale`} element={<RequireAuth><AccordionCS /></RequireAuth>} />
             {/* <Route path="uitestacc/CashSalesOrder" element={<RequireAuth><AccordionCS /></RequireAuth>} /> */}
-            <Route path="uitestacc/AccordionQB" element={<RequireAuth><AccordionQB /></RequireAuth>} />
-            <Route path="uitestacc/QuickBuy" element={<RequireAuth><AccordionQB /></RequireAuth>} />
-            <Route path="uitestacc/AccordionQP" element={<RequireAuth><AccordionQP /></RequireAuth>} />
-            <Route path="uitestacc/QuickPayment" element={<RequireAuth><AccordionQP /></RequireAuth>} />
-            <Route path="uitestacc/AccordionQR" element={<RequireAuth><AccordionQR /></RequireAuth>} />
-            <Route path="uitestacc/QuickReceive" element={<RequireAuth><AccordionQR /></RequireAuth>} />
+            <Route path={`${URL}AccordionQB`} element={<RequireAuth><AccordionQB /></RequireAuth>} />
+            <Route path={`${URL}QuickBuy`} element={<RequireAuth><AccordionQB /></RequireAuth>} />
+            <Route path={`${URL}AccordionQP`} element={<RequireAuth><AccordionQP /></RequireAuth>} />
+            <Route path={`${URL}QuickPayment`} element={<RequireAuth><AccordionQP /></RequireAuth>} />
+            <Route path={`${URL}AccordionQR`} element={<RequireAuth><AccordionQR /></RequireAuth>} />
+            <Route path={`${URL}QuickReceive`} element={<RequireAuth><AccordionQR /></RequireAuth>} />
 
             {/* <Route path="uitestacc/AccordionWHT" element={<RequireAuth><AccordionWHT /></RequireAuth>} /> */}
-            <Route path="uitestacc/WithholdingTax3" element={<RequireAuth><WHTList /></RequireAuth>} />
-            <Route path="uitestacc/WHT3" element={<RequireAuth><AccordionWHT /></RequireAuth>} />
+            <Route path={`${URL}WithholdingTax3`} element={<RequireAuth><WHTList /></RequireAuth>} />
+            <Route path={`${URL}WHT3`} element={<RequireAuth><AccordionWHT /></RequireAuth>} />
 
-            <Route path="uitestacc/AccordionPO" element={<RequireAuth><AccordionPO /></RequireAuth>} />
-            <Route path="uitestacc/AccordionDI" element={<RequireAuth><AccordionDI /></RequireAuth>} />
-            <Route path="uitestacc/DraftDI" element={<RequireAuth><DraftDataFromOCR /></RequireAuth>} />
-            <Route path="uitestacc/DraftOCRDI" element={<RequireAuth><DraftOCRDI /></RequireAuth>} />
+            <Route path={`${URL}AccordionPO`} element={<RequireAuth><AccordionPO /></RequireAuth>} />
+            <Route path={`${URL}AccordionDI`} element={<RequireAuth><AccordionDI /></RequireAuth>} />
+            <Route path={`${URL}DraftDI`} element={<RequireAuth><DraftDataFromOCR /></RequireAuth>} />
+            <Route path={`${URL}DraftOCRDI`} element={<RequireAuth><DraftOCRDI /></RequireAuth>} />
 
-            <Route path="uitestacc/DraftData" element={<RequireAuth><DraftData /></RequireAuth>} />
-            <Route path="uitestacc/DraftDataEntry" element={<RequireAuth><DraftDataOCR /></RequireAuth>} />
+            <Route path={`${URL}DraftData`} element={<RequireAuth><DraftData /></RequireAuth>} />
+            <Route path={`${URL}DraftDataEntry`} element={<RequireAuth><DraftDataOCR /></RequireAuth>} />
 
-            <Route path="uitestacc/AccordionSO" element={<RequireAuth><AccordionSO /></RequireAuth>} />
-            <Route path="uitestacc/AccordionDO" element={<RequireAuth><AccordionDO /></RequireAuth>} />
+            <Route path={`${URL}AccordionSO`} element={<RequireAuth><AccordionSO /></RequireAuth>} />
+            <Route path={`${URL}AccordionDO`} element={<RequireAuth><AccordionDO /></RequireAuth>} />
 
-            <Route path="uitestacc/TypeServiceList" element={<RequireAuth><TypeServiceList /></RequireAuth>} />
-            <Route path="uitestacc/TypeService" element={<RequireAuth><TypeService /></RequireAuth>} />
-            <Route path="uitestacc/TypeIngredientList" element={<RequireAuth><TypeIngredientList /></RequireAuth>} />
-            <Route path="uitestacc/FixedAssetsType" element={<RequireAuth><TypeIngredientList /></RequireAuth>} />
-            <Route path="uitestacc/TypeIngredient" element={<RequireAuth><TypeIngredient /></RequireAuth>} />
+            <Route path={`${URL}TypeServiceList`} element={<RequireAuth><TypeServiceList /></RequireAuth>} />
+            <Route path={`${URL}TypeService`} element={<RequireAuth><TypeService /></RequireAuth>} />
+            <Route path={`${URL}TypeIngredientList`} element={<RequireAuth><TypeIngredientList /></RequireAuth>} />
+            <Route path={`${URL}FixedAssetsType`} element={<RequireAuth><TypeIngredientList /></RequireAuth>} />
+            <Route path={`${URL}TypeIngredient`} element={<RequireAuth><TypeIngredient /></RequireAuth>} />
 
-            <Route path="uitestacc/PCList" element={<RequireAuth><PCList /></RequireAuth>} />
-            <Route path="uitestacc/PaymentConfirm" element={<RequireAuth><PCList /></RequireAuth>} />
-            <Route path="uitestacc/AccordionPC" element={<RequireAuth><AccordionPC /></RequireAuth>} />
+            <Route path={`${URL}PCList`} element={<RequireAuth><PCList /></RequireAuth>} />
+            <Route path={`${URL}PaymentConfirm`} element={<RequireAuth><PCList /></RequireAuth>} />
+            <Route path={`${URL}AccordionPC`} element={<RequireAuth><AccordionPC /></RequireAuth>} />
 
-            <Route path="uitestacc/RCList" element={<RequireAuth><RCList /></RequireAuth>} />
-            <Route path="uitestacc/ReceiveConfirm" element={<RequireAuth><RCList /></RequireAuth>} />
-            <Route path="uitestacc/AccordionRC" element={<RequireAuth><AccordionRC /></RequireAuth>} />
+            <Route path={`${URL}RCList`} element={<RequireAuth><RCList /></RequireAuth>} />
+            <Route path={`${URL}ReceiveConfirm`} element={<RequireAuth><RCList /></RequireAuth>} />
+            <Route path={`${URL}AccordionRC`} element={<RequireAuth><AccordionRC /></RequireAuth>} />
 
-            <Route path="uitestacc/AccordionRV" element={<RequireAuth><AccordionRV /></RequireAuth>} />
+            <Route path={`${URL}AccordionRV`} element={<RequireAuth><AccordionRV /></RequireAuth>} />
 
-            <Route path="uitestacc/TransList" element={<RequireAuth><TransList /></RequireAuth>} />
-            <Route path="uitestacc/Transaction" element={<RequireAuth><TransactionMain /></RequireAuth>} />
+            <Route path={`${URL}TransList`} element={<RequireAuth><TransList /></RequireAuth>} />
+            <Route path={`${URL}Transaction`} element={<RequireAuth><TransactionMain /></RequireAuth>} />
 
-            <Route path="uitestacc/CompanyProfile" element={<RequireAuth><ProfileConfig /></RequireAuth>} />
+            <Route path={`${URL}CompanyProfile`} element={<RequireAuth><ProfileConfig /></RequireAuth>} />
           </Routes>
           {/* </div> */}
         </div>

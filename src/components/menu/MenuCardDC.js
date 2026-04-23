@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
@@ -23,13 +24,13 @@ const cardssub = [
     id: "DI",
     title: "Delivery In",
     description: "Delivery In",
-    address: "/uitestacc/DIList",
+    address: `${URL}DIList`,
   },
   {
     id: "DI",
     title: "Delivery Out",
     description: "Delivery Out",
-    address: "/uitestacc/DOList",
+    address: `${URL}DOList`,
   },
 ];
 function MenuCardDC() {
@@ -37,7 +38,7 @@ function MenuCardDC() {
   // const tawanImage = "./img/tawan.jpg";
   const navigate = useNavigate();
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

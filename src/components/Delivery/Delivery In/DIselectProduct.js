@@ -20,18 +20,18 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Badge from '@mui/material/Badge';
-import { faCircleArrowUp,faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCircleArrowUp, faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   setSelectedProducts,
   setAccDocNo,
 } from "../../redux/TransactionDataaction";
 import { useDispatch, useSelector } from "react-redux";
 import SearchComponent from "../../purchase/SearchComponen";
-import { API_VIEW_RESULT } from "../../api/url";
+import { API_VIEW_RESULT, URL } from "../../api/url";
 
 const ItemNoContext = createContext({
   itemNo: 1,
-  setItemNo: () => {},
+  setItemNo: () => { },
 });
 
 const useItemNo = () => {
@@ -166,7 +166,7 @@ function DIselectProduct() {
       }
     })();
   }, []);
-  
+
 
   const handleProductSelect = (product, index) => {
     const isSelected = selectedProducts.find(
@@ -184,7 +184,7 @@ function DIselectProduct() {
           ...selectedProducts,
           {
             ...product,
-            accDocNo:accDocNo,
+            accDocNo: accDocNo,
             index: index,
             itemNo: selectedProducts.length,
             productID: product.productID,
@@ -201,8 +201,8 @@ function DIselectProduct() {
       );
       setNextItemNo(nextItemNo + 1);
     }
-    navigate(`/uitestacc/DIAddDetail?accDocNo=${accDocNo}`
-);
+    navigate(`${URL}DIAddDetail?accDocNo=${accDocNo}`
+    );
   };
 
   const handleMaterialSelect = () => {
@@ -220,32 +220,6 @@ function DIselectProduct() {
     setSelectedButton("rewmaterial");
   };
 
-  // const handleConfirm = () => {
-  //   if (selectedType) {
-  //     const filteredProducts = products.filter((product) => {
-  //       if (selectedType === "material") {
-  //         return product.IsMaterial === true &&  product.IsService === false ;
-  //       }
-  //       if (selectedType === "service") {
-  //         return product.IsService === true &&  product.IsMaterial === false;
-  //       } else if (selectedType === "rewmaterial") {
-  //         return product.IsMaterial === false && product.IsService === false;
-  //       }
-  //       return false;
-  //     });
-
-  //     const selectedItems = selectedProducts.filter((selectedProduct) =>
-  //       filteredProducts.some(
-  //         (product) => product.productID === selectedProduct.productID
-  //       )
-  //     );
-
-  //     navigate(`/uitestacc/AddDetail`
-  //   );
-  //   } else {
-  //     alert("กรุณาเลือกประเภทสินค้า/บริการ");
-  //   }
-  // };
 
   const handleSearch = (term) => {
     // ฟังก์ชันรับค่าค้นหาจาก SearchComponent
@@ -270,7 +244,7 @@ function DIselectProduct() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/DIHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}DIHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -284,53 +258,53 @@ function DIselectProduct() {
       <div>
         <h1 style={{ textAlign: "center" }}>SelectProduct/Service</h1>
         <div>&nbsp;</div>
-        <div style={{display:"flex"}}>
-        <div className="col-9">
-          <Stack spacing={1} sx={{ alignItems: "center" }}>
-            <Stack direction="row" spacing={1}>
-            <Badge  anchorOrigin={{vertical: 'top',horizontal: 'left',}} badgeContent={materialCount} max={999} color="primary" 
-                    sx={{'& .MuiBadge-badge': {  border: '1px solid white',},}}>
-              <Chip label="MATERIAL"
-                color={selectedButton === "material" ? "primary" : "primary"}
-                variant={selectedButton === "material" ? "primary" : "outlined"}
-                onClick={handleMaterialSelect}/>
-            </Badge>
-            <Badge  anchorOrigin={{vertical: 'top',horizontal: 'left',}} badgeContent={serviceCount} max={999} color="success" 
-             sx={{'& .MuiBadge-badge': {  border: '1px solid white',},}} style={{marginLeft:"15px"}}>
-                <Chip
+        <div style={{ display: "flex" }}>
+          <div className="col-9">
+            <Stack spacing={1} sx={{ alignItems: "center" }}>
+              <Stack direction="row" spacing={1}>
+                <Badge anchorOrigin={{ vertical: 'top', horizontal: 'left', }} badgeContent={materialCount} max={999} color="primary"
+                  sx={{ '& .MuiBadge-badge': { border: '1px solid white', }, }}>
+                  <Chip label="MATERIAL"
+                    color={selectedButton === "material" ? "primary" : "primary"}
+                    variant={selectedButton === "material" ? "primary" : "outlined"}
+                    onClick={handleMaterialSelect} />
+                </Badge>
+                <Badge anchorOrigin={{ vertical: 'top', horizontal: 'left', }} badgeContent={serviceCount} max={999} color="success"
+                  sx={{ '& .MuiBadge-badge': { border: '1px solid white', }, }} style={{ marginLeft: "15px" }}>
+                  <Chip
                     label="SERVICE"
                     color={selectedButton === "service" ? "success" : "success"}
                     variant={selectedButton === "service" ? "success" : "outlined"}
                     onClick={handleServiceSelect}
-                />
-            </Badge>
-            <Badge  anchorOrigin={{vertical: 'top',horizontal: 'left',}} badgeContent={rawMaterialCount} max={999} color="secondary"
-             sx={{'& .MuiBadge-badge': {  border: '1px solid white',},}} style={{marginLeft:"15px"}}>
-                <Chip
+                  />
+                </Badge>
+                <Badge anchorOrigin={{ vertical: 'top', horizontal: 'left', }} badgeContent={rawMaterialCount} max={999} color="secondary"
+                  sx={{ '& .MuiBadge-badge': { border: '1px solid white', }, }} style={{ marginLeft: "15px" }}>
+                  <Chip
                     label="RAW MATERIAL"
                     color={selectedButton === "rewmaterial" ? "secondary" : "secondary"}
                     variant={selectedButton === "rewmaterial" ? "secondary" : "outlined"}
                     onClick={handleRewMaterialSelect}
-                />
-            </Badge>
-          </Stack>
-          </Stack>
-        </div>
-        <div 
-        // className="col-3"
-        style={{ marginLeft: "auto" }}
-      >
-          {showSearch ? (
-            <SearchComponent onSearch={handleSearch} /> // แสดง SearchComponent เมื่อ showSearch เป็น true
-          ) : (
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              size="2x"
-              style={{ color: "#2f9901" }}
-              onClick={toggleSearch} // แสดงไอคอนค้นหาเมื่อ showSearch เป็น false
-            />
-          )}
-        </div>
+                  />
+                </Badge>
+              </Stack>
+            </Stack>
+          </div>
+          <div
+            // className="col-3"
+            style={{ marginLeft: "auto" }}
+          >
+            {showSearch ? (
+              <SearchComponent onSearch={handleSearch} /> // แสดง SearchComponent เมื่อ showSearch เป็น true
+            ) : (
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                size="2x"
+                style={{ color: "#2f9901" }}
+                onClick={toggleSearch} // แสดงไอคอนค้นหาเมื่อ showSearch เป็น false
+              />
+            )}
+          </div>
         </div>
         <ul>
           {products &&
@@ -338,24 +312,24 @@ function DIselectProduct() {
             products
               .filter((product) => {
                 if (selectedType === "material") {
-                    return product.IsMaterial === true && product.IsService === false;
+                  return product.IsMaterial === true && product.IsService === false;
                 }
                 if (selectedType === "service") {
-                    return product.IsService === true && product.IsMaterial === false;
+                  return product.IsService === true && product.IsMaterial === false;
                 } else if (selectedType === "rewmaterial") {
-                    return product.IsService === false && product.IsMaterial === false;
+                  return product.IsService === false && product.IsMaterial === false;
                 }
                 return true;
-            })
-            .filter((product) => {
+              })
+              .filter((product) => {
                 // เพิ่มการกรองตาม searchTerm
                 if (!searchTerm) return true; // ถ้า searchTerm ว่าง แสดงทุกรายการ
                 const searchLower = searchTerm.toLowerCase();
                 return (
-                    product.ProductName.toLowerCase().includes(searchLower) ||
-                    product.ProductID.toString().toLowerCase().includes(searchLower)
+                  product.ProductName.toLowerCase().includes(searchLower) ||
+                  product.ProductID.toString().toLowerCase().includes(searchLower)
                 );
-            })
+              })
               .map((product, index) => (
                 <div
                   className="row"
@@ -379,12 +353,12 @@ function DIselectProduct() {
                         {selectedProducts.find(
                           (p) => p.productID === product.productID
                         ) && (
-                          <FontAwesomeIcon
-                            icon={faCircleCheck}
-                            size="1x"
-                            style={{ color: "#a10000" }}
-                          />
-                        )}
+                            <FontAwesomeIcon
+                              icon={faCircleCheck}
+                              size="1x"
+                              style={{ color: "#a10000" }}
+                            />
+                          )}
                       </h5>
                     </div>
                   </ListItem>
@@ -399,36 +373,36 @@ function DIselectProduct() {
 
         <div>&nbsp;</div>
         <div className="row" style={{ display: "flex" }}>
-                 <div className="col-6" style={{ display: "grid" }}>
-                   <FontAwesomeIcon
-                     icon={faCircleArrowLeft}
-                     size="2x"
-                     style={{
-                       color: "#013898",
-                       cursor: "pointer",
-                       display: "grid",
-                       justifyItems: "end",
-                     }}
-                     onClick={handleGoBack}
-                   />
-                 </div>
-                 <div
-                   className="col-6"
-                   style={{ display: "grid", justifyItems: "flex-end" }}
-                 >
-                   <FontAwesomeIcon
-                     icon={faCircleArrowUp}
-                     size="2x"
-                     style={{
-                       color: "#013898",
-                       cursor: "pointer",
-                       display: "grid",
-                       justifyItems: "end",
-                     }}
-                     onClick={scrollToTop}
-                   />
-                 </div>
-                 </div>
+          <div className="col-6" style={{ display: "grid" }}>
+            <FontAwesomeIcon
+              icon={faCircleArrowLeft}
+              size="2x"
+              style={{
+                color: "#013898",
+                cursor: "pointer",
+                display: "grid",
+                justifyItems: "end",
+              }}
+              onClick={handleGoBack}
+            />
+          </div>
+          <div
+            className="col-6"
+            style={{ display: "grid", justifyItems: "flex-end" }}
+          >
+            <FontAwesomeIcon
+              icon={faCircleArrowUp}
+              size="2x"
+              style={{
+                color: "#013898",
+                cursor: "pointer",
+                display: "grid",
+                justifyItems: "end",
+              }}
+              onClick={scrollToTop}
+            />
+          </div>
+        </div>
       </div>
     </ItemNoContext.Provider>
   );

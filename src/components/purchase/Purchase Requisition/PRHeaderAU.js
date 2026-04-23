@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -670,9 +670,9 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      // navigate(`/uitestacc/PRListDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/PRDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}PRListDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}PRDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,

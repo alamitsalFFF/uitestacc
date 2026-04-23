@@ -44,6 +44,7 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../../purchase/formatNumber.js";
 import Abbreviation from "../../purchase/Abbreviation.js";
 import { FormatDate } from "../../purchase/FormatData.js";
+import { URL } from "../../api/url.js";
 
 function DODTList() {
   const location = useLocation('');
@@ -257,7 +258,7 @@ function DODTList() {
   }, [location.state?.addProducts]);
   //ส่งค่าไปด้วยตอนไปเลือกรายการ
   const handleProductSelect = () => {
-    navigate("/uitestacc/DOselectProduct/", {
+    navigate(`${URL}DOselectProduct/`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -329,9 +330,9 @@ function DODTList() {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
-    navigate(`/uitestacc/DOHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}DOHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -341,10 +342,6 @@ function DODTList() {
   };
 
   const navigate = useNavigate();
-
-  const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
-  };
 
   const style = {
     p: 0,
@@ -485,7 +482,7 @@ function DODTList() {
 
   const handleEditDetail = (AccItemNo) => {
     navigate(
-      `/uitestacc/DOEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+      `${URL}DOEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {
@@ -543,7 +540,7 @@ function DODTList() {
   //   setItemCounter(newItemNo + 1);
 
   //   navigate(
-  //     `/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
+  //     `${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
   //     {
   //       //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
   //       state: {
@@ -632,8 +629,8 @@ function DODTList() {
               <h5>
                 &nbsp; {product.AccItemNo}.&nbsp;
                 {/* <Abbreviation textName={product.ProductName} /> */}
-                {product.ProductName} 
-                &nbsp; <i style={{fontSize:"13px"}}>{product.AccSourceDocNo}</i>
+                {product.ProductName}
+                &nbsp; <i style={{ fontSize: "13px" }}>{product.AccSourceDocNo}</i>
               </h5>
               <h>
                 &nbsp; &nbsp; {formatNumber(product.Price)}

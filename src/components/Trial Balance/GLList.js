@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ButtonGroup } from "@mui/material";
@@ -291,10 +292,10 @@ function GLList() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/TrialBalance`);
+    navigate(`${URL}TrialBalance`);
   };
   const handleGoMenu = () => {
-    navigate(`/uitestacc/`);
+    navigate(`${URL}`);
   };
 
   const scrollToTop = () => {

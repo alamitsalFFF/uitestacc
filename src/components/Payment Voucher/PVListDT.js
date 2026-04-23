@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -233,7 +234,7 @@ function PVListDT() {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/PVHeader?journalNo=${JournalNo}`);
+    navigate(`${URL}PVHeader?journalNo=${JournalNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -245,7 +246,7 @@ function PVListDT() {
   const navigate = useNavigate();
 
   // const handlePlusClick = () => {
-  //   navigate("/uitestacc/QCSupplier");
+  //   navigate(`${URL}QCSupplier`);
   // };
 
   const style = {
@@ -391,8 +392,8 @@ function PVListDT() {
   // const handleEditDetail = (Seq) => {
   //   console.log('Seq:',Seq)
   //   navigate(
-  //     `/uitestacc/PVEditDetail?entryID=${EntryId}&seq=${Seq}`,
-  //     // `/uitestacc/PVEditDetail?entryID=${EntryId}`,
+  //     `${URL}PVEditDetail?entryID=${EntryId}&seq=${Seq}`,
+  //     // `${URL}PVEditDetail?entryID=${EntryId}`,
   //     {
   //       state: {
   //         editDetail,
@@ -419,7 +420,7 @@ function PVListDT() {
       console.log('entryId:',typeof entryId)
       console.log('Seq:', seq)
       console.log('Seq:',typeof seq)
-      navigate(`/uitestacc/PVEditDetail?entryID=${entryId}&seq=${seq}`, {
+      navigate(`${URL}PVEditDetail?entryID=${entryId}&seq=${seq}`, {
         state: {
           entryId:entryId,
           journalNo:journalNo,
@@ -477,7 +478,7 @@ function PVListDT() {
   //   setItemCounter(newItemNo + 1);
 
   //   navigate(
-  //     `/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
+  //     `${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${accItemNo}`,
   //     {
   //       //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
   //       state: {

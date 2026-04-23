@@ -1,4 +1,4 @@
-//หน้านี้สำหรับเลือก product มาจาก VMas_Product
+﻿//หน้านี้สำหรับเลือก product มาจาก VMas_Product
 // import React, { useState, useEffect } from "react";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -30,7 +30,7 @@ import {
 } from "../redux/TransactionDataaction";
 import { useDispatch, useSelector } from "react-redux";
 import SearchComponent from "../purchase/SearchComponen";
-import { API_VIEW_RESULT } from "../api/url";
+import { API_VIEW_RESULT, URL} from "../api/url";
 
 const ItemNoContext = createContext({
   itemNo: 1,
@@ -273,7 +273,7 @@ function ProductSelection() {
       );
       setNextItemNo(nextItemNo + 1);
     }
-    navigate(`/uitestacc/TransactionDTAdd?accDocNo=${accDocNo}`);
+    navigate(`${URL}TransactionDTAdd?accDocNo=${accDocNo}`);
     // window.location.reload();
   };
 
@@ -312,7 +312,7 @@ function ProductSelection() {
   //       )
   //     );
 
-  //     navigate(`/uitestacc/AddDetail/`);
+  //     navigate(`${URL}AddDetail/`);
   //   } else {
   //     alert("กรุณาเลือกประเภทสินค้า/บริการ");
   //   }
@@ -341,7 +341,7 @@ function ProductSelection() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PRListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}PRListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

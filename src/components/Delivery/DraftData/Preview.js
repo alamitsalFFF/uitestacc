@@ -3,14 +3,14 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { URL } from '../../api/url';
 
-function DriveImagePreview({ googleDriveFileId, handleClose }) { 
-    const navigate = useNavigate();
+function DriveImagePreview({ googleDriveFileId, handleClose }) {
+  const navigate = useNavigate();
 
   const handleDraftOCR = () => {
-    // navigate("/uitestacc/DraftOCRDI", {
-    navigate("/uitestacc/DraftDI", {
-      state: { ocrFileId: googleDriveFileId,mode: "dataOnly" }  // ส่งค่าไปหน้า DraftOCRDIHD
+    navigate(`${URL}DraftDI`, {
+      state: { ocrFileId: googleDriveFileId, mode: "dataOnly" }  // ส่งค่าไปหน้า DraftOCRDIHD
     });
   };
   if (!googleDriveFileId) {
@@ -28,7 +28,7 @@ function DriveImagePreview({ googleDriveFileId, handleClose }) {
   const imageUrl = `https://drive.google.com/thumbnail?id=${googleDriveFileId}&sz=w800`;
   // const imageUrl = `https://drive.google.com/uc?export=view&id=${googleDriveFileId}`;
 
-return (
+  return (
     <div className="image-preview-container" style={{ padding: '20px', textAlign: 'center' }}>
       <h3 id="global-image-preview-modal-title" style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
         ภาพ Preview (OCR)
@@ -41,16 +41,16 @@ return (
           margin: '10px auto',
           border: '1px solid #ddd'
         }}
-        // style={{ maxWidth: '100%', height: 'auto' }}
+      // style={{ maxWidth: '100%', height: 'auto' }}
       />
 
       <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", gap: "10px" }}>
-        
+
         {/* ปุ่ม Draft OCR */}
-        <Button 
+        <Button
           onClick={handleDraftOCR}
           variant="contained"
-          sx={{ bgcolor: '#1976d2', '&:hover': { bgcolor: '#0d47a1' }}}
+          sx={{ bgcolor: '#1976d2', '&:hover': { bgcolor: '#0d47a1' } }}
         >
           Draft OCR
         </Button>
@@ -59,7 +59,7 @@ return (
         <Button
           onClick={handleClose}
           variant="contained"
-          sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' }}}
+          sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
         >
           ปิด
         </Button>

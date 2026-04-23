@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -84,7 +84,7 @@ function AccConfigList() {
 
   const handleEditClick = (configCode) => {
     // ฟังก์ชันสำหรับนำทางไปยังหน้า AccConfig พร้อมส่ง configCode เป็นพารามิเตอร์
-    navigate(`/uitestacc/AccConfig?configCode=${configCode}`);
+    navigate(`${URL}AccConfig?configCode=${configCode}`);
   };
 
   const handleAddNew = () => {

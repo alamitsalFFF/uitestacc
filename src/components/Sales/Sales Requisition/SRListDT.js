@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -340,7 +341,7 @@ function SRListDT() {
   }, [detailData]);
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SRHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}SRHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -352,7 +353,7 @@ function SRListDT() {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -497,7 +498,7 @@ function SRListDT() {
     const docStatus = srh[0].DocStatus;
     console.log("docStatus:", docStatus);
     navigate(
-      `/uitestacc/SREditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+      `${URL}SREditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {
@@ -539,7 +540,7 @@ function SRListDT() {
     }
   }, [detailData]);
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   // const docStatus = srh[0].DocStatus;
   return (

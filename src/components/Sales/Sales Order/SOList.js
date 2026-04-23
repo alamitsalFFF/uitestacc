@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig";
 import { API_BASE, API_VIEW_RESULT, URL } from "../../api/url";
 import Divider from "@mui/material/Divider";
@@ -218,8 +218,8 @@ function SOList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    // navigate(`/uitestacc/POHeader?accDocType=${accDocType}`, {
-    // navigate(`/uitestacc/AccordionSO?accDocType=${accDocType}`, {
+    // navigate(`${URL}POHeader?accDocType=${accDocType}`, {
+    // navigate(`${URL}AccordionSO?accDocType=${accDocType}`, {
     navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
@@ -361,7 +361,7 @@ function SOList() {
         </ul>
       )}
       <div>&nbsp;</div>
-      <FloatingActionBar backPath="/uitestacc/" />
+      <FloatingActionBar backPath={`${URL}`} />
     </div>
   );
 }

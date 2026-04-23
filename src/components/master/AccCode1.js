@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
@@ -321,11 +322,11 @@ function AccCodeList() {
   };
 
   const handleEditClick = (AccCode) => {
-    navigate(`/uitestacc/AccountCode?accCode=${AccCode}`);
+    navigate(`${URL}AccountCode?accCode=${AccCode}`);
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
 
   const scrollToTop = () => {

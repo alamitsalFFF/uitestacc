@@ -1,4 +1,4 @@
-//หน้านี้สำหรับเลือก product มาจาก VMas_Product
+﻿//หน้านี้สำหรับเลือก product มาจาก VMas_Product
 // import React, { useState, useEffect } from "react";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -30,7 +30,7 @@ import {
 } from "../../redux/TransactionDataaction";
 import { useDispatch, useSelector } from "react-redux";
 import SearchComponent from "../../purchase/SearchComponen";
-import { API_VIEW_RESULT } from "../../api/url";
+import { API_VIEW_RESULT, URL} from "../../api/url";
 
 const ItemNoContext = createContext({
   itemNo: 1,
@@ -221,7 +221,7 @@ function SIProductSelection() {
       );
       setNextItemNo(nextItemNo + 1);
     }
-    navigate(`/uitestacc/SIAddDetail?accDocNo=${accDocNo}`);
+    navigate(`${URL}SIAddDetail?accDocNo=${accDocNo}`);
     // window.location.reload();
   };
 
@@ -263,7 +263,7 @@ function SIProductSelection() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SIListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}SIListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -58,7 +58,7 @@ import AccordionSelectProductDO from "./AccordionSelectProductDO.js";
 import AccordionDOEditDT from "./AccordionDOEditDT.js";
 import DOManagementComponentFromSO from "./DOManagementComponentFromSO.js";
 
-function AccordionDODT({ accDocNo,onSaveSuccess }) {
+function AccordionDODT({ accDocNo, onSaveSuccess }) {
   const location = useLocation('');
   const dispatch = useDispatch();
   // const accDocNo = useSelector((state) => state.accDocNo);
@@ -84,7 +84,7 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
 
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openAddDTModal, setOpenAddDTModal] = useState(false);
-  
+
   // useEffect(() => {
   //   if (
   //     location.state?.addProducts &&
@@ -95,8 +95,8 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
   //   }
   // }, [location.state?.addProducts]);
 
-     const fetchDataDIDetails = useCallback(() => {
-  // useEffect(() => {
+  const fetchDataDIDetails = useCallback(() => {
+    // useEffect(() => {
     if (accDocNo) {
       // ตรวจสอบว่า accDocNo มีค่าหรือไม่
       console.log("accDocNo from store:", accDocNo);
@@ -253,7 +253,7 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
       })();
     }
   }
-  ,[accDocNo]);
+    , [accDocNo]);
   useEffect(() => {
     if (location.state && location.state.accDocNo) {
       const accDocNoFromState = location.state.accDocNo;
@@ -427,44 +427,44 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
         }
       })();
     }
-  }, [location.state?.addProducts,accDocNo]); 
-  
+  }, [location.state?.addProducts, accDocNo]);
+
   // Product select handler
-    const handleProductSelect = () => {
-      setOpenProductModal(true);
-    };
-  
-    // ฟังก์ชันสำหรับเปิด Modal เลือกสินค้า
-    const handleOpenProductModal = () => {
-      setOpenProductModal(true);
-    };
-  
-    // ฟังก์ชันสำหรับปิด Modal เลือกสินค้า
-    const handleCloseProductModal = () => {
-      setOpenProductModal(false);
-    };
-  
-    const handleConfirmProductSelection = () => {
-      handleCloseProductModal(); // Close the product selection modal
-      setOpenAddDTModal(true); // Open the detail modal
-    };
-    // ฟังก์ชันสำหรับปิด Modal เพิ่มรายละเอียด
-    const handleCloseAddDTModal = () => {
-      setOpenAddDTModal(false);
-      dispatch(clearSelectedProducts()); // เคลียร์ค่าที่เลือกเมื่อปิด Modal
-    };
-  
-    // ฟังก์ชันที่ถูกเรียกเมื่อกด "Save" ที่ Modal เพิ่มรายละเอียด
-    const handleSaveDetail = () => {
-      handleCloseAddDTModal();
-      fetchDataSODetails();
-      const numberOfSavedItems = selectedProducts.length;
-      setItemCounter((prevCounter) => prevCounter + numberOfSavedItems);
-      if (onSaveSuccess) {
-        onSaveSuccess();
-      }
-    };
-    // ---------------------------------------
+  const handleProductSelect = () => {
+    setOpenProductModal(true);
+  };
+
+  // ฟังก์ชันสำหรับเปิด Modal เลือกสินค้า
+  const handleOpenProductModal = () => {
+    setOpenProductModal(true);
+  };
+
+  // ฟังก์ชันสำหรับปิด Modal เลือกสินค้า
+  const handleCloseProductModal = () => {
+    setOpenProductModal(false);
+  };
+
+  const handleConfirmProductSelection = () => {
+    handleCloseProductModal(); // Close the product selection modal
+    setOpenAddDTModal(true); // Open the detail modal
+  };
+  // ฟังก์ชันสำหรับปิด Modal เพิ่มรายละเอียด
+  const handleCloseAddDTModal = () => {
+    setOpenAddDTModal(false);
+    dispatch(clearSelectedProducts()); // เคลียร์ค่าที่เลือกเมื่อปิด Modal
+  };
+
+  // ฟังก์ชันที่ถูกเรียกเมื่อกด "Save" ที่ Modal เพิ่มรายละเอียด
+  const handleSaveDetail = () => {
+    handleCloseAddDTModal();
+    fetchDataSODetails();
+    const numberOfSavedItems = selectedProducts.length;
+    setItemCounter((prevCounter) => prevCounter + numberOfSavedItems);
+    if (onSaveSuccess) {
+      onSaveSuccess();
+    }
+  };
+  // ---------------------------------------
 
   useEffect(() => {
     if (
@@ -525,13 +525,9 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
 
   const navigate = useNavigate();
-
-  const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
-  };
 
   const style = {
     p: 0,
@@ -620,211 +616,211 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
   const [addDetail, setAddDetail] = useState([]);
 
   // --------------------------
-    const [showDOManagement, setShowDOManagement] = useState(false);
-    const handleChooseSO = () => {
-      console.log("AccDocNo:", accDocNo);
-      
-      setShowDOManagement(true); // ตั้งค่าให้แสดง DOManagementComponentFromSO
-    };
-    const handleCloseDOManagement = () => {
-      setShowDOManagement(false);
-    };
-  
-    const fetchDataSODetails = () => {
-      if (accDocNo) {
-        const vDO_H = {
-          viewName: "vDO_H",
-          parameters: [
-            { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
-          ],
-          results: [
-            { sourceField: "AccDocNo" },
-            { sourceField: "AccBatchDate" },
-            { sourceField: "AccEffectiveDate" },
-            { sourceField: "PartyCode" },
-            { sourceField: "PartyTaxCode" },
-            { sourceField: "PartyName" },
-            { sourceField: "PartyAddress" },
-            { sourceField: "IssueBy" },
-            { sourceField: "AccDocType" },
-            { sourceField: "AccPostDate" },
-            { sourceField: "FiscalYear" },
-            { sourceField: "DocStatus" },
-            { sourceField: "DocRefNo" },
-            { sourceField: "TotalAmount" },
-            { sourceField: "TotalVat" },
-            { sourceField: "TotalWht" },
-            { sourceField: "TotalNet" },
-            { sourceField: "StatusName" },
-          ],
-        };
+  const [showDOManagement, setShowDOManagement] = useState(false);
+  const handleChooseSO = () => {
+    console.log("AccDocNo:", accDocNo);
 
-        const vDO_D = {
-          viewName: "vDO_D",
-          parameters: [
-            { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
-          ],
-          results: [
-            { sourceField: "DocRefNo" },
-            { sourceField: "DocStatus" },
-            { sourceField: "FiscalYear" },
-            { sourceField: "AccPostDate" },
-            { sourceField: "AccDocType" },
-            { sourceField: "IssueBy" },
-            { sourceField: "PartyAddress" },
-            { sourceField: "PartyName" },
-            { sourceField: "PartyTaxCode" },
-            { sourceField: "PartyCode" },
-            { sourceField: "AccEffectiveDate" },
-            { sourceField: "AccBatchDate" },
-            { sourceField: "AccDocNo" },
-            { sourceField: "AccItemNo" },
-            { sourceField: "AccSourceDocNo" },
-            { sourceField: "AccSourceDocItem" },
-            { sourceField: "StockTransNo" },
-            { sourceField: "Qty" },
-            { sourceField: "Price" },
-            { sourceField: "UnitMea" },
-            { sourceField: "Currency" },
-            { sourceField: "ExchangeRate" },
-            { sourceField: "Amount" },
-            { sourceField: "SaleProductCode" },
-            { sourceField: "SalesDescription" },
-            { sourceField: "ProductID" },
-            { sourceField: "ProductCode" },
-            { sourceField: "ProductName" },
-            { sourceField: "ProductBrand" },
-            { sourceField: "ProductColor" },
-            { sourceField: "ProductSize" },
-            { sourceField: "ProductSizeUnit" },
-            { sourceField: "ProductVolume" },
-            { sourceField: "ProductVolumeUnit" },
-            { sourceField: "UnitStock" },
-            { sourceField: "ProductTypeCode" },
-            { sourceField: "ProductTypeID" },
-            { sourceField: "ProductTypeName" },
-            { sourceField: "WarehouseID" },
-            { sourceField: "WarehouseCode" },
-            { sourceField: "WarehouseName" },
-            { sourceField: "WarehouseLocation" },
-            { sourceField: "WarehouseAddress" },
-            { sourceField: "AssetAccCode" },
-            { sourceField: "AssetAccName" },
-            { sourceField: "AssetAccNameEN" },
-            { sourceField: "AssetAccType" },
-            { sourceField: "AssetAccTypeName" },
-            { sourceField: "AssetAccTypeNameEN" },
-            { sourceField: "AssetAccSide" },
-            { sourceField: "AssetAccMainCode" },
-            { sourceField: "AssetAccMainName" },
-            { sourceField: "AssetAccMainNameEN" },
-            { sourceField: "IncomeAccCode" },
-            { sourceField: "IncomeAccName" },
-            { sourceField: "IncomeAccNameEN" },
-            { sourceField: "IncomeAccType" },
-            { sourceField: "IncomeAccTypeName" },
-            { sourceField: "IncomeAccTypeNameEN" },
-            { sourceField: "IncomeAccSide" },
-            { sourceField: "IncomeAccMainCode" },
-            { sourceField: "IncomeAccMainName" },
-            { sourceField: "IncomeAccMainNameEN" },
-            { sourceField: "ExpenseAccCode" },
-            { sourceField: "ExpenseAccName" },
-            { sourceField: "ExpenseAccNameEN" },
-            { sourceField: "ExpenseAccType" },
-            { sourceField: "ExpenseAccTypeName" },
-            { sourceField: "ExpenseAccTypeNameEN" },
-            { sourceField: "ExpenseAccSide" },
-            { sourceField: "ExpenseAccMainCode" },
-            { sourceField: "ExpenseAccMainName" },
-            { sourceField: "ExpenseAccMainNameEN" },
-            { sourceField: "IsMaterial" },
-            { sourceField: "IsService" },
-            { sourceField: "RateVat" },
-            { sourceField: "RateWht" },
-            { sourceField: "VatType" },
-            { sourceField: "TotalAmount" },
-            { sourceField: "VatAmount" },
-            { sourceField: "WhtAmount" },
-          ],
-        };
-  
-        (async () => {
-          try {
-            setLoading(true);
-            const responseH = await axios.post(`${API_VIEW_RESULT}`, vDO_H, {
-              headers: { "Content-Type": "application/json" },
-            });
-  
-            const responseD = await axios.post(`${API_VIEW_RESULT}`, vDO_D, {
-              headers: { "Content-Type": "application/json" },
-            });
-  
-            if (responseH.status === 200 && responseD.status === 200) {
-              setLoading(false);
-              setDOH(responseH.data);
-              setDOD(responseD.data.sort((a, b) => a.AccItemNo - b.AccItemNo));
-            } else {
-              setLoading(false);
-              console.error("Error fetching data");
-            }
-          } catch (error) {
-            console.error("Error:", error);
+    setShowDOManagement(true); // ตั้งค่าให้แสดง DOManagementComponentFromSO
+  };
+  const handleCloseDOManagement = () => {
+    setShowDOManagement(false);
+  };
+
+  const fetchDataSODetails = () => {
+    if (accDocNo) {
+      const vDO_H = {
+        viewName: "vDO_H",
+        parameters: [
+          { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
+        ],
+        results: [
+          { sourceField: "AccDocNo" },
+          { sourceField: "AccBatchDate" },
+          { sourceField: "AccEffectiveDate" },
+          { sourceField: "PartyCode" },
+          { sourceField: "PartyTaxCode" },
+          { sourceField: "PartyName" },
+          { sourceField: "PartyAddress" },
+          { sourceField: "IssueBy" },
+          { sourceField: "AccDocType" },
+          { sourceField: "AccPostDate" },
+          { sourceField: "FiscalYear" },
+          { sourceField: "DocStatus" },
+          { sourceField: "DocRefNo" },
+          { sourceField: "TotalAmount" },
+          { sourceField: "TotalVat" },
+          { sourceField: "TotalWht" },
+          { sourceField: "TotalNet" },
+          { sourceField: "StatusName" },
+        ],
+      };
+
+      const vDO_D = {
+        viewName: "vDO_D",
+        parameters: [
+          { field: "AccDocNo", value: accDocNo }, // ใช้ accDocNo จาก Redux store
+        ],
+        results: [
+          { sourceField: "DocRefNo" },
+          { sourceField: "DocStatus" },
+          { sourceField: "FiscalYear" },
+          { sourceField: "AccPostDate" },
+          { sourceField: "AccDocType" },
+          { sourceField: "IssueBy" },
+          { sourceField: "PartyAddress" },
+          { sourceField: "PartyName" },
+          { sourceField: "PartyTaxCode" },
+          { sourceField: "PartyCode" },
+          { sourceField: "AccEffectiveDate" },
+          { sourceField: "AccBatchDate" },
+          { sourceField: "AccDocNo" },
+          { sourceField: "AccItemNo" },
+          { sourceField: "AccSourceDocNo" },
+          { sourceField: "AccSourceDocItem" },
+          { sourceField: "StockTransNo" },
+          { sourceField: "Qty" },
+          { sourceField: "Price" },
+          { sourceField: "UnitMea" },
+          { sourceField: "Currency" },
+          { sourceField: "ExchangeRate" },
+          { sourceField: "Amount" },
+          { sourceField: "SaleProductCode" },
+          { sourceField: "SalesDescription" },
+          { sourceField: "ProductID" },
+          { sourceField: "ProductCode" },
+          { sourceField: "ProductName" },
+          { sourceField: "ProductBrand" },
+          { sourceField: "ProductColor" },
+          { sourceField: "ProductSize" },
+          { sourceField: "ProductSizeUnit" },
+          { sourceField: "ProductVolume" },
+          { sourceField: "ProductVolumeUnit" },
+          { sourceField: "UnitStock" },
+          { sourceField: "ProductTypeCode" },
+          { sourceField: "ProductTypeID" },
+          { sourceField: "ProductTypeName" },
+          { sourceField: "WarehouseID" },
+          { sourceField: "WarehouseCode" },
+          { sourceField: "WarehouseName" },
+          { sourceField: "WarehouseLocation" },
+          { sourceField: "WarehouseAddress" },
+          { sourceField: "AssetAccCode" },
+          { sourceField: "AssetAccName" },
+          { sourceField: "AssetAccNameEN" },
+          { sourceField: "AssetAccType" },
+          { sourceField: "AssetAccTypeName" },
+          { sourceField: "AssetAccTypeNameEN" },
+          { sourceField: "AssetAccSide" },
+          { sourceField: "AssetAccMainCode" },
+          { sourceField: "AssetAccMainName" },
+          { sourceField: "AssetAccMainNameEN" },
+          { sourceField: "IncomeAccCode" },
+          { sourceField: "IncomeAccName" },
+          { sourceField: "IncomeAccNameEN" },
+          { sourceField: "IncomeAccType" },
+          { sourceField: "IncomeAccTypeName" },
+          { sourceField: "IncomeAccTypeNameEN" },
+          { sourceField: "IncomeAccSide" },
+          { sourceField: "IncomeAccMainCode" },
+          { sourceField: "IncomeAccMainName" },
+          { sourceField: "IncomeAccMainNameEN" },
+          { sourceField: "ExpenseAccCode" },
+          { sourceField: "ExpenseAccName" },
+          { sourceField: "ExpenseAccNameEN" },
+          { sourceField: "ExpenseAccType" },
+          { sourceField: "ExpenseAccTypeName" },
+          { sourceField: "ExpenseAccTypeNameEN" },
+          { sourceField: "ExpenseAccSide" },
+          { sourceField: "ExpenseAccMainCode" },
+          { sourceField: "ExpenseAccMainName" },
+          { sourceField: "ExpenseAccMainNameEN" },
+          { sourceField: "IsMaterial" },
+          { sourceField: "IsService" },
+          { sourceField: "RateVat" },
+          { sourceField: "RateWht" },
+          { sourceField: "VatType" },
+          { sourceField: "TotalAmount" },
+          { sourceField: "VatAmount" },
+          { sourceField: "WhtAmount" },
+        ],
+      };
+
+      (async () => {
+        try {
+          setLoading(true);
+          const responseH = await axios.post(`${API_VIEW_RESULT}`, vDO_H, {
+            headers: { "Content-Type": "application/json" },
+          });
+
+          const responseD = await axios.post(`${API_VIEW_RESULT}`, vDO_D, {
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (responseH.status === 200 && responseD.status === 200) {
             setLoading(false);
+            setDOH(responseH.data);
+            setDOD(responseD.data.sort((a, b) => a.AccItemNo - b.AccItemNo));
+          } else {
+            setLoading(false);
+            console.error("Error fetching data");
           }
-        })();
-      }
-    };
-  
+        } catch (error) {
+          console.error("Error:", error);
+          setLoading(false);
+        }
+      })();
+    }
+  };
+
   // -------------------------
 
   //  useEffect(() => { ******
   //   fetchDataDIDetails();
   // }, [fetchDataDIDetails, location.state?.addProducts]); 
-  
-    const handleEditDetail = (AccItemNo) => {
-      const docStatus = doh[0]?.DocStatus;
-      const accDocType = doh[0]?.AccDocType;
-      setItemToEdit({
-        accDocNo,
-        accItemNo: AccItemNo,
-        docStatus,
-        accDocType,
-        selectedDocConfigID: location.state?.selectedDocConfigID || null //|| `DI`
-      ,
-      });
-      setShowEditDetailModal(true);
-       console.log("itemToEdit:", {
-    accDocNo,
-    accItemNo: AccItemNo,
-    docStatus,
-    accDocType,
-    selectedDocConfigID: location.state?.selectedDocConfigID || null //|| `DI`
-    ,
-  });
-   console.log("handleEditDetail called. Modal state:", true);
-    };
-  
-    const handleCloseEditDetailModal = useCallback(() => {
-      setShowEditDetailModal(false);
-      setItemToEdit(null);
-    }, []);
-  
-    const handleDetailUpdatedOrDeleted = useCallback(() => {
-      fetchDataSODetails();
-      handleCloseEditDetailModal();
-    }, [fetchDataSODetails, handleCloseEditDetailModal]);
 
-    // คำนวณ itemCounter
-    useEffect(() => {
-      if (dod && dod.length > 0) {
-        const itemNo = dod.map((item) => item.AccItemNo);
-        const maxItemNo = Math.max(...itemNo);
-        setItemCounter(maxItemNo + 1);
-      } else {
-        setItemCounter(1);
-      }
-    }, [dod]);
+  const handleEditDetail = (AccItemNo) => {
+    const docStatus = doh[0]?.DocStatus;
+    const accDocType = doh[0]?.AccDocType;
+    setItemToEdit({
+      accDocNo,
+      accItemNo: AccItemNo,
+      docStatus,
+      accDocType,
+      selectedDocConfigID: location.state?.selectedDocConfigID || null //|| `DI`
+      ,
+    });
+    setShowEditDetailModal(true);
+    console.log("itemToEdit:", {
+      accDocNo,
+      accItemNo: AccItemNo,
+      docStatus,
+      accDocType,
+      selectedDocConfigID: location.state?.selectedDocConfigID || null //|| `DI`
+      ,
+    });
+    console.log("handleEditDetail called. Modal state:", true);
+  };
+
+  const handleCloseEditDetailModal = useCallback(() => {
+    setShowEditDetailModal(false);
+    setItemToEdit(null);
+  }, []);
+
+  const handleDetailUpdatedOrDeleted = useCallback(() => {
+    fetchDataSODetails();
+    handleCloseEditDetailModal();
+  }, [fetchDataSODetails, handleCloseEditDetailModal]);
+
+  // คำนวณ itemCounter
+  useEffect(() => {
+    if (dod && dod.length > 0) {
+      const itemNo = dod.map((item) => item.AccItemNo);
+      const maxItemNo = Math.max(...itemNo);
+      setItemCounter(maxItemNo + 1);
+    } else {
+      setItemCounter(1);
+    }
+  }, [dod]);
 
   return (
     <div>
@@ -850,14 +846,14 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
             Date:
             {doh && doh.length > 0 && (
               // <FormatDate dateString={doh[0].AccEffectiveDate}/>
-              <FormatDate dateString={doh[0].AccBatchDate}/>
+              <FormatDate dateString={doh[0].AccBatchDate} />
             )}
           </p>
         </ListItem>
       </div>
       <div className="row">
         <ListItem style={{ display: "flex", alignItems: "center" }}>
-          <h5  style={{color:"blue"}}>
+          <h5 style={{ color: "blue" }}>
             &nbsp;{doh && doh.length > 0 && doh[0].PartyName}
           </h5>
         </ListItem>
@@ -875,9 +871,9 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
                 &nbsp; {index + 1}.&nbsp;
                 {product.ProductCode}/
                 <Abbreviation textName={product.SalesDescription} />
-                &nbsp; 
+                &nbsp;
                 {product.AccSourceDocNo && product.AccSourceDocItem ? (
-                  <i style={{ fontSize: "13px" , color: "gray" }}>
+                  <i style={{ fontSize: "13px", color: "gray" }}>
                     {product.AccSourceDocNo}#{product.AccSourceDocItem}
                   </i>
                 ) : null}
@@ -903,27 +899,27 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
           </ListItem>
         </div>
       ))}
-        {showEditDetailModal && itemToEdit && (
-              <>
-                <AccordionDOEditDT
-                  open={showEditDetailModal}
-                  onClose={handleCloseEditDetailModal}
-                  onBackdropClick={handleCloseEditDetailModal}
-                  onSave={handleDetailUpdatedOrDeleted}
-                  onDelete={handleDetailUpdatedOrDeleted}
-                  accDocNo={itemToEdit.accDocNo}
-                  accItemNo={itemToEdit.accItemNo}
-                  docStatus={itemToEdit.docStatus}
-                  accDocType={itemToEdit.accDocType}
-                  selectedDocConfigID={itemToEdit.selectedDocConfigID}
-                  isproductName={itemToEdit.isproductName}
-                  price={itemToEdit.price}
-                  qty={itemToEdit.qty}
-                />
-              </>
-            )}
+      {showEditDetailModal && itemToEdit && (
+        <>
+          <AccordionDOEditDT
+            open={showEditDetailModal}
+            onClose={handleCloseEditDetailModal}
+            onBackdropClick={handleCloseEditDetailModal}
+            onSave={handleDetailUpdatedOrDeleted}
+            onDelete={handleDetailUpdatedOrDeleted}
+            accDocNo={itemToEdit.accDocNo}
+            accItemNo={itemToEdit.accItemNo}
+            docStatus={itemToEdit.docStatus}
+            accDocType={itemToEdit.accDocType}
+            selectedDocConfigID={itemToEdit.selectedDocConfigID}
+            isproductName={itemToEdit.isproductName}
+            price={itemToEdit.price}
+            qty={itemToEdit.qty}
+          />
+        </>
+      )}
 
-       {(!doh || doh.length === 0 || (doh[0]?.DocStatus === 0 || doh[0]?.DocStatus === 1)) && (
+      {(!doh || doh.length === 0 || (doh[0]?.DocStatus === 0 || doh[0]?.DocStatus === 1)) && (
         <>
           <Divider
             variant="middle"
@@ -939,23 +935,23 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
               flexWrap: "wrap",
             }}
           >
-             {!showEditDetailModal && (
-            <Stack direction="row" spacing={1}>
-              <Button //variant="outlined"
-                variant="contained"
-                color="warning"
-                style={{ width: "183px", height: "33px", borderRadius: "20px" }}
-                onClick={handleProductSelect}
-              >
-                <FontAwesomeIcon
-                  icon={faSquarePlus}
-                  size="2x"
-                  style={{ color: "#fff", justifyItems: "end" }}
-                />
-                &nbsp;Product/Service
-              </Button>
-            </Stack>
-          )}
+            {!showEditDetailModal && (
+              <Stack direction="row" spacing={1}>
+                <Button //variant="outlined"
+                  variant="contained"
+                  color="warning"
+                  style={{ width: "183px", height: "33px", borderRadius: "20px" }}
+                  onClick={handleProductSelect}
+                >
+                  <FontAwesomeIcon
+                    icon={faSquarePlus}
+                    size="2x"
+                    style={{ color: "#fff", justifyItems: "end" }}
+                  />
+                  &nbsp;Product/Service
+                </Button>
+              </Stack>
+            )}
             <AccordionSelectProductDO
               isOpen={openProductModal}
               onClose={handleCloseProductModal}
@@ -994,7 +990,7 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
               <DOManagementComponentFromSO
                 currentDONo={doh[0].AccDocNo}
                 onClose={handleCloseDOManagement}
-                onSave={fetchDataSODetails} 
+                onSave={fetchDataSODetails}
               />
             )}
           </div>
@@ -1021,7 +1017,7 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
                 &nbsp; TotalWht &nbsp;
               </h5>
               <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "6px",color:"green" }}
+                style={{ marginTop: "5px", marginLeft: "10px", padding: "6px", color: "green" }}
               >
                 &nbsp; TotalNet &nbsp;
               </h5>
@@ -1054,7 +1050,7 @@ function AccordionDODT({ accDocNo,onSaveSuccess }) {
           </div>
         ))}
         <div>&nbsp;</div>
-       
+
       </div>
     </div>
   );

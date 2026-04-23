@@ -46,7 +46,7 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../purchase/formatNumber.js";
 import Abbreviation from "../purchase/Abbreviation.js";
 import { FormatDate } from "../purchase/FormatData.js";
-import { GET_VIEW_RESULT, REPORT_BASE } from "../api/url.js";
+import { GET_VIEW_RESULT, REPORT_BASE, URL } from "../api/url.js";
 import FloatingActionBar from "../DataFilters/FloatingActionBar.js";
 
 function JVDTList() {
@@ -281,8 +281,8 @@ function JVDTList() {
     }
   }, [detailData]);
 
-   const handlePrint = async () => {
-    const GL = "GL"; 
+  const handlePrint = async () => {
+    const GL = "GL";
     // const accDocType = formData.accDocType;
     // const accDocNo = Data.accDocNo;
     console.log("AccDocNo:", JournalNo);
@@ -290,19 +290,8 @@ function JVDTList() {
     const printUrl = `${REPORT_BASE}/form?Form=Form${GL}&Code=${JournalNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };
-
-  const handleGoBack = () => {
-    navigate(`/uitestacc/JVList?journalNo=${JournalNo}`);
-  };
   const handleGoMenu = () => {
-    navigate(`/uitestacc/`);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    navigate(`${URL}`);
   };
 
   const navigate = useNavigate();
@@ -410,23 +399,23 @@ function JVDTList() {
         Journal Voucher
       </h1>
       <div className="row">
-         <div style={{ display: "flex" }}>
+        <div style={{ display: "flex" }}>
           {/* <FontAwesomeIcon
             icon={faPrint}
             size="2x"
             style={{ color: "#e56107" }}
             onClick={handlePrint}
           /> */}
-        <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{JournalNo}</h2>
-          <br />
-        </ListItem>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{JournalNo}</h2>
+            <br />
+          </ListItem>
         </div>
         <div style={{ display: "flex" }}>
           <ListItem
@@ -539,38 +528,7 @@ function JVDTList() {
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
       <div className="row">
         <div>&nbsp;</div>
-        {/* <div className="row" style={{ display: "flex" }}>
-          <div className="col-6" style={{ display: "grid" }}>
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={handleGoBack}
-            />
-          </div>
-          <div
-            className="col-6"
-            style={{ display: "grid", justifyItems: "flex-end" }}
-          >
-            <FontAwesomeIcon
-              icon={faCircleArrowUp}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={scrollToTop}
-            />
-          </div>
-        </div> */}
-        <FloatingActionBar backPath="/uitestacc/" />
+        <FloatingActionBar backPath={`${URL}`} />
       </div>
     </div>
   );

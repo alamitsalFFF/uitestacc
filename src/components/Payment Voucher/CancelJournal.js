@@ -1,6 +1,6 @@
-import Swal from "sweetalert2";
+﻿import Swal from "sweetalert2";
 import axios from "../Auth/axiosConfig";
-import { API_BASE, StoredProcedures } from "../api/url";
+import { API_BASE, StoredProcedures, URL} from "../api/url";
 
 export const CancelJournal = async (journalNo, navigate) => {
   // แสดงกล่องข้อความให้กรอกเหตุผลการยกเลิก
@@ -75,7 +75,7 @@ export const CancelJournal = async (journalNo, navigate) => {
 
         // นำทางผู้ใช้กลับไปที่หน้ารายการหลังจาก 3 วินาที
         setTimeout(() => {
-          navigate(`/uitestacc/PVList/`);
+          navigate(`${URL}PVList/`);
         }, 3000);
       } else {
         console.error("Error creating CancelJournal:", response.status, response.statusText);

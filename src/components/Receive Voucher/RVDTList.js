@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -214,10 +215,10 @@ function RVDTList() {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/RVList?journalNo=${JournalNo}`);
+    navigate(`${URL}RVList?journalNo=${JournalNo}`);
   };
   const handleGoMenu = () => {
-    navigate(`/uitestacc/`);
+    navigate(`${URL}`);
   };
 
   const scrollToTop = () => {

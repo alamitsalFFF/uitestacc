@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
@@ -192,8 +193,8 @@ function TBList() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    // navigate(`/uitestacc/PVDTList?journalNo=${filtered.JournalNo}`);
-    navigate(`/uitestacc/PVHeader?journalNo=${filtered.JournalNo}`); 
+    // navigate(`${URL}PVDTList?journalNo=${filtered.JournalNo}`);
+    navigate(`${URL}PVHeader?journalNo=${filtered.JournalNo}`); 
   };
 
   const handleDetailClick = (filtered) => {
@@ -202,7 +203,7 @@ function TBList() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/GLList?journalNo=${filtered.JournalNo}`); 
+    navigate(`${URL}GLList?journalNo=${filtered.JournalNo}`); 
   };
 
     const handlePrint = async (filtered) => {
@@ -235,7 +236,7 @@ function TBList() {
   const handleAddNew = () => {
     const accDocType = "PV";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/PVHeader?accDocType=${accDocType}`, {
+    navigate(`${URL}PVHeader?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -257,10 +258,10 @@ function TBList() {
 //   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/MenuCardAC/");
+    navigate(`${URL}MenuCardAC/`);
   };
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

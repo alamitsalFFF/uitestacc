@@ -1,9 +1,9 @@
-import React from "react";
+﻿import React from "react";
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
 import { values } from "lodash";
 import { useNavigate } from "react-router-dom";
-import { StoredProcedures_Base } from "../../api/url";
+import { StoredProcedures_Base, URL} from "../../api/url";
 
 export const SOfromSR = async (AccDocNoC,refno, navigate) => {
   console.log("AccDocNo:", AccDocNoC);
@@ -66,7 +66,7 @@ export const SOfromSR = async (AccDocNoC,refno, navigate) => {
         timer: 3000,
         willClose: () => {
           // เพิ่ม willClose event
-          navigate(`/uitestacc/SOList/`);
+          navigate(`${URL}SOList/`);
         },
       });
     } else {

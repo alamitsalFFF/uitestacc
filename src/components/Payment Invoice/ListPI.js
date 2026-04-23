@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -248,14 +248,14 @@ function PIList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/Accordion${accDocType}?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionPI
+    navigate(`${URL}Accordion${accDocType}?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionPI
   };
   const handleEditClick1 = (filtered) => {
     dispatch(setAccDocNo(filtered.AccDocNo));
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/PIHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง PIHeader
+    navigate(`${URL}PIHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง PIHeader
   };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
@@ -272,7 +272,7 @@ function PIList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/Accordion${accDocType}?accDocType=${accDocType}`, {
+    navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -317,7 +317,7 @@ function PIList() {
   ];
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -47,7 +47,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 // import IconButton from "../purchase/Purchase Order/Iconbutton";
 import ButtonRV from "./ButtonRV";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL} from "../api/url";
 
 export default function RVHeader() {
   const JournalNo = useSelector((state) => state.accDocNo);
@@ -364,7 +364,7 @@ export default function RVHeader() {
       // const entryBy = formData.entryBy;
       // const description = formData.description;
 
-      // navigate(`/uitestacc/PVDTList?journalNo=${journalNo}`, {
+      // navigate(`${URL}PVDTList?journalNo=${journalNo}`, {
       //   state: {
       //     journalNo,
       //     entryDate,
@@ -502,7 +502,7 @@ export default function RVHeader() {
       const entryBy = formData.entryBy;
       const description = formData.description;
 
-      navigate(`/uitestacc/RVListDT?journalNo=${journalNo}`, {
+      navigate(`${URL}RVListDT?journalNo=${journalNo}`, {
         state: {
           entryId,
           journalNo,
@@ -614,7 +614,7 @@ export default function RVHeader() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/RVList/`);
+    navigate(`${URL}RVList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

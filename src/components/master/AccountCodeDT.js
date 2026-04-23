@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,7 +32,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 
 function AccountCodeDT({ selectedAccount }) {
@@ -411,7 +411,7 @@ function AccountCodeDT({ selectedAccount }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/uitestacc/AccCodeList/");
+    navigate(`${URL}AccCodeList/`);
   };
 
   const scrollToTop = () => {

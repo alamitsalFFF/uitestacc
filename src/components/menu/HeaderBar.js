@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import TAWAN_logo from "../../components/img/TAWAN_logo.png";
-import tawan1 from "../../components/img/tawan1.jpg";
-import tawan from "../../components/img/tawan.png";
-import logo_chmt from "../../components/img/logo_chmt.png";
 import en from "../../components/img/en.png";
 import th from "../../components/img/thai.png";
-// import ENus from "../../components/img/tawan1.jpg"; // tawan.jpg ถูกลบแล้ว
 import THAI_LOGO from "../../components/img/THAI_LOGO.png";
 import EN_LOGO from "../../components/img/EN_LOGO.png";
 import { URL } from "../api/url";
+import companyLogoFile from "../../components/img/logo_acc1.png"; //MNL,chmt
+// import companyLogoFile from "../../components/img/logo_acc.jpg"; //Tawan
+const COMPANY_LOGO = companyLogoFile;
 
 export default function HeaderBar() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -55,7 +53,7 @@ export default function HeaderBar() {
     // redirect ไปหน้า Login (หรือหน้าแรก)
     window.location.href = `${URL}Login`;
     // หรือถ้าใช้ useNavigate จาก react-router-dom:
-    // navigate("/uitestacc/Login");
+    // navigate(`${URL}Login`);
   };
 
   return (
@@ -63,9 +61,8 @@ export default function HeaderBar() {
       <Stack direction="row" spacing={2}>
         <Box
           component="img"
-          // src={logo_chmt}
-          src={tawan}
-          alt="Tawan"
+          src={COMPANY_LOGO}
+          alt="Company Logo"
           sx={{
             height: { xs: "40px", sm: "50px", md: "60px", lg: "80px" },
             width: "auto",

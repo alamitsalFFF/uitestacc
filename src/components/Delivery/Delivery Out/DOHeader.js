@@ -45,7 +45,7 @@ import {
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { API_BASE, DATA_BASE, REPORT_BASE } from "../../api/url.js";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../../api/url.js";
 
 export default function DOHeader() {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -339,8 +339,7 @@ export default function DOHeader() {
       if (!response.ok) {
         const errorData = await response.json(); // Try to get error details from the server
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -358,7 +357,7 @@ export default function DOHeader() {
       const nameCategory = selectedEName;
       console.log("nameEDoc:", selectedEName);
 
-      navigate(`/uitestacc/DODTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}DODTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -367,8 +366,8 @@ export default function DOHeader() {
           nameCategory: nameCategory,
         },
       });
-    
-} catch (error) {
+
+    } catch (error) {
       console.error("Error saving data:", error);
       // Handle errors, e.g., display an error message to the user
       alert("บันทึกข้อมูลไม่สำเร็จ กรุณาลองใหม่");
@@ -402,8 +401,7 @@ export default function DOHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -432,8 +430,7 @@ export default function DOHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -457,8 +454,7 @@ export default function DOHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/DODTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}DODTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -552,7 +548,7 @@ export default function DOHeader() {
     return customerOptions.slice(startIndex, endIndex);
   };
   // -------------------------------
-    const handlePrint = async () => {
+  const handlePrint = async () => {
     // const PR = "PR"; // กำหนดค่า PR ให้ถูกต้อง
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
@@ -563,7 +559,7 @@ export default function DOHeader() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/DOList/");
+    navigate(`${URL}DOList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -573,7 +569,7 @@ export default function DOHeader() {
   };
 
   return (
-    <div className="row" style={{ padding: "5%",paddingTop:"1px" }}>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
       <h2 style={{ textAlign: "center" }}>Delivery Out</h2>
       <div style={{ display: "flex" }}>
         <div className="col-1" style={{ cursor: "pointer", display: "grid" }}>
@@ -604,7 +600,7 @@ export default function DOHeader() {
             icon={faPrint}
             size="2x"
             style={{ color: "blue" }}
-             onClick={handlePrint}
+            onClick={handlePrint}
           />
         </div>
 
@@ -956,7 +952,7 @@ export default function DOHeader() {
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -969,7 +965,7 @@ export default function DOHeader() {
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div>&nbsp;</div>

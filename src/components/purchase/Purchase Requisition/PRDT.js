@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -388,7 +389,7 @@ function PRDT() {
   }, [detailData]);
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PRHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}PRHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -400,7 +401,7 @@ function PRDT() {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -547,7 +548,7 @@ function PRDT() {
   //   const accDocType = prh[0].AccDocType
   //   console.log('accdoctype',accDocType);
   //   navigate(
-  //     `/uitestacc/PREditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+  //     `${URL}PREditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
   //     {
   //       //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
   //       state: {
@@ -642,7 +643,7 @@ function PRDT() {
     }
   }, [detailData]);
   const handleGoMenu = () => {
-    navigate(`/uitestacc/PRHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}PRHeader?accDocNo=${accDocNo}`);
   };
   return (
     // <div className="row" style={{ padding: "5%" }}>

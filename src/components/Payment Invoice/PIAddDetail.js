@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthFetch } from "../../components/Auth/fetchConfig";
-import { API_BASE, API_VIEW_RESULT } from "../../components/api/url";
+import { API_BASE, API_VIEW_RESULT, URL} from "../../components/api/url";
 import ListItem from "@mui/material/ListItem";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -161,7 +161,7 @@ console.log("productCode:",productCode);
         timer: 2000,
       });
 
-      navigate(`/uitestacc/PIDTList?accDocNo=${accDocNo}`, {
+      navigate(`${URL}PIDTList?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: selectedProducts[0].accDocNo,
           addProducts: addProducts,
@@ -178,7 +178,7 @@ console.log("productCode:",productCode);
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/PIDTList?accDocNo=${accDocNo}`);
+    navigate(`${URL}PIDTList?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

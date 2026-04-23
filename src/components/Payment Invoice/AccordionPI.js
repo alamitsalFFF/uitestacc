@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -94,7 +94,7 @@ export default function AccordionPI() {
   // }, []);
 
   // const handleGoMenu = () => {
-  //   // navigate("/uitestacc/PIList/");
+  //   // navigate(`${URL}PIList/`);
   //   navigate(`${URL}${WebAddress}`);
   // };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig";
 import { API_BASE, API_VIEW_RESULT, URL } from "../../api/url";
 import Divider from "@mui/material/Divider";
@@ -261,7 +261,7 @@ function ListPOHD() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    // navigate(`/uitestacc/POHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง POHeader
+    // navigate(`${URL}POHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง POHeader
     navigate(`${URL}AccordionPO?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง POHeader
   };
 
@@ -278,7 +278,7 @@ function ListPOHD() {
   const handleAddNew = () => {
     const accDocType = "PO";
     dispatch(setAccDocType(accDocType));
-    // navigate(`/uitestacc/POHeader?accDocType=${accDocType}`, {
+    // navigate(`${URL}POHeader?accDocType=${accDocType}`, {
     navigate(`${URL}AccordionPO?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่

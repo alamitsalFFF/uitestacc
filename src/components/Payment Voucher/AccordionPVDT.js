@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -227,7 +228,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/PVHeader?journalNo=${JournalNo}`);
+    navigate(`${URL}PVHeader?journalNo=${JournalNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -239,7 +240,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
   const navigate = useNavigate();
 
   // const handlePlusClick = () => {
-  //   navigate("/uitestacc/QCSupplier");
+  //   navigate(`${URL}QCSupplier`);
   // };
 
   const style = {

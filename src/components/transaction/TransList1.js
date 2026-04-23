@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import Divider from "@mui/material/Divider";
@@ -22,7 +22,7 @@ import {
   setStatusName,
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
-import { API_BASE, API_VIEW_RESULT } from "../api/url";
+import { API_BASE, API_VIEW_RESULT, URL} from "../api/url";
 import { Box, Button } from "@mui/material";
 import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 import ButtonAction from "../DataFilters/ButtonAction";
@@ -294,7 +294,7 @@ function TransList1() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/Transaction?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionDI
+    navigate(`${URL}Transaction?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง AccordionDI
   };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
@@ -312,7 +312,7 @@ function TransList1() {
   const handleAddNew = () => {
     const accDocType = "DO";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/AccordionDO?accDocType=${accDocType}`, {
+    navigate(`${URL}AccordionDO?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -357,7 +357,7 @@ function TransList1() {
   ];
 
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

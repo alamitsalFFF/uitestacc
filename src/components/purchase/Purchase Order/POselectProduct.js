@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+﻿import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,7 +28,7 @@ import {
 } from "../../redux/TransactionDataaction";
 import { useDispatch, useSelector } from "react-redux";
 import SearchComponent from "../SearchComponen";
-import { API_BASE, API_VIEW_RESULT } from "../../api/url";
+import { API_BASE, API_VIEW_RESULT, URL} from "../../api/url";
 
 const ItemNoContext = createContext({
   itemNo: 1,
@@ -271,7 +271,7 @@ function POselectProduct() {
       );
       setNextItemNo(nextItemNo + 1);
     }
-    navigate(`/uitestacc/POAddDetail?accDocNo=${accDocNo}`);
+    navigate(`${URL}POAddDetail?accDocNo=${accDocNo}`);
   };
 
   const handleMaterialSelect = () => {
@@ -309,7 +309,7 @@ function POselectProduct() {
   //       )
   //     );
 
-  //     navigate(`/uitestacc/AddDetail`);
+  //     navigate(`${URL}AddDetail`);
   //   } else {
   //     alert("กรุณาเลือกประเภทสินค้า/บริการ");
   //   }
@@ -338,7 +338,7 @@ function POselectProduct() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/POListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}POListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

@@ -1,6 +1,6 @@
-import Swal from "sweetalert2";
+﻿import Swal from "sweetalert2";
 import axios from "../Auth/axiosConfig";
-import { API_VIEW_RESULT, StoredProcedures_Base } from "../api/url";
+import { API_VIEW_RESULT, StoredProcedures_Base, URL} from "../api/url";
 // import { values } from "lodash";
 
 const fetchJournalNo = async (entryIdtoString) => {
@@ -119,7 +119,7 @@ export const DIfromPI = async (AccDocNo,refno, navigate) => {
         timer: 3000,
       });
       setTimeout(() => {
-        navigate(`/uitestacc/DIList/`);
+        navigate(`${URL}DIList/`);
       }, 3000);
     } else {
       console.error("Error creating DI Header:", responseDIfromPI.status, responseDIfromPI.statusText);

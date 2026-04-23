@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -227,7 +227,7 @@ function RVHDList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง AccordionDI
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง AccordionDI
   };
 
   const handleEditClick1 = (filtered, index) => {
@@ -236,14 +236,14 @@ function RVHDList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DIHeader
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DIHeader
   };
   const handleDetailClick = (filtered) => {
     dispatch(setAccDocNo(filtered.JournalNo));
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}Accordion${accDocType}?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
   const groupedTransactions = filtered.reduce((acc, transaction) => {
     const existingTransaction = acc.find(
@@ -259,7 +259,7 @@ function RVHDList() {
 
   const handleAddNew = () => {
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/Accordion${accDocType}?accDocType=${accDocType}`, {
+    navigate(`${URL}Accordion${accDocType}?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };

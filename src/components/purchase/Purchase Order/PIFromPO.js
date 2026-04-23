@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
 import { values } from "lodash";
@@ -72,7 +72,7 @@ export const PIfromPO = async (AccDocNoC, navigate) => {
           navigate(`${URL}PIList`);
         }
       });
-      //    navigate(`/uitestacc/PIHeader?accDocNo=${responsePIFromPO.data.data[0].PINo}`);
+      //    navigate(`${URL}PIHeader?accDocNo=${responsePIFromPO.data.data[0].PINo}`);
       //  } else {
       //    console.error("Error: Invalid responsePIFromPO data", responsePIFromPO.data);
       //    alert("เกิดข้อผิดพลาด: ข้อมูลตอบกลับไม่ถูกต้อง");

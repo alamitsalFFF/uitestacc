@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -24,7 +24,7 @@ import {
 } from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { blue } from "@mui/material/colors";
-import { API_VIEW_RESULT } from "../api/url";
+import { API_VIEW_RESULT, URL} from "../api/url";
 
 function PVHDList1() {
   const [requisitions, setRequisitions] = useState([]);
@@ -128,15 +128,15 @@ function PVHDList1() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/AccordionPV?journalNo=${filtered.JournalNo}`);
+    navigate(`${URL}AccordionPV?journalNo=${filtered.JournalNo}`);
   };
   const handleEditClick1 = (filtered) => {
     dispatch(setAccDocNo(filtered.JournalNo));
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    // navigate(`/uitestacc/PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
-    navigate(`/uitestacc/PVHeader?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    // navigate(`${URL}PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}PVHeader?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
   const handleDetailClick = (filtered) => {
@@ -144,7 +144,7 @@ function PVHDList1() {
     dispatch(setPartyName(filtered.Description));
     dispatch(setAccDocType(filtered.Debit));
     dispatch(setStatusName(filtered.Credit));
-    navigate(`/uitestacc/PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}PVDTList?journalNo=${filtered.JournalNo}`); // นำทางไปยัง DOHeader
   };
 
   const groupedTransactions = filtered.reduce((acc, transaction) => {
@@ -162,7 +162,7 @@ function PVHDList1() {
   const handleAddNew = () => {
     const accDocType = "PV";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/PVHeader?accDocType=${accDocType}`, {
+    navigate(`${URL}PVHeader?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -175,10 +175,10 @@ function PVHDList1() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

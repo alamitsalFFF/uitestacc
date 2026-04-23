@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
@@ -127,7 +128,7 @@ function SIHDList() {
     dispatch(setPartyName(filtered.PartyName));
     dispatch(setAccDocType(filtered.AccDocType));
     dispatch(setStatusName(filtered.StatusName));
-    navigate(`/uitestacc/SIHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง DOHeader
+    navigate(`${URL}SIHeader?accDocNo=${filtered.AccDocNo}`); // นำทางไปยัง DOHeader
   };
 
     const groupedTransactions = filtered.reduce((acc, transaction) => {
@@ -143,7 +144,7 @@ function SIHDList() {
   const handleAddNew = () => {
     const accDocType = "SI";
     dispatch(setAccDocType(accDocType));
-    navigate(`/uitestacc/SIHeader?accDocType=${accDocType}`, {
+    navigate(`${URL}SIHeader?accDocType=${accDocType}`, {
       state: { isNew: true },
     }); // ส่ง state เพื่อระบุว่าเป็นการสร้างใหม่
   };
@@ -156,7 +157,7 @@ function SIHDList() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/MenuCardFC/");
+    navigate(`${URL}MenuCardFC/`);
   };
   const scrollToTop = () => {
     window.scrollTo({

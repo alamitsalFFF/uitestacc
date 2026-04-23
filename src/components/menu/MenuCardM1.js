@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
@@ -17,13 +18,13 @@ const cardssub = [
     id: "PI",
     title: "Payment Invoice",
     description: "บันทึกรับวางบิล",
-    address:"/uitestacc/MenuCard",
+    address: `${URL}MenuCard`,
   },
   {
     id: "SI",
     title: "Sale Invoice",
     description: "ใบแจ้งหนี้",
-    address:"/uitestacc/MenuCard",
+    address: `${URL}MenuCard`,
 
   },
 ];

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -40,7 +40,7 @@ import {
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { API_BASE } from "../api/url";
+import { API_BASE, URL} from "../api/url";
 
 function RVEditDetail1() {
   const location = useLocation();
@@ -203,7 +203,7 @@ function RVEditDetail1() {
         });
 
         navigate(
-          `/uitestacc/RVListDT?journalNo=${journalNoFromState}`
+          `${URL}RVListDT?journalNo=${journalNoFromState}`
           //   , {
           //   state: {
           //     accDocNo: accDocNo,
@@ -248,7 +248,7 @@ function RVEditDetail1() {
         timer: 2000,
       });
 
-      navigate(`/uitestacc/RVListDT?journalNo=${journalNoFromState}`);
+      navigate(`${URL}RVListDT?journalNo=${journalNoFromState}`);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -259,7 +259,7 @@ function RVEditDetail1() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/RVListDT?journalNo=${journalNoFromState}`);
+    navigate(`${URL}RVListDT?journalNo=${journalNoFromState}`);
   };
   const scrollToTop = () => {
     window.scrollTo({

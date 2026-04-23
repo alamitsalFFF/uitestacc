@@ -49,9 +49,8 @@ import Swal from "sweetalert2";
 import { SOfromSR } from "./SOFromSR";
 import ButtonSR from "./ButtonSR";
 import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
-import {Acctets2, BASE, DATA_BASE, REPORT_BASE} from "../../api/url";
+import { Acctets2, BASE, DATA_BASE, REPORT_BASE, URL, API_BASE } from "../../api/url";
 // import ApproveButton from "../../approving/SRApproveButton";
-import  {API_BASE}  from "../../api/url";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 // import { SOfromSRP } from "./SOFromSRP";
 import SOManagementComponent from "./SOManagementComponent";
@@ -243,7 +242,7 @@ export default function SRHeader() {
           accPostDate: new Date().toISOString().slice(0, 10),
           fiscalYear: new Date().toISOString().slice(0, 10),
         });
-         setDoctype(AccDocType || "");
+        setDoctype(AccDocType || "");
       }
       console.log("DataDoc:", data[0].accDocNo);
       console.log("DataDocS:", data[0].docStatus);
@@ -263,7 +262,7 @@ export default function SRHeader() {
     }
   }, [AccDocType, accDocNoFromUrl, isNewMode]);
 
-  
+
   // useEffect สำหรับจัดการโหมดสร้างใหม่ หรือเมื่อ apiData เปลี่ยนแปลง
   useEffect(() => {
     if (isNewMode) {
@@ -382,8 +381,7 @@ export default function SRHeader() {
       if (!responseHD.ok) {
         const errorData = await responseHD.json();
         throw new Error(
-          `HTTP error! status: ${responseHD.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${responseHD.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -518,7 +516,7 @@ export default function SRHeader() {
 
       console.log("nameEDoc:", selectedEName);
       console.log("accDocNo:", AccDocNo);
-      navigate(`/uitestacc/SRListDT?accDocNo=${AccDocNo}`, {
+      navigate(`${URL}SRListDT?accDocNo=${AccDocNo}`, {
         state: {
           accDocNo: AccDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -563,8 +561,7 @@ export default function SRHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -615,8 +612,7 @@ export default function SRHeader() {
           if (!response.ok) {
             const errorData = await response.json();
             throw new Error(
-              `HTTP error! status: ${response.status}, message: ${
-                errorData.message || "Unknown error"
+              `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
               }`
             );
           }
@@ -652,8 +648,7 @@ export default function SRHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -687,8 +682,8 @@ export default function SRHeader() {
       const partyCode = formData.partyCode;
       const partyName = formData.partyName;
       const nameCategory = selectedEName;
-      // navigate(`/uitestacc/TransactionDT?accDocNo=${accDocNo}`, {
-      navigate(`/uitestacc/SRListDT?accDocNo=${accDocNo}`, {
+      // navigate(`${URL}TransactionDT?accDocNo=${accDocNo}`, {
+      navigate(`${URL}SRListDT?accDocNo=${accDocNo}`, {
         state: {
           accDocNo: accDocNo,
           accEffectiveDate: accEffectiveDate,
@@ -771,7 +766,7 @@ export default function SRHeader() {
         partyCode: partyCode,
         partyCode: selectedCustomer.customerCode,
         partyTaxCode:
-        selectedCustomer.taxNumber + "/" + selectedCustomer.taxBranch,
+          selectedCustomer.taxNumber + "/" + selectedCustomer.taxBranch,
         partyName: selectedCustomer.customerName,
         partyAddress: selectedCustomer.address1,
       });
@@ -801,7 +796,7 @@ export default function SRHeader() {
       },
     });
   };
-    const PhandleSOPartial = async (AccDocNo) => {
+  const PhandleSOPartial = async (AccDocNo) => {
     navigate("/uitestacc/SOList", {
       state: {
         AccDocNo,
@@ -828,11 +823,11 @@ export default function SRHeader() {
   };
 
   const handleGoBack = () => {
-    navigate("/uitestacc/SRList/");
+    navigate(`${URL}SRList/`);
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/SRList/");
+    navigate(`${URL}SRList/`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -843,11 +838,11 @@ export default function SRHeader() {
 
   const [showSOManagement, setShowSOManagement] = useState(false);
   const handlePartialSOClick = () => {
-      setShowSOManagement(true); // ตั้งค่าให้แสดง SOManagementComponent
+    setShowSOManagement(true); // ตั้งค่าให้แสดง SOManagementComponent
   };
-   const handleCloseSOManagement = () => {
-        setShowSOManagement(false);
-    };
+  const handleCloseSOManagement = () => {
+    setShowSOManagement(false);
+  };
   const buttonActions = [
     {
       icon: (
@@ -884,55 +879,55 @@ export default function SRHeader() {
     },
     ...(docStatusState === "0"
       ? [
-          {
-            icon: (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* <FontAwesomeIcon icon={faP} style={{ color: "#f94f01" }} size="2xs" />
-                <FontAwesomeIcon icon={faO} style={{ color: "#f94f01" }} size="2xs" /> */}
-                <FontAwesomeIcon
-                  icon={faFileInvoice}
-                  style={{ color: "#f94f01" }}
-                  size="x"
-                />
-              </div>
-            ),
-            name: "All SO",
-            onClick: () => handleSO(AccDocNo, navigate),
-          },
-        ]
-      : []),
-      // ...(docStatusState === "0"
-      // ? [
-      //     {
-      //       icon: (
-      //         <div style={{ display: "flex", alignItems: "center" }}>
-      //           <FontAwesomeIcon
-      //             icon={faFileInvoice}
-      //             style={{ color: "#f94f01" }}
-      //             size="x"
-      //           />
-      //         </div>
-      //       ),
-      //       name: "SOfromSR",
-      //       onClick: () => PhandleSOPartial(AccDocNo, navigate),
-      //     },
-      //   ]
-      // : []),
         {
-            icon: (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <FontAwesomeIcon
-                  icon={faFileInvoice}
-                  style={{ color: "#f94f01" }}
-                  size="x"
-                />
-              </div>
-            ),
-            name: "Partial SO",
-            onClick: handlePartialSOClick,
-          },
-      //   ]
-      // : []),
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faP} style={{ color: "#f94f01" }} size="2xs" />
+                <FontAwesomeIcon icon={faO} style={{ color: "#f94f01" }} size="2xs" /> */}
+              <FontAwesomeIcon
+                icon={faFileInvoice}
+                style={{ color: "#f94f01" }}
+                size="x"
+              />
+            </div>
+          ),
+          name: "All SO",
+          onClick: () => handleSO(AccDocNo, navigate),
+        },
+      ]
+      : []),
+    // ...(docStatusState === "0"
+    // ? [
+    //     {
+    //       icon: (
+    //         <div style={{ display: "flex", alignItems: "center" }}>
+    //           <FontAwesomeIcon
+    //             icon={faFileInvoice}
+    //             style={{ color: "#f94f01" }}
+    //             size="x"
+    //           />
+    //         </div>
+    //       ),
+    //       name: "SOfromSR",
+    //       onClick: () => PhandleSOPartial(AccDocNo, navigate),
+    //     },
+    //   ]
+    // : []),
+    {
+      icon: (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FontAwesomeIcon
+            icon={faFileInvoice}
+            style={{ color: "#f94f01" }}
+            size="x"
+          />
+        </div>
+      ),
+      name: "Partial SO",
+      onClick: handlePartialSOClick,
+    },
+    //   ]
+    // : []),
     {
       icon: (
         <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
@@ -942,29 +937,29 @@ export default function SRHeader() {
     },
     ...(docStatusState === "0"
       ? [
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faPen}
-                style={{ color: "#72047b" }}
-                size="x"
-              />
-            ),
-            name: "Update",
-            onClick: handleUpdate,
-          },
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ color: "#ae0000" }}
-                size="x"
-              />
-            ),
-            name: "Cancel",
-            onClick: handleCancel,
-          },
-        ]
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "#ae0000" }}
+              size="x"
+            />
+          ),
+          name: "Cancel",
+          onClick: handleCancel,
+        },
+      ]
       : []),
     {
       icon: (
@@ -1024,20 +1019,20 @@ export default function SRHeader() {
 
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
-      <h2 style={{ textAlign: "center",textDecorationLine: "underline"}} onClick={handleGoMenu}>
-       &nbsp;Sales Requisition&nbsp;
-     </h2>
+      <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoMenu}>
+        &nbsp;Sales Requisition&nbsp;
+      </h2>
       {/* &nbsp; */}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <ButtonSR actions={buttonActions} />
-         {/* <<-- Render SOManagementComponent โดยควบคุมด้วย State */}
-            {showSOManagement && (
-                <SOManagementComponent
-                    AccDocNo={AccDocNo}
-                    docRefNo={formData.docRefNo} 
-                    onClose={handleCloseSOManagement} 
-                />
-            )}
+        {/* <<-- Render SOManagementComponent โดยควบคุมด้วย State */}
+        {showSOManagement && (
+          <SOManagementComponent
+            AccDocNo={AccDocNo}
+            docRefNo={formData.docRefNo}
+            onClose={handleCloseSOManagement}
+          />
+        )}
       </div>
       {/* <div>&nbsp;</div> */}
       <div className="col-md-3">
@@ -1141,7 +1136,7 @@ export default function SRHeader() {
                 >
                   <ListItemText
                     primary={`${customer.customerCode} - ${customer.customerName}`}
-                    //secondary={`${customer.taxNumber}/${customer.taxBranch} ${customer.address1}`}
+                  //secondary={`${customer.taxNumber}/${customer.taxBranch} ${customer.address1}`}
                   />
                 </ListItemButton>
               </ListItem>
@@ -1174,7 +1169,7 @@ export default function SRHeader() {
           </Button> */}
         </Box>
       </Modal>
-      {isMoreInfoModalOpen && ( 
+      {isMoreInfoModalOpen && (
         <MoreInfoHD
           open={isMoreInfoModalOpen}
           handleClose={handleCloseMoreInfoModal}
@@ -1294,7 +1289,7 @@ export default function SRHeader() {
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1307,7 +1302,7 @@ export default function SRHeader() {
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div>&nbsp;</div>

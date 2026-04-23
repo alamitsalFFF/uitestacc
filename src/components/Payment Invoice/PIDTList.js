@@ -1,3 +1,4 @@
+﻿import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
@@ -332,7 +333,7 @@ function PIDTList() {
   }, [detailData]);
   
   const handleGoBack = () => {
-    navigate(`/uitestacc/PIHeader?accDocNo=${accDocNo}`);
+    navigate(`${URL}PIHeader?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -344,7 +345,7 @@ function PIDTList() {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/uitestacc/QCSupplier");
+    navigate(`${URL}QCSupplier`);
   };
 
   const style = {
@@ -486,7 +487,7 @@ function PIDTList() {
 
   const handleEditDetail = (AccItemNo) => {
     navigate(
-      `/uitestacc/PIEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
+      `${URL}PIEditDetail?accDocNo=${accDocNo}&accItemNo=${AccItemNo}`,
       {
         //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
         state: {

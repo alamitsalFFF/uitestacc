@@ -1,7 +1,7 @@
-// import React from "react";
+﻿// import React from "react";
 import Swal from "sweetalert2";
 import axios from "../../Auth/axiosConfig";
-import { API_VIEW_RESULT, StoredProcedures_Base } from "../../api/url";
+import { API_VIEW_RESULT, StoredProcedures_Base, URL} from "../../api/url";
 // import { values } from "lodash";
 
 const fetchJournalNo = async (entryIdtoString) => {
@@ -249,7 +249,7 @@ export const DOfromSOandStock = async (AccDocNO,refno, navigate) => {
         //     timer: 5000,
         //   });
         //   setTimeout(() => {
-        //     navigate(`/uitestacc/DOList/`);
+        //     navigate(`${URL}DOList/`);
         //   }, 3000);
         // } 
 
@@ -270,10 +270,10 @@ export const DOfromSOandStock = async (AccDocNO,refno, navigate) => {
         }).then((result) => {
           if (result.isConfirmed) {
             // เมื่อผู้ใช้กดปุ่ม "ไปรายการ DO" (Confirm Button)
-            navigate(`/uitestacc/DOList/`); //ถ้าทำหน้า DO ให้แก้ไปที่หน้าเอกสารเลย
+            navigate(`${URL}DOList/`); //ถ้าทำหน้า DO ให้แก้ไปที่หน้าเอกสารเลย
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             // เมื่อผู้ใช้กดปุ่ม "ไปรายการ JV" (Cancel Button)
-            navigate(`/uitestacc/JVList/`);
+            navigate(`${URL}JVList/`);
           }
         });
 

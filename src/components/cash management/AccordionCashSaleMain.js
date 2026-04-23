@@ -188,15 +188,6 @@ function AccordionCashSaleMain({ onSaveSuccess }) {
     }
   };
 
-  // if (data.length > 0) {
-  //   const searchParams = new URLSearchParams({ data: JSON.stringify(data) });
-  //   const newPageUrl = `/uitestacc/CashSaleData?${searchParams.toString()}`;
-  //   const win = window.open(newPageUrl, "_blank");
-  //   if (win) {
-  //     win.focus();
-  //   }
-  // }
-
   useEffect(() => {
     // ฟังก์ชันสำหรับเรียก API และอัปเดต options
     const fetchOptions = async () => {

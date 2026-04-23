@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,7 +29,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { API_BASE, API_VIEW_RESULT } from "../api/url";
+import { API_BASE, API_VIEW_RESULT, URL} from "../api/url";
 import { Box, Button } from "@mui/material";
 import { FaArrowLeft, FaArrowUp } from "react-icons/fa";
 
@@ -443,7 +443,7 @@ function Service() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/uitestacc/ServiceList/");
+    navigate(`${URL}ServiceList/`);
   };
 
   const scrollToTop = () => {
@@ -454,7 +454,7 @@ function Service() {
   };
 
   const handleGoMenu = () => {
-    navigate("/uitestacc/");
+    navigate(`${URL}`);
   };
   return (
     <div className="row" style={{ padding: "5%" }}>

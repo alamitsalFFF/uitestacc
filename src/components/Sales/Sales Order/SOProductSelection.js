@@ -1,3 +1,4 @@
+﻿import { URL } from '../../api/url';
 //หน้านี้สำหรับเลือก product มาจาก VMas_Product
 // import React, { useState, useEffect } from "react";
 import React, { useState, useEffect, createContext, useContext } from "react";
@@ -220,7 +221,7 @@ function SOProductSelection() {
       );
       setNextItemNo(nextItemNo + 1);
     }
-    navigate(`/uitestacc/SOAddDetail?accDocNo=${accDocNo}`);
+    navigate(`${URL}SOAddDetail?accDocNo=${accDocNo}`);
     // window.location.reload();
   };
 
@@ -262,7 +263,7 @@ function SOProductSelection() {
   };
 
   const handleGoBack = () => {
-    navigate(`/uitestacc/SOListDT?accDocNo=${accDocNo}`);
+    navigate(`${URL}SOListDT?accDocNo=${accDocNo}`);
   };
   const scrollToTop = () => {
     window.scrollTo({
