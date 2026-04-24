@@ -553,7 +553,6 @@ export default function DOHeader() {
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
-    // const printUrl = `http://203.154.140.51/accreport/form?Form=Form${accDocType}&DB=Acctest2&Code=${accDocNo}`;
     const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };

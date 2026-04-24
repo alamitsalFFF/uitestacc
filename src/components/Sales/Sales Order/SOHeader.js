@@ -52,7 +52,7 @@ import { SIfromSO } from "./SIFromSO";
 import { RVfromSO } from "./RVFromSO";
 import ButtonSO from "./ButtonSO";
 import { useAuthFetch } from "../../Auth/fetchConfig";
-import { API_BASE, DATA_BASE, REPORT_BASE, URL} from "../../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../../api/url";
 
 export default function SOHeader() {
   const authFetch = useAuthFetch();
@@ -354,8 +354,7 @@ export default function SOHeader() {
       if (!responseHD.ok) {
         const errorData = await responseHD.json();
         throw new Error(
-          `HTTP error! status: ${responseHD.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${responseHD.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -532,8 +531,7 @@ export default function SOHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -586,8 +584,7 @@ export default function SOHeader() {
           if (!response.ok) {
             const errorData = await response.json();
             throw new Error(
-              `HTTP error! status: ${response.status}, message: ${
-                errorData.message || "Unknown error"
+              `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
               }`
             );
           }
@@ -624,8 +621,7 @@ export default function SOHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -788,14 +784,14 @@ export default function SOHeader() {
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
-    const printUrl = `${REPORT_BASE}/form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=Acctest2&Code=${accDocNo}`;
+    const printUrl = `${REPORT_BASE}/form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };
 
   const handleGoBack = () => {
     navigate(`${URL}SOList/`);
   };
-    const handleGoMenu = () => {
+  const handleGoMenu = () => {
     navigate(`${URL}`);
   };
   const scrollToTop = () => {
@@ -837,58 +833,58 @@ export default function SOHeader() {
     // ส่วนของ DI
     ...(docStatus === "0" || docStatus === 1
       ? [
-          {
-            icon: (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* <FontAwesomeIcon icon={faD} size="2xs" style={{ color: "#ff7f00" }} /> */}
-                {/* <FontAwesomeIcon icon={faI} size="2xs" style={{ color: "#ff7f00" }} /> */}
-                <FontAwesomeIcon
-                  icon={faTruckRampBox}
-                  size="2x"
-                  style={{ color: "#ff7f00" }}
-                />
-              </div>
-            ),
-            name: "DO",
-            onClick: () => handleDO(AccDocNo, navigate),
-          },
-          ]
+        {
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faD} size="2xs" style={{ color: "#ff7f00" }} /> */}
+              {/* <FontAwesomeIcon icon={faI} size="2xs" style={{ color: "#ff7f00" }} /> */}
+              <FontAwesomeIcon
+                icon={faTruckRampBox}
+                size="2x"
+                style={{ color: "#ff7f00" }}
+              />
+            </div>
+          ),
+          name: "DO",
+          onClick: () => handleDO(AccDocNo, navigate),
+        },
+      ]
       : []),
-       ...(docStatus === "0" || docStatus === 2
+    ...(docStatus === "0" || docStatus === 2
       ? [
-          // ส่วนของ SISV (ปุ่ม ขายสด/รับชำระเงิน)
-          {
-            icon: (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
-                {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#f94f01" }} /> */}
-                <FontAwesomeIcon
-                  icon={faTicket}
-                  size="2x"
-                  style={{ color: "#f94f01" }}
-                />
-              </div>
-            ),
-            name: "SISV",
-            onClick: () => handleSISV(AccDocNo, DocRefNo, navigate),
-          },
-          // ส่วนของ SI (ปุ่ม ขายเช่ื่อ/ออกใบแจ้งหนี้)
-          {
-            icon: (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#ed4d04" }} /> */}
-                {/* <FontAwesomeIcon icon={faI} size="2xs" style={{ color: "#ed4d04" }} /> */}
-                <FontAwesomeIcon
-                  icon={faFileInvoice}
-                  size="2x"
-                  style={{ color: "#ed4d04" }}
-                />
-              </div>
-            ),
-            name: "SI",
-            onClick: () => handleSI(AccDocNo),
-          },
-        ]
+        // ส่วนของ SISV (ปุ่ม ขายสด/รับชำระเงิน)
+        {
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
+              {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#f94f01" }} /> */}
+              <FontAwesomeIcon
+                icon={faTicket}
+                size="2x"
+                style={{ color: "#f94f01" }}
+              />
+            </div>
+          ),
+          name: "SISV",
+          onClick: () => handleSISV(AccDocNo, DocRefNo, navigate),
+        },
+        // ส่วนของ SI (ปุ่ม ขายเช่ื่อ/ออกใบแจ้งหนี้)
+        {
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#ed4d04" }} /> */}
+              {/* <FontAwesomeIcon icon={faI} size="2xs" style={{ color: "#ed4d04" }} /> */}
+              <FontAwesomeIcon
+                icon={faFileInvoice}
+                size="2x"
+                style={{ color: "#ed4d04" }}
+              />
+            </div>
+          ),
+          name: "SI",
+          onClick: () => handleSI(AccDocNo),
+        },
+      ]
       : []),
     {
       icon: (
@@ -899,29 +895,29 @@ export default function SOHeader() {
     },
     ...(docStatus === "0"
       ? [
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faPen}
-                style={{ color: "#72047b" }}
-                size="2x"
-              />
-            ),
-            name: "Update",
-            onClick: handleUpdate,
-          },
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ color: "#ae0000" }}
-                size="2x"
-              />
-            ),
-            name: "Cancel",
-            onClick: handleCancel,
-          },
-        ]
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="2x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "#ae0000" }}
+              size="2x"
+            />
+          ),
+          name: "Cancel",
+          onClick: handleCancel,
+        },
+      ]
       : []),
   ];
 
@@ -1291,7 +1287,7 @@ export default function SOHeader() {
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1304,7 +1300,7 @@ export default function SOHeader() {
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div>&nbsp;</div>

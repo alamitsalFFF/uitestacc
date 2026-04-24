@@ -657,11 +657,11 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
       accDocType: DI,
       accDocNo: "DI26xx...",
       accEffectiveDate: new Date().toISOString().slice(0, 10),
-      partyCode: "",
-      partyTaxCode: "",
-      partyName: "",
-      partyAddress: "",
-      docRefNo: "",
+      partyCode: " ",
+      partyTaxCode: " ",
+      partyName: " ",
+      partyAddress: " ",
+      docRefNo: " ",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin",//แก้เมื่อทำระบบlogin`
@@ -855,7 +855,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         <TextField
           id="partyCode"
           label="PartyCode"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -941,7 +941,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         <TextField
           id="partyTaxCode"
           label="PartyTaxCode"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -954,7 +954,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         <TextField
           id="partyName"
           label="PartyName"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -966,7 +966,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         <TextField
           id="partyAddress"
           label="PartyAddress"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -980,7 +980,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         <TextField
           id="docRefNo"
           label="DocRefNo"
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

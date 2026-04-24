@@ -2,9 +2,10 @@
 import Button from "@mui/material/Button";
 import { ButtonGroup } from "@mui/material";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { setAccDocNo,
+import {
+  setAccDocNo,
   setAccItemNo,
   setDetailData,
   setSelectedProducts,
@@ -17,7 +18,8 @@ import { setAccDocNo,
   setAccEffectiveDate,
   setPartyCode,
   setPartyName,
-  setNameCategory, } from "../redux/TransactionDataaction";
+  setNameCategory,
+} from "../redux/TransactionDataaction";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -63,38 +65,38 @@ function TransactionDT() {
   const [price, setPrice] = useState([]);
   const [qty, setQty] = useState([]);
   const [productName, setproductName] = useState(false);
-  
+
   const [itemCounter, setItemCounter] = useState(1);
 
 
   //ส่งค่าไปด้วยตอนไปเลือกรายการ
   const handleProductSelect = () => {
-    navigate("/uitestacc/ProductSelct", { 
-        state: { 
-            // selectedProducts,
-            accDocNo: accDocNo,
-            accEffectiveDate: accEffectiveDate,
-            partyCode: partyCode,
-            partyName: partyName,
-            isnameCategory: nameCategory,
-            selectedProducts: selectedProducts,
-        } 
-    }); 
-};
+    navigate(`${URL}ProductSelct`, {
+      state: {
+        // selectedProducts,
+        accDocNo: accDocNo,
+        accEffectiveDate: accEffectiveDate,
+        partyCode: partyCode,
+        partyName: partyName,
+        isnameCategory: nameCategory,
+        selectedProducts: selectedProducts,
+      }
+    });
+  };
 
 
-//   useEffect(() => {
-//     if (location.state?.selectedProducts && Array.isArray(location.state.selectedProducts)) {
-//         setSelectedProducts(location.state.selectedProducts); // รับ selectedProducts มาโดยตรง
-//     }
-//     console.log("selectedProducts:",selectedProducts)
-// }, [location.state?.selectedProducts]);
-useEffect(() => {
-  if (location.state?.selectedProducts && Array.isArray(location.state.selectedProducts)) {
+  //   useEffect(() => {
+  //     if (location.state?.selectedProducts && Array.isArray(location.state.selectedProducts)) {
+  //         setSelectedProducts(location.state.selectedProducts); // รับ selectedProducts มาโดยตรง
+  //     }
+  //     console.log("selectedProducts:",selectedProducts)
+  // }, [location.state?.selectedProducts]);
+  useEffect(() => {
+    if (location.state?.selectedProducts && Array.isArray(location.state.selectedProducts)) {
       const combinedProducts = [...selectedProducts, ...location.state.selectedProducts];
       dispatch(setSelectedProducts(combinedProducts));
-  }
-}, [location.state?.selectedProducts]);
+    }
+  }, [location.state?.selectedProducts]);
 
   // useEffect(() => {
   //   if (detailData) {
@@ -128,28 +130,28 @@ useEffect(() => {
     const combinedData = [...(detailData || []), ...(addProducts || [])];
 
     if (combinedData.length > 0) {
-        // คำนวณยอดรวมจากข้อมูลที่รวมแล้ว
-        const sum = combinedData.reduce((accumulator, product) => {
-            return accumulator + parseFloat(product.amount);
-        }, 0);
+      // คำนวณยอดรวมจากข้อมูลที่รวมแล้ว
+      const sum = combinedData.reduce((accumulator, product) => {
+        return accumulator + parseFloat(product.amount);
+      }, 0);
 
-        // คำนวณ VAT และ WHT
-        const vatRate = combinedData[0].rateVat / 100;
-        const whtRate = combinedData[0].rateWht / 100;
-        const vat = isVatEnabled ? sum * vatRate : 0;
-        const wht = isWhtEnabled ? sum * whtRate : 0;
+      // คำนวณ VAT และ WHT
+      const vatRate = combinedData[0].rateVat / 100;
+      const whtRate = combinedData[0].rateWht / 100;
+      const vat = isVatEnabled ? sum * vatRate : 0;
+      const wht = isWhtEnabled ? sum * whtRate : 0;
 
-        // อัปเดต state
-        dispatch(setTotalAmount(parseFloat(sum.toFixed(4))));
-        dispatch(setVatAmount(parseFloat(vat.toFixed(4))));
-        dispatch(setWhtAmount(parseFloat(wht.toFixed(4))));
+      // อัปเดต state
+      dispatch(setTotalAmount(parseFloat(sum.toFixed(4))));
+      dispatch(setVatAmount(parseFloat(vat.toFixed(4))));
+      dispatch(setWhtAmount(parseFloat(wht.toFixed(4))));
     } else {
-        // รีเซ็ตค่าหากไม่มีข้อมูล
-        dispatch(setTotalAmount(0));
-        dispatch(setVatAmount(0));
-        dispatch(setWhtAmount(0));
+      // รีเซ็ตค่าหากไม่มีข้อมูล
+      dispatch(setTotalAmount(0));
+      dispatch(setVatAmount(0));
+      dispatch(setWhtAmount(0));
     }
-}, [detailData, addProducts, isVatEnabled, isWhtEnabled, dispatch]);
+  }, [detailData, addProducts, isVatEnabled, isWhtEnabled, dispatch]);
 
   useEffect(() => {
     // ตรวจสอบว่ามี accDocNo ใน location.state หรือไม่
@@ -194,7 +196,7 @@ useEffect(() => {
           }
           const data = await response.json();
           dispatch(setDetailData(data));
-          console.log("dataDetail:",data)
+          console.log("dataDetail:", data)
 
         } catch (error) {
           console.error("Error fetching other API data:", error);
@@ -203,11 +205,11 @@ useEffect(() => {
 
       fetchDetailData();
     }
-  // }, [accDocNo, accEffectiveDate, partyCode, partyName,nameCategory, accDocNoPD,accItemNo,isproductName,price,qty]);
-}, [location.state, accDocNo, dispatch]);
+    // }, [accDocNo, accEffectiveDate, partyCode, partyName,nameCategory, accDocNoPD,accItemNo,isproductName,price,qty]);
+  }, [location.state, accDocNo, dispatch]);
 
-useEffect(() => {
-  if (detailData && detailData.length > 0) { // ตรวจสอบ detailData ด้วย
+  useEffect(() => {
+    if (detailData && detailData.length > 0) { // ตรวจสอบ detailData ด้วย
       const itemNo = detailData.map(item => item.accItemNo);
       setAccItemNo(itemNo);
       const maxItemNo = Math.max(...itemNo);
@@ -222,8 +224,8 @@ useEffect(() => {
       setIsVatEnabled(detailData[0].rateVat > 0); // Enable if rateVat > 0
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
 
-  }
-}, [detailData]);
+    }
+  }, [detailData]);
 
 
 
@@ -384,131 +386,131 @@ useEffect(() => {
     },
   }));
 
-const [editDetail, setEditDetail] = useState([]);
+  const [editDetail, setEditDetail] = useState([]);
 
-const handleEditDetail = () => {
-  navigate(`${URL}TransactionDTEdit?accDocNo=${accDocNo}&Item=${accItemNo}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
-      state: { 
-          editDetail,
-          accDocNo: accDocNo, // ส่ง accDocNo ไปด้วย
-          accItemNo: accItemNo,
-          isproductName:isproductName,
-          price:price,
-          qty:qty
-      } 
-  }); 
-};
-useEffect(() => {
-  if (location.state?.editDetail && Array.isArray(location.state.editDetail)) {
+  const handleEditDetail = () => {
+    navigate(`${URL}TransactionDTEdit?accDocNo=${accDocNo}&Item=${accItemNo}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
+      state: {
+        editDetail,
+        accDocNo: accDocNo, // ส่ง accDocNo ไปด้วย
+        accItemNo: accItemNo,
+        isproductName: isproductName,
+        price: price,
+        qty: qty
+      }
+    });
+  };
+  useEffect(() => {
+    if (location.state?.editDetail && Array.isArray(location.state.editDetail)) {
       setEditDetail(prevEditDetail => [
-          ...prevEditDetail,
-          ...location.state.editDetail
+        ...prevEditDetail,
+        ...location.state.editDetail
       ]);
-  }
-}, [location.state?.editDetail]);
+    }
+  }, [location.state?.editDetail]);
 
 
-const [addDetail, setAddDetail] = useState([]);
+  const [addDetail, setAddDetail] = useState([]);
 
-useEffect(() => {
-  if (detailData && detailData.length > 0) {
+  useEffect(() => {
+    if (detailData && detailData.length > 0) {
       const itemNo = detailData.map(item => item.accItemNo);
       setAccItemNo(itemNo);
       const maxItemNo = Math.max(...itemNo);
       setItemCounter(maxItemNo + 1);
-  } else {
+    } else {
       setAccItemNo([]);
       setItemCounter(1);
-  }
-}, [detailData]);
+    }
+  }, [detailData]);
 
-// const handleAddDetail = () => {
-//   const productNames = selectedProducts.map(product => product.productName);
-//   const productTypeCode = selectedProducts.map(product => product.productTypeCode);
-//   const rateVats = selectedProducts.map(product => product.rateVat);
-//   const rateWhts = selectedProducts.map(product => product.rateWht);
-//   const unitStocks = selectedProducts.map(product => product.unitStock);
-//   let newItemNo = itemCounter;
-//   while (accItemNo.includes(newItemNo)) {
-//       newItemNo++;
-//   }
-//   const newItem = {
-//       ...selectedProducts,
-//       itemNo: newItemNo
-//   };
-//   dispatch(setSelectedProducts([...selectedProducts, newItem]));
-//   setAccItemNo([...accItemNo, newItemNo]);
-//   setItemCounter(newItemNo + 1);
-  
-//     navigate(`${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${itemCounter}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
-//     state: {
-//       // addDetail: addDetail,
-//       accDocNo: accDocNo,
-//       productNames: productNames,
-//       productTypeCode:productTypeCode,
-//       rateVats:rateVats,
-//       rateWhts:rateWhts,
-//       unitStocks:unitStocks,
-//       selectedProducts: selectedProducts,
-//       accEffectiveDate: accEffectiveDate,
-//       partyCode: partyCode,
-//       partyName: partyName,
-//       nameCategory: nameCategory,
-//       // selectedProduct: product,
-//   }
-//   }); 
-// };
+  // const handleAddDetail = () => {
+  //   const productNames = selectedProducts.map(product => product.productName);
+  //   const productTypeCode = selectedProducts.map(product => product.productTypeCode);
+  //   const rateVats = selectedProducts.map(product => product.rateVat);
+  //   const rateWhts = selectedProducts.map(product => product.rateWht);
+  //   const unitStocks = selectedProducts.map(product => product.unitStock);
+  //   let newItemNo = itemCounter;
+  //   while (accItemNo.includes(newItemNo)) {
+  //       newItemNo++;
+  //   }
+  //   const newItem = {
+  //       ...selectedProducts,
+  //       itemNo: newItemNo
+  //   };
+  //   dispatch(setSelectedProducts([...selectedProducts, newItem]));
+  //   setAccItemNo([...accItemNo, newItemNo]);
+  //   setItemCounter(newItemNo + 1);
 
-// const currentAddProducts = useSelector((state) => state.addProducts);
-// useEffect(() => {
-//   if (location.state?.addProducts && Array.isArray(location.state.addProducts)) {
-//       const newAddProducts = location.state.addProducts;
+  //     navigate(`${URL}TransactionDTAdd?accDocNo=${accDocNo}&Item=${itemCounter}`, { //Form 3 Add/Edit Detail ?DocNo=AAA&Item=n
+  //     state: {
+  //       // addDetail: addDetail,
+  //       accDocNo: accDocNo,
+  //       productNames: productNames,
+  //       productTypeCode:productTypeCode,
+  //       rateVats:rateVats,
+  //       rateWhts:rateWhts,
+  //       unitStocks:unitStocks,
+  //       selectedProducts: selectedProducts,
+  //       accEffectiveDate: accEffectiveDate,
+  //       partyCode: partyCode,
+  //       partyName: partyName,
+  //       nameCategory: nameCategory,
+  //       // selectedProduct: product,
+  //   }
+  //   }); 
+  // };
 
-//       // ตรวจสอบว่า newAddProducts ไม่ซ้ำกับ currentAddProducts
-//       const isDifferent = JSON.stringify(newAddProducts) !== JSON.stringify(currentAddProducts);
+  // const currentAddProducts = useSelector((state) => state.addProducts);
+  // useEffect(() => {
+  //   if (location.state?.addProducts && Array.isArray(location.state.addProducts)) {
+  //       const newAddProducts = location.state.addProducts;
 
-//       if (isDifferent) {
-//           dispatch(setAddProducts([...currentAddProducts, ...newAddProducts]));
-//           console.log("addProducts:", newAddProducts);
-//       }
-//   }
-// }, [location.state?.addProducts, dispatch, currentAddProducts]);
+  //       // ตรวจสอบว่า newAddProducts ไม่ซ้ำกับ currentAddProducts
+  //       const isDifferent = JSON.stringify(newAddProducts) !== JSON.stringify(currentAddProducts);
 
-    const currentAddProducts = useSelector((state) => state.addProducts);
+  //       if (isDifferent) {
+  //           dispatch(setAddProducts([...currentAddProducts, ...newAddProducts]));
+  //           console.log("addProducts:", newAddProducts);
+  //       }
+  //   }
+  // }, [location.state?.addProducts, dispatch, currentAddProducts]);
 
-    const filterDuplicateProducts = (products) => {
-        return products.filter((product, index, self) =>
-            index === self.findIndex((p) => (
-                p.saleProductCode === product.saleProductCode &&
-                p.price === product.price &&
-                p.qty === product.qty
-            ))
-        );
-    };
+  const currentAddProducts = useSelector((state) => state.addProducts);
 
-    useEffect(() => {
-        if (location.state?.addProducts && Array.isArray(location.state.addProducts)) {
-            const newAddProducts = location.state.addProducts;
-            const uniqueNewProducts = filterDuplicateProducts(newAddProducts);
-            const uniqueCurrentProducts = filterDuplicateProducts(currentAddProducts);
-            const combinedProducts = filterDuplicateProducts([...uniqueCurrentProducts, ...uniqueNewProducts]);
-            const isDifferent = !_.isEqual(combinedProducts, currentAddProducts); // ใช้ lodash.isEqual
+  const filterDuplicateProducts = (products) => {
+    return products.filter((product, index, self) =>
+      index === self.findIndex((p) => (
+        p.saleProductCode === product.saleProductCode &&
+        p.price === product.price &&
+        p.qty === product.qty
+      ))
+    );
+  };
 
-            if (isDifferent) {
-                dispatch(setAddProducts(combinedProducts));
-                console.log("addProducts:", combinedProducts);
-            }
-        }
-    }, [location.state?.addProducts, dispatch, currentAddProducts]);
+  useEffect(() => {
+    if (location.state?.addProducts && Array.isArray(location.state.addProducts)) {
+      const newAddProducts = location.state.addProducts;
+      const uniqueNewProducts = filterDuplicateProducts(newAddProducts);
+      const uniqueCurrentProducts = filterDuplicateProducts(currentAddProducts);
+      const combinedProducts = filterDuplicateProducts([...uniqueCurrentProducts, ...uniqueNewProducts]);
+      const isDifferent = !_.isEqual(combinedProducts, currentAddProducts); // ใช้ lodash.isEqual
 
-    // รวมข้อมูลและกรองซ้ำก่อนแสดงผล
-    const combinedData = filterDuplicateProducts([...(detailData || []), ...(addProducts || [])]);
+      if (isDifferent) {
+        dispatch(setAddProducts(combinedProducts));
+        console.log("addProducts:", combinedProducts);
+      }
+    }
+  }, [location.state?.addProducts, dispatch, currentAddProducts]);
+
+  // รวมข้อมูลและกรองซ้ำก่อนแสดงผล
+  const combinedData = filterDuplicateProducts([...(detailData || []), ...(addProducts || [])]);
 
 
- 
-return (
+
+  return (
     <div className="row" style={{ padding: "5%" }}>
-      <h1 style={{ textAlign: "center" }}>{nameCategory}</h1> 
+      <h1 style={{ textAlign: "center" }}>{nameCategory}</h1>
       <div>&nbsp;</div>
       <div>&nbsp;</div>
       <div className="row">
@@ -558,7 +560,7 @@ return (
           </div> */}
         </ListItem>
       </div>
-      
+
       {/* {detailData &&
         detailData.map((dataDetail, accItemNo) => (
           <div className="row" key={accItemNo}>
@@ -600,35 +602,35 @@ return (
           </div>
         ))} */}
 
-{/* {[...(detailData || []), ...(addProducts || [])].map((product, index) => ( */}
-{combinedData.map((product, index) => (
-  <div key={index}>
-    <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
-    <ListItem style={{ display: "flex", alignItems: "center" }}>
-      <FontAwesomeIcon icon={faBoxOpen} size="2x" style={{ color: "#2d01bd" }} />
-      <div>
-        <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-          &nbsp; {product.salesDescription || product.productName} ({product.saleProductCode || product.productTypeCode}) x {product.unitMea || product.unitStock}
-          &nbsp; &nbsp;
-        </h5>
-        <p>
-          &nbsp; &nbsp; {product.price} {product.currency} x {product.qty} {product.unitMea || product.unitStock}
-        </p>
-      </div>
-      <div style={{ marginLeft: "auto" }}>
-        <div style={{ display: "flex" }}>
-          <h1>{product.amount}</h1>
-          &nbsp; &nbsp; &nbsp;
-          <FontAwesomeIcon icon={faPlus} size="1x" style={{ color: "#0310ce" }}  
-          // onClick={() => handleAddDetail(product)} 
-          />
+      {/* {[...(detailData || []), ...(addProducts || [])].map((product, index) => ( */}
+      {combinedData.map((product, index) => (
+        <div key={index}>
+          <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
+          <ListItem style={{ display: "flex", alignItems: "center" }}>
+            <FontAwesomeIcon icon={faBoxOpen} size="2x" style={{ color: "#2d01bd" }} />
+            <div>
+              <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
+                &nbsp; {product.salesDescription || product.productName} ({product.saleProductCode || product.productTypeCode}) x {product.unitMea || product.unitStock}
+                &nbsp; &nbsp;
+              </h5>
+              <p>
+                &nbsp; &nbsp; {product.price} {product.currency} x {product.qty} {product.unitMea || product.unitStock}
+              </p>
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              <div style={{ display: "flex" }}>
+                <h1>{product.amount}</h1>
+                &nbsp; &nbsp; &nbsp;
+                <FontAwesomeIcon icon={faPlus} size="1x" style={{ color: "#0310ce" }}
+                // onClick={() => handleAddDetail(product)} 
+                />
+              </div>
+            </div>
+          </ListItem>
         </div>
-      </div>
-    </ListItem>
-  </div>
-))}
+      ))}
 
-        {/* {[...(detailData || []), ...(selectedProducts || [])].map((product,index) => (
+      {/* {[...(detailData || []), ...(selectedProducts || [])].map((product,index) => (
           // <div key={product.productID}>
           <div key={index}>
             <Divider
@@ -669,72 +671,72 @@ return (
             </ListItem>
           </div>
         ))} */}
-        
-        {addProducts.map((product,index) => (
-          // <div key={product.productID}>
-          <div key={index}>
-            <Divider
-              variant="middle"
-              component="li"
-              style={{ listStyle: "none" }}
-            />
-            <ListItem style={{ display: "flex", alignItems: "center" }}>
-              <FontAwesomeIcon
-                icon={faBoxOpen}
-                size="2x"
-                style={{ color: "#2d01bd" }}
-              />
-              <div>
-                <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-                  &nbsp; {product.productName} ({product.productTypeCode})x{product.unitStock}
-                  &nbsp; &nbsp;
-                </h5>
-                <p>
-                  &nbsp; &nbsp; {product.price}
-                  {product.currency} x {product.qty}
-                  {product.unitMea}
-                </p>
-              </div>
-              <div style={{ marginLeft: "auto" }}>
-                <div style={{ display: "flex" }}>
-                  <h1>{product.amount}</h1>
-                  &nbsp; &nbsp; &nbsp;
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    size="1x"
-                    style={{ color: "#0310ce" }}
-                    onClick={handleEditDetail}
-                  />
-                </div>
-              </div>
-            </ListItem>
-          </div>
-        ))}
 
-        {/* </ul>
-        </div> */}
-        <Divider
-          variant="middle"
-          component="li"
-          style={{ listStyle: "none" }}
-        />
-        <ListItem style={{ display: "flex", alignItems: "center" }}>
-          <FontAwesomeIcon
-            icon={faSquarePlus}
-            size="2x"
-            style={{ color: "#2d01bd" }}
-            onClick={handleProductSelect}
+      {addProducts.map((product, index) => (
+        // <div key={product.productID}>
+        <div key={index}>
+          <Divider
+            variant="middle"
+            component="li"
+            style={{ listStyle: "none" }}
           />
-          <h5
-            style={{
-              marginTop: "5px",
-              marginLeft: "10px",
-              textAlign: "center",
-            }}
-          >
-            &nbsp; Add Product/Service
-          </h5>
-        </ListItem>
+          <ListItem style={{ display: "flex", alignItems: "center" }}>
+            <FontAwesomeIcon
+              icon={faBoxOpen}
+              size="2x"
+              style={{ color: "#2d01bd" }}
+            />
+            <div>
+              <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
+                &nbsp; {product.productName} ({product.productTypeCode})x{product.unitStock}
+                &nbsp; &nbsp;
+              </h5>
+              <p>
+                &nbsp; &nbsp; {product.price}
+                {product.currency} x {product.qty}
+                {product.unitMea}
+              </p>
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              <div style={{ display: "flex" }}>
+                <h1>{product.amount}</h1>
+                &nbsp; &nbsp; &nbsp;
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  size="1x"
+                  style={{ color: "#0310ce" }}
+                  onClick={handleEditDetail}
+                />
+              </div>
+            </div>
+          </ListItem>
+        </div>
+      ))}
+
+      {/* </ul>
+        </div> */}
+      <Divider
+        variant="middle"
+        component="li"
+        style={{ listStyle: "none" }}
+      />
+      <ListItem style={{ display: "flex", alignItems: "center" }}>
+        <FontAwesomeIcon
+          icon={faSquarePlus}
+          size="2x"
+          style={{ color: "#2d01bd" }}
+          onClick={handleProductSelect}
+        />
+        <h5
+          style={{
+            marginTop: "5px",
+            marginLeft: "10px",
+            textAlign: "center",
+          }}
+        >
+          &nbsp; Add Product/Service
+        </h5>
+      </ListItem>
       {/* </div> */}
       <div className="row">
         <div className="financial-form">

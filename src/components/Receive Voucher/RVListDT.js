@@ -155,10 +155,10 @@ function RVListDT() {
       })();
     }
   }, [JournalNo]);
-  
+
   const handleAccCodeSelect = () => {
     // const handleProductSelect = () => {
-    navigate("/uitestacc/RVselectAccCode/", {
+    navigate(`${URL}RVselectAccCode/`, {
       state: {
         // selectedProducts,
         JournalNo,
@@ -230,7 +230,7 @@ function RVListDT() {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
     navigate(`${URL}RVHeader?journalNo=${JournalNo}`);
   };
@@ -383,10 +383,10 @@ function RVListDT() {
   }));
 
   const [editDetail, setEditDetail] = useState([]);
-  
+
   const EntryId = rvall.EntryId;
   const Seq = rvall.Seq;
-  
+
   // const handleEditDetail = (Seq) => {
   //   console.log('Seq:',Seq)
   //   navigate(
@@ -404,25 +404,25 @@ function RVListDT() {
   // };
 
   const handleEditDetail = async (index) => {
-    console.log('JournalNo:',JournalNo)
-    console.log("journalNo",rvall[0].JournalNo)
-    console.log("entryId",rvall[0].EntryId)
-    console.log("Seq",rvall[index].Seq)
-    console.log("Seq:",seq)
+    console.log('JournalNo:', JournalNo)
+    console.log("journalNo", rvall[0].JournalNo)
+    console.log("entryId", rvall[0].EntryId)
+    console.log("Seq", rvall[index].Seq)
+    console.log("Seq:", seq)
     try {
       // await fetchDataFromApi(journalNo); // รอผลลัพธ์จาก fetchDataFromApi
       const journalNo = rvall[0].JournalNo;
       const entryId = rvall[0].EntryId;
       const seq = rvall[index].Seq;
-      console.log('entryId:',entryId)
-      console.log('entryId:',typeof entryId)
+      console.log('entryId:', entryId)
+      console.log('entryId:', typeof entryId)
       console.log('Seq:', seq)
-      console.log('Seq:',typeof seq)
+      console.log('Seq:', typeof seq)
       navigate(`${URL}RVEditDetail?entryID=${entryId}&seq=${seq}`, {
         state: {
-          entryId:entryId,
-          journalNo:journalNo,
-          seq:seq,
+          entryId: entryId,
+          journalNo: journalNo,
+          seq: seq,
         },
       });
     } catch (error) {
@@ -430,7 +430,7 @@ function RVListDT() {
       console.error("Error in handleEditDetail:", error);
     }
   };
-  
+
   useEffect(() => {
     if (
       location.state?.editDetail &&
@@ -510,51 +510,51 @@ function RVListDT() {
           <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{JournalNo}</h2>
           <br />
         </ListItem>
-        <div style={{display:"flex"}}>
-      <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            // justifyContent: "flex-end",
-          }}
-        >
-          <h5>
-          Description:{rvall && rvall.length >0 && (rvall[0].Description)}
-          </h5>
-        </ListItem>
-        <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <p>
-            Date:
-            {rvall && rvall.length > 0 && (
-              <FormatDate dateString={rvall[0].EffectiveDate} />
-            )}
-          </p>
-        </ListItem>
+        <div style={{ display: "flex" }}>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              // justifyContent: "flex-end",
+            }}
+          >
+            <h5>
+              Description:{rvall && rvall.length > 0 && (rvall[0].Description)}
+            </h5>
+          </ListItem>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <p>
+              Date:
+              {rvall && rvall.length > 0 && (
+                <FormatDate dateString={rvall[0].EffectiveDate} />
+              )}
+            </p>
+          </ListItem>
         </div>
       </div>
-      <div style={{display:"flex"}}>
-          <div className="col-5">
-          <h4 style={{textAlign:"center"}}>&nbsp; &nbsp; AccName</h4>
-          </div>
-          <div className="col-4" 
+      <div style={{ display: "flex" }}>
+        <div className="col-5">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; AccName</h4>
+        </div>
+        <div className="col-4"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-          >
-          <h4 style={{textAlign:"center"}}>Debit &nbsp;</h4>
-          </div>
-          <div className="col-3" 
-          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}
-          >
-            <div style={{display:"flex"}}>
-          <h4 style={{justifyItems: "end"}}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
+        >
+          <h4 style={{ textAlign: "center" }}>Debit &nbsp;</h4>
+        </div>
+        <div className="col-3"
+          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}
+        >
+          <div style={{ display: "flex" }}>
+            <h4 style={{ justifyItems: "end" }}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
             </h4>
-            </div>
           </div>
+        </div>
       </div>
       {rvall.map((rvall, index) => (
         <div key={index}>
@@ -567,23 +567,23 @@ function RVListDT() {
             <div className="col-5">
               <h5>
                 &nbsp; {rvall.Seq}.&nbsp;{rvall.AccCode} &nbsp;
-                {rvall.AccName} 
+                {rvall.AccName}
               </h5>
             </div>
             <div className="col-4" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
-            <h4>{formatNumber(rvall.Debit)}</h4> 
+              <h4>{formatNumber(rvall.Debit)}</h4>
             </div>
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}>
+            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
               <div style={{ display: "flex" }}>
                 <h4>{formatNumber(rvall.Credit)} &nbsp;</h4>
                 &nbsp; &nbsp;
-                  <FontAwesomeIcon
-                    icon={faChevronRight}
-                    size="1x"
-                    style={{ color: "#0310ce", paddingTop: "10px" }}
-                    // onClick={() => handleEditDetail(pvall.seq)}
-                    onClick={() => handleEditDetail(index)}
-                  />
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  size="1x"
+                  style={{ color: "#0310ce", paddingTop: "10px" }}
+                  // onClick={() => handleEditDetail(pvall.seq)}
+                  onClick={() => handleEditDetail(index)}
+                />
               </div>
             </div>
           </ListItem>
@@ -610,22 +610,22 @@ function RVListDT() {
       </ListItem>
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} /> */}
 
-      <div style={{display:"flex",paddingTop:"8px"}}>
-          <div className="col-5">
-          <h3 style={{textAlign:"center"}}>&nbsp; &nbsp; Total</h3>
-          </div>
-          <div className="col-4" 
+      <div style={{ display: "flex", paddingTop: "8px" }}>
+        <div className="col-5">
+          <h3 style={{ textAlign: "center" }}>&nbsp; &nbsp; Total</h3>
+        </div>
+        <div className="col-4"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-          >
-          <h3 style={{textAlign:"center"}}>{rvall && rvall.length >0 && formatNumber(rvall[0].TotalDebit)}&nbsp;</h3>
-          </div>
-         
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}>
-            <div style={{ display: "flex" }}>
-          <h3 style={{textAlign:"center"}}>{rvall && rvall.length >0 && formatNumber(rvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
+        >
+          <h3 style={{ textAlign: "center" }}>{rvall && rvall.length > 0 && formatNumber(rvall[0].TotalDebit)}&nbsp;</h3>
+        </div>
+
+        <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
+          <div style={{ display: "flex" }}>
+            <h3 style={{ textAlign: "center" }}>{rvall && rvall.length > 0 && formatNumber(rvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
             </h3>
           </div>
-          </div>
+        </div>
       </div>
       {/* <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
       <ListItem>
@@ -646,39 +646,39 @@ function RVListDT() {
         </h5>
       </ListItem> */} {/*###Add AccCode####*/}
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
-        <div>&nbsp;</div>
-        <div className="row" style={{ display: "flex" }}>
-          <div className="col-6" style={{ display: "grid" }}>
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={handleGoBack}
-            />
-          </div>
-          <div
-            className="col-6"
-            style={{ display: "grid", justifyItems: "flex-end" }}
-          >
-            <FontAwesomeIcon
-              icon={faCircleArrowUp}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={scrollToTop}
-            />
-          </div>
+      <div>&nbsp;</div>
+      <div className="row" style={{ display: "flex" }}>
+        <div className="col-6" style={{ display: "grid" }}>
+          <FontAwesomeIcon
+            icon={faCircleArrowLeft}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={handleGoBack}
+          />
+        </div>
+        <div
+          className="col-6"
+          style={{ display: "grid", justifyItems: "flex-end" }}
+        >
+          <FontAwesomeIcon
+            icon={faCircleArrowUp}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={scrollToTop}
+          />
         </div>
       </div>
+    </div>
     // </div>
   );
 }

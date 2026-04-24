@@ -421,7 +421,7 @@ function App() {
             <Route path={`${URL}QuickReceive`} element={<RequireAuth><AccordionQR /></RequireAuth>} />
 
             {/* <Route path="uitestacc/AccordionWHT" element={<RequireAuth><AccordionWHT /></RequireAuth>} /> */}
-            <Route path={`${URL}WithholdingTax3`} element={<RequireAuth><WHTList /></RequireAuth>} />
+            <Route path={`${URL}WithholdingTax`} element={<RequireAuth><WHTList /></RequireAuth>} />
             <Route path={`${URL}WHT3`} element={<RequireAuth><AccordionWHT /></RequireAuth>} />
 
             <Route path={`${URL}AccordionPO`} element={<RequireAuth><AccordionPO /></RequireAuth>} />

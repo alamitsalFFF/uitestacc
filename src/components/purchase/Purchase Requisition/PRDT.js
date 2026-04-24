@@ -315,7 +315,7 @@ function PRDT() {
   }, [accDocNo]); //ส่งค่าไปด้วยตอนไปเลือกรายการ
 
   const handleProductSelect = () => {
-    navigate("/uitestacc/ProductSelct", {
+    navigate(`${URL}ProductSelct`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -575,14 +575,14 @@ function PRDT() {
 
     // เก็บข้อมูลที่จำเป็นใน state เพื่อส่งไปยัง Modal
     setItemToEdit({
-      accDocNo: accDocNo, 
+      accDocNo: accDocNo,
       accItemNo: AccItemNo,
       isproductName: isproductName,
       price: price,
-      qty:qty,
+      qty: qty,
       docStatus: docStatus,
       accDocType: accDocType,
-      selectedDocConfigID: location.state?.selectedDocConfigID || null, 
+      selectedDocConfigID: location.state?.selectedDocConfigID || null,
     });
 
     // เปิด Modal
@@ -616,7 +616,7 @@ function PRDT() {
     handleCloseEditDetailModal(); // ปิด Modal หลังจากดำเนินการเสร็จสิ้น
   }, [handleCloseEditDetailModal]); // พึ่งพา handleCloseEditDetailModal ที่เป็น stable แล้ว
 
-  
+
   useEffect(() => {
     if (
       location.state?.editDetail &&
@@ -649,7 +649,7 @@ function PRDT() {
     // <div className="row" style={{ padding: "5%" }}>
     <div>
       {/* <h1 style={{ textAlign: "center" }}>{nameCategory}</h1> */}
-      <h2 style={{ textAlign: "center",textDecorationLine:"underline" }} onClick={handleGoMenu}>
+      <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoMenu}>
         Purchase Requisition
       </h2>
       {/* <div>&nbsp;</div>
@@ -782,19 +782,19 @@ function PRDT() {
             >
               &nbsp; Add Product/Service
             </h5> */}
-              <Stack direction="row" spacing={1}>
-                  <Button 
-                        variant="contained" 
-                        color="warning"
-                        style={{ width: "200px", height: "40px" ,borderRadius: "20px" }}
-                        onClick={handleProductSelect}> 
-                    <FontAwesomeIcon
-                            icon={faSquarePlus}
-                            size="2x"
-                            style={{ color: "#fff", justifyItems: "end" }}
-                    />
-                    &nbsp;Product/Service</Button>
-              </Stack>
+            <Stack direction="row" spacing={1}>
+              <Button
+                variant="contained"
+                color="warning"
+                style={{ width: "200px", height: "40px", borderRadius: "20px" }}
+                onClick={handleProductSelect}>
+                <FontAwesomeIcon
+                  icon={faSquarePlus}
+                  size="2x"
+                  style={{ color: "#fff", justifyItems: "end" }}
+                />
+                &nbsp;Product/Service</Button>
+            </Stack>
           </ListItem>
         </>
       )}
@@ -815,7 +815,7 @@ function PRDT() {
           isproductName={itemToEdit.isproductName}
           price={itemToEdit.price}
           qty={itemToEdit.qty}
-          // ... (ส่ง props ที่เหลือทั้งหมดที่ PREditDetail ต้องการจาก location.state)
+        // ... (ส่ง props ที่เหลือทั้งหมดที่ PREditDetail ต้องการจาก location.state)
         />
       )}
       <div className="row">

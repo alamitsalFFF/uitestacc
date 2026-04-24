@@ -49,7 +49,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "../purchase/Purchase Order/ScrollTop";
 import { DIfromPO } from "../purchase/Purchase Order/DIfromPO";
 import { PVfromPI } from "./PVFromPI";
-import { API_BASE, BASE, DATA_BASE, REPORT_BASE, URL} from "../api/url";
+import { API_BASE, BASE, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import { GetGLTemplate } from "../purchase/Purchase Order/GetGLTemplate";
 import GLTemplateModal from "../purchase/Purchase Order/GLTemplateModal";
 import { FaDochub, FaDocker } from "react-icons/fa";
@@ -353,8 +353,7 @@ export default function PIHeader() {
       if (!response.ok) {
         const errorData = await response.json(); // Try to get error details from the server
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -415,8 +414,7 @@ export default function PIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -458,8 +456,7 @@ export default function PIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -489,8 +486,7 @@ export default function PIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -621,19 +617,19 @@ export default function PIHeader() {
   };
 
   // -------------------------------
-    const [showModal, setShowModal] = useState(false);
-    const [glData, setGLData] = useState(null);
-      // ฟังก์ชันนี้จะถูกเรียกเมื่อต้องการดู GL Template 
-    const docConfigID = selectedDocConfigID; 
-    const handleGL = async (AccDocNo, docConfigID) => {  //เบื้องต้นดูได้อย่า่งเดียว ยังไม่ได้ส่งไปJNได้
-      console.log("Modal", AccDocNo); // ตรวจสอบค่า AccDocNoC
-      console.log("Modal", docConfigID); // ตรวจสอบค่า docConfigID
-        const response = await GetGLTemplate(AccDocNo, docConfigID);
-        if (response && response.data) {
-            console.log("GL Template Data received, setting showModal to true.");
-            setGLData(response.data); // set เฉพาะ array
-            setShowModal(true);       // เปิด Modal
-        } 
+  const [showModal, setShowModal] = useState(false);
+  const [glData, setGLData] = useState(null);
+  // ฟังก์ชันนี้จะถูกเรียกเมื่อต้องการดู GL Template 
+  const docConfigID = selectedDocConfigID;
+  const handleGL = async (AccDocNo, docConfigID) => {  //เบื้องต้นดูได้อย่า่งเดียว ยังไม่ได้ส่งไปJNได้
+    console.log("Modal", AccDocNo); // ตรวจสอบค่า AccDocNoC
+    console.log("Modal", docConfigID); // ตรวจสอบค่า docConfigID
+    const response = await GetGLTemplate(AccDocNo, docConfigID);
+    if (response && response.data) {
+      console.log("GL Template Data received, setting showModal to true.");
+      setGLData(response.data); // set เฉพาะ array
+      setShowModal(true);       // เปิด Modal
+    }
   };
   // -------------------------------
 
@@ -642,7 +638,7 @@ export default function PIHeader() {
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
-     const printUrl = `${REPORT_BASE}/form?Form=Form${accDocType}&DB=${DATA_BASE}&Code=${accDocNo}`;
+    const printUrl = `${REPORT_BASE}/form?Form=Form${accDocType}&DB=${DATA_BASE}&Code=${accDocNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };
 
@@ -688,7 +684,7 @@ export default function PIHeader() {
             icon={faPrint}
             size="2x"
             style={{ color: "blue" }}
-             onClick={handlePrint}
+            onClick={handlePrint}
           />
         </div>
         <div
@@ -904,7 +900,7 @@ export default function PIHeader() {
         <TextField
           id="partyCode"
           label="PartyCode"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -979,7 +975,7 @@ export default function PIHeader() {
         <TextField
           id="partyTaxCode"
           label="PartyTaxCode"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -992,7 +988,7 @@ export default function PIHeader() {
         <TextField
           id="partyName"
           label="PartyName"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1004,7 +1000,7 @@ export default function PIHeader() {
         <TextField
           id="partyAddress"
           label="PartyAddress"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1018,7 +1014,7 @@ export default function PIHeader() {
         <TextField
           id="docRefNo"
           label="DocRefNo"
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1079,7 +1075,7 @@ export default function PIHeader() {
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1092,7 +1088,7 @@ export default function PIHeader() {
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div>&nbsp;</div>

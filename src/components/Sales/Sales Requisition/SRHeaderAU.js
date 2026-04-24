@@ -711,10 +711,10 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       accDocNo: `${DocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
       partyCode: "DEF", //สำหรับ Customer ที่ไม่ต้องการลง Mas_Customer
-      partyTaxCode: "",
-      partyName: "",
-      partyAddress: "",
-      docRefNo: "",
+      partyTaxCode: " ",
+      partyName: " ",
+      partyAddress: " ",
+      docRefNo: " ",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       issueBy: loginUser,
@@ -805,16 +805,10 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       return; // หยุดการทำงาน
     }
     await SOfromSR(AccDocNoC, refno, navigate);
-    // navigate("/uitestacc/SOList", {
-    //   state: {
-    //     AccDocNo,
-    //     docRefNo: formData.docRefNo, // ส่งค่า docRefNo ไปยังหน้าถัดไป
-    //   },
-    // });
   };
   const PhandleSOPartial = async (AccDocNoC) => {
     // await SOfromSRPartial(AccDocNo, navigate);
-    navigate("/uitestacc/SOList", {
+    navigate(`${URL}SOList`, {
       state: {
         AccDocNo,
       },
@@ -823,7 +817,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
 
   const handleMoreInfo = async (AccDocNo) => {
     await MoreInfoHD(AccDocNo, navigate);
-    navigate("/uitestacc/MoreInfoHD", {
+    navigate(`${URL}MoreInfoHD`, {
       state: {
         AccDocNo,
         AccDocType,
@@ -1207,7 +1201,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           id="partyCode"
           // label="PartyCode"
           label="Customer Code"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1291,7 +1285,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1309,7 +1303,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyName"
           label="Customer Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1327,7 +1321,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1346,7 +1340,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

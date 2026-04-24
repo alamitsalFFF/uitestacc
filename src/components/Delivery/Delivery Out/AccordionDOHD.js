@@ -681,11 +681,11 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       accDocType: DocType,
       accDocNo: `${DocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
-      partyCode: "",
-      partyTaxCode: "",
-      partyName: "",
-      partyAddress: "",
-      docRefNo: "",
+      partyCode: " ",
+      partyTaxCode: " ",
+      partyName: " ",
+      partyAddress: " ",
+      docRefNo: " ",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin",//แก้เมื่อทำระบบlogin`
@@ -1044,7 +1044,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
               readOnly: true,
             },
           }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
         />
@@ -1060,6 +1060,12 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1068,11 +1074,17 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyCode"
           label="Customer Code"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1154,11 +1166,17 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1167,11 +1185,17 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyName"
           label="Customer Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1179,12 +1203,18 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
 
@@ -1193,11 +1223,17 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1216,6 +1252,12 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1247,6 +1289,12 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
@@ -1260,6 +1308,12 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>

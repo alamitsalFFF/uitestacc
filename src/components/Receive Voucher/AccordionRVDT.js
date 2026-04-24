@@ -156,7 +156,7 @@ function AccordionRVDT({ accDocNo, onSaveSuccess }) {
 
   const handleAccCodeSelect = () => {
     // const handleProductSelect = () => {
-    navigate("/uitestacc/PVselectAccCode/", {
+    navigate(`${URL}PVselectAccCode/`, {
       state: {
         // selectedProducts,
         JournalNo,

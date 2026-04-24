@@ -613,11 +613,11 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
       accDocType: DocType,
       accDocNo: DocType + shortYear + "xx...",
       accEffectiveDate: new Date().toISOString().slice(0, 10),
-      partyCode: "",
-      partyTaxCode: "",
-      partyName: "",
-      partyAddress: "",
-      docRefNo: "",
+      partyCode: " ",
+      partyTaxCode: " ",
+      partyName: " ",
+      partyAddress: " ",
+      docRefNo: " ",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin",//แก้เมื่อทำระบบlogin`
@@ -1103,7 +1103,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyCode"
           label="Supplier Code"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1195,7 +1195,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1214,7 +1214,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyName"
           label="Supplier Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1232,7 +1232,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1252,7 +1252,7 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

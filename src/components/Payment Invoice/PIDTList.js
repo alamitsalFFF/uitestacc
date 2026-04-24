@@ -259,7 +259,7 @@ function PIDTList() {
   }, [location.state?.addProducts]);
   //ส่งค่าไปด้วยตอนไปเลือกรายการ
   const handleProductSelect = () => {
-    navigate("/uitestacc/PIselectProduct/", {
+    navigate(`${URL}PIselectProduct/`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -331,7 +331,7 @@ function PIDTList() {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
     navigate(`${URL}PIHeader?accDocNo=${accDocNo}`);
   };
@@ -588,8 +588,8 @@ function PIDTList() {
               <h5>
                 &nbsp; {product.AccItemNo}.&nbsp;
                 {/* <Abbreviation textName={product.ProductName} /> */}
-                {product.ProductName} 
-                &nbsp; <i style={{fontSize:"13px"}}>{product.AccSourceDocNo}</i>
+                {product.ProductName}
+                &nbsp; <i style={{ fontSize: "13px" }}>{product.AccSourceDocNo}</i>
               </h5>
               <h6>
                 &nbsp; &nbsp; {formatNumber(product.Price)}

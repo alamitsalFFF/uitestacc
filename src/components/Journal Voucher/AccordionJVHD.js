@@ -662,7 +662,7 @@ export default function AccordionJVHD({
       entryDate: new Date().toISOString().slice(0, 10),
       effectiveDate: new Date().toISOString().slice(0, 10),
       entryBy: localStorage.getItem("userName"),
-      description: "",
+      description: " ",
       totalDebit: "",
       totalCredit: "",
     });

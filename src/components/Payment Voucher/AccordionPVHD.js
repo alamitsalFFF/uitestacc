@@ -50,7 +50,7 @@ import Stack from "@mui/material/Stack";
 // import ScrollTop from "../purchase/Purchase Order/ScrollTop";
 import { DIfromPO } from "../purchase/Purchase Order/DIfromPO";
 import { PVfromPI } from "../Payment Invoice/PVFromPI";
-import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL} from "../api/url";
+import { API_BASE, API_VIEW_RESULT, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import { CancelJournal } from "./CancelJournal";
@@ -623,9 +623,9 @@ export default function AccordionPVHD({
       entryDate: new Date().toISOString().slice(0, 10),
       effectiveDate: new Date().toISOString().slice(0, 10),
       entryBy: localStorage.getItem("userName"),
-      description: "",
-      totalDebit: "",
-      totalCredit: "",
+      description: " ",
+      totalDebit: " ",
+      totalCredit: " ",
     });
   };
 

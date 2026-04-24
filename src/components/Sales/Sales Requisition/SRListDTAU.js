@@ -335,7 +335,7 @@ function SRListDTAU({ accDocNo, onSaveSuccess }) {
 
   const handleProductSelect1 = () => {
     // console.log('srh[0].DocStatus:',srh[0].DocStatus)
-    navigate("/uitestacc/SRProductSelect", {
+    navigate(`${URL}SRProductSelect`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,

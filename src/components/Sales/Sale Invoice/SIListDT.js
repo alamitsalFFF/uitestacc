@@ -238,7 +238,7 @@ function SIListDT() {
           );
 
           const responseD = await axios.post(
-             `${API_VIEW_RESULT}`,
+            `${API_VIEW_RESULT}`,
             vAR_D,
             { headers: { "Content-Type": "application/json" } }
           );
@@ -267,7 +267,7 @@ function SIListDT() {
 
   const handleProductSelect = () => {
     // console.log('srh[0].DocStatus:',srh[0].DocStatus)
-    navigate("/uitestacc/SIProductSelect", {
+    navigate(`${URL}SIProductSelect`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -617,7 +617,7 @@ function SIListDT() {
                 {/* <Abbreviation textName={product.ProductName} /> */}
                 {product.SalesDescription}
                 {/* &nbsp; &nbsp; */}
-                &nbsp; <i style={{fontSize:"13px"}}>{product.AccSourceDocNo}</i>
+                &nbsp; <i style={{ fontSize: "13px" }}>{product.AccSourceDocNo}</i>
               </h5>
               <h6>
                 &nbsp; &nbsp; {formatNumber(product.Price)}

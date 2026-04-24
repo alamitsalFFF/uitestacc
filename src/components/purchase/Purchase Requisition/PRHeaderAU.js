@@ -1094,7 +1094,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           id="partyCode"
           // label="PartyCode"
           label="Supplier Code"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1185,7 +1185,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1203,7 +1203,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyName"
           label="Supplier Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1221,7 +1221,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"

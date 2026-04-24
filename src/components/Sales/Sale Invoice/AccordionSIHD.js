@@ -770,11 +770,11 @@ export default function SIAccordionHD({
       accDocType: DocType,
       accDocNo: `${DocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
-      partyCode: "",
-      partyTaxCode: "",
-      partyName: "",
-      partyAddress: "",
-      docRefNo: "",
+      partyCode: " ",
+      partyTaxCode: " ",
+      partyName: " ",
+      partyAddress: " ",
+      docRefNo: " ",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       issueBy: loginUser,
@@ -923,7 +923,6 @@ export default function SIAccordionHD({
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
-    // const printUrl = `${REPORT_BASE}/form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=Acctest2&Code=${accDocNo}`;
     const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };
@@ -1292,7 +1291,7 @@ export default function SIAccordionHD({
         <TextField
           id="partyCode"
           label="Customer Code"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1373,7 +1372,7 @@ export default function SIAccordionHD({
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1391,7 +1390,7 @@ export default function SIAccordionHD({
         <TextField
           id="partyName"
           label="Customer Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1409,7 +1408,7 @@ export default function SIAccordionHD({
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1428,7 +1427,7 @@ export default function SIAccordionHD({
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

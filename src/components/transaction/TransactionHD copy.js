@@ -47,7 +47,7 @@ import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 // import IconButton from "../purchase/Purchase Order/Iconbutton";
-import { API_BASE, DATA_BASE, REPORT_BASE, URL} from "../api/url";
+import { API_BASE, DATA_BASE, REPORT_BASE, URL } from "../api/url";
 import CircularButtonGroup from "../DataFilters/CircularButtonGroup";
 import MoreInfoHD from "../AdditionData/AdditionDataHD/MoreInfoHD";
 import Swal from "sweetalert2";
@@ -122,7 +122,7 @@ export default function TransactionHeader({
     setFormData({ ...formData, [id]: value }); // อัปเดต formData เสมอ
   };
 
-  const DO = "DO";
+  const DocType = "DO";
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedEName, setSelectedEName] = useState("");
@@ -692,14 +692,14 @@ export default function TransactionHeader({
   }, [location.state]);
   const handleNew = () => {
     setFormData({
-      accDocType: DO,
-      accDocNo: "DO25xx...",
+      accDocType: DocType,
+      accDocNo: `${DocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
-      partyCode: "",
-      partyTaxCode: "",
-      partyName: "",
-      partyAddress: "",
-      docRefNo: "",
+      partyCode: " ",
+      partyTaxCode: " ",
+      partyName: " ",
+      partyAddress: " ",
+      docRefNo: " ",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin",//แก้เมื่อทำระบบlogin`

@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from '../../Auth/axiosConfig'; 
-import { API_VIEW_RESULT, URL} from '../../api/url';
+import axios from '../../Auth/axiosConfig';
+import { API_VIEW_RESULT, URL } from '../../api/url';
 import {
   FormControl,
   InputLabel,
@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 
 // Import คอมโพเนนต์ Header และ Detail ที่มีอยู่แล้ว
-import SRHeader from './SRHeader'; 
-import SRListDT from './SRListDT'; 
+import SRHeader from './SRHeader';
+import SRListDT from './SRListDT';
 
 function SRDropdowns() {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ function SRDropdowns() {
             parameters: [{ field: "AccDocNo", value: selectedHeaderAccDocNo }],
             results: [
               { sourceField: "AccDocNo" },
-            //   { sourceField: "LineID" },
+              //   { sourceField: "LineID" },
               { sourceField: "SalesDescription" },
               { sourceField: "AccItemNo" },
             ],
@@ -105,7 +105,7 @@ function SRDropdowns() {
   };
 
   const handleAddNewSR = () => {
-    navigate('/uitestacc/SRHeader', { state: { isNew: true } });
+    navigate(`${URL}SRHeader`, { state: { isNew: true } });
   };
 
   return (

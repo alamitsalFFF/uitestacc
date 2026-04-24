@@ -1529,7 +1529,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="partyCode"
           label="PartyCode"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1622,7 +1622,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           id="partyTaxCode"
           // label="PartyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1641,7 +1641,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="partyName"
           label="Party Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1659,7 +1659,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1679,7 +1679,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

@@ -266,7 +266,7 @@ function SOListDT() {
 
   const handleProductSelect = () => {
     // console.log('srh[0].DocStatus:',srh[0].DocStatus)
-    navigate("/uitestacc/SOProductSelect", {
+    navigate(`${URL}SOProductSelect`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,

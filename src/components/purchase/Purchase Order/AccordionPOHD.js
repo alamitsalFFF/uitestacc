@@ -1376,7 +1376,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           id="partyCode"
           // label="PartyCode"
           label="Supplier Code"
-          value={formData.partyCode}
+          value={formData.partyCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1469,7 +1469,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           id="partyTaxCode"
           // label="PartyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1488,7 +1488,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyName"
           label="Supplier Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1506,7 +1506,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1526,7 +1526,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

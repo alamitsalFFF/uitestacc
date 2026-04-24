@@ -260,13 +260,13 @@ function POListDT() {
         }
       })();
     }
-  }, 
-//  [location.state?.addProducts]
-  [accDocNo] // ใช้ accDocNo เป็น dependency
-);
+  },
+    //  [location.state?.addProducts]
+    [accDocNo] // ใช้ accDocNo เป็น dependency
+  );
   //ส่งค่าไปด้วยตอนไปเลือกรายการ
   const handleProductSelect = () => {
-    navigate("/uitestacc/POselectProduct/", {
+    navigate(`${URL}POselectProduct`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -339,7 +339,7 @@ function POListDT() {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
     navigate(`${URL}POHeader?accDocNo=${accDocNo}`);
   };
@@ -446,8 +446,8 @@ function POListDT() {
           price: price,
           qty: qty,
           docStatus: docStatus,
-          accDocType:accDocType,
-          selectedDocConfigID: location.state?.selectedDocConfigID || null, 
+          accDocType: accDocType,
+          selectedDocConfigID: location.state?.selectedDocConfigID || null,
         },
       }
     );
@@ -530,7 +530,7 @@ function POListDT() {
     // <div className="row" style={{ padding: "5%" }}>
     <div>
       {/* <h1 style={{ textAlign: "center" }}>{nameCategory}</h1> */}
-      <h2 style={{ textAlign: "center" ,textDecorationLine:"underline"}} onClick={handleGoBack}>Purchase Order</h2>
+      <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoBack}>Purchase Order</h2>
       {/* <div>&nbsp;</div>
       <div>&nbsp;</div> */}
       <div className="row">
@@ -594,7 +594,7 @@ function POListDT() {
                 {/* <Abbreviation textName={product.ProductName} /> */}
                 {/* {product.ProductName} */}
                 {product.SalesDescription}
-                &nbsp; <i style={{fontSize:"13px"}}>{product.AccSourceDocNo}</i>
+                &nbsp; <i style={{ fontSize: "13px" }}>{product.AccSourceDocNo}</i>
               </h5>
               <h6>
                 &nbsp; &nbsp;&nbsp; {formatNumber(product.Price)}
@@ -622,9 +622,9 @@ function POListDT() {
       ))}
       {(!poh || poh.length === 0 || poh[0]?.DocStatus === 0) && (
         <>
-        <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
-        <ListItem style={{ justifyContent: "center" }}>
-          {/* <FontAwesomeIcon
+          <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
+          <ListItem style={{ justifyContent: "center" }}>
+            {/* <FontAwesomeIcon
             icon={faSquarePlus}
             size="2x"
             style={{ color: "green", justifyItems: "end" }}
@@ -639,24 +639,24 @@ function POListDT() {
           >
             Add Product/Service &nbsp; | &nbsp;
           </h5> */}
-           <Stack direction="row" spacing={1}>
-            {/* <Chip label="Add Product/Service"  
+            <Stack direction="row" spacing={1}>
+              {/* <Chip label="Add Product/Service"  
                   color="secondary" 
                   // variant="outlined" 
                   onClick={handleProductSelect} /> */}
-            <Button  //variant="outlined" 
-                          variant="contained" 
-                          color="warning"
-                          style={{ width: "200px", height: "40px" ,borderRadius: "20px" }}
-                          onClick={handleProductSelect}> 
-                  <FontAwesomeIcon
-                          icon={faSquarePlus}
-                          size="2x"
-                          style={{ color: "#fff", justifyItems: "end" }}
-                  />
-                  &nbsp;Product/Service</Button>
-          </Stack>
-           {/* <FontAwesomeIcon
+              <Button  //variant="outlined" 
+                variant="contained"
+                color="warning"
+                style={{ width: "200px", height: "40px", borderRadius: "20px" }}
+                onClick={handleProductSelect}>
+                <FontAwesomeIcon
+                  icon={faSquarePlus}
+                  size="2x"
+                  style={{ color: "#fff", justifyItems: "end" }}
+                />
+                &nbsp;Product/Service</Button>
+            </Stack>
+            {/* <FontAwesomeIcon
             icon={faSquarePlus}
             size="2x"
             style={{ color: "#ffbc04ff", justifyItems: "end" }}
@@ -671,33 +671,33 @@ function POListDT() {
           >
             Choose PR
           </h5> */}
-          <h2>&nbsp;|&nbsp;</h2>
-           <Stack direction="row" spacing={1}>
-            {/* <Chip label="Choose PR"
+            <h2>&nbsp;|&nbsp;</h2>
+            <Stack direction="row" spacing={1}>
+              {/* <Chip label="Choose PR"
                   color="warning"
                   onClick={handleChoosePR} /> */}
-                  <Button  //variant="outlined" 
-                          variant="contained" 
-                          color="secondary"
-                          style={{ width: "150px", height: "40px" ,borderRadius: "20px" }}
-                          onClick={handleChoosePR}> 
-                  <FontAwesomeIcon
-                          icon={faSquarePlus}
-                          size="2x"
-                          style={{ color: "#fff", justifyItems: "end" }}
-                          // onClick={handleChoosePR}
-                  />
-                  &nbsp; Choose PR</Button>
-          </Stack>
-          {showPOManagement && (
-                <POManagementComponentFromPR
-                  currentPONo={poh[0].AccDocNo}
-                  // docRefNo={poh.docRefNo}//เช็คอีกครั้งควรเอาไปแท็กไหม
-                  onClose={handleClosePOManagement}
+              <Button  //variant="outlined" 
+                variant="contained"
+                color="secondary"
+                style={{ width: "150px", height: "40px", borderRadius: "20px" }}
+                onClick={handleChoosePR}>
+                <FontAwesomeIcon
+                  icon={faSquarePlus}
+                  size="2x"
+                  style={{ color: "#fff", justifyItems: "end" }}
+                // onClick={handleChoosePR}
                 />
-              )}
-        </ListItem>
-       </>
+                &nbsp; Choose PR</Button>
+            </Stack>
+            {showPOManagement && (
+              <POManagementComponentFromPR
+                currentPONo={poh[0].AccDocNo}
+                // docRefNo={poh.docRefNo}//เช็คอีกครั้งควรเอาไปแท็กไหม
+                onClose={handleClosePOManagement}
+              />
+            )}
+          </ListItem>
+        </>
       )}
       <div className="row">
         {/* <Divider

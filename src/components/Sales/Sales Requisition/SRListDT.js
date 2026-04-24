@@ -266,7 +266,7 @@ function SRListDT() {
 
   const handleProductSelect = () => {
     // console.log('srh[0].DocStatus:',srh[0].DocStatus)
-    navigate("/uitestacc/SRProductSelect", {
+    navigate(`${URL}SRProductSelect`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -547,7 +547,7 @@ function SRListDT() {
     // <div className="row" style={{ padding: "5%" }}>
     <div>
       {/* <h1 style={{ textAlign: "center" }}>{nameCategory}</h1> */}
-      <h2 style={{ textAlign: "center",textDecorationLine:"underline" }} onClick={handleGoMenu}>
+      <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoMenu}>
         Sales Requisition
       </h2>
       {/* <div>&nbsp;</div>

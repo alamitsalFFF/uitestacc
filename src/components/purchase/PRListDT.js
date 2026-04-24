@@ -308,7 +308,7 @@ function PRListDT() {
   }, [accDocNo]); //ส่งค่าไปด้วยตอนไปเลือกรายการ
 
   const handleProductSelect = () => {
-    navigate("/uitestacc/ProductSelct", {
+    navigate(`${URL}ProductSelct`, {
       state: {
         // selectedProducts,
         accDocNo: accDocNo,
@@ -586,7 +586,7 @@ function PRListDT() {
     // <div className="row" style={{ padding: "5%" }}>
     <div>
       {/* <h1 style={{ textAlign: "center" }}>{nameCategory}</h1> */}
-      <h2 style={{ textAlign: "center",textDecorationLine:"underline" }} onClick={handleGoMenu}>
+      <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoMenu}>
         Purchase Requisition
       </h2>
       {/* <div>&nbsp;</div>

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react"; // เพิ่ม useState
+import React, { useState, useEffect } from "react"; // เพิ่ม useState
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
@@ -86,376 +86,376 @@ import { API_BASE, URL } from "../api/url";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import HeaderBar from "./HeaderBar";
 
-const menuItems = [
-  {
-    title: "Account",
-    icon: <FaFileInvoiceDollar size={24} />,
-    color: "#ffffff",
-    // ไม่ต้องมี address ที่นี่แล้ว เพราะจะจัดการใน state
-    subItems: [
-      {
-        title: "Account Payables",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}`,
-        MenuName: "เจ้าหนี้",
-        action: () => alert("ไปหน้าตั้งเจ้าหนี้"),
-      },
-      {
-        title: "Account Receiables",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}`,
-        action: () => alert("ไปหน้าตั้งลูกหนี้"),
-      },
-      {
-        title: "Payment Voucher",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}PVList/`,
-        action: () => alert("ไปหน้าบันทึกจ่ายเงิน"),
-      },
-      {
-        title: "Receive Voucher",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}RVList/`,
-        action: () => alert("ไปหน้าบันทึกรับเงิน"),
-      },
-      {
-        title: "Journal Entries",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}JVList/`,
-        action: () => alert("ไปหน้าสมุดรายวันทั่วไป"),
-      },
-      {
-        title: "Closing Entries",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}`,
-        action: () => alert("ไปหน้าปิดบัญชี"),
-      },
-      {
-        title: "Quick Payment (รายวันจ่าย)",
-        icon: <FaCashRegister size={20} />,
-        address: `${URL}AccordionQP/`,
-        action: () => alert("ไปหน้ารายวันจ่าย"),
-      },
-      {
-        title: "Quick Receive (รายวันรับ)",
-        icon: <FaCashRegister size={20} />,
-        address: `${URL}AccordionQR/`,
-        action: () => alert("ไปหน้ารายวันรับ"),
-      },
-    ],
-  },
-  {
-    title: "Financial",
-    icon: <FaCalculator size={24} />,
-    color: "#ffffff",
-    subItems: [
-      {
-        title: "Payment Invoice",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}PIList/`,
-        action: () => alert("ไปหน้าบันทึกรับวางบิล"),
-      },
-      {
-        title: "Sale Invoice",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}SIList/`,
-        action: () => alert("ไปหน้าบันทึกการขาย"),
-      },
-      {
-        title: "Cheque Payment",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}PCList/`,
-        action: () => alert("ไปหน้าจ่ายเช็ค"),
-      },
-      {
-        title: "Cheque Receive",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}RCList/`,
-        action: () => alert("ไปหน้ารับเช็ค"),
-      },
-    ],
-  },
-  {
-    title: "Module1",
-    icon: <FaChartLine size={24} />,
-    color: "#ffffff",
-    subItems: [
-      {
-        title: "Module1",
-        icon: <FaChartLine size={20} />,
-        address: `${URL}AccountCode/`,
-        action: () => alert("Module1"),
-      },
-    ],
-  },
-  {
-    title: "Master",
-    icon: <FaUsers size={24} />,
-    color: "#ffffff",
-    subItems: [
-      {
-        title: "Account Master Files",
-        icon: <FaCalendar size={20} />,
-        subItems: [
-          {
-            title: "Suppliers",
-            icon: <FaUsersCog size={20} />,
-            address: `${URL}SupplierList/`,
-            action: () => alert("ไปหน้าบันทึกรับเงิน"),
-          },
-          {
-            title: "Customers",
-            icon: <FaUsers size={20} />,
-            address: `${URL}CustomerList/`,
-            action: () => alert("ไปหน้าสมุดรายวันทั่วไป"),
-          },
-          {
-            title: "ACC1",
-            icon: <FaLayerGroup size={20} />,
-            address: `${URL}AccCode/`,
-            action: () => alert("ไปหน้าAccCodeList"),
-          },
-          {
-            title: "ผังบัญชี",
-            icon: <FaFolderOpen size={20} />,
-            address: `${URL}AccCodeList/`,
-            action: () => alert("ไปหน้าAccList"),
-          },
-          {
-            title: "ผังบัญชีรวม",
-            icon: <FaFolderOpen size={20} />,
-            address: `${URL}AccCodefull/`,
-            action: () => alert("ไปหน้าAccList"),
-          },
-        ], //<FontAwesomeIcon icon={faRectangleList} />
-      },
-      {
-        title: "Products Master",
-        icon: <FaProductHunt size={20} />,
-        subItems: [
-          {
-            title: "Warehouse GL",
-            icon: <FaWarehouse size={20} />,
-            address: `${URL}WarehouseList/`,
-            action: () => alert("ไปหน้าคลังสินค้า"),
-          },
-          // { title: "Product Type", icon: <FaBox size={20} />, address: `${URL}ProductTypeList/`, action: () => alert("ไปหน้าประเภทสินค้า") },
-          {
-            title: "Product Type",
-            icon: <FaBox size={20} />,
-            // address: `${URL}ProductTypeList/`, action: () => alert("ไปหน้าประเภทสินค้า")
-            subItems: [
-              {
-                title: "TypeProduct",
-                icon: <FaBoxOpen size={20} />,
-                address: `${URL}ProductTypeList/`,
-                action: () => alert("ไปหน้าประเภทสินค้า"),
-              },
-              {
-                title: "TypeService",
-                icon: <FaConciergeBell size={20} />,
-                address: `${URL}TypeServiceList/`,
-                action: () => alert("ไปหน้าประเภทบริการ"),
-              },
-              {
-                title: "TypeIngredient",
-                icon: <FaBoxes size={20} />,
-                address: `${URL}TypeIngredientList/`,
-                action: () => alert("ไปหน้าประเภทวัตถุดิบ"),
-              },
-            ],
-          },
-          // { title: "Product And Services", icon: <FaBoxOpen size={20} />, address: `${URL}ProductList/`, action: () => alert("ไปหน้ารหัสสินค้า/บริการ") },
-          {
-            title: "Product And Services",
-            icon: <FaBoxOpen size={20} />,
-            //  address: `${URL}ProductList/`, action: () => alert("ไปหน้ารหัสสินค้า/บริการ") },
-            subItems: [
-              {
-                title: "Product",
-                icon: <FaBoxOpen size={20} />,
-                address: `${URL}ProductList/`,
-                action: () => alert("ไปหน้ารหัสสินค้า"),
-              },
-              {
-                title: "Service",
-                icon: <FaConciergeBell size={20} />,
-                address: `${URL}ServiceList/`,
-                action: () => alert("ไปหน้ารหัสบริการ"),
-              },
-              {
-                title: "Ingredient",
-                icon: <FaBoxes size={20} />,
-                address: `${URL}IngredientList/`,
-                action: () => alert("ไปหน้ารหัสวัตถุดิบ"),
-              },
-            ],
-          },
-          // { title: "Warehouse", icon: <FaWarehouse size={20} />, address: `${URL}WarehouseList/`, action: () => alert("ไปหน้าคลังสินค้า") },
-        ],
-      },
-      {
-        title: "System Master Files",
-        // icon: <FaToolbox size={20} />,
-        icon: <FaToolbox size={20} />,
-        subItems: [
-          {
-            title: "Users",
-            icon: <FaUser size={20} />,
-            address: `${URL}`,
-            action: () => alert("ไปหน้าข้อมูลผู้ใช้งาน"),
-          },
-          {
-            title: "Company Profiles",
-            icon: <FaIdCard size={20} />,
-            address: `${URL}`,
-            action: () => alert("ไปหน้าข้อมูลกิจการ"),
-          },
-          {
-            title: "AccConfig",
-            icon: <FaCog size={20} />,
-            address: `${URL}AccConfigList/`,
-            action: () => alert("ไปหน้าการตั้งค่าระบบบัญชี"),
-          },
-          {
-            title: "DocConfigSchema",
-            icon: <FaServer size={20} />,
-            address: `${URL}DocConfigSchemaList/`,
-            action: () => alert("ไปหน้าDocConfigSchema"),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Purchase",
-    icon: <FaShoppingBag size={24} />,
-    color: "#ffffff",
-    subItems: [
-      // { title: "Purchase Requisition", icon: <FaShoppingCart size={20} />, address: `${URL}PurchaseRequisition/`, action: () => alert("ไปหน้าใบขอซื้อ") },
-      {
-        title: "Purchase Requisition",
-        icon: <FaShoppingCart size={20} />,
-        address: `${URL}PRList/`,
-        action: () => alert("ไปหน้าใบขอซื้อ"),
-      },
-      {
-        title: "Purchase Order",
-        icon: <FaWallet size={20} />,
-        address: `${URL}POList/`,
-        action: () => alert("ไปหน้าใบสั่งซื้อ"),
-      },
-      {
-        title: "Cash Purchase",
-        icon: <FaCashRegister size={20} />,
-        address: `${URL}AccordionQB/`,
-        action: () => alert("ไปหน้าใบซื้อสด"),
-      },
-    ],
-  },
-  {
-    title: "Sales",
-    icon: <FaMoneyCheck size={24} />,
-    color: "#ffffff",
-    subItems: [
-      {
-        title: "Sales Requisition",
-        icon: <FaCog size={20} />,
-        address: `${URL}SRList/`,
-        action: () => alert("ไปหน้าใบจองสินค้า"),
-      },
-      {
-        title: "Sales Order",
-        icon: <FaCog size={20} />,
-        address: `${URL}SOList/`,
-        action: () => alert("ไปหน้าใบสั่งขาย"),
-      },
-      {
-        title: "Cash Sale",
-        icon: <FaCog size={20} />,
-        address: `${URL}AccordionCS/`,
-        action: () => alert("ไปหน้าใบขายสด"),
-      },
-    ],
-  },
-  {
-    title: "Stock Control",
-    icon: <FaTruck size={24} />,
-    color: "#ffffff",
-    subItems: [
-      {
-        title: "Delivery In",
-        icon: <FaTruckLoading size={20} />,
-        address: `${URL}DIList/`,
-        action: () => alert("ไปหน้าDelivery In"),
-      },
-      {
-        title: "Delivery Out",
-        icon: <FaTruckMoving size={20} />,
-        address: `${URL}DOList/`,
-        action: () => alert("ไปหน้าDelivery Out"),
-      },
-      {
-        title: "Stock Transaction",
-        icon: <FaTruckMoving size={20} />,
-        address: `${URL}StockTransaction/`,
-        action: () => alert("ไปหน้าStockTransaction"),
-      },
-    ],
-  },
-  {
-    title: "Appove",
-    icon: <FaCheckCircle size={24} />,
-    color: "#ffffff",
-    subItems: [
-      {
-        title: "Sales Requisition",
-        icon: <FaCheckSquare size={20} />,
-        address: `${URL}PRConfirm/`,
-        action: () => alert("ไปหน้าอนุมัติใบขอซื้อ"),
-      },
-      {
-        title: "Sales Order",
-        icon: <FaFileAlt size={20} />,
-        address: `${URL}SRConfirm/`,
-        action: () => alert("ไปหน้าอนุมัติใบสั่งขาย"),
-      },
-    ],
-  },
-  {
-    title: "Report",
-    icon: <FaRegFileAlt size={24} />,
-    color: "#ffffff",
-    //  subItems: [
-    //     { title: "รายงานชื้อขาย", icon: <FaRegFileAlt size={20} />, address: `${REPORT_BASE}?From=Report&DB=${DATA_BASE}&SRC=${Base}`, action: () => alert("รายงานชื้อขาย")
-    //         //  const reportUrl = `${REPORT_BASE}?From=Report&DB=${DATA_BASE}&SRC=${Base}`;
-    //         //  window.open(reportUrl, "_blank");
-    //   },
-    // ]
-    subItems: [
-      // {
-      //   title: "รายงานชื้อขาย",
-      //   icon: <FaRegFileAlt size={20} />,
-      //   action: () => {
-      //     const reportUrl = `${REPORT_BASE}?From=Report&DB=${DATA_BASE}&SRC=${Base}`;
-      //     window.open(reportUrl, "_blank");`
-      //   }
-      // },
-      {
-        title: "รายงานชื้อขาย",
-        icon: <FaRegFileAlt size={20} />,
-        address: `${URL}Report/`,
-        action: () => alert("รายงานชื้อขาย"),
-      },
-      {
-        title: "Report All",
-        icon: <FaFileAlt size={20} />,
-        address: `${URL}TransactionList/`,
-        action: () => alert("report"),
-      },
-    ],
-  },
-];
+// const menuItems = [
+//   {
+//     title: "Account",
+//     icon: <FaFileInvoiceDollar size={24} />,
+//     color: "#ffffff",
+//     // ไม่ต้องมี address ที่นี่แล้ว เพราะจะจัดการใน state
+//     subItems: [
+//       {
+//         title: "Account Payables",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}`,
+//         MenuName: "เจ้าหนี้",
+//         action: () => alert("ไปหน้าตั้งเจ้าหนี้"),
+//       },
+//       {
+//         title: "Account Receiables",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}`,
+//         action: () => alert("ไปหน้าตั้งลูกหนี้"),
+//       },
+//       {
+//         title: "Payment Voucher",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}PVList/`,
+//         action: () => alert("ไปหน้าบันทึกจ่ายเงิน"),
+//       },
+//       {
+//         title: "Receive Voucher",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}RVList/`,
+//         action: () => alert("ไปหน้าบันทึกรับเงิน"),
+//       },
+//       {
+//         title: "Journal Entries",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}JVList/`,
+//         action: () => alert("ไปหน้าสมุดรายวันทั่วไป"),
+//       },
+//       {
+//         title: "Closing Entries",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}`,
+//         action: () => alert("ไปหน้าปิดบัญชี"),
+//       },
+//       {
+//         title: "Quick Payment (รายวันจ่าย)",
+//         icon: <FaCashRegister size={20} />,
+//         address: `${URL}AccordionQP/`,
+//         action: () => alert("ไปหน้ารายวันจ่าย"),
+//       },
+//       {
+//         title: "Quick Receive (รายวันรับ)",
+//         icon: <FaCashRegister size={20} />,
+//         address: `${URL}AccordionQR/`,
+//         action: () => alert("ไปหน้ารายวันรับ"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Financial",
+//     icon: <FaCalculator size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       {
+//         title: "Payment Invoice",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}PIList/`,
+//         action: () => alert("ไปหน้าบันทึกรับวางบิล"),
+//       },
+//       {
+//         title: "Sale Invoice",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}SIList/`,
+//         action: () => alert("ไปหน้าบันทึกการขาย"),
+//       },
+//       {
+//         title: "Cheque Payment",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}PCList/`,
+//         action: () => alert("ไปหน้าจ่ายเช็ค"),
+//       },
+//       {
+//         title: "Cheque Receive",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}RCList/`,
+//         action: () => alert("ไปหน้ารับเช็ค"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Module1",
+//     icon: <FaChartLine size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       {
+//         title: "Module1",
+//         icon: <FaChartLine size={20} />,
+//         address: `${URL}AccountCode/`,
+//         action: () => alert("Module1"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Master",
+//     icon: <FaUsers size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       {
+//         title: "Account Master Files",
+//         icon: <FaCalendar size={20} />,
+//         subItems: [
+//           {
+//             title: "Suppliers",
+//             icon: <FaUsersCog size={20} />,
+//             address: `${URL}SupplierList/`,
+//             action: () => alert("ไปหน้าบันทึกรับเงิน"),
+//           },
+//           {
+//             title: "Customers",
+//             icon: <FaUsers size={20} />,
+//             address: `${URL}CustomerList/`,
+//             action: () => alert("ไปหน้าสมุดรายวันทั่วไป"),
+//           },
+//           {
+//             title: "ACC1",
+//             icon: <FaLayerGroup size={20} />,
+//             address: `${URL}AccCode/`,
+//             action: () => alert("ไปหน้าAccCodeList"),
+//           },
+//           {
+//             title: "ผังบัญชี",
+//             icon: <FaFolderOpen size={20} />,
+//             address: `${URL}AccCodeList/`,
+//             action: () => alert("ไปหน้าAccList"),
+//           },
+//           {
+//             title: "ผังบัญชีรวม",
+//             icon: <FaFolderOpen size={20} />,
+//             address: `${URL}AccCodefull/`,
+//             action: () => alert("ไปหน้าAccList"),
+//           },
+//         ], //<FontAwesomeIcon icon={faRectangleList} />
+//       },
+//       {
+//         title: "Products Master",
+//         icon: <FaProductHunt size={20} />,
+//         subItems: [
+//           {
+//             title: "Warehouse GL",
+//             icon: <FaWarehouse size={20} />,
+//             address: `${URL}WarehouseList/`,
+//             action: () => alert("ไปหน้าคลังสินค้า"),
+//           },
+//           // { title: "Product Type", icon: <FaBox size={20} />, address: `${URL}ProductTypeList/`, action: () => alert("ไปหน้าประเภทสินค้า") },
+//           {
+//             title: "Product Type",
+//             icon: <FaBox size={20} />,
+//             // address: `${URL}ProductTypeList/`, action: () => alert("ไปหน้าประเภทสินค้า")
+//             subItems: [
+//               {
+//                 title: "TypeProduct",
+//                 icon: <FaBoxOpen size={20} />,
+//                 address: `${URL}ProductTypeList/`,
+//                 action: () => alert("ไปหน้าประเภทสินค้า"),
+//               },
+//               {
+//                 title: "TypeService",
+//                 icon: <FaConciergeBell size={20} />,
+//                 address: `${URL}TypeServiceList/`,
+//                 action: () => alert("ไปหน้าประเภทบริการ"),
+//               },
+//               {
+//                 title: "TypeIngredient",
+//                 icon: <FaBoxes size={20} />,
+//                 address: `${URL}TypeIngredientList/`,
+//                 action: () => alert("ไปหน้าประเภทวัตถุดิบ"),
+//               },
+//             ],
+//           },
+//           // { title: "Product And Services", icon: <FaBoxOpen size={20} />, address: `${URL}ProductList/`, action: () => alert("ไปหน้ารหัสสินค้า/บริการ") },
+//           {
+//             title: "Product And Services",
+//             icon: <FaBoxOpen size={20} />,
+//             //  address: `${URL}ProductList/`, action: () => alert("ไปหน้ารหัสสินค้า/บริการ") },
+//             subItems: [
+//               {
+//                 title: "Product",
+//                 icon: <FaBoxOpen size={20} />,
+//                 address: `${URL}ProductList/`,
+//                 action: () => alert("ไปหน้ารหัสสินค้า"),
+//               },
+//               {
+//                 title: "Service",
+//                 icon: <FaConciergeBell size={20} />,
+//                 address: `${URL}ServiceList/`,
+//                 action: () => alert("ไปหน้ารหัสบริการ"),
+//               },
+//               {
+//                 title: "Ingredient",
+//                 icon: <FaBoxes size={20} />,
+//                 address: `${URL}IngredientList/`,
+//                 action: () => alert("ไปหน้ารหัสวัตถุดิบ"),
+//               },
+//             ],
+//           },
+//           // { title: "Warehouse", icon: <FaWarehouse size={20} />, address: `${URL}WarehouseList/`, action: () => alert("ไปหน้าคลังสินค้า") },
+//         ],
+//       },
+//       {
+//         title: "System Master Files",
+//         // icon: <FaToolbox size={20} />,
+//         icon: <FaToolbox size={20} />,
+//         subItems: [
+//           {
+//             title: "Users",
+//             icon: <FaUser size={20} />,
+//             address: `${URL}`,
+//             action: () => alert("ไปหน้าข้อมูลผู้ใช้งาน"),
+//           },
+//           {
+//             title: "Company Profiles",
+//             icon: <FaIdCard size={20} />,
+//             address: `${URL}`,
+//             action: () => alert("ไปหน้าข้อมูลกิจการ"),
+//           },
+//           {
+//             title: "AccConfig",
+//             icon: <FaCog size={20} />,
+//             address: `${URL}AccConfigList/`,
+//             action: () => alert("ไปหน้าการตั้งค่าระบบบัญชี"),
+//           },
+//           {
+//             title: "DocConfigSchema",
+//             icon: <FaServer size={20} />,
+//             address: `${URL}DocConfigSchemaList/`,
+//             action: () => alert("ไปหน้าDocConfigSchema"),
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     title: "Purchase",
+//     icon: <FaShoppingBag size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       // { title: "Purchase Requisition", icon: <FaShoppingCart size={20} />, address: `${URL}PurchaseRequisition/`, action: () => alert("ไปหน้าใบขอซื้อ") },
+//       {
+//         title: "Purchase Requisition",
+//         icon: <FaShoppingCart size={20} />,
+//         address: `${URL}PRList/`,
+//         action: () => alert("ไปหน้าใบขอซื้อ"),
+//       },
+//       {
+//         title: "Purchase Order",
+//         icon: <FaWallet size={20} />,
+//         address: `${URL}POList/`,
+//         action: () => alert("ไปหน้าใบสั่งซื้อ"),
+//       },
+//       {
+//         title: "Cash Purchase",
+//         icon: <FaCashRegister size={20} />,
+//         address: `${URL}AccordionQB/`,
+//         action: () => alert("ไปหน้าใบซื้อสด"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Sales",
+//     icon: <FaMoneyCheck size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       {
+//         title: "Sales Requisition",
+//         icon: <FaCog size={20} />,
+//         address: `${URL}SRList/`,
+//         action: () => alert("ไปหน้าใบจองสินค้า"),
+//       },
+//       {
+//         title: "Sales Order",
+//         icon: <FaCog size={20} />,
+//         address: `${URL}SOList/`,
+//         action: () => alert("ไปหน้าใบสั่งขาย"),
+//       },
+//       {
+//         title: "Cash Sale",
+//         icon: <FaCog size={20} />,
+//         address: `${URL}AccordionCS/`,
+//         action: () => alert("ไปหน้าใบขายสด"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Stock Control",
+//     icon: <FaTruck size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       {
+//         title: "Delivery In",
+//         icon: <FaTruckLoading size={20} />,
+//         address: `${URL}DIList/`,
+//         action: () => alert("ไปหน้าDelivery In"),
+//       },
+//       {
+//         title: "Delivery Out",
+//         icon: <FaTruckMoving size={20} />,
+//         address: `${URL}DOList/`,
+//         action: () => alert("ไปหน้าDelivery Out"),
+//       },
+//       {
+//         title: "Stock Transaction",
+//         icon: <FaTruckMoving size={20} />,
+//         address: `${URL}StockTransaction/`,
+//         action: () => alert("ไปหน้าStockTransaction"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Appove",
+//     icon: <FaCheckCircle size={24} />,
+//     color: "#ffffff",
+//     subItems: [
+//       {
+//         title: "Sales Requisition",
+//         icon: <FaCheckSquare size={20} />,
+//         address: `${URL}PRConfirm/`,
+//         action: () => alert("ไปหน้าอนุมัติใบขอซื้อ"),
+//       },
+//       {
+//         title: "Sales Order",
+//         icon: <FaFileAlt size={20} />,
+//         address: `${URL}SRConfirm/`,
+//         action: () => alert("ไปหน้าอนุมัติใบสั่งขาย"),
+//       },
+//     ],
+//   },
+//   {
+//     title: "Report",
+//     icon: <FaRegFileAlt size={24} />,
+//     color: "#ffffff",
+//     //  subItems: [
+//     //     { title: "รายงานชื้อขาย", icon: <FaRegFileAlt size={20} />, address: `${REPORT_BASE}?From=Report&DB=${DATA_BASE}&SRC=${Base}`, action: () => alert("รายงานชื้อขาย")
+//     //         //  const reportUrl = `${REPORT_BASE}?From=Report&DB=${DATA_BASE}&SRC=${Base}`;
+//     //         //  window.open(reportUrl, "_blank");
+//     //   },
+//     // ]
+//     subItems: [
+//       // {
+//       //   title: "รายงานชื้อขาย",
+//       //   icon: <FaRegFileAlt size={20} />,
+//       //   action: () => {
+//       //     const reportUrl = `${REPORT_BASE}?From=Report&DB=${DATA_BASE}&SRC=${Base}`;
+//       //     window.open(reportUrl, "_blank");`
+//       //   }
+//       // },
+//       {
+//         title: "รายงานชื้อขาย",
+//         icon: <FaRegFileAlt size={20} />,
+//         address: `${URL}Report/`,
+//         action: () => alert("รายงานชื้อขาย"),
+//       },
+//       {
+//         title: "Report All",
+//         icon: <FaFileAlt size={20} />,
+//         address: `${URL}TransactionList/`,
+//         action: () => alert("report"),
+//       },
+//     ],
+//   },
+// ];
 
 const moduleIconMap = {
   AC: <FaFileInvoiceDollar size={24} />, // Account
@@ -467,6 +467,97 @@ const moduleIconMap = {
   SC: <FaMoneyCheck size={24} />,         // Sales
   ST: <FaTruck size={24} />,              // Stock
   default: <FaFolder size={24} />
+};
+
+// Map menuID → icon สำหรับเมนูย่อย (ใช้ MenuID จริงจาก API)
+const menuIconMap = {
+  // --- Account (AC) ---
+  "AP":    <FaAddressBook size={20} />,       // ตั้งเจ้าหนี้ / Account Payables
+  "AR":    <FaUserCircle size={20} />,        // ตั้งลูกหนี้ / Account Receivables
+  "PV":    <FaWallet size={20} />,            // บันทึกจ่ายเงิน / Payment Voucher
+  "RV":    <FaMoneyCheck size={20} />,        // บันทึกรับเงิน / Receive Voucher
+  "JE":    <FaBookReader size={20} />,        // สมุดรายวันทั่วไป / Journal Entries
+  "CL":    <FaCalendarCheck size={20} />,     // ปิดบัญชี / Closing Entries
+  "QP":    <FaCashRegister size={20} />,      // รายวันจ่าย / Quick Payment
+  "QR":    <FaDollarSign size={20} />,        // รายวันรับ / Quick Receive
+  "TX":    <FaFileInvoiceDollar size={20} />, // ปรับปรุงภาษี / Tax Adjust
+  "VAT":   <FaFileInvoiceDollar size={20} />, // ปรับปรุงแวต / VAT
+  "WHT":   <FaFileInvoiceDollar size={20} />, // ปรับปรุงหัก ณ ที่จ่าย / WHD
+  "WH3":   <FaFileInvoiceDollar size={20} />, // ภงด3 / WHT 3
+  "WH53":  <FaFileInvoiceDollar size={20} />, // ภงก53 / WHT53
+  // --- Financial (FC) ---
+  "PI":    <FaFileAlt size={20} />,           // ใบบันทึกค่าใช้จ่าย / Payment Input Note
+  "PC":    <FaCheckSquare size={20} />,       // ใบเสร็จจ่าย / Payment Confirm
+  "SI":    <FaFileInvoiceDollar size={20} />, // ใบแจ้งหนี้ / Sale Invoice
+  "RC":    <FaCheckCircle size={20} />,       // ใบเสร็จรับ / Receive Confirm
+  // --- Purchase (PC) ---
+  "PR":    <FaShoppingCart size={20} />,      // ใบขอซื้อ / Purchase Requisition
+  "CP":    <FaCashRegister size={20} />,      // ใบสั่งซื้อสด / Cash Purchase Order
+  "PO":    <FaShoppingBag size={20} />,       // ใบสั่งซื้อเชื่อ / Credit Purchase Order
+  "QB":    <FaShoppingCart size={20} />,      // รายวันซื้อ / Quick Buy
+  // --- Sales (SC) ---
+  "SR":    <FaShoppingCart size={20} />,      // ใบจองสินค้า / Sales Requisition
+  "CS":    <FaCashRegister size={20} />,      // ใบสั่งขายสด / Cash Sales Order
+  "SO":    <FaShoppingBag size={20} />,       // ใบสั่งขายเชื่อ / Credit Sales Order
+  "QC":    <FaDollarSign size={20} />,        // รายวันขาย / Quick CashSale
+  // --- Stock (ST) ---
+  "DI":    <FaTruckLoading size={20} />,      // ใบรับของ / Delivery In
+  "DO":    <FaTruckMoving size={20} />,       // ใบส่งของ / Delivery Out
+  "TRANS": <FaExchangeAlt size={20} />,       // สต็อก / Stock Transaction
+  // --- Master (MA) ---
+  "SP":    <FaUsersCog size={20} />,          // ผู้ให้บริการ / Suppliers
+  "CU":    <FaUsers size={20} />,             // ผู้รับบริการ/ลูกค้า / Customers
+  "WA":    <FaWarehouse size={20} />,         // คลังสินค้า / WarehouseGL
+  "ACCODE":<FaFolderOpen size={20} />,        // ผังบัญชี / Account Code
+  "PD":    <FaBoxOpen size={20} />,           // ข้อมูลมาตรฐานสินค้า / Products Master
+  "PT":    <FaBox size={20} />,               // ประเภทสินค้า / ProductType
+  "PG":    <FaBoxes size={20} />,             // กลุ่มสินค้า / Product Group
+  "PS":    <FaBoxOpen size={20} />,           // รหัสสินค้า/บริการ / Product And Services
+  "SYS":   <FaToolbox size={20} />,           // ข้อมูลมาตรฐานระบบ / System Master Files
+  "US":    <FaUser size={20} />,              // ข้อมูลผู้ใช้งาน / Users
+  "COM":   <FaIdCard size={20} />,            // ข้อมูลกิจการ / Company Profiles
+  "CONFIG":<FaCog size={20} />,              // ตั้งค่าอื่นๆ / Configs
+  "ENC":   <FaSpellCheck size={20} />,        // กำหนดมาตรฐานการลงบัญชี / Standard Entry
+  "DOC":   <FaFolder size={20} />,            // ข้อมูลเอกสาร / Document Master Files
+  "DOCCF": <FaServer size={20} />,            // ตั้งค่าเอกสาร / Document Config
+  "DOCOP": <FaRegPlusSquare size={20} />,     // ฟิลด์เพิ่มเติม / Optional Field
+  // MA sub-group headers
+  "AC":    <FaLayerGroup size={20} />,        // ข้อมูลระบบบัญชี / Account Master Files (MA group)
+  // --- Report (RP) ---
+  "RPS":   <FaChartBar size={20} />,          // รายงาน / Report
+};
+
+// Fallback: ค้นหา icon จาก keyword ใน title/address เมื่อไม่พบใน menuIconMap
+const guessMenuIcon = (menu) => {
+  const text = ((menu.menuNameEN || "") + " " + (menu.menuName || "") + " " + (menu.webAddress || "")).toLowerCase();
+  if (text.includes("supplier"))           return <FaUsersCog size={20} />;
+  if (text.includes("customer"))           return <FaUsers size={20} />;
+  if (text.includes("warehouse"))          return <FaWarehouse size={20} />;
+  if (text.includes("product") || text.includes("ingredient")) return <FaBox size={20} />;
+  if (text.includes("service"))            return <FaConciergeBell size={20} />;
+  if (text.includes("journal") || text.includes("jv")) return <FaBookReader size={20} />;
+  if (text.includes("payment") || text.includes("pv")) return <FaWallet size={20} />;
+  if (text.includes("receive") || text.includes("rv")) return <FaMoneyCheck size={20} />;
+  if (text.includes("invoice") || text.includes("si") || text.includes("pi")) return <FaFileInvoiceDollar size={20} />;
+  if (text.includes("cheque") || text.includes("check")) return <FaMoneyCheck size={20} />;
+  if (text.includes("purchase") || text.includes("pr") || text.includes("po")) return <FaShoppingCart size={20} />;
+  if (text.includes("sale") || text.includes("sr") || text.includes("so")) return <FaShoppingBag size={20} />;
+  if (text.includes("cash"))               return <FaCashRegister size={20} />;
+  if (text.includes("delivery") && text.includes("in")) return <FaTruckLoading size={20} />;
+  if (text.includes("delivery") && text.includes("out")) return <FaTruckMoving size={20} />;
+  if (text.includes("stock") || text.includes("transaction")) return <FaExchangeAlt size={20} />;
+  if (text.includes("report"))             return <FaChartBar size={20} />;
+  if (text.includes("user"))               return <FaUser size={20} />;
+  if (text.includes("company") || text.includes("profile")) return <FaIdCard size={20} />;
+  if (text.includes("config") || text.includes("setting")) return <FaCog size={20} />;
+  if (text.includes("account") || text.includes("acc")) return <FaLayerGroup size={20} />;
+  if (text.includes("wht") || text.includes("withholding") || text.includes("tax")) return <FaFileInvoiceDollar size={20} />;
+  if (text.includes("closing"))            return <FaCalendarCheck size={20} />;
+  if (text.includes("master"))             return <FaDatabase size={20} />;
+  if (text.includes("approve") || text.includes("confirm")) return <FaCheckCircle size={20} />;
+  if (text.includes("asset"))              return <FaBoxTissue size={20} />;
+  if (text.includes("doc") || text.includes("schema")) return <FaServer size={20} />;
+  return <FaFileAlt size={20} />; // default
 };
 const buildMenuTree = (modules, moduleMenus) => {
   // 1. เรียงลำดับ Modules ตาม seq ก่อน (ถ้า API Module มี seq มาด้วย)
@@ -489,7 +580,7 @@ const buildMenuTree = (modules, moduleMenus) => {
       thaiName: menu.menuName,
       menuID: menu.menuID,
       address: menu.webAddress?.startsWith("#") ? `${URL}` : menu.webAddress,
-      icon: <FaChartLine size={20} />,
+      icon: menuIconMap[menu.menuID] || guessMenuIcon(menu),
       subItems: []
     };
   });
@@ -761,17 +852,35 @@ const AccountingAppMenu = () => {
             <Button
               startIcon={<FaArrowLeft />}
               onClick={() => setMenuStack(menuStack.slice(0, -1))}
+              // sx={{
+              //   px: 4,
+              //   py: 1,
+              //   color: "#c62828",
+              //   borderColor: "#ef9a9a",
+              //   borderWidth: 1,
+              //   borderRadius: "50px",
+              //   fontWeight: "600",
+              //   background: "transparent",
+              //   transition: "all 0.3s ease",
+              //   '&:hover': {
+              //     backgroundColor: '#ffebee',
+              //     borderColor: '#c62828',
+              //     transform: "translateX(-4px)",
+              //     boxShadow: "0 4px 12px rgba(198, 40, 40, 0.15)"
+              //   }
+              // }}
               sx={{
                 px: 4,
                 py: 1,
-                color: "#c62828",
+                color: "#ffffff",
                 borderColor: "#ef9a9a",
                 borderWidth: 1,
-                borderRadius: "50px",
+                borderRadius: "25px",
                 fontWeight: "600",
-                background: "transparent",
+                background: "#ff0000",
                 transition: "all 0.3s ease",
                 '&:hover': {
+                  color: "#ff0000",
                   backgroundColor: '#ffebee',
                   borderColor: '#c62828',
                   transform: "translateX(-4px)",

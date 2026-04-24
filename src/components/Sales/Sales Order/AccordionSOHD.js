@@ -872,7 +872,6 @@ export default function SOAccordionHD({
     const accDocType = formData.accDocType;
     const accDocNo = formData.accDocNo;
     console.log("AccDocNo:", accDocNo);
-    // const printUrl = `${REPORT_BASE}/form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=Acctest2&Code=${accDocNo}`;
     const printUrl = `${REPORT_BASE}/Form?Form=Form${accDocType}&SRC=${DATA_BASE}&DB=${DATA_BASE}&Code=${accDocNo}`;
     window.open(printUrl, "_blank"); // เปิด URL ในแท็บใหม่
   };
@@ -1278,7 +1277,7 @@ export default function SOAccordionHD({
         <TextField
           id="partyCode"
           label="Customer Code"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1359,7 +1358,7 @@ export default function SOAccordionHD({
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1377,7 +1376,7 @@ export default function SOAccordionHD({
         <TextField
           id="partyName"
           label="Customer Name"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1395,7 +1394,7 @@ export default function SOAccordionHD({
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1414,7 +1413,7 @@ export default function SOAccordionHD({
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}

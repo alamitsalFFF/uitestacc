@@ -157,10 +157,10 @@ function PVListDT() {
       })();
     }
   }, [JournalNo]);
-  
+
   const handleAccCodeSelect = () => {
     // const handleProductSelect = () => {
-    navigate("/uitestacc/PVselectAccCode/", {
+    navigate(`${URL}PVselectAccCode/`, {
       state: {
         // selectedProducts,
         JournalNo,
@@ -232,7 +232,7 @@ function PVListDT() {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
     navigate(`${URL}PVHeader?journalNo=${JournalNo}`);
   };
@@ -385,10 +385,10 @@ function PVListDT() {
   }));
 
   const [editDetail, setEditDetail] = useState([]);
-  
+
   const EntryId = pvall.EntryId;
   const Seq = pvall.Seq;
-  
+
   // const handleEditDetail = (Seq) => {
   //   console.log('Seq:',Seq)
   //   navigate(
@@ -406,25 +406,25 @@ function PVListDT() {
   // };
 
   const handleEditDetail = async (index) => {
-    console.log('JournalNo:',JournalNo)
-    console.log("journalNo",pvall[0].JournalNo)
-    console.log("entryId",pvall[0].EntryId)
-    console.log("Seq",pvall[index].Seq)
-    console.log("Seq:",seq)
+    console.log('JournalNo:', JournalNo)
+    console.log("journalNo", pvall[0].JournalNo)
+    console.log("entryId", pvall[0].EntryId)
+    console.log("Seq", pvall[index].Seq)
+    console.log("Seq:", seq)
     try {
       // await fetchDataFromApi(journalNo); // รอผลลัพธ์จาก fetchDataFromApi
       const journalNo = pvall[0].JournalNo;
       const entryId = pvall[0].EntryId;
       const seq = pvall[index].Seq;
-      console.log('entryId:',entryId)
-      console.log('entryId:',typeof entryId)
+      console.log('entryId:', entryId)
+      console.log('entryId:', typeof entryId)
       console.log('Seq:', seq)
-      console.log('Seq:',typeof seq)
+      console.log('Seq:', typeof seq)
       navigate(`${URL}PVEditDetail?entryID=${entryId}&seq=${seq}`, {
         state: {
-          entryId:entryId,
-          journalNo:journalNo,
-          seq:seq,
+          entryId: entryId,
+          journalNo: journalNo,
+          seq: seq,
         },
       });
     } catch (error) {
@@ -432,7 +432,7 @@ function PVListDT() {
       console.error("Error in handleEditDetail:", error);
     }
   };
-  
+
   useEffect(() => {
     if (
       location.state?.editDetail &&
@@ -512,54 +512,54 @@ function PVListDT() {
           <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{JournalNo}</h2>
           <br />
         </ListItem>
-        <div style={{display:"flex"}}>
-      <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            // justifyContent: "flex-end",
-          }}
-        >
-          <h5>
-          Description:{pvall && pvall.length >0 && (pvall[0].Description)}
-          </h5>
-        </ListItem>
-        <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <p>
-            Date:
-            {pvall && pvall.length > 0 && (
-              <FormatDate dateString={pvall[0].EffectiveDate} />
-            )}
-          </p>
-        </ListItem>
+        <div style={{ display: "flex" }}>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              // justifyContent: "flex-end",
+            }}
+          >
+            <h5>
+              Description:{pvall && pvall.length > 0 && (pvall[0].Description)}
+            </h5>
+          </ListItem>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <p>
+              Date:
+              {pvall && pvall.length > 0 && (
+                <FormatDate dateString={pvall[0].EffectiveDate} />
+              )}
+            </p>
+          </ListItem>
         </div>
       </div>
-      <div style={{display:"flex"}}>
-          <div className="col-4">
-          <h4 style={{textAlign:"center"}}>&nbsp; &nbsp; AccName</h4>
-          </div>
-          <div className="col-2">
-          <h4 style={{textAlign:"center"}}>&nbsp; &nbsp; Detail</h4>
-          </div>
-          <div className="col-3" 
+      <div style={{ display: "flex" }}>
+        <div className="col-4">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; AccName</h4>
+        </div>
+        <div className="col-2">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; Detail</h4>
+        </div>
+        <div className="col-3"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-          >
-          <h4 style={{textAlign:"center"}}>Debit &nbsp;</h4>
-          </div>
-          <div className="col-3" 
-          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}
-          >
-            <div style={{display:"flex"}}>
-          <h4 style={{justifyItems: "end"}}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
+        >
+          <h4 style={{ textAlign: "center" }}>Debit &nbsp;</h4>
+        </div>
+        <div className="col-3"
+          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}
+        >
+          <div style={{ display: "flex" }}>
+            <h4 style={{ justifyItems: "end" }}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
             </h4>
-            </div>
           </div>
+        </div>
       </div>
       {pvall.map((pvall, index) => (
         <div key={index}>
@@ -572,7 +572,7 @@ function PVListDT() {
             <div className="col-4">
               <h5>
                 &nbsp; {pvall.Seq}.&nbsp;{pvall.AccCode} &nbsp;
-                {pvall.AccName} 
+                {pvall.AccName}
               </h5>
             </div>
             <div className="col-2">
@@ -581,19 +581,19 @@ function PVListDT() {
               </h5>
             </div>
             <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
-           {pvall.Debit !== 0.00 && <h4>{formatNumber(pvall.Debit)}</h4>}
+              {pvall.Debit !== 0.00 && <h4>{formatNumber(pvall.Debit)}</h4>}
             </div>
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}>
+            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
               <div style={{ display: "flex" }}>
-               {pvall.Credit !== 0.00 && <h4>{formatNumber(pvall.Credit)} &nbsp;</h4>}
+                {pvall.Credit !== 0.00 && <h4>{formatNumber(pvall.Credit)} &nbsp;</h4>}
                 &nbsp; &nbsp;
-                  <FontAwesomeIcon
-                    icon={faChevronRight}
-                    size="1x"
-                    style={{ color: "#0310ce", paddingTop: "10px" }}
-                    // onClick={() => handleEditDetail(pvall.seq)}
-                    onClick={() => handleEditDetail(index)}
-                  />
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  size="1x"
+                  style={{ color: "#0310ce", paddingTop: "10px" }}
+                  // onClick={() => handleEditDetail(pvall.seq)}
+                  onClick={() => handleEditDetail(index)}
+                />
               </div>
             </div>
           </ListItem>
@@ -620,22 +620,22 @@ function PVListDT() {
       </ListItem>
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} /> */}
 
-      <div style={{display:"flex",paddingTop:"8px"}}>
-          <div className="col-5">
-          <h3 style={{textAlign:"center"}}>&nbsp; &nbsp; Total</h3>
-          </div>
-          <div className="col-4" 
+      <div style={{ display: "flex", paddingTop: "8px" }}>
+        <div className="col-5">
+          <h3 style={{ textAlign: "center" }}>&nbsp; &nbsp; Total</h3>
+        </div>
+        <div className="col-4"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-          >
-          <h3 style={{textAlign:"center"}}>{pvall && pvall.length >0 && formatNumber(pvall[0].TotalDebit)}&nbsp;</h3>
-          </div>
-         
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}>
-            <div style={{ display: "flex" }}>
-          <h3 style={{textAlign:"center"}}>{pvall && pvall.length >0 && formatNumber(pvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
+        >
+          <h3 style={{ textAlign: "center" }}>{pvall && pvall.length > 0 && formatNumber(pvall[0].TotalDebit)}&nbsp;</h3>
+        </div>
+
+        <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
+          <div style={{ display: "flex" }}>
+            <h3 style={{ textAlign: "center" }}>{pvall && pvall.length > 0 && formatNumber(pvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
             </h3>
           </div>
-          </div>
+        </div>
       </div>
       {/* <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
       <ListItem>
@@ -656,39 +656,39 @@ function PVListDT() {
         </h5>
       </ListItem> */} {/*###Add AccCode####*/}
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
-        <div>&nbsp;</div>
-        <div className="row" style={{ display: "flex" }}>
-          <div className="col-6" style={{ display: "grid" }}>
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={handleGoBack}
-            />
-          </div>
-          <div
-            className="col-6"
-            style={{ display: "grid", justifyItems: "flex-end" }}
-          >
-            <FontAwesomeIcon
-              icon={faCircleArrowUp}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={scrollToTop}
-            />
-          </div>
+      <div>&nbsp;</div>
+      <div className="row" style={{ display: "flex" }}>
+        <div className="col-6" style={{ display: "grid" }}>
+          <FontAwesomeIcon
+            icon={faCircleArrowLeft}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={handleGoBack}
+          />
+        </div>
+        <div
+          className="col-6"
+          style={{ display: "grid", justifyItems: "flex-end" }}
+        >
+          <FontAwesomeIcon
+            icon={faCircleArrowUp}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={scrollToTop}
+          />
         </div>
       </div>
+    </div>
     // </div>
   );
 }

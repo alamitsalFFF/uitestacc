@@ -280,7 +280,7 @@ function SREditDetail() {
 
   const handleMoreInfo = async (accDocNo) => {
     await MoreInfoDT(accDocNo, navigate);
-    navigate("/uitestacc/MoreInfoDT", {
+    navigate(`${URL}MoreInfoDT`, {
       state: {
         accDocNo,
         accItemNo,
@@ -369,29 +369,29 @@ function SREditDetail() {
   const buttonActions = [
     ...(docStatus === 0
       ? [
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faPen}
-                style={{ color: "#72047b" }}
-                size="x"
-              />
-            ),
-            name: "Update",
-            onClick: handleUpdate,
-          },
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ color: "#ae0000" }}
-                size="x"
-              />
-            ),
-            name: "Cancel",
-            onClick: handleDelete,
-          },
-        ]
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "#ae0000" }}
+              size="x"
+            />
+          ),
+          name: "Cancel",
+          onClick: handleDelete,
+        },
+      ]
       : []),
     {
       icon: (
@@ -594,7 +594,7 @@ function SREditDetail() {
                 },
               }}
               onChange={handleInputChange}
-              // onChange={(event) => setProductSizeUnitValue(event.target.value)}
+            // onChange={(event) => setProductSizeUnitValue(event.target.value)}
             />
           </ListItem>
           <ListItem style={{ display: "flex", alignItems: "center" }}>
@@ -611,7 +611,7 @@ function SREditDetail() {
                 },
               }}
               onChange={handleInputChange}
-              // onChange={(event) => setProductSizeUnitValue(event.target.value)}
+            // onChange={(event) => setProductSizeUnitValue(event.target.value)}
             />
           </ListItem>
         </div>
@@ -648,7 +648,7 @@ function SREditDetail() {
           accDocNo={accDocNo}
           accItemNo={accItemNo}
           docConfigID={docConfigID}
-          // fetchDataFromApi={fetchDataFromApi}
+        // fetchDataFromApi={fetchDataFromApi}
         />
       )}
 

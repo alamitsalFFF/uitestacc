@@ -154,7 +154,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
 
   const handleAccCodeSelect = () => {
     // const handleProductSelect = () => {
-    navigate("/uitestacc/PVselectAccCode/", {
+    navigate(`${URL}PVselectAccCode/`, {
       state: {
         // selectedProducts,
         JournalNo,
@@ -226,7 +226,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
       setIsWhtEnabled(detailData[0].rateWht > 0); // Enable if rateWht > 0
     }
   }, [detailData]);
-  
+
   const handleGoBack = () => {
     navigate(`${URL}PVHeader?journalNo=${JournalNo}`);
   };
@@ -314,7 +314,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
   }, [selectedItem]);
 
   const [editDetail, setEditDetail] = useState([]);
-  
+
   const EntryId = pvall.EntryId;
   const Seq = pvall.Seq;
 
@@ -353,11 +353,11 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
             viewName: "vPV_All",
             parameters: [{ field: "JournalNo", value: JournalNo }],
             results: [
-              { sourceField: "EntryId" },{ sourceField: "JournalNo" },{ sourceField: "EntryDate" },
-              { sourceField: "EffectiveDate" },{ sourceField: "EntryBy" },{ sourceField: "Description" },
-              { sourceField: "TotalDebit" },{ sourceField: "TotalCredit" },{ sourceField: "Seq" },
-              { sourceField: "AccCode" },{ sourceField: "AccName" },{ sourceField: "AccDesc" },
-              { sourceField: "Debit" },{ sourceField: "Credit" },
+              { sourceField: "EntryId" }, { sourceField: "JournalNo" }, { sourceField: "EntryDate" },
+              { sourceField: "EffectiveDate" }, { sourceField: "EntryBy" }, { sourceField: "Description" },
+              { sourceField: "TotalDebit" }, { sourceField: "TotalCredit" }, { sourceField: "Seq" },
+              { sourceField: "AccCode" }, { sourceField: "AccName" }, { sourceField: "AccDesc" },
+              { sourceField: "Debit" }, { sourceField: "Credit" },
             ],
           };
           const response = await axios.post(API_VIEW_RESULT, vPV_All, {
@@ -415,54 +415,54 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
           <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{JournalNo ?? "—"}</h2>
           <br />
         </ListItem>
-        <div style={{display:"flex"}}>
-      <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            // justifyContent: "flex-end",
-          }}
-        >
-          <h5>
-          Description:{pvall && pvall.length >0 && (pvall[0].Description)}
-          </h5>
-        </ListItem>
-        <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <p>
-            Date:
-            {pvall && pvall.length > 0 && (
-              <FormatDate dateString={pvall[0].EffectiveDate} />
-            )}
-          </p>
-        </ListItem>
+        <div style={{ display: "flex" }}>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              // justifyContent: "flex-end",
+            }}
+          >
+            <h5>
+              Description:{pvall && pvall.length > 0 && (pvall[0].Description)}
+            </h5>
+          </ListItem>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <p>
+              Date:
+              {pvall && pvall.length > 0 && (
+                <FormatDate dateString={pvall[0].EffectiveDate} />
+              )}
+            </p>
+          </ListItem>
         </div>
       </div>
-      <div style={{display:"flex"}}>
-          <div className="col-4">
-          <h4 style={{textAlign:"center"}}>&nbsp; &nbsp; AccName</h4>
-          </div>
-          <div className="col-2">
-          <h4 style={{textAlign:"center"}}>&nbsp; &nbsp; Detail</h4>
-          </div>
-          <div className="col-3" 
+      <div style={{ display: "flex" }}>
+        <div className="col-4">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; AccName</h4>
+        </div>
+        <div className="col-2">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; Detail</h4>
+        </div>
+        <div className="col-3"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-          >
-          <h4 style={{textAlign:"center"}}>Debit &nbsp;</h4>
-          </div>
-          <div className="col-3" 
-          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}
-          >
-            <div style={{display:"flex"}}>
-          <h4 style={{justifyItems: "end"}}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
+        >
+          <h4 style={{ textAlign: "center" }}>Debit &nbsp;</h4>
+        </div>
+        <div className="col-3"
+          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}
+        >
+          <div style={{ display: "flex" }}>
+            <h4 style={{ justifyItems: "end" }}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
             </h4>
-            </div>
           </div>
+        </div>
       </div>
       {pvall.map((pvall, index) => (
         <div key={index}>
@@ -475,7 +475,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
             <div className="col-4">
               <h5>
                 &nbsp; {pvall.Seq}.&nbsp;{pvall.AccCode} &nbsp;
-                {pvall.AccName} 
+                {pvall.AccName}
               </h5>
             </div>
             <div className="col-2">
@@ -484,19 +484,19 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
               </h5>
             </div>
             <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
-           {pvall.Debit !== 0.00 && <h4>{formatNumber(pvall.Debit)}</h4>}
+              {pvall.Debit !== 0.00 && <h4>{formatNumber(pvall.Debit)}</h4>}
             </div>
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}>
+            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
               <div style={{ display: "flex" }}>
-               {pvall.Credit !== 0.00 && <h4>{formatNumber(pvall.Credit)} &nbsp;</h4>}
+                {pvall.Credit !== 0.00 && <h4>{formatNumber(pvall.Credit)} &nbsp;</h4>}
                 &nbsp; &nbsp;
-                  <FontAwesomeIcon
-                    icon={faChevronRight}
-                    size="1x"
-                    style={{ color: "#0310ce", paddingTop: "10px" }}
-                    // onClick={() => handleEditDetail(pvall.seq)}
-                    onClick={() => handleEditDetail(index)}
-                  />
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  size="1x"
+                  style={{ color: "#0310ce", paddingTop: "10px" }}
+                  // onClick={() => handleEditDetail(pvall.seq)}
+                  onClick={() => handleEditDetail(index)}
+                />
               </div>
             </div>
           </ListItem>
@@ -504,25 +504,25 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
       ))}
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
 
-      <div style={{display:"flex",paddingTop:"8px"}}>
-          <div className="col-5">
-          <h3 style={{textAlign:"center"}}>&nbsp; &nbsp; Total</h3>
-          </div>
-          <div className="col-4" 
+      <div style={{ display: "flex", paddingTop: "8px" }}>
+        <div className="col-5">
+          <h3 style={{ textAlign: "center" }}>&nbsp; &nbsp; Total</h3>
+        </div>
+        <div className="col-4"
           style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
-          >
-          <h3 style={{textAlign:"center"}}>{pvall && pvall.length >0 && formatNumber(pvall[0].TotalDebit)}&nbsp;</h3>
-          </div>
-         
-            <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" ,marginLeft: "auto" }}>
-            <div style={{ display: "flex" }}>
-          <h3 style={{textAlign:"center"}}>{pvall && pvall.length >0 && formatNumber(pvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
+        >
+          <h3 style={{ textAlign: "center" }}>{pvall && pvall.length > 0 && formatNumber(pvall[0].TotalDebit)}&nbsp;</h3>
+        </div>
+
+        <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
+          <div style={{ display: "flex" }}>
+            <h3 style={{ textAlign: "center" }}>{pvall && pvall.length > 0 && formatNumber(pvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
             </h3>
           </div>
-          </div>
+        </div>
       </div>
       <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
-        <div>&nbsp;</div>
+      <div>&nbsp;</div>
       {/* </div> */}
 
       {showEditDetailModal && itemToEdit && (

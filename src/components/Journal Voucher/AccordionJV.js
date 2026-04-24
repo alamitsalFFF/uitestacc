@@ -43,27 +43,19 @@ export default function AccordionJV() {
     }));
   };
 
-  // When page loaded/URL changed, if query param contains journalNo
-  // set currentAccDocNo (used by children) and open panels so header + detail show that document.
   useEffect(() => {
     if (journalNoFromUrl) {
-      setCurrentAccDocNo(journalNoFromUrl); // keep prop name for children compatibility
+      setCurrentAccDocNo(journalNoFromUrl);
       setExpandedPanels({ panel1: true, panel2: true });
 
-      // If apiData is available, try to find the matching index by JournalNo only
       if (Array.isArray(apiData) && apiData.length > 0) {
         const idx = apiData.findIndex((d) => d.JournalNo === journalNoFromUrl);
         if (idx >= 0) setCurrentIndex(idx);
       }
-
-      // If apiData isn't loaded here and header/detail components fetch by accDocNo (we pass journalNo),
-      // they will react to currentAccDocNo prop and load their data.
     }
-    // re-run when URL search or apiData changes (to try find index once data available)
   }, [location.search, journalNoFromUrl, apiData]);
 
   useEffect(() => {
-    // init from URL when location.search changes
     const p = new URLSearchParams(location.search || "");
     const j = p.get("journalNo");
     if (j && j !== currentAccDocNo) {

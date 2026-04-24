@@ -789,7 +789,7 @@ export default function SRHeader() {
     // const userId = "admin"; // หรือจะดึงจากระบบ login
     // const DocRefNo = formData.docRefNo;
     await SOfromSR(AccDocNo, navigate);
-    navigate("/uitestacc/SOList", {
+    navigate(`${URL}SOList`, {
       state: {
         AccDocNo,
         docRefNo: formData.docRefNo, // ส่งค่า docRefNo ไปยังหน้าถัดไป
@@ -797,7 +797,7 @@ export default function SRHeader() {
     });
   };
   const PhandleSOPartial = async (AccDocNo) => {
-    navigate("/uitestacc/SOList", {
+    navigate(`${URL}SOList`, {
       state: {
         AccDocNo,
       },
@@ -806,7 +806,7 @@ export default function SRHeader() {
 
   const handleMoreInfo = async (AccDocNo) => {
     await MoreInfoHD(AccDocNo, navigate);
-    navigate("/uitestacc/MoreInfoHD", {
+    navigate(`${URL}MoreInfoHD`, {
       state: {
         AccDocNo,
         AccDocType,

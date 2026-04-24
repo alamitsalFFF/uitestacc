@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
-import {useAuthFetch} from "../../Auth/fetchConfig";
-import { API_BASE, REPORT_BASE,BASE, DATA_BASE, URL} from "../../api/url";
+import { useAuthFetch } from "../../Auth/fetchConfig";
+import { API_BASE, REPORT_BASE, BASE, DATA_BASE, URL } from "../../api/url";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -44,7 +44,7 @@ import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Swal from "sweetalert2";
-import ButtonSI from"./ButtonSI";
+import ButtonSI from "./ButtonSI";
 import { RVfromSI } from "./RVFromSI";
 
 export default function SIHeader() {
@@ -350,8 +350,7 @@ export default function SIHeader() {
       if (!responseHD.ok) {
         const errorData = await responseHD.json();
         throw new Error(
-          `HTTP error! status: ${responseHD.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${responseHD.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -428,36 +427,36 @@ export default function SIHeader() {
           "Data to send for SetCustomer:",
           JSON.stringify(customerPayload)
         );
-       
-      try {
-        const setCustomerResponse = await setCustomer(customerPayload);
-        console.log("SetCustomer response:", setCustomerResponse);
-        // ตรวจสอบ Response หากมีข้อความระบุ Customer สร้างสำเร็จ
-        if (typeof setCustomerResponse === 'string' && setCustomerResponse.includes("Customers Created.")) {
-          console.log("Customers Created successfully");
-        } else if (typeof setCustomerResponse === 'string' && setCustomerResponse.includes("Customer code already exists.")) {
-          console.log("Customer code already exists, skipping success alert for Customer.");
-          // ไม่ต้องทำอะไร ให้ข้ามไปแจ้งเตือนบันทึกสำเร็จของ Header
-        } else if (typeof setCustomerResponse !== 'string') {
-          // กรณี Response เป็น JSON อาจมี Logic อื่นๆ ในการตรวจสอบความสำเร็จ
-          // หากไม่สำเร็จจริงๆ คุณอาจต้องการ Throw Error ที่นี่
-          console.warn("Unexpected response from SetCustomer:", setCustomerResponse);
-        }
-      } catch (error) {
-        console.error("Error during SetCustomer:", error);
-        // ตรวจสอบ Error Message หากเป็น Customer Code ซ้ำ ให้ Log และข้ามการแจ้งเตือน Error
-        if (error.message.includes("CustomerCode :") && error.message.includes("is already exsist.")) {
-          console.log("Customer code already exists, skipping error alert for Customer.");
-        } else {
-          // ถ้าเป็น Error อื่นๆ ให้แจ้งเตือน Error ตามปกติ (ถ้าต้องการ)
-          // Swal.fire({
-          //   icon: "error",
-          //   title: "เกิดข้อผิดพลาดในการสร้าง Customer",
-          //   text: error.message || "โปรดลองใหม่อีกครั้ง",
-          // });
+
+        try {
+          const setCustomerResponse = await setCustomer(customerPayload);
+          console.log("SetCustomer response:", setCustomerResponse);
+          // ตรวจสอบ Response หากมีข้อความระบุ Customer สร้างสำเร็จ
+          if (typeof setCustomerResponse === 'string' && setCustomerResponse.includes("Customers Created.")) {
+            console.log("Customers Created successfully");
+          } else if (typeof setCustomerResponse === 'string' && setCustomerResponse.includes("Customer code already exists.")) {
+            console.log("Customer code already exists, skipping success alert for Customer.");
+            // ไม่ต้องทำอะไร ให้ข้ามไปแจ้งเตือนบันทึกสำเร็จของ Header
+          } else if (typeof setCustomerResponse !== 'string') {
+            // กรณี Response เป็น JSON อาจมี Logic อื่นๆ ในการตรวจสอบความสำเร็จ
+            // หากไม่สำเร็จจริงๆ คุณอาจต้องการ Throw Error ที่นี่
+            console.warn("Unexpected response from SetCustomer:", setCustomerResponse);
+          }
+        } catch (error) {
+          console.error("Error during SetCustomer:", error);
+          // ตรวจสอบ Error Message หากเป็น Customer Code ซ้ำ ให้ Log และข้ามการแจ้งเตือน Error
+          if (error.message.includes("CustomerCode :") && error.message.includes("is already exsist.")) {
+            console.log("Customer code already exists, skipping error alert for Customer.");
+          } else {
+            // ถ้าเป็น Error อื่นๆ ให้แจ้งเตือน Error ตามปกติ (ถ้าต้องการ)
+            // Swal.fire({
+            //   icon: "error",
+            //   title: "เกิดข้อผิดพลาดในการสร้าง Customer",
+            //   text: error.message || "โปรดลองใหม่อีกครั้ง",
+            // });
+          }
         }
       }
-    }
       // แสดง SweetAlert เมื่อบันทึก SetAccTransactionHD สำเร็จ (โดยไม่สนใจผลลัพธ์ SetCustomer ใน try block)
       Swal.fire({
         icon: "success",
@@ -511,8 +510,7 @@ export default function SIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -535,58 +533,57 @@ export default function SIHeader() {
   const docStatus = formData.docStatus;
 
   const handleCancel = async () => {
-  const accDocNo = formData.accDocNo;
+    const accDocNo = formData.accDocNo;
 
-  Swal.fire({
-    title: `Are you sure? ${accDocNo}`,
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, cancel it!",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        const dataCancel = { ...formData, docStatus: 99 };
+    Swal.fire({
+      title: `Are you sure? ${accDocNo}`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const dataCancel = { ...formData, docStatus: 99 };
 
-        const response = await authFetch(
-          `${API_BASE}/AccTransaction/EditAccTransactionHD`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(dataCancel),
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(
-            `HTTP error! status: ${response.status}, message: ${
-              errorData.message || "Unknown error"
-            }`
+          const response = await authFetch(
+            `${API_BASE}/AccTransaction/EditAccTransactionHD`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(dataCancel),
+            }
           );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(
+              `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
+              }`
+            );
+          }
+
+          console.log("Data Cancel successfully");
+
+          Swal.fire({
+            title: `Deleted! ${accDocNo}`,
+            text: "Your file has been cancel.",
+            icon: "success",
+          });
+
+          await fetchDataFromApi(doctype);
+        } catch (error) {
+          console.error("Error updating data:", error);
+          alert("ยกเลิกข้อมูลไม่สำเร็จ กรุณาลองใหม่");
         }
-
-        console.log("Data Cancel successfully");
-
-        Swal.fire({
-          title: `Deleted! ${accDocNo}`,
-          text: "Your file has been cancel.",
-          icon: "success",
-        });
-
-        await fetchDataFromApi(doctype);
-      } catch (error) {
-        console.error("Error updating data:", error);
-        alert("ยกเลิกข้อมูลไม่สำเร็จ กรุณาลองใหม่");
       }
-    }
-  });
-};
-  
+    });
+  };
+
   const handleDelete = async () => {
     try {
       const accDocNo = formData.accDocNo;
@@ -601,8 +598,7 @@ export default function SIHeader() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `HTTP error! status: ${response.status}, message: ${
-            errorData.message || "Unknown error"
+          `HTTP error! status: ${response.status}, message: ${errorData.message || "Unknown error"
           }`
         );
       }
@@ -738,9 +734,9 @@ export default function SIHeader() {
   const handleRV = async (AccDocNo) => {
     // const userId = "admin"; // หรือจะดึงจากระบบ login
     const DocRefNo = formData.docRefNo;
-    console.log("DocRefNo:",DocRefNo)
-    await RVfromSI(AccDocNo,DocRefNo, navigate);
-    navigate("/uitestacc/RVList", {
+    console.log("DocRefNo:", DocRefNo)
+    await RVfromSI(AccDocNo, DocRefNo, navigate);
+    navigate(`${URL}RVList`, {
       state: {
         AccDocNo,
         DocRefNo
@@ -809,26 +805,26 @@ export default function SIHeader() {
         />
       ),
       name: "Print",
-      onClick:handlePrint,
+      onClick: handlePrint,
     },
     ...(docStatusState === "0"
       ? [
-          {
-            icon: (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {/* <FontAwesomeIcon icon={faP} style={{ color: "#f94f01" }} size="2xs" />
+        {
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faP} style={{ color: "#f94f01" }} size="2xs" />
                 <FontAwesomeIcon icon={faO} style={{ color: "#f94f01" }} size="2xs" /> */}
-                <FontAwesomeIcon
-                  icon={faFileInvoice}
-                  style={{ color: "#f94f01" }}
-                  size="2x"
-                />
-              </div>
-            ),
-            name: "RV",
-            onClick: () => handleRV(AccDocNo),
-          },
-        ]
+              <FontAwesomeIcon
+                icon={faFileInvoice}
+                style={{ color: "#f94f01" }}
+                size="2x"
+              />
+            </div>
+          ),
+          name: "RV",
+          onClick: () => handleRV(AccDocNo),
+        },
+      ]
       : []),
     {
       icon: (
@@ -839,29 +835,29 @@ export default function SIHeader() {
     },
     ...(docStatusState === "0"
       ? [
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faPen}
-                style={{ color: "#72047b" }}
-                size="2x"
-              />
-            ),
-            name: "Update",
-            onClick: handleUpdate,
-          },
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ color: "#ae0000" }}
-                size="2x"
-              />
-            ),
-            name: "Cancel",
-            onClick: handleCancel,
-          },
-        ]
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="2x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "#ae0000" }}
+              size="2x"
+            />
+          ),
+          name: "Cancel",
+          onClick: handleCancel,
+        },
+      ]
       : []),
   ];
 
@@ -948,7 +944,7 @@ export default function SIHeader() {
         <TextField
           id="partyCode"
           label="PartyCode"
-          value={formData.partyCode}
+          value={formData.partyCode || "DEF"}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1023,7 +1019,7 @@ export default function SIHeader() {
         <TextField
           id="partyTaxCode"
           label="PartyTaxCode"
-          value={formData.partyTaxCode}
+          value={formData.partyTaxCode || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1035,7 +1031,7 @@ export default function SIHeader() {
         <TextField
           id="partyName"
           label="PartyName"
-          value={formData.partyName}
+          value={formData.partyName || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1047,7 +1043,7 @@ export default function SIHeader() {
         <TextField
           id="partyAddress"
           label="PartyAddress"
-          value={formData.partyAddress}
+          value={formData.partyAddress || " "}
           // type="text"
           multiline
           variant="standard"
@@ -1060,7 +1056,7 @@ export default function SIHeader() {
         <TextField
           id="docRefNo"
           label="DocRefNo"
-          value={formData.docRefNo}
+          value={formData.docRefNo || " "}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1124,7 +1120,7 @@ export default function SIHeader() {
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1137,7 +1133,7 @@ export default function SIHeader() {
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
-          // defaultValue={new Date().toISOString().slice(0, 10)}
+        // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
       <div>&nbsp;</div>
