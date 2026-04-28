@@ -28,7 +28,7 @@ import Swal from "sweetalert2";
 import { setAddProducts, setAccDocNo } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import { formatNumber, formatInteger } from "../formatNumber";
-import { API_BASE,API_VIEW_RESULT, URL} from "../../api/url";
+import { API_BASE, API_VIEW_RESULT, URL } from "../../api/url";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 import ButtonAction from "../../DataFilters/ButtonAction";
 import MoreInfoDT from "../../AdditionData/AdditionDataTD/MoreInfoDT";
@@ -50,7 +50,7 @@ function POEditDetail() {
   const accDocType = location.state ? location.state.accDocType : null; // ตรวจสอบให้แน่ใจว่า accDocType มีค่า
   console.log("accDocType:", accDocType);
   const [docStatus, setDocStatus] = useState(docStatusFromState);
-  
+
   const [selectedDocConfigIDState, setSelectedDocConfigIDState] = useState(null);
   console.log("docStatus:", docStatus);
   console.log("selectedDocConfigIDState:", selectedDocConfigIDState); // ใช้ state ใหม่นี้
@@ -69,11 +69,11 @@ function POEditDetail() {
     productSizeUnitValue: "",
   });
 
-    // --- State for MoreInfoModal ---
-    const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false);
-    const handleOpenMoreInfoModal = () => setIsMoreInfoModalOpen(true);
-    const handleCloseMoreInfoModal = () => setIsMoreInfoModalOpen(false);
-    // ---------------------------------
+  // --- State for MoreInfoModal ---
+  const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false);
+  const handleOpenMoreInfoModal = () => setIsMoreInfoModalOpen(true);
+  const handleCloseMoreInfoModal = () => setIsMoreInfoModalOpen(false);
+  // ---------------------------------
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -131,7 +131,7 @@ function POEditDetail() {
   }, [accDocNo, accItemNo]);
 
   const saveDataToAPI = async (data) => {
-    console.log("DATA UPDATE:",data)
+    console.log("DATA UPDATE:", data)
     try {
       const response = await authFetch(
         `${API_BASE}/AccTransaction/EditAccTransactionDT`,
@@ -206,15 +206,16 @@ function POEditDetail() {
           timer: 2000,
         });
 
-      navigate(
-        `${URL}POListDT?accDocNo=${accDocNo}`
-        //   , {
-        //   state: {
-        //     accDocNo: accDocNo,
-        //     addProducts: [updatedProduct],
-        //   },
-        // }
-      );}
+        navigate(
+          `${URL}POListDT?accDocNo=${accDocNo}`
+          //   , {
+          //   state: {
+          //     accDocNo: accDocNo,
+          //     addProducts: [updatedProduct],
+          //   },
+          // }
+        );
+      }
       else {
         Swal.fire({
           icon: "error",
@@ -222,7 +223,7 @@ function POEditDetail() {
           text: "โปรดลองใหม่อีกครั้ง",
         });
       }
-    
+
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -331,52 +332,52 @@ function POEditDetail() {
     }
   };
 
-    const [isEditing, setIsEditing] = useState(false);
-    const handleDescriptionClick = () => {
-      setIsEditing(true);
-    };
-  
-    const handleInputBlur = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const handleDescriptionClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInputBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleInputKeyDown = (event) => {
+    if (event.key === "Enter") {
       setIsEditing(false);
-    };
-  
-    const handleInputKeyDown = (event) => {
-      if (event.key === "Enter") {
-        setIsEditing(false);
-        priceRef.current.focus();
-      }
-    };
-  
- const buttonActions = [
+      priceRef.current.focus();
+    }
+  };
+
+  const buttonActions = [
     ...(docStatus === 0
       ? [
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faPen}
-                style={{ color: "#72047b" }}
-                size="x"
-              />
-            ),
-            name: "Update",
-            onClick: handleUpdate,
-          },
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ color: "#ae0000" }}
-                size="x"
-              />
-            ),
-            name: "Cancel",
-            onClick: handleDelete,
-          },
-        ]
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="1x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "#ae0000" }}
+              size="1x"
+            />
+          ),
+          name: "Cancel",
+          onClick: handleDelete,
+        },
+      ]
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal,
@@ -388,21 +389,21 @@ function POEditDetail() {
   };
 
   return (
-    <div className="row" style={{ padding: "5%"  ,paddingTop:"1px"}}>
-        <DocConfigID
-              accDocType={accDocType}
-              onDocConfigFetched={handleDocConfigFetched}
-            />
-      <h2 style={{ textAlign: "center",textDecorationLine:"underline" }} onClick={handleGoBack}>Edit PO Detail</h2>
+    <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
+      <DocConfigID
+        accDocType={accDocType}
+        onDocConfigFetched={handleDocConfigFetched}
+      />
+      <h2 style={{ textAlign: "center", textDecorationLine: "underline" }} onClick={handleGoBack}>Edit PO Detail</h2>
       {/* <div>&nbsp;</div> */}
       {/* <div>&nbsp;</div> */}
       <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            // paddingTop: "18px",
-          }}
-        >
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          // paddingTop: "18px",
+        }}
+      >
         <ButtonAction actions={buttonActions} />
       </div>
       <div className="row">
@@ -445,44 +446,44 @@ function POEditDetail() {
             </h5>
           </div>
           <div
-              className="col-7"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "end",
-                justifyContent: "end",
-              }}
-              onClick={handleDescriptionClick}
-            >
-              {isEditing ? (
-                <TextField
-                  value={salesDescriptionValue}
-                  // type="text"
-                  multiline
-                  variant="standard"
-                  style={{ width: "100%", paddingRight: "5px" }}
-                  onChange={(event) =>
-                    setSalesDescriptionValue(event.target.value)
-                  }
-                  onKeyDown={handlePriceKeyDown}
-                  // onKeyDown={handleInputKeyDown}
-                  onBlur={handleInputBlur}
-                  autoFocus
-                />
-              ) : (
-                <h5
-                  style={{
-                    marginTop: "5px",
-                    marginRight: "10px",
-                    cursor: "pointer",
-                    textAlign: "end",
-                    justifyContent: "end",
-                  }}
-                >
-                  &nbsp; {salesDescriptionValue} &nbsp;
-                </h5>
-              )}
-            </div>
+            className="col-7"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              textAlign: "end",
+              justifyContent: "end",
+            }}
+            onClick={handleDescriptionClick}
+          >
+            {isEditing ? (
+              <TextField
+                value={salesDescriptionValue}
+                // type="text"
+                multiline
+                variant="standard"
+                style={{ width: "100%", paddingRight: "5px" }}
+                onChange={(event) =>
+                  setSalesDescriptionValue(event.target.value)
+                }
+                onKeyDown={handlePriceKeyDown}
+                // onKeyDown={handleInputKeyDown}
+                onBlur={handleInputBlur}
+                autoFocus
+              />
+            ) : (
+              <h5
+                style={{
+                  marginTop: "5px",
+                  marginRight: "10px",
+                  cursor: "pointer",
+                  textAlign: "end",
+                  justifyContent: "end",
+                }}
+              >
+                &nbsp; {salesDescriptionValue} &nbsp;
+              </h5>
+            )}
+          </div>
         </ListItem>
         {/* <div>&nbsp; &nbsp;</div> */}
         <div className="col-md-12" style={{ display: "flex" }}>
@@ -592,48 +593,48 @@ function POEditDetail() {
         </div>
         {/* </div> */}
       </div>
-    {isMoreInfoModalOpen && (
+      {isMoreInfoModalOpen && (
         <MoreInfoDT
           open={isMoreInfoModalOpen}
           handleClose={handleCloseMoreInfoModal}
           accDocNo={accDocNo}
           accItemNo={accItemNo}
           docConfigID={selectedDocConfigIDState}
-          // fetchDataFromApi={fetchDataFromApi}
+        // fetchDataFromApi={fetchDataFromApi}
         />
       )}
       <div>&nbsp;</div>
-   <div className="row" style={{ display: "flex" }}>
-          <div className="col-6" style={{ display: "grid" }}>
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={handleGoBack}
-            />
-          </div>
-          <div
-            className="col-6"
-            style={{ display: "grid", justifyItems: "flex-end" }}
-          >
-            <FontAwesomeIcon
-              icon={faCircleArrowUp}
-              size="2x"
-              style={{
-                color: "#013898",
-                cursor: "pointer",
-                display: "grid",
-                justifyItems: "end",
-              }}
-              onClick={scrollToTop}
-            />
-          </div>
+      <div className="row" style={{ display: "flex" }}>
+        <div className="col-6" style={{ display: "grid" }}>
+          <FontAwesomeIcon
+            icon={faCircleArrowLeft}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={handleGoBack}
+          />
         </div>
+        <div
+          className="col-6"
+          style={{ display: "grid", justifyItems: "flex-end" }}
+        >
+          <FontAwesomeIcon
+            icon={faCircleArrowUp}
+            size="2x"
+            style={{
+              color: "#013898",
+              cursor: "pointer",
+              display: "grid",
+              justifyItems: "end",
+            }}
+            onClick={scrollToTop}
+          />
+        </div>
+      </div>
     </div>
   );
 }

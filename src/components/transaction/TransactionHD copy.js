@@ -820,7 +820,7 @@ export default function TransactionHeader({
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Save DO",
@@ -828,14 +828,14 @@ export default function TransactionHeader({
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="x" />
+        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="1x" />
       ),
       name: "Print DO",
       onClick: handlePrint, // ฟังก์ชัน onClick ถูก comment ไว้ในโค้ดเดิม
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "New",
       onClick: handleNew,
@@ -847,7 +847,7 @@ export default function TransactionHeader({
             <FontAwesomeIcon
               icon={faPen}
               style={{ color: "#72047b" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Update",
@@ -858,7 +858,7 @@ export default function TransactionHeader({
         //      <FontAwesomeIcon
         //        icon={faTrash}
         //        style={{ color: "#ae0000" }}
-        //        size="x"
+        //        size="1x"
         //      />
         //    ),
         //    name: "Cancel",
@@ -869,7 +869,7 @@ export default function TransactionHeader({
         //      <FontAwesomeIcon
         //        icon={faTrash}
         //        style={{ color: "#ae0000" }}
-        //        size="x"
+        //        size="1x"
         //      />
         //    ),
         //    name: "Stock",
@@ -884,7 +884,7 @@ export default function TransactionHeader({
             <FontAwesomeIcon
               icon={faTruckMoving}
               style={{ color: "#e74404ff" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Stock",
@@ -894,14 +894,14 @@ export default function TransactionHeader({
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faTrash} style={{ color: "#ae0000" }} size="x" />
+        <FontAwesomeIcon icon={faTrash} style={{ color: "#ae0000" }} size="1x" />
       ),
       name: "Cancel",
       onClick: handleDelete,
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal,
@@ -913,7 +913,7 @@ export default function TransactionHeader({
         <FontAwesomeIcon
           icon={faAnglesRight}
           style={{ color: "#2d01bd" }}
-          size="x"
+          size="1x"
           rotation={180}
         />
       ),
@@ -926,7 +926,7 @@ export default function TransactionHeader({
         <FontAwesomeIcon
           icon={faAngleRight}
           style={{ color: "#2d01bd" }}
-          size="x"
+          size="1x"
           rotation={180}
         />
       ),
@@ -939,7 +939,7 @@ export default function TransactionHeader({
         <FontAwesomeIcon
           icon={faAngleRight}
           style={{ color: "#2d01bd" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "ToPrevious",
@@ -951,7 +951,7 @@ export default function TransactionHeader({
         <FontAwesomeIcon
           icon={faAnglesRight}
           style={{ color: "#2d01bd" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "ToFirst",

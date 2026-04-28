@@ -374,7 +374,7 @@ function SREditDetail() {
             <FontAwesomeIcon
               icon={faPen}
               style={{ color: "#72047b" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Update",
@@ -385,7 +385,7 @@ function SREditDetail() {
             <FontAwesomeIcon
               icon={faTrash}
               style={{ color: "#ae0000" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Cancel",
@@ -395,7 +395,7 @@ function SREditDetail() {
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal,

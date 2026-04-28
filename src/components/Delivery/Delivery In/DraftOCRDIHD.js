@@ -754,7 +754,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Save DI Draft",
@@ -762,14 +762,14 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
     },
     //  {
     //    icon: (
-    //      <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="x" />
+    //      <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="1x" />
     //    ),
     //    name: "Print DI",
     //    onClick: handlePrint, // ฟังก์ชัน onClick ถูก comment ไว้ในโค้ดเดิม
     //  },
     //  {
     //    icon: (
-    //      <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+    //      <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
     //    ),
     //    name: "New",
     //    onClick: handleNew,
@@ -781,7 +781,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
     //            <FontAwesomeIcon
     //              icon={faPen}
     //              style={{ color: "#72047b" }}
-    //              size="x"
+    //              size="1x"
     //            />
     //          ),
     //          name: "Update",
@@ -794,7 +794,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
     //            <FontAwesomeIcon
     //              icon={faTrash}
     //              style={{ color: "#ae0000" }}
-    //              size="x"
+    //              size="1x"
     //            />
     //          ),
     //          name: "Cancel",
@@ -802,7 +802,7 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
     //        },
     //    {
     //      icon: (
-    //        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+    //        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
     //      ),
     //      name: "More Info",
     //      onClick: handleOpenMoreInfoModal, 

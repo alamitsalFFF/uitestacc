@@ -463,7 +463,7 @@ function Customer() {
     },
     // {
     //     icon: (
-    //       <FontAwesomeIcon icon={faFileArrowDown} style={{ color: "#0000ff" }} size="x" />
+    //       <FontAwesomeIcon icon={faFileArrowDown} style={{ color: "#0000ff" }} size="1x" />
     //     ),
     //     name: "Preview Document(OCR)",
     //     onClick: handleRVDraftOCR,

@@ -275,7 +275,7 @@ function PCList() {
   const buttonActions = [
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "Add New",
       onClick: handleAddNew, // เรียก handleAddNew โดยตรง
@@ -285,7 +285,7 @@ function PCList() {
         <FontAwesomeIcon
           icon={faCalendarDays}
           style={{ color: "#fc4704" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Filter Date",
@@ -296,7 +296,7 @@ function PCList() {
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           style={{ color: "#4301b3" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Search Data",

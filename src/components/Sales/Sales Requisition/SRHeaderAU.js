@@ -860,7 +860,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
     //     <FontAwesomeIcon
     //       icon={faRectangleList}
     //       style={{ color: "#e56107" }}
-    //       size="x"
+    //       size="1x"
     //     />
     //   ),
     //   name: "Detail",
@@ -871,7 +871,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Save",
@@ -882,7 +882,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <FontAwesomeIcon
           icon={faPrint}
           style={{ color: "#0aa3ad" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Print",
@@ -898,7 +898,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
               <FontAwesomeIcon
                 icon={faFileInvoice}
                 style={{ color: "#f94f01" }}
-                size="x"
+                size="1x"
               />
             </div>
           ),
@@ -915,7 +915,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
     //           <FontAwesomeIcon
     //             icon={faFileInvoice}
     //             style={{ color: "#f94f01" }}
-    //             size="x"
+    //             size="1x"
     //           />
     //         </div>
     //       ),
@@ -930,7 +930,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           <FontAwesomeIcon
             icon={faFileInvoice}
             style={{ color: "#f94f01" }}
-            size="x"
+            size="1x"
           />
         </div>
       ),
@@ -941,7 +941,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
     // : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "New",
       onClick: handleNew,
@@ -953,7 +953,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             <FontAwesomeIcon
               icon={faPen}
               style={{ color: "#72047b" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Update",
@@ -964,7 +964,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             <FontAwesomeIcon
               icon={faTrash}
               style={{ color: "#ae0000" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Cancel",
@@ -974,7 +974,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal, // <--- Call the function to open the modal

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect,useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 // import axios from "axios";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -23,7 +23,7 @@ import {
 } from "../../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "../../Auth/axiosConfig";
-import { API_VIEW_RESULT, URL} from "../../api/url";
+import { API_VIEW_RESULT, URL } from "../../api/url";
 import DateRangePicker from "../../DataFilters/DateRangePicker";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -44,7 +44,7 @@ function SRListAU() {
   const [isDateFilterModalOpen, setIsDateFilterModalOpen] = useState(false);
   // const [filterStartDate, setFilterStartDate] = useState(null); // สถานะเก็บวันที่เริ่มต้น
   // const [filterEndDate, setFilterEndDate] = useState(null); // สถานะเก็บวันที่สิ้นสุด
-   const [filterStartDate, setFilterStartDate] = useState(dayjs().startOf('month').toDate()); // วันที่ 1 ของเดือนปัจจุบัน
+  const [filterStartDate, setFilterStartDate] = useState(dayjs().startOf('month').toDate()); // วันที่ 1 ของเดือนปัจจุบัน
   const [filterEndDate, setFilterEndDate] = useState(dayjs().endOf('month').toDate());
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -55,9 +55,9 @@ function SRListAU() {
     let parameters = [
       { field: "AccDocType", value: "SR" }, // ยังคงมี AccDocType: "SR"
     ];
-    let CurrentMonth =  new Date().toISOString().split("T")[0];
+    let CurrentMonth = new Date().toISOString().split("T")[0];
     let parameters1 = [{ field: "AccEffectiveDate", value: `${CurrentMonth}` }];
-        console.log("CurrentMonth:", CurrentMonth);
+    console.log("CurrentMonth:", CurrentMonth);
     const vSR_H = {
       viewName: "vSR_H",
       // parameters: parameters,
@@ -123,19 +123,19 @@ function SRListAU() {
   //   }
   // };
   const filteredSR = transactionall.filter((transaction) => {
-  const searchLower = searchTerm.toLowerCase();
-  const searchNumber = parseFloat(searchTerm);
+    const searchLower = searchTerm.toLowerCase();
+    const searchNumber = parseFloat(searchTerm);
 
-  // เงื่อนไขการค้นหาข้อความ/ตัวเลข
-  const matchesSearchTerm = (
-    transaction.AccDocNo.toLowerCase().includes(searchLower) ||
-    transaction.PartyName.toLowerCase().includes(searchLower) ||
-    (typeof transaction.TotalNet === "number" &&
-      transaction.TotalNet === searchNumber)
-  );
+    // เงื่อนไขการค้นหาข้อความ/ตัวเลข
+    const matchesSearchTerm = (
+      transaction.AccDocNo.toLowerCase().includes(searchLower) ||
+      transaction.PartyName.toLowerCase().includes(searchLower) ||
+      (typeof transaction.TotalNet === "number" &&
+        transaction.TotalNet === searchNumber)
+    );
 
-  // เงื่อนไขการกรองวันที่
-  let matchesDateRange = true;
+    // เงื่อนไขการกรองวันที่
+    let matchesDateRange = true;
     if (filterStartDate && filterEndDate) {
       const transactionDate = dayjs(transaction.AccEffectiveDate);
       const startFilterDateObj = dayjs(filterStartDate).startOf('day');
@@ -144,22 +144,22 @@ function SRListAU() {
       // ตรวจสอบว่า Day.js object ที่สร้างขึ้น valid หรือไม่ก่อนใช้งาน
       if (transactionDate.isValid() && startFilterDateObj.isValid() && endFilterDateObj.isValid()) {
         matchesDateRange = transactionDate.isSameOrAfter(startFilterDateObj) &&
-                           transactionDate.isSameOrBefore(endFilterDateObj);
+          transactionDate.isSameOrBefore(endFilterDateObj);
       } else {
         // ถ้าวันที่ไม่ valid ให้ log ข้อความเพื่อ debug
-        console.warn("Invalid date encountered in filtering:", 
-                     transaction.AccEffectiveDate, 
-                     filterStartDate, 
-                     filterEndDate);
+        console.warn("Invalid date encountered in filtering:",
+          transaction.AccEffectiveDate,
+          filterStartDate,
+          filterEndDate);
         matchesDateRange = false; // หรือกำหนดให้เป็น true หากต้องการรวมรายการที่มีวันที่ไม่ถูกต้อง
       }
     }
 
-  return matchesSearchTerm && matchesDateRange;
-});
-  
+    return matchesSearchTerm && matchesDateRange;
+  });
 
-// ฟังก์ชันเปิด/ปิด Modal
+
+  // ฟังก์ชันเปิด/ปิด Modal
   const handleOpenSearchModal = () => {
     setIsSearchModalOpen(true);
   };
@@ -244,24 +244,24 @@ function SRListAU() {
     });
   };
 
-const buttonActions = [
+  const buttonActions = [
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "Add New",
       onClick: handleAddNew, // เรียก handleAddNew โดยตรง
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#fc4704" }} size="x" />
+        <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#fc4704" }} size="1x" />
       ),
       name: "Filter Date",
       onClick: handleOpenDateFilterModal, // เรียกฟังก์ชันเปิด Modal วันที่
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#4301b3" }} size="x" />
+        <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#4301b3" }} size="1x" />
       ),
       name: "Search Data",
       onClick: handleOpenSearchModal, // เรียกฟังก์ชันเปิด Modal ค้นหา
@@ -322,19 +322,19 @@ const buttonActions = [
         </div>
       )} */}
 
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <ButtonSR actions={buttonActions} />
       </div>
-       {/* Render Modal components ที่ซ่อนไว้ */}
-      <SearchModal 
-        open={isSearchModalOpen} 
-        handleClose={handleCloseSearchModal} 
-        onSearch={handleSearch} 
+      {/* Render Modal components ที่ซ่อนไว้ */}
+      <SearchModal
+        open={isSearchModalOpen}
+        handleClose={handleCloseSearchModal}
+        onSearch={handleSearch}
         searchTerm={searchTerm}
       />
-      <DateFilterModal 
-        open={isDateFilterModalOpen} 
-        handleClose={handleCloseDateFilterModal} 
+      <DateFilterModal
+        open={isDateFilterModalOpen}
+        handleClose={handleCloseDateFilterModal}
         onDateRangeChange={handleDateRangeChange}
         filterStartDate={filterStartDate}
         filterEndDate={filterEndDate}

@@ -299,14 +299,14 @@ function RVHDList() {
   const buttonActions = [
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "Add New",
       onClick: handleAddNew, // เรียก handleAddNew โดยตรง
     },
     // {
     //     icon: (
-    //       <FontAwesomeIcon icon={faFileArrowDown} style={{ color: "#0000ff" }} size="x" />
+    //       <FontAwesomeIcon icon={faFileArrowDown} style={{ color: "#0000ff" }} size="1x" />
     //     ),
     //     name: "Preview Document(OCR)",
     //     onClick: handleRVDraftOCR,
@@ -316,7 +316,7 @@ function RVHDList() {
         <FontAwesomeIcon
           icon={faCalendarDays}
           style={{ color: "#fc4704" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Filter Date",
@@ -327,7 +327,7 @@ function RVHDList() {
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           style={{ color: "#4301b3" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Search Data",

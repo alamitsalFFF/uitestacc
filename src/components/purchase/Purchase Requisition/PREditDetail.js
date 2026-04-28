@@ -347,33 +347,33 @@ function PREditDetail({
   const buttonActions = [
     ...(docStatus === 0
       ? [
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faPen}
-                style={{ color: "#72047b" }}
-                size="x"
-              />
-            ),
-            name: "Update",
-            onClick: handleUpdate,
-          },
-          {
-            icon: (
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ color: "#ae0000" }}
-                size="x"
-              />
-            ),
-            name: "Cancel",
-            onClick: handleDelete,
-          },
-        ]
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faPen}
+              style={{ color: "#72047b" }}
+              size="1x"
+            />
+          ),
+          name: "Update",
+          onClick: handleUpdate,
+        },
+        {
+          icon: (
+            <FontAwesomeIcon
+              icon={faTrash}
+              style={{ color: "#ae0000" }}
+              size="1x"
+            />
+          ),
+          name: "Cancel",
+          onClick: handleDelete,
+        },
+      ]
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal,
@@ -605,7 +605,7 @@ function PREditDetail({
                   display: "grid",
                   justifyItems: "end",
                 }}
-                onClick={onClose} 
+                onClick={onClose}
               />
             </div>
             <div

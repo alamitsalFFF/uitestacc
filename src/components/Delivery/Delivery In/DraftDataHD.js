@@ -782,7 +782,7 @@ export default function DraftDataHD({ apiData, setApiData, currentIndex,
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Save DI Draft",

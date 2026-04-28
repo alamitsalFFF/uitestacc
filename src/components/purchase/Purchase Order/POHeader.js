@@ -810,7 +810,7 @@ export default function POHeader() {
         <FontAwesomeIcon
           icon={faRectangleList}
           style={{ color: "#e56107" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Detail",
@@ -821,7 +821,7 @@ export default function POHeader() {
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Save",
@@ -829,7 +829,7 @@ export default function POHeader() {
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="x" />
+        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="1x" />
       ),
       name: "Print",
       onClick: handlePrint, // ฟังก์ชัน onClick ถูก comment ไว้ในโค้ดเดิม
@@ -844,7 +844,7 @@ export default function POHeader() {
               {/* <FontAwesomeIcon icon={faI} size="2xs" style={{ color: "#ff7f00" }} /> */}
               <FontAwesomeIcon
                 icon={faTruckRampBox}
-                size="x"
+                size="1x"
                 style={{ color: "#ff7f00" }}
               />
             </div>
@@ -864,7 +864,7 @@ export default function POHeader() {
               {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#f94f01" }} /> */}
               <FontAwesomeIcon
                 icon={faTicket}
-                size="x"
+                size="1x"
                 style={{ color: "#f94f01" }}
               />
             </div>
@@ -880,7 +880,7 @@ export default function POHeader() {
               {/* <FontAwesomeIcon icon={faI} size="2xs" style={{ color: "#ed4d04" }} /> */}
               <FontAwesomeIcon
                 icon={faFileInvoice}
-                size="x"
+                size="1x"
                 style={{ color: "#ed4d04" }}
               />
             </div>
@@ -892,7 +892,7 @@ export default function POHeader() {
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "New",
       onClick: handleNew,
@@ -904,7 +904,7 @@ export default function POHeader() {
             <FontAwesomeIcon
               icon={faPen}
               style={{ color: "#72047b" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Update",
@@ -915,7 +915,7 @@ export default function POHeader() {
             <FontAwesomeIcon
               icon={faTrash}
               style={{ color: "#ae0000" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Cancel",
@@ -925,7 +925,7 @@ export default function POHeader() {
       : []),
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal, // <--- Call the function to open the modal

@@ -800,7 +800,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <FontAwesomeIcon
           icon={faFloppyDisk}
           style={{ color: "green" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Save DO",
@@ -808,14 +808,14 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="x" />
+        <FontAwesomeIcon icon={faPrint} style={{ color: "blue" }} size="1x" />
       ),
       name: "Print DO",
       onClick: handlePrint, // ฟังก์ชัน onClick ถูก comment ไว้ในโค้ดเดิม
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="x" />
+        <FontAwesomeIcon icon={faPlus} style={{ color: "green" }} size="1x" />
       ),
       name: "New",
       onClick: handleNew,
@@ -827,7 +827,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
             <FontAwesomeIcon
               icon={faPen}
               style={{ color: "#72047b" }}
-              size="x"
+              size="1x"
             />
           ),
           name: "Update",
@@ -838,7 +838,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         //      <FontAwesomeIcon
         //        icon={faTrash}
         //        style={{ color: "#ae0000" }}
-        //        size="x"
+        //        size="1x"
         //      />
         //    ),
         //    name: "Cancel",
@@ -849,7 +849,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         //      <FontAwesomeIcon
         //        icon={faTrash}
         //        style={{ color: "#ae0000" }}
-        //        size="x"
+        //        size="1x"
         //      />
         //    ),
         //    name: "Stock",
@@ -863,7 +863,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           <FontAwesomeIcon
             icon={faTruckMoving}
             style={{ color: "#e74404ff" }}
-            size="x"
+            size="1x"
           />
         ),
         name: "Stock",
@@ -875,7 +875,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <FontAwesomeIcon
           icon={faTrash}
           style={{ color: "#ae0000" }}
-          size="x"
+          size="1x"
         />
       ),
       name: "Cancel",
@@ -883,7 +883,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="x" />
+        <FontAwesomeIcon icon={faInfo} style={{ color: "#6c757d" }} size="1x" />
       ),
       name: "More Info",
       onClick: handleOpenMoreInfoModal,
@@ -893,7 +893,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
   const buttonActionsLNPF = [
     {
       icon: (
-        <FontAwesomeIcon icon={faAnglesRight} style={{ color: "#2d01bd" }} size="x" rotation={180} />
+        <FontAwesomeIcon icon={faAnglesRight} style={{ color: "#2d01bd" }} size="1x" rotation={180} />
       ),
       name: "ToLast",
       onClick: goToLast,
@@ -901,7 +901,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faAngleRight} style={{ color: "#2d01bd" }} size="x" rotation={180} />
+        <FontAwesomeIcon icon={faAngleRight} style={{ color: "#2d01bd" }} size="1x" rotation={180} />
       ),
       name: "ToNext",
       onClick: goToNext,
@@ -909,7 +909,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faAngleRight} style={{ color: "#2d01bd" }} size="x" />
+        <FontAwesomeIcon icon={faAngleRight} style={{ color: "#2d01bd" }} size="1x" />
       ),
       name: "ToPrevious",
       onClick: goToPrevious,
@@ -917,7 +917,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
     },
     {
       icon: (
-        <FontAwesomeIcon icon={faAnglesRight} style={{ color: "#2d01bd" }} size="x" />
+        <FontAwesomeIcon icon={faAnglesRight} style={{ color: "#2d01bd" }} size="1x" />
       ),
       name: "ToFirst",
       onClick: goToFirst,
