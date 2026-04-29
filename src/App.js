@@ -188,6 +188,7 @@ import WHTList from './components/Withholding Tax/WHTList';
 import { URL } from './components/api/url';
 import AccountingAppMenu from './components/menu/AccountingAppMenu';
 import AccordionJV from './components/Journal Voucher/AccordionJV';
+import OCR from './components/OCR/OCR';
 import JVList1 from './components/Journal Voucher/JVList_BK';
 
 function App() {
@@ -455,6 +456,7 @@ function App() {
             <Route path={`${URL}Transaction`} element={<RequireAuth><TransactionMain /></RequireAuth>} />
 
             <Route path={`${URL}CompanyProfile`} element={<RequireAuth><ProfileConfig /></RequireAuth>} />
+            <Route path={`${URL}OCR`} element={<RequireAuth><OCR /></RequireAuth>} />
           </Routes>
           {/* </div> */}
         </div>

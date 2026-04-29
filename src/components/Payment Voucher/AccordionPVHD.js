@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "../Auth/axiosConfig";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -926,7 +926,7 @@ export default function AccordionPVHD({
       if (journalToUse !== currentAccDocNo) {
         setCurrentAccDocNo(journalToUse);
         // fetch เฉพาะตอน init จาก navigation
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        // eslint-disable-next-line
         fetchDataFromApi(journalToUse);
       }
       return;
@@ -937,7 +937,7 @@ export default function AccordionPVHD({
       lastNavSearchRef.current = location.search;
       if (journalToUse !== currentAccDocNo) {
         setCurrentAccDocNo(journalToUse);
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        // eslint-disable-next-line
         fetchDataFromApi(journalToUse);
       }
     }

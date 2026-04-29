@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 import { API_BASE, BASE, DATA_BASE, REPORT_BASE, URL } from "../../api/url";
@@ -64,7 +64,7 @@ import GLTemplateModal from "./GLTemplateModal";
 import { FaDochub } from "react-icons/fa";
 import DIManagementComponent from "./DIManagementComponent";
 
-export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
+export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo, ocrData, fromOCR, ocrLineItems }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
   const PartyName = useSelector((state) => state.partyName);
   const AccEffectiveDate = useSelector((state) => state.accEffectiveDate);
@@ -76,7 +76,8 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
   const DocRefNo = useSelector((formData) => formData.docRefNo);
   const location = useLocation();
   const authFetch = useAuthFetch();
-  const isNewMode = location.state && location.state.isNew;
+  const isNewMode = (location.state && location.state.isNew) || fromOCR;
+  const [isOCRMode, setIsOCRMode] = React.useState(fromOCR || false);
   const [doctype, setDoctypeState] = React.useState("");
   const [formData, setFormData] = useState({
     // เก็บข้อมูลในฟอร์ม
@@ -322,6 +323,29 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
 
   }, [apiData, accDocNoFromUrl, isNewMode]); // เพิ่ม isNewMode ใน dependency array
 
+  // useEffect: ถ้ามาจาก OCR ให้ pre-fill form ด้วยข้อมูลที่ map ได้
+  React.useEffect(() => {
+    if (!fromOCR || !ocrData) return;
+    const shortYear = new Date().getFullYear().toString().slice(-2);
+    setFormData({
+      accDocType: ocrData.accDocType || 'PO',
+      accDocNo: `PO${shortYear}xx...`,              // ระบบสร้างให้อัตโนมัติ
+      accEffectiveDate: ocrData.accEffectiveDate || new Date().toISOString().slice(0, 10),
+      partyCode: 'DEF',
+      partyTaxCode: ocrData.partyTaxCode || '',
+      partyName: ocrData.partyName || '',
+      partyAddress: ocrData.partyAddress || '',
+      docRefNo: ocrData.accDocNo || ocrData.docRefNo || '', // เลขที่เอกสารจาก OCR
+      docStatus: 0,
+      accBatchDate: ocrData.accBatchDate || new Date().toISOString().slice(0, 10),
+      issueBy: ocrData.issueBy || localStorage.getItem('userName') || '',
+      accPostDate: new Date().toISOString().slice(0, 10), // วันปัจจุบันที่ทำข้อมูล
+      fiscalYear: new Date().toISOString().slice(0, 10),
+    });
+    setDoctypeState('PO');
+    setIsOCRMode(true);
+  }, [fromOCR, ocrData]);
+
   const goToNext = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, apiData.length - 1));
   };
@@ -509,12 +533,65 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
         }
       }
 
+      // ถ้ามาจาก OCR ให้บันทึก line items อัตโนมัติ
+      console.log("[OCR] fromOCR:", fromOCR, "| ocrLineItems count:", ocrLineItems?.length);
+      if (fromOCR && ocrLineItems && ocrLineItems.length > 0) {
+        const lineItemsPayload = ocrLineItems.map((item, idx) => ({
+          accDocNo: AccDocNo,
+          accItemNo: idx + 1,
+          accSourceDocNo: "",
+          accSourceDocItem: 0,
+          stockTransNo: 0,
+          qty: parseFloat(item.qty) || 1,
+          price: parseFloat(item.unitPrice) || 0,
+          unitMea: item.unit || "Unit",
+          currency: "THB",
+          exchangeRate: 1,
+          amount: parseFloat(item.amount) || (parseFloat(item.unitPrice || 0) * parseFloat(item.qty || 1)),
+          saleProductCode: "DEF",  // fallback ตามแบบ DraftOCRDIHD
+          salesDescription: item.description || "",
+          rateVat: 7,
+          rateWht: 1,
+          vatType: 1,
+        }));
+
+        console.log("[OCR] payload:", JSON.stringify(lineItemsPayload));
+
+        let savedCount = 0;
+        const failedItems = [];
+        for (const lineItem of lineItemsPayload) {
+          try {
+            const dtRes = await axios.post(
+              `${API_BASE}/AccTransaction/SetAccTransactionDT`,
+              [lineItem],
+              { headers: { "Content-Type": "application/json" } }
+            );
+            console.log(`[OCR] item ${lineItem.accItemNo}:`, dtRes.status, dtRes.data);
+            savedCount++;
+          } catch (dtErr) {
+            const errMsg = JSON.stringify(dtErr.response?.data?.errors || dtErr.message);
+            console.error(`[OCR] item ${lineItem.accItemNo} error:`, errMsg);
+            failedItems.push(`รายการ ${lineItem.accItemNo}: ${errMsg}`);
+          }
+        }
+
+        if (failedItems.length > 0) {
+          await Swal.fire({
+            icon: "warning",
+            title: `Header สำเร็จ — Detail บันทึก ${savedCount}/${lineItemsPayload.length} รายการ`,
+            text: failedItems.join('\n'),
+          });
+        } else {
+          console.log("[OCR] All", savedCount, "items saved OK");
+        }
+      }
+
       // แจ้งเตือนบันทึกข้อมูลสำเร็จของ Header เสมอ
       Swal.fire({
         icon: "success",
-        title: `บันทึกข้อมูลสำเร็จ PO:${AccDocNo}`,
+        title: `บันทึกข้อมูลสำเร็จ PO:${AccDocNo}${fromOCR && ocrLineItems?.length > 0 ? ` (${ocrLineItems.length} รายการจาก OCR)` : ""}`,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2500,
       });
 
       await fetchDataFromApi(doctype);
@@ -1257,8 +1334,36 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
 
   return (
     <div className="row" style={{ padding: "5%", paddingTop: "1px" }}>
-      {/* <h2 style={{ textAlign: "center",textDecorationLine:"underline" }} onClick={handleGoBack}>Purchase Order</h2> */}
-      {/* <div>&nbsp;</div> */}
+      {/* OCR Banner */}
+      {isOCRMode && (
+        <div style={{
+          background: 'linear-gradient(135deg, #1a1a2e, #16213e)',
+          border: '1px solid rgba(233,69,96,0.5)',
+          borderRadius: 8,
+          padding: '12px 16px',
+          marginBottom: 12,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          flexWrap: 'wrap',
+        }}>
+          <span style={{ fontSize: 22 }}>🤖</span>
+          <div style={{ flex: 1 }}>
+            <span style={{ color: '#e94560', fontWeight: 700, fontSize: '0.95rem' }}>
+              ข้อมูลจาก OCR — กรุณาตรวจสอบก่อนบันทึก
+            </span>
+            <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginTop: 2 }}>
+              ข้อมูลด้านล่างถูก pre-fill จากการอ่านเอกสารอัตโนมัติ อาจมีข้อผิดพลาด กรุณาตรวจสอบและแก้ไขก่อนกด Save
+            </div>
+          </div>
+          <button
+            onClick={() => setIsOCRMode(false)}
+            style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'rgba(255,255,255,0.5)', borderRadius: 6, padding: '4px 12px', cursor: 'pointer', fontSize: '0.8rem' }}
+          >
+            ปิด
+          </button>
+        </div>
+      )}
       <div style={{ justifyContent: "flex-end" }}>
         {/* <ButtonPO actions={buttonActions} /> */}
         {/* <ButtonAction actions={buttonActions} /> */} {/*สามขีด*/}
@@ -1574,7 +1679,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           style={{ width: "100%" }}
           InputProps={{
-            // readOnly: true,
+            readOnly: true,
             style: {
               backgroundColor: "#cdcdd1",
             }

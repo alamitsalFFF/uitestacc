@@ -25,8 +25,8 @@ export const GET_VIEW_RESULT = `${API_BASE}/View/GetViewResult/`;
 export const VIEW_RESULT = `/View/GetViewResult/`;
 export const StoredProcedures = `/StoredProcedures/GetResult/`;
 
-// export const REPORT_BASE = "http://103.225.168.137/chmt/accreport";//----------
-export const REPORT_BASE = "http://203.154.140.51/AccReport";//*******
+export const REPORT_BASE = "http://103.225.168.137/chmt/accreport";//----------
+// export const REPORT_BASE = "http://203.154.140.51/AccReport";//*******
 // export const REPORT_BASE = "http://203.150.142.56/AccReport"; //####### ทุกครั้งที่แก้เบสให้แก้ logo ด้วย
 export const BASE = "AccConcept";
 

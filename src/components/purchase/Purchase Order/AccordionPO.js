@@ -23,9 +23,15 @@ export default function AccordionPO() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const accDocNo = params.get("accDocNo");
+
+  // รับข้อมูลจาก OCR
+  const fromOCR = location.state?.fromOCR || false;
+  const ocrData = location.state?.ocrData || null;
+  const ocrLineItems = location.state?.lineItems || [];
+
   const [expandedPanels, setExpandedPanels] = useState({
     panel1: true,
-    panel2: false,
+    panel2: fromOCR && ocrLineItems.length > 0, // เปิด Detail panel อัตโนมัติถ้ามี lineItems จาก OCR
   });
   const [apiData, setApiData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -143,6 +149,9 @@ export default function AccordionPO() {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             setCurrentAccDocNo={setCurrentAccDocNo}
+            ocrData={ocrData}
+            fromOCR={fromOCR}
+            ocrLineItems={ocrLineItems}
           />
         </AccordionDetails>
       </Accordion>
@@ -170,6 +179,7 @@ export default function AccordionPO() {
           <AccordionPODT
             accDocNo={currentAccDocNo}
             onSaveSuccess={handleOpenHeaderPanel}
+            ocrLineItems={ocrLineItems}
           />
         </AccordionDetails>
       </Accordion>

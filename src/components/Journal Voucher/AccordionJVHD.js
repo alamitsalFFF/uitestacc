@@ -1032,7 +1032,7 @@ export default function AccordionJVHD({
       if (journalToUse !== currentAccDocNo) {
         setCurrentAccDocNo(journalToUse);
         // fetch เฉพาะตอน init จาก navigation
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        // eslint-disable-next-line
         fetchDataFromApi(journalToUse);
       }
       return;
@@ -1043,7 +1043,7 @@ export default function AccordionJVHD({
       lastNavSearchRef.current = location.search;
       if (journalToUse !== currentAccDocNo) {
         setCurrentAccDocNo(journalToUse);
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        // eslint-disable-next-line
         fetchDataFromApi(journalToUse);
       }
     }

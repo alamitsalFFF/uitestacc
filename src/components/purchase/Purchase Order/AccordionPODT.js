@@ -1,4 +1,4 @@
-﻿import { URL } from '../../api/url';
+import { URL } from '../../api/url';
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig.js";
 import { API_VIEW_RESULT } from "../../api/url.js";
@@ -55,7 +55,7 @@ import AccordionSelectProductPO from "./AccordionSelectProductPO.js";
 import AccordiionPOAddDT from "./AccordiionPOAddDT.js";
 import AccordionPOEditDT from "./AccordionPOEditDT.js";
 
-function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
+function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData, ocrLineItems = [] }) {
   const location = useLocation();
   const dispatch = useDispatch();
   // const accDocNo = useSelector((state) => state.accDocNo);
@@ -781,24 +781,12 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
         </ListItem>
       </div>
       {pod.map((product, index) => (
-        // <div key={product.productID}>
         <div key={index}>
-          <Divider
-            variant="middle"
-            component="li"
-            style={{ listStyle: "none" }}
-          />
+          <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
           <ListItem style={{ display: "flex", alignItems: "center" }}>
-            {/* <FontAwesomeIcon
-              icon={faBoxOpen}
-              size="2x"
-              style={{ color: "#2d01bd" }}
-            /> */}
             <div>
               <h5>
                 &nbsp; {index + 1}.&nbsp;
-                {/* <Abbreviation textName={product.ProductName} /> */}
-                {/* {product.ProductName} */}
                 {product.SalesDescription}
                 &nbsp;{" "}
                 {product.AccSourceDocNo && product.AccSourceDocItem ? (
@@ -815,15 +803,12 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
             </div>
             <div style={{ marginLeft: "auto" }}>
               <div style={{ display: "flex" }}>
-                {/* <h2>{formatNumber(product.TotalAmount)}</h2> */}
                 <h2>{formatNumber(product.Amount)}</h2>
                 &nbsp; &nbsp; &nbsp;
-                {/* <FontAwesomeIcon icon={faPlus} /> */}
                 <FontAwesomeIcon
                   icon={faChevronRight}
                   size="1x"
                   style={{ color: "#0310ce", paddingTop: "10px" }}
-                  // onClick={handleAddDetail}
                   onClick={() => handleEditDetail(product.AccItemNo)}
                 />
               </div>
@@ -831,6 +816,61 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
           </ListItem>
         </div>
       ))}
+
+      {/* OCR Preview Items — แสดงเมื่อยังไม่มีข้อมูลจาก API */}
+      {pod.length === 0 && ocrLineItems.length > 0 && (
+        <>
+          <div style={{
+            background: 'linear-gradient(135deg, #fff8e1, #fffde7)',
+            border: '1px solid #ffcc02',
+            borderRadius: 8,
+            padding: '8px 12px',
+            margin: '8px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <span style={{ fontSize: 18 }}>🤖</span>
+            <span style={{ color: '#b8860b', fontWeight: 600, fontSize: '0.85rem' }}>
+              รายการจาก OCR (Preview) — กด Save เพื่อบันทึกลงระบบ
+            </span>
+          </div>
+          {ocrLineItems.map((item, index) => {
+            const qty = parseFloat(item.qty) || 1;
+            const price = parseFloat(item.unitPrice) || 0;
+            const amount = parseFloat(item.amount) || (qty * price);
+            return (
+              <div key={`ocr-${index}`} style={{ background: '#fffdf0' }}>
+                <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
+                <ListItem style={{ display: "flex", alignItems: "center" }}>
+                  <div>
+                    <h5 style={{ color: '#555' }}>
+                      &nbsp; {index + 1}.&nbsp;
+                      {item.description || '(ไม่มีคำอธิบาย)'}
+                      &nbsp;
+                      <span style={{
+                        background: '#ffcc02', color: '#333',
+                        borderRadius: 4, padding: '1px 6px',
+                        fontSize: '0.7rem', fontWeight: 700,
+                      }}>OCR</span>
+                    </h5>
+                    <h6 style={{ color: '#888' }}>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      {formatNumber(price)} THB x {formatNumber(qty)} {item.unit || 'Unit'}
+                    </h6>
+                  </div>
+                  <div style={{ marginLeft: "auto" }}>
+                    <div style={{ display: "flex" }}>
+                      <h2 style={{ color: '#b8860b' }}>{formatNumber(amount)}</h2>
+                      &nbsp;&nbsp;&nbsp;
+                    </div>
+                  </div>
+                </ListItem>
+              </div>
+            );
+          })}
+        </>
+      )}
       {showEditDetailModal && itemToEdit && (
         <>
           <AccordionPOEditDT
@@ -967,11 +1007,11 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
               >
                 &nbsp; TotalVat VAT 7% &nbsp;
               </h5>
-              {/* <h5
+              <h5
                 style={{ marginTop: "5px", marginLeft: "10px", padding: "4px" }}
               >
                 &nbsp; TotalWht &nbsp;
-              </h5> */}
+              </h5>
               <h5
                 style={{ marginTop: "5px", marginLeft: "10px", padding: "6px" }}
               >
@@ -987,10 +1027,10 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData }) {
                 <h2>{formatNumber(productH.TotalVat)}</h2>
                 &nbsp; &nbsp; &nbsp;
               </div>
-              {/* <div style={{ display: "flex" }}>
+              <div style={{ display: "flex" }}>
                 <h2>{formatNumber(productH.TotalWht)}</h2>
                 &nbsp; &nbsp; &nbsp;
-              </div> */}
+              </div>
               <div style={{ display: "flex" }}>
                 <h2
                   // style={{ textDecoration: 'underline' }}

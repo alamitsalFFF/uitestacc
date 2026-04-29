@@ -309,6 +309,9 @@ function ListPOHD() {
     const OCR = `https://vision-pipeline.com/upload`;
     window.open(OCR, "_blank");
   };
+  const handleUploadOCRfromPO = async () => {
+    navigate(`${URL}OCR`);
+  };
   //--------------------------------------------------------
   const buttonActions = [
     {
@@ -317,6 +320,13 @@ function ListPOHD() {
       ),
       name: "Add New",
       onClick: handleAddNew, // เรียก handleAddNew โดยตรง
+    },
+    {
+      icon: (
+        <FontAwesomeIcon icon={faFileHalfDashed} style={{ color: "#22a311ff" }} size="1x" />
+      ),
+      name: "UploadOCRfromPO",
+      onClick: handleUploadOCRfromPO,
     },
     {
       icon: (
