@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Swal from "sweetalert2";
 import axios from "../Auth/axiosConfig";
 import { values } from "lodash";
@@ -87,6 +87,22 @@ export const PIToJournal = async (AccDocNo,navigate) => {
       ],
     };
     console.log("PIToJournal:",PIToJournal)
+
+    const isConfirm = await Swal.fire({
+      title: "ยืนยันการบันทึก",
+      text: "คุณต้องการบันทึกข้อมูลลง Journal หรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (!isConfirm.isConfirmed) {
+      return;
+    }
+
     const responsePIToJournal = await axios.post(
         StoredProcedures_Base,
         PIToJournal,
@@ -111,17 +127,17 @@ export const PIToJournal = async (AccDocNo,navigate) => {
         if (journalId) {
           Swal.fire({
             icon: "success",
-            title: `Created : ${journalId}`, // แสดง JournalID
+            title: `Created Journal No.: ${journalId}`, // แสดง JournalID
             showConfirmButton: false,
             timer: 3000,
           });
           setTimeout(() => {
-            navigate(`${URL}JVList/`);
+            navigate(`${URL}JournalEntries/`);
             }, 3000);
         } else {
           Swal.fire({
             icon: "warning",
-            title: `Created (Journal ID not found): ${journalId}`, // แจ้งเตือนถ้าไม่พบ JournalID
+            title: `Created Journal No.: ${journalId} (Journal ID not found)`, // แจ้งเตือนถ้าไม่พบ JournalID
             showConfirmButton: false,
             timer: 3000,
           });

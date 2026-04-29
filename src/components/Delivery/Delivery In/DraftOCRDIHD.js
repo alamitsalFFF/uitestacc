@@ -87,6 +87,12 @@ export default function DraftOCRDIHD({ apiData, setApiData, currentIndex,
         accBatchDate: ocrData.invoiceDate
           ? formatDateToInput(ocrData.invoiceDate)
           : prevFormData.accBatchDate,
+        accPostDate: ocrData.invoiceDate
+          ? formatDateToInput(ocrData.invoiceDate)
+          : prevFormData.accPostDate,
+        fiscalYear: ocrData.invoiceDate
+          ? formatDateToInput(ocrData.invoiceDate)
+          : prevFormData.fiscalYear,
       }));
 
       // 📝 เพิ่ม Logic เพื่อส่ง detailItems ไปยัง Detail Component ด้วย

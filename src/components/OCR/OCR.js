@@ -30,13 +30,14 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import HeaderBar from '../menu/HeaderBar';
 
 const STEPS = ['อัปโหลดเอกสาร', 'ประมวลผล OCR', 'ตรวจสอบ & นำเข้า'];
 
 const styles = {
   root: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+    background: 'linear-gradient(135deg, #e90b0b 0%, #8b0000 100%)', // Red theme matching login page
     padding: '24px 16px',
     fontFamily: 'Sarabun, Inter, sans-serif',
   },
@@ -45,45 +46,45 @@ const styles = {
     mb: 4,
   },
   card: {
-    background: 'rgba(255,255,255,0.05)',
+    background: 'rgba(255,255,255,0.1)',
     backdropFilter: 'blur(10px)',
-    border: '1px solid rgba(255,255,255,0.1)',
+    border: '1px solid rgba(255,255,255,0.2)',
     borderRadius: 3,
     p: 3,
     color: '#fff',
   },
   dropZone: (isDragging) => ({
-    border: `2px dashed ${isDragging ? '#e94560' : 'rgba(233,69,96,0.4)'}`,
+    border: `2px dashed ${isDragging ? '#fff' : 'rgba(255,255,255,0.4)'}`,
     borderRadius: 3,
     p: 6,
     textAlign: 'center',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    background: isDragging ? 'rgba(233,69,96,0.1)' : 'rgba(255,255,255,0.02)',
-    '&:hover': { background: 'rgba(233,69,96,0.07)', borderColor: '#e94560' },
+    background: isDragging ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)',
+    '&:hover': { background: 'rgba(255,255,255,0.15)', borderColor: '#fff' },
   }),
   primaryBtn: {
-    background: 'linear-gradient(135deg, #e94560, #c62a47)',
-    color: '#fff',
+    background: '#fff',
+    color: '#e90b0b',
     fontWeight: 700,
     px: 4,
     py: 1.5,
     borderRadius: 2,
-    '&:hover': { background: 'linear-gradient(135deg, #c62a47, #9e1f37)' },
+    '&:hover': { background: '#f0f0f0' },
   },
-  fieldLabel: { color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', mb: 0.5 },
+  fieldLabel: { color: 'rgba(255,255,255,0.8)', fontSize: '0.75rem', mb: 0.5 },
   fieldInput: {
     '& .MuiOutlinedInput-root': {
       color: '#fff',
-      '& fieldset': { borderColor: 'rgba(255,255,255,0.2)' },
-      '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.4)' },
-      '&.Mui-focused fieldset': { borderColor: '#e94560' },
+      '& fieldset': { borderColor: 'rgba(255,255,255,0.3)' },
+      '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
+      '&.Mui-focused fieldset': { borderColor: '#fff' },
     },
-    '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.6)' },
-    '& .MuiInputLabel-root.Mui-focused': { color: '#e94560' },
+    '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.8)' },
+    '& .MuiInputLabel-root.Mui-focused': { color: '#fff' },
   },
-  tableCell: { color: '#fff', borderColor: 'rgba(255,255,255,0.1)', fontSize: '0.8rem' },
-  tableHeadCell: { color: '#e94560', borderColor: 'rgba(255,255,255,0.1)', fontWeight: 700, fontSize: '0.8rem' },
+  tableCell: { color: '#fff', borderColor: 'rgba(255,255,255,0.2)', fontSize: '0.8rem' },
+  tableHeadCell: { color: '#fff', borderColor: 'rgba(255,255,255,0.2)', fontWeight: 700, fontSize: '0.8rem' },
 };
 
 async function pdfToImages(file) {
@@ -228,7 +229,7 @@ export default function OCR() {
     });
   };
 
-  const handleImportToPO = () => {
+  const handleImportToPO = () => { 
     if (!mapped) return;
     navigate(`${URL}AccordionPO`, {
       state: {
@@ -251,9 +252,10 @@ export default function OCR() {
 
   return (
     <Box sx={styles.root}>
+      <HeaderBar />
       {/* Header */}
       <Box sx={styles.header}>
-        <DocumentScannerIcon sx={{ fontSize: 48, color: '#e94560', mb: 1 }} />
+        <DocumentScannerIcon sx={{ fontSize: 48, color: '#fff', mb: 1 }} />
         <Typography variant="h4" sx={{ color: '#fff', fontWeight: 800, letterSpacing: 1 }}>
           OCR Document Reader
         </Typography>
@@ -270,9 +272,13 @@ export default function OCR() {
               <StepLabel
                 StepIconProps={{
                   sx: {
-                    color: i <= activeStep ? '#e94560 !important' : 'rgba(255,255,255,0.2) !important',
-                    '&.Mui-active': { color: '#e94560 !important' },
+                    color: i <= activeStep ? '#fff !important' : 'rgba(255,255,255,0.2) !important',
+                    '&.Mui-active': { color: '#fff !important' },
                     '&.Mui-completed': { color: '#4ade80 !important' },
+                    '& .MuiStepIcon-text': {
+                      fill: i <= activeStep ? '#e90b0b' : '#fff',
+                      fontWeight: 'bold',
+                    },
                   },
                 }}
               >
@@ -303,7 +309,7 @@ export default function OCR() {
               onClick={() => fileInputRef.current?.click()}
             >
               <input ref={fileInputRef} type="file" accept=".pdf,.png,.jpg,.jpeg" hidden onChange={onFileChange} />
-              <CloudUploadIcon sx={{ fontSize: 56, color: '#e94560', mb: 2 }} />
+              <CloudUploadIcon sx={{ fontSize: 56, color: '#fff', mb: 2 }} />
               <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
                 ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์
               </Typography>
@@ -314,7 +320,7 @@ export default function OCR() {
                 {['PDF', 'PNG', 'JPG'].map((t) => (
                   <Chip key={t} label={t} size="small"
                     icon={t === 'PDF' ? <PictureAsPdfIcon /> : <ImageIcon />}
-                    sx={{ color: '#e94560', borderColor: '#e94560', bgcolor: 'transparent' }} variant="outlined" />
+                    sx={{ color: '#fff', borderColor: '#fff', bgcolor: 'transparent' }} variant="outlined" />
                 ))}
               </Box>
             </Box>
@@ -323,7 +329,7 @@ export default function OCR() {
               <Box sx={{ mt: 3 }}>
                 <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)', mb: 2 }} />
                 <Typography sx={{ color: 'rgba(255,255,255,0.7)', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  {file.type === 'application/pdf' ? <PictureAsPdfIcon sx={{ color: '#e94560' }} /> : <ImageIcon sx={{ color: '#e94560' }} />}
+                  {file.type === 'application/pdf' ? <PictureAsPdfIcon sx={{ color: '#fff' }} /> : <ImageIcon sx={{ color: '#fff' }} />}
                   {file.name} ({previewUrls.length} หน้า)
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 1 }}>
@@ -356,7 +362,7 @@ export default function OCR() {
         {activeStep === 1 && (
           <Paper sx={styles.card}>
             <Box sx={{ textAlign: 'center', py: 4 }}>
-              <DocumentScannerIcon sx={{ fontSize: 64, color: '#e94560', mb: 2,
+              <DocumentScannerIcon sx={{ fontSize: 64, color: '#fff', mb: 2,
                 animation: 'pulse 1.5s infinite', '@keyframes pulse': { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.4 } } }} />
               <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
                 กำลังประมวลผล OCR...
@@ -365,9 +371,9 @@ export default function OCR() {
               <Box sx={{ maxWidth: 500, mx: 'auto', mb: 2 }}>
                 <LinearProgress variant="determinate" value={progress}
                   sx={{ height: 10, borderRadius: 5,
-                    '& .MuiLinearProgress-bar': { background: 'linear-gradient(90deg, #e94560, #f7797d)' },
+                    '& .MuiLinearProgress-bar': { background: 'linear-gradient(90deg, #fff, #ffcccc)' },
                     bgcolor: 'rgba(255,255,255,0.1)' }} />
-                <Typography sx={{ color: '#e94560', mt: 1, fontWeight: 700 }}>{progress}%</Typography>
+                <Typography sx={{ color: '#fff', mt: 1, fontWeight: 700 }}>{progress}%</Typography>
               </Box>
               <Typography sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>
                 กรุณารอสักครู่ — ขึ้นอยู่กับขนาดและจำนวนหน้าของเอกสาร
@@ -395,7 +401,7 @@ export default function OCR() {
               {/* Raw text */}
               <Grid item xs={12} md={5}>
                 <Paper sx={{ ...styles.card, height: '100%' }}>
-                  <Typography sx={{ color: '#e94560', fontWeight: 700, mb: 2 }}>📄 ข้อความดิบจาก OCR</Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 700, mb: 2 }}>📄 ข้อความดิบจาก OCR</Typography>
                   <Box sx={{ background: 'rgba(0,0,0,0.3)', borderRadius: 2, p: 2, maxHeight: 500, overflowY: 'auto' }}>
                     <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem', whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
                       {rawText}
@@ -407,7 +413,7 @@ export default function OCR() {
               {/* Mapped fields */}
               <Grid item xs={12} md={7}>
                 <Paper sx={styles.card}>
-                  <Typography sx={{ color: '#e94560', fontWeight: 700, mb: 2 }}>🗂️ ข้อมูลที่ Map ได้</Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 700, mb: 2 }}>🗂️ ข้อมูลที่ Map ได้</Typography>
 
                   <Grid container spacing={2}>
                     {[
@@ -432,7 +438,7 @@ export default function OCR() {
 
                   <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)', my: 2 }} />
 
-                  <Typography sx={{ color: '#e94560', fontWeight: 700, mb: 1 }}>💰 สรุปยอดเงิน</Typography>
+                  <Typography sx={{ color: '#fff', fontWeight: 700, mb: 1 }}>💰 สรุปยอดเงิน</Typography>
                   <Grid container spacing={2}>
                     {[
                       { key: 'totalAmount', label: 'รวมเงิน (บาท)' },

@@ -52,6 +52,7 @@ import { DIfromPO } from "./DIfromPO";
 import { PVfromPO } from "./PVFromPO";
 import { PIfromPO } from "./PIFromPO";
 import { PCfromPO } from "./PCFromPO";
+import { PVfromPOFull } from "./PVFromPOFull";
 import Swal from "sweetalert2";
 // import ButtonPO from "./ButtonPO";
 import ButtonAction from "../../DataFilters/ButtonAction";
@@ -131,6 +132,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
   const [docType, setDocType] = useState("");
   const [webAddressDI, setWebAddressDI] = useState("");
   const [webAddressPC, setWebAddressPC] = useState("");
+  const [webAddressPV, setWebAddressPV] = useState("");
 
   useEffect(() => {
     const fetchCategoryOptions = async () => {
@@ -174,6 +176,18 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           const data = await responsePC.json();
           if (data && data.length > 0) {
             setWebAddressPC(data[0].webAddress);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching WebAddress:", error);
+      }
+      try {
+        const WebAddressAPIPV = `${API_BASE}/Module/GetModuleMenu?MenuID=PV`;
+        const responsePV = await authFetch(WebAddressAPIPV);
+        if (responsePV.ok) {
+          const data = await responsePV.json();
+          if (data && data.length > 0) {
+            setWebAddressPV(data[0].webAddress);
           }
         }
       } catch (error) {
@@ -339,8 +353,8 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
       docStatus: 0,
       accBatchDate: ocrData.accBatchDate || new Date().toISOString().slice(0, 10),
       issueBy: ocrData.issueBy || localStorage.getItem('userName') || '',
-      accPostDate: new Date().toISOString().slice(0, 10), // วันปัจจุบันที่ทำข้อมูล
-      fiscalYear: new Date().toISOString().slice(0, 10),
+      accPostDate: ocrData.accBatchDate || new Date().toISOString().slice(0, 10), // วันที่เอกสารที่มาจากOCR ให้AccPostDate เป็นวันเดียวกับ accBatchDate
+      fiscalYear: ocrData.accBatchDate || new Date().toISOString().slice(0, 10), // วันที่เอกสารที่มาจากOCR ให้FiscalYear เป็นวันเดียวกับ accBatchDate
     });
     setDoctypeState('PO');
     setIsOCRMode(true);
@@ -1048,6 +1062,145 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
       });
     }
   };
+  //---------------------------------------
+   const handlePV = async (AccDocNoC) => {
+    // show Swal with bank account (required), bank name (optional) and transtype select (TR/CQ)
+    try {
+      const prefillBankName = (bankName || "").replace(/"/g, "&quot;");
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: "ข้อมูลสำหรับสร้าง PV",
+        width: '600px',
+        html:
+          `<div style="display: grid; grid-template-columns: 140px 1fr; gap: 15px; text-align: right; align-items: center; padding-right: 20px;">` +
+
+          `<label for="swal-taxno" style="font-weight: bold;">DocRef No:</label>` +
+          `<input id="swal-taxno" class="swal2-input" placeholder="เลขใบเสร็จ/ถ้าไม่มีใส่เลขใบหัก/หรือบัตรประชาชน" style="margin: 0; width: 100%;">` +
+
+          `<label for="swal-docdate" style="font-weight: bold;">Due Date:</label>` +
+          `<input id="swal-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin: 0; width: 100%;">` +
+
+          `<label for="swal-tranno" style="font-weight: bold;">Tran No:</label>` +
+          `<input id="swal-tranno" class="swal2-input" placeholder="เลขสลิป หรือ เลขอ้างอิง" style="margin: 0; width: 100%;">` +
+
+          // `<label for="swal-bankname" style="font-weight: bold;">Bank Name:</label>` +
+          // `<input id="swal-bankname" class="swal2-input" placeholder="Bank Name" value="${prefillBankName}" style="margin: 0; width: 100%;">` +
+
+          // `<label for="swal-rcpno" style="font-weight: bold;">Receipt No:</label>` +
+          // `<input id="swal-rcpno" class="swal2-input" placeholder="เลขใบเสร็จ/ใบกำกับ" style="margin: 0; width: 100%;">` +
+
+          `<label for="swal-transtype" style="font-weight: bold;">Type:</label>` +
+          `<select id="swal-transtype" class="swal2-select" style="margin: 0; width: 100%;">` +
+          `<option value="TR">TR - Transfer</option>` +
+          `<option value="CA">CA - Cash</option>` +
+          `</select>` +
+
+          `<label for="swal-trandatail" style="font-weight: bold;">Tran Detail:</label>` +
+          `<input id="swal-trandatail" class="swal2-input" placeholder="เลขใบเสร็จ/ใบหัก/บัตรประชาชน" style="margin: 0; width: 100%;">` +
+
+          `<label for="swal-acccode" style="font-weight: bold;">Acc Code (Cash):</label>` +
+          `<input id="swal-acccode" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่จ่าย" style="margin: 0; width: 100%;">` +
+
+          `<label for="swal-accdebit" style="font-weight: bold;">Acc Debit:</label>` +
+          `<input id="swal-accdebit" class="swal2-input" placeholder="รหัสบัญชีค่าใช้จ่าย/รายได้" style="margin: 0; width: 100%;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+          const taxno = document.getElementById("swal-taxno")?.value?.trim();
+          const tranno = document.getElementById("swal-tranno")?.value?.trim();
+          // const bankname = document.getElementById("swal-bankname")?.value?.trim() || "";
+          const transtype = document.getElementById("swal-transtype")?.value || "TR";
+          // const rcpno = document.getElementById("swal-rcpno")?.value?.trim();
+          const docdate = document.getElementById("swal-docdate")?.value;
+          const trandatail = document.getElementById("swal-trandatail")?.value?.trim() || "";
+          const acccode = document.getElementById("swal-acccode")?.value?.trim() || "";
+          const accdebit = document.getElementById("swal-accdebit")?.value?.trim() || "";
+
+          if (!tranno) {
+            Swal.showValidationMessage("กรุณากรอกเลขที่บัญชี!");
+            return false;
+          }
+          if (!docdate) {
+            Swal.showValidationMessage("กรุณาระบุ Due Date");
+            return false;
+          }
+          if (!["TR", "CA"].includes(transtype)) {
+            Swal.showValidationMessage("Invalid transtype selected");
+            return false;
+          }
+          return { taxno, tranno, transtype, docdate, trandatail, acccode, accdebit };
+        },
+      });
+
+      if (!formValues) return; // user cancelled
+
+      const { taxno, tranno, transtype, docdate, trandatail, acccode, accdebit } = formValues;
+      // persist bankName for UI reuse
+      // setBankName(bankname || "");
+
+      // call PC creation with transtype
+      try {
+        const resp = await PVfromPOFull(
+          AccDocNoC,
+          tranno,
+          transtype,
+          taxno,
+          docdate,
+          trandatail,
+          acccode,
+          accdebit,
+          webAddressPV,
+          navigate
+        );
+        console.log("PVfromPOFull response:", resp);
+        // accept several shapes returned by PCfromPI
+        const pvNo =
+          resp?.data?.PVNo ??
+          resp?.data?.PVNoString ??
+          resp?.data?.AccDocNoC ??
+          resp?.PVNo ??
+          resp?.data?.data?.PVNo ??
+          resp?.data?.data?.AccDocNo ??
+          null;
+
+        if (!pvNo) {
+          console.warn("PV created but PVNo not found in response:", resp);
+          Swal.fire({
+            icon: "success",
+            title: "สร้าง PV สำเร็จ",
+            text: "ระบบบันทึกแล้ว แต่ไม่พบหมายเลข PV ในผลตอบกลับ โปรดตรวจสอบรายการ",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        } else {
+          console.log("Created PV No:", pvNo);
+          Swal.fire({
+            icon: "success",
+            title: `Created PV: ${pvNo}`,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          // navigation / refresh handled by caller ifต้องการ
+        }
+      } catch (err) {
+        console.error("Error creating PV Header:", err);
+        Swal.fire({
+          icon: "error",
+          title: "สร้าง PV ไม่สำเร็จ",
+          text: err.message || "Unknown error from PVfromPI",
+        });
+      }
+    } catch (err) {
+      console.error("handlePV error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด",
+        text: err.message || "",
+      });
+    }
+  };
   // --------------------------------------
   const handlePrint = async () => {
     // const PR = "PR"; // กำหนดค่า PR ให้ถูกต้อง
@@ -1162,6 +1315,22 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           // name: "PIPV",
           name: "Payment Voucher(ซื้อสด/จ่ายชำระเงิน)",
           onClick: () => handlePIPV(AccDocNoC, DocRefNo, navigate),
+        },
+        { //PVfromPOFull
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
+              {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#8a8888ff" }} /> */}
+              <FontAwesomeIcon
+                icon={faTicket}
+                size="1x"
+                style={{ color: "#963407ff" }}
+              />
+            </div>
+          ),
+          // name: "PIPV",
+          name: "Payment Voucher New(ซื้อสด/จ่ายชำระเงิน)",
+          onClick: () => handlePV(AccDocNoC),
         },
         // ส่วนของ PI (ซื้อเชื่อ/รับวางบิล)
         {
