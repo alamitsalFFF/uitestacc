@@ -1063,7 +1063,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
     }
   };
   //---------------------------------------
-   const handlePV = async (AccDocNoC) => {
+  const handlePV = async (AccDocNoC) => {
     // show Swal with bank account (required), bank name (optional) and transtype select (TR/CQ)
     try {
       const prefillBankName = (bankName || "").replace(/"/g, "&quot;");
@@ -1316,22 +1316,23 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           name: "Payment Voucher(ซื้อสด/จ่ายชำระเงิน)",
           onClick: () => handlePIPV(AccDocNoC, DocRefNo, navigate),
         },
-        { //PVfromPOFull
-          icon: (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
-              {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#8a8888ff" }} /> */}
-              <FontAwesomeIcon
-                icon={faTicket}
-                size="1x"
-                style={{ color: "#963407ff" }}
-              />
-            </div>
-          ),
-          // name: "PIPV",
-          name: "Payment Voucher New(ซื้อสด/จ่ายชำระเงิน)",
-          onClick: () => handlePV(AccDocNoC),
-        },
+        // { //PVfromPOFull
+        //   icon: (
+        //     <div style={{ display: "flex", alignItems: "center" }}>
+        //       {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
+        //       {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#8a8888ff" }} /> */}
+        //       <FontAwesomeIcon
+        //         icon={faTicket}
+        //         size="1x"
+        //         style={{ color: "#963407ff" }}
+        //       />
+        //     </div>
+        //   ),
+        //   // name: "PIPV",
+        //   name: "Payment Voucher New(ซื้อสด/จ่ายชำระเงิน)",
+        //   onClick: () => handlePV(AccDocNoC),
+        // },
+
         // ส่วนของ PI (ซื้อเชื่อ/รับวางบิล)
         {
           icon: (

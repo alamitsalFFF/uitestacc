@@ -3,7 +3,7 @@ export const Acctest = "http://103.225.168.137/apiaccbk/api";
 export const Acctest2 = "http://103.225.168.137/apiaccbk2/api"; //***********/
 export const AcctestMNL = "http://203.150.142.56/AccAPI/api"; //##########
 export const AcctestCHMT = "http://103.225.168.137/accapichmt/api"; //-----------
-export const AcctestCHMT2 = "http://103.225.168.137/accapichmt2/api"; //\\
+export const AcctestCHMT2 = "http://103.225.168.137/accapichmt/api"; //\\
 export const DATA_BASE = localStorage.getItem("src"); //SRC preview report
 
 // export const Base = `Acctest2`;
