@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -58,7 +58,7 @@ import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
 import { CancelPR } from "../CancelPR";
 
-export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
+export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo, ocrData, fromOCR, ocrLineItems }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
   const PartyName = useSelector((state) => state.partyName);
   const AccEffectiveDate = useSelector((state) => state.accEffectiveDate);
@@ -69,7 +69,8 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
   // const useAuth = useAuthFetch();
   const authFetch = useAuthFetch();
   const location = useLocation();
-  const isNewMode = location.state && location.state.isNew;
+  const isNewMode = (location.state && location.state.isNew) || fromOCR;
+  const [isOCRMode, setIsOCRMode] = React.useState(fromOCR || false);
   const [doctype, setDoctype] = React.useState("");
   const [formData, setFormData] = useState({
     // เก็บข้อมูลในฟอร์ม
@@ -310,6 +311,29 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
     // การตั้งค่าเริ่มต้นจะถูกจัดการใน fetchDataFromApi แล้ว
   }, [apiData, accDocNoFromUrl, isNewMode]); // เพิ่ม isNewMode ใน dependency array
 
+  // useEffect: ถ้ามาจาก OCR ให้ pre-fill form ด้วยข้อมูลที่ map ได้
+  React.useEffect(() => {
+    if (!fromOCR || !ocrData) return;
+    const shortYear = new Date().getFullYear().toString().slice(-2);
+    setFormData({
+      accDocType: ocrData.accDocType || 'PR',
+      accDocNo: `PR${shortYear}xx...`,              // ระบบสร้างให้อัตโนมัติ
+      accEffectiveDate: ocrData.accEffectiveDate || new Date().toISOString().slice(0, 10),
+      partyCode: 'DEF',
+      partyTaxCode: ocrData.partyTaxCode || '',
+      partyName: ocrData.partyName || '',
+      partyAddress: ocrData.partyAddress || '',
+      docRefNo: ocrData.accDocNo || ocrData.docRefNo || '', // เลขที่เอกสารจาก OCR
+      docStatus: 0,
+      accBatchDate: ocrData.accBatchDate || new Date().toISOString().slice(0, 10),
+      issueBy: ocrData.issueBy || localStorage.getItem('userName') || '',
+      accPostDate: ocrData.accBatchDate || new Date().toISOString().slice(0, 10), // วันที่เอกสารที่มาจากOCR ให้AccPostDate เป็นวันเดียวกับ accBatchDate
+      fiscalYear: ocrData.accBatchDate || new Date().toISOString().slice(0, 10), // วันที่เอกสารที่มาจากOCR ให้FiscalYear เป็นวันเดียวกับ accBatchDate
+    });
+    setDoctype('PR');
+    setIsOCRMode(true);
+  }, [fromOCR, ocrData]);
+
   // const goToNext = () => {
   //   setCurrentIndex((prev) => {
   //     const next = Math.min(prev + 1, apiData.length - 1);
@@ -402,10 +426,63 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         const partyName = formData.partyName;
         const partyAddress = formData.partyAddress;
 
+        // ถ้ามาจาก OCR ให้บันทึก line items อัตโนมัติ
+        console.log("[OCR] fromOCR:", fromOCR, "| ocrLineItems count:", ocrLineItems?.length);
+        if (fromOCR && ocrLineItems && ocrLineItems.length > 0) {
+          const lineItemsPayload = ocrLineItems.map((item, idx) => ({
+            accDocNo: AccDocNo,
+            accItemNo: idx + 1,
+            accSourceDocNo: "",
+            accSourceDocItem: 0,
+            stockTransNo: 0,
+            qty: parseFloat(item.qty) || 1,
+            price: parseFloat(item.unitPrice) || 0,
+            unitMea: item.unit || "Unit",
+            currency: "THB",
+            exchangeRate: 1,
+            amount: parseFloat(item.amount) || (parseFloat(item.unitPrice || 0) * parseFloat(item.qty || 1)),
+            saleProductCode: "DEF",  // fallback ตามแบบ DraftOCRDIHD
+            salesDescription: item.description || "",
+            rateVat: 7,
+            rateWht: 1,
+            vatType: 1,
+          }));
+
+          console.log("[OCR] payload:", JSON.stringify(lineItemsPayload));
+
+          let savedCount = 0;
+          const failedItems = [];
+          for (const lineItem of lineItemsPayload) {
+            try {
+              const dtRes = await axios.post(
+                `${API_BASE}/AccTransaction/SetAccTransactionDT`,
+                [lineItem],
+                { headers: { "Content-Type": "application/json" } }
+              );
+              console.log(`[OCR] item ${lineItem.accItemNo}:`, dtRes.status, dtRes.data);
+              savedCount++;
+            } catch (dtErr) {
+              const errMsg = JSON.stringify(dtErr.response?.data?.errors || dtErr.message);
+              console.error(`[OCR] item ${lineItem.accItemNo} error:`, errMsg);
+              failedItems.push(`รายการ ${lineItem.accItemNo}: ${errMsg}`);
+            }
+          }
+
+          if (failedItems.length > 0) {
+            await Swal.fire({
+              icon: "warning",
+              title: `Header สำเร็จ — Detail บันทึก ${savedCount}/${lineItemsPayload.length} รายการ`,
+              text: failedItems.join('\n'),
+            });
+          } else {
+            console.log("[OCR] All", savedCount, "items saved OK");
+          }
+        }
+
         // แจ้งเตือนบันทึกข้อมูลสำเร็จของ Header เสมอ
         Swal.fire({
           icon: "success",
-          title: `บันทึกข้อมูลสำเร็จ PR:${AccDocNo}`,
+          title: `บันทึกข้อมูลสำเร็จ PR:${AccDocNo}${fromOCR && ocrLineItems?.length > 0 ? ` (${ocrLineItems.length} รายการจาก OCR)` : ""}`,
           showConfirmButton: false,
           timer: 2000,
         });

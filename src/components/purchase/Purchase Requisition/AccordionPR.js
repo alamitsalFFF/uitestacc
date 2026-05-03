@@ -25,9 +25,15 @@ export default function AccordionPR() {
   const authFetch = useAuthFetch();
   const params = new URLSearchParams(location.search);
   const accDocNo = params.get("accDocNo");
+
+  // รับข้อมูลจาก OCR
+  const fromOCR = location.state?.fromOCR || false;
+  const ocrData = location.state?.ocrData || null;
+  const ocrLineItems = location.state?.lineItems || [];
+
   const [expandedPanels, setExpandedPanels] = useState({
     panel1: true,
-    panel2: false,
+    panel2: fromOCR && ocrLineItems.length > 0, // เปิด Detail panel อัตโนมัติถ้ามี lineItems จาก OCR
   }); // panel1 = Header, panel2 = Detail
   const [currentAccDocNo, setCurrentAccDocNo] = useState(""); // initialAccDocNo มาจาก URL หรือ Redux
   const [apiData, setApiData] = useState([]); // ข้อมูลทั้งหมด
@@ -154,6 +160,9 @@ export default function AccordionPR() {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             setCurrentAccDocNo={setCurrentAccDocNo}
+            ocrData={ocrData}
+            fromOCR={fromOCR}
+            ocrLineItems={ocrLineItems}
           />
         </AccordionDetails>
       </Accordion>
@@ -179,7 +188,9 @@ export default function AccordionPR() {
         <AccordionDetails>
           <PRDTAU
             accDocNo={currentAccDocNo}
-            onSaveSuccess={handleOpenHeaderPanel} />
+            onSaveSuccess={handleOpenHeaderPanel} 
+            ocrLineItems={ocrLineItems}
+          />
         </AccordionDetails>
       </Accordion>
 

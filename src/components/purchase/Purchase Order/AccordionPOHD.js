@@ -1064,7 +1064,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
   };
   //---------------------------------------
   const handlePV = async (AccDocNoC) => {
-    // show Swal with bank account (required), bank name (optional) and transtype select (TR/CQ)
+    // show Swal with bank account (required), bank name (optional) and trantype select (TR/CQ)
     try {
       const prefillBankName = (bankName || "").replace(/"/g, "&quot;");
       const currentDate = new Date().toISOString().split('T')[0];
@@ -1089,20 +1089,23 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           // `<label for="swal-rcpno" style="font-weight: bold;">Receipt No:</label>` +
           // `<input id="swal-rcpno" class="swal2-input" placeholder="เลขใบเสร็จ/ใบกำกับ" style="margin: 0; width: 100%;">` +
 
-          `<label for="swal-transtype" style="font-weight: bold;">Type:</label>` +
-          `<select id="swal-transtype" class="swal2-select" style="margin: 0; width: 100%;">` +
+          `<label for="swal-trantype" style="font-weight: bold;">Type:</label>` +
+          `<select id="swal-trantype" class="swal2-select" style="margin: 0; width: 100%;">` +
           `<option value="TR">TR - Transfer</option>` +
           `<option value="CA">CA - Cash</option>` +
           `</select>` +
 
           `<label for="swal-trandatail" style="font-weight: bold;">Tran Detail:</label>` +
-          `<input id="swal-trandatail" class="swal2-input" placeholder="เลขใบเสร็จ/ใบหัก/บัตรประชาชน" style="margin: 0; width: 100%;">` +
+          `<input id="swal-trandatail" class="swal2-input" placeholder="วันเวลาที่จ่าย หรือ บันทึกอื่นๆ" style="margin: 0; width: 100%;">` +
 
           `<label for="swal-acccode" style="font-weight: bold;">Acc Code (Cash):</label>` +
           `<input id="swal-acccode" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่จ่าย" style="margin: 0; width: 100%;">` +
 
           `<label for="swal-accdebit" style="font-weight: bold;">Acc Debit:</label>` +
           `<input id="swal-accdebit" class="swal2-input" placeholder="รหัสบัญชีค่าใช้จ่าย/รายได้" style="margin: 0; width: 100%;">` +
+
+          `<label for="swal-pvno" style="font-weight: bold;">PV No:</label>` +
+          `<input id="swal-pvno" class="swal2-input" placeholder="PV No.(กรณีต้องการ ChoosePO ไปยังPVใบเดิม)" style="margin: 0; width: 100%;">` +
 
           `</div>`,
         focusConfirm: false,
@@ -1111,12 +1114,13 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           const taxno = document.getElementById("swal-taxno")?.value?.trim();
           const tranno = document.getElementById("swal-tranno")?.value?.trim();
           // const bankname = document.getElementById("swal-bankname")?.value?.trim() || "";
-          const transtype = document.getElementById("swal-transtype")?.value || "TR";
+          const trantype = document.getElementById("swal-trantype")?.value || "TR";
           // const rcpno = document.getElementById("swal-rcpno")?.value?.trim();
           const docdate = document.getElementById("swal-docdate")?.value;
           const trandatail = document.getElementById("swal-trandatail")?.value?.trim() || "";
           const acccode = document.getElementById("swal-acccode")?.value?.trim() || "";
           const accdebit = document.getElementById("swal-accdebit")?.value?.trim() || "";
+          const pvno = document.getElementById("swal-pvno")?.value?.trim() || "";
 
           if (!tranno) {
             Swal.showValidationMessage("กรุณากรอกเลขที่บัญชี!");
@@ -1126,43 +1130,38 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             Swal.showValidationMessage("กรุณาระบุ Due Date");
             return false;
           }
-          if (!["TR", "CA"].includes(transtype)) {
-            Swal.showValidationMessage("Invalid transtype selected");
+          if (!["TR", "CA"].includes(trantype)) {
+            Swal.showValidationMessage("Invalid trantype selected");
             return false;
           }
-          return { taxno, tranno, transtype, docdate, trandatail, acccode, accdebit };
+          return { taxno, tranno, trantype, docdate, trandatail, acccode, accdebit, pvno };
         },
       });
 
       if (!formValues) return; // user cancelled
 
-      const { taxno, tranno, transtype, docdate, trandatail, acccode, accdebit } = formValues;
+      const { taxno, tranno, trantype, docdate, trandatail, acccode, accdebit, pvno } = formValues;
       // persist bankName for UI reuse
       // setBankName(bankname || "");
 
-      // call PC creation with transtype
+      // call PC creation with trantype
       try {
         const resp = await PVfromPOFull(
           AccDocNoC,
           tranno,
-          transtype,
+          trantype,
           taxno,
           docdate,
           trandatail,
           acccode,
           accdebit,
           webAddressPV,
-          navigate
+          navigate,
+          pvno
         );
         console.log("PVfromPOFull response:", resp);
-        // accept several shapes returned by PCfromPI
         const pvNo =
-          resp?.data?.PVNo ??
-          resp?.data?.PVNoString ??
-          resp?.data?.AccDocNoC ??
-          resp?.PVNo ??
-          resp?.data?.data?.PVNo ??
-          resp?.data?.data?.AccDocNo ??
+          resp?.data?.pvAccDocNo ??
           null;
 
         if (!pvNo) {
@@ -1316,22 +1315,22 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           name: "Payment Voucher(ซื้อสด/จ่ายชำระเงิน)",
           onClick: () => handlePIPV(AccDocNoC, DocRefNo, navigate),
         },
-        // { //PVfromPOFull
-        //   icon: (
-        //     <div style={{ display: "flex", alignItems: "center" }}>
-        //       {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
-        //       {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#8a8888ff" }} /> */}
-        //       <FontAwesomeIcon
-        //         icon={faTicket}
-        //         size="1x"
-        //         style={{ color: "#963407ff" }}
-        //       />
-        //     </div>
-        //   ),
-        //   // name: "PIPV",
-        //   name: "Payment Voucher New(ซื้อสด/จ่ายชำระเงิน)",
-        //   onClick: () => handlePV(AccDocNoC),
-        // },
+        { //PVfromPOFull
+          icon: (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* <FontAwesomeIcon icon={faP} size="2xs" style={{ color: "#f94f01" }} /> */}
+              {/* <FontAwesomeIcon icon={faV} size="2xs" style={{ color: "#8a8888ff" }} /> */}
+              <FontAwesomeIcon
+                icon={faTicket}
+                size="1x"
+                style={{ color: "#963407ff" }}
+              />
+            </div>
+          ),
+          // name: "PIPV",
+          name: "Payment Voucher(ซื้อสด/จ่ายชำระเงิน)(ไม่ทำPI)",
+          onClick: () => handlePV(AccDocNoC),
+        },
 
         // ส่วนของ PI (ซื้อเชื่อ/รับวางบิล)
         {

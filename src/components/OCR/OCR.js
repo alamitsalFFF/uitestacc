@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import Tesseract from 'tesseract.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { URL } from '../api/url';
 import { parseOCRTextForPO, formatDateForForm } from './OCRFieldMapper';
 import Box from '@mui/material/Box';
@@ -107,6 +107,8 @@ async function pdfToImages(file) {
 
 export default function OCR() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const accDocType = location.state?.accDocType || 'PO';
   const fileInputRef = useRef(null);
   const [activeStep, setActiveStep] = useState(0);
   const [file, setFile] = useState(null);
@@ -231,11 +233,14 @@ export default function OCR() {
 
   const handleImportToPO = () => { 
     if (!mapped) return;
-    navigate(`${URL}AccordionPO`, {
+    
+    const accordionPage = accDocType === 'PR' ? `${URL}AccordionPR` : `${URL}AccordionPO`;
+
+    navigate(accordionPage, {
       state: {
         fromOCR: true,
         ocrData: {
-          accDocType: 'PO',
+          accDocType: accDocType,
           accDocNo: mapped.accDocNo,
           accBatchDate: mapped.accEffectiveDate,   // วันที่เอกสาร (date[0])
           accEffectiveDate: mapped.dueDate || mapped.accEffectiveDate, // ครบกำหนด (date[1])
@@ -521,7 +526,7 @@ export default function OCR() {
 
                   <Box sx={{ mt: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                     <Button variant="contained" startIcon={<SendIcon />} sx={styles.primaryBtn} onClick={handleImportToPO}>
-                      นำเข้าสู่ฟอร์ม PO
+                      นำเข้าสู่ฟอร์ม
                     </Button>
                     <Button variant="outlined" startIcon={<RestartAltIcon />}
                       sx={{ color: 'rgba(255,255,255,0.6)', borderColor: 'rgba(255,255,255,0.2)' }}

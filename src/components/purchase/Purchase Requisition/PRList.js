@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 // import axios from "axios";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -13,6 +13,7 @@ import {
   faCircleArrowUp,
   faCalendarDays,
   faBars,
+  faFileHalfDashed,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchComponent from "../SearchComponen";
 import Status from "../Status";
@@ -309,6 +310,10 @@ function PRList() {
     });
   };
 
+   const handleUploadOCRfromPR = async () => {
+      navigate(`${URL}OCR`, { state: { accDocType: accDocType } });
+    };
+
   const buttonActions = [
     {
       icon: (
@@ -317,6 +322,13 @@ function PRList() {
       name: "Add New",
       onClick: handleAddNew, // เรียก handleAddNew โดยตรง
     },
+        {
+          icon: (
+            <FontAwesomeIcon icon={faFileHalfDashed} style={{ color: "#22a311ff" }} size="1x" />
+          ),
+          name: "UploadOCRfromPR",
+          onClick: handleUploadOCRfromPR,
+        },
     {
       icon: (
         <FontAwesomeIcon icon={faCalendarDays} style={{ color: "#fc4704" }} size="1x" />

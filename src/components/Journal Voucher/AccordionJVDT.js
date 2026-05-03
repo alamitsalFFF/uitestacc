@@ -661,7 +661,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         <JVEditDetail
           open={showEditDetailModal}
           onClose={handleCloseEditDetailModal}
-          onSave={() => handleDetailUpdatedOrDeleted(true)}
+          onSaved={() => handleDetailUpdatedOrDeleted(true)}
           entryId={itemToEdit.entryId}
           journalNo={itemToEdit.journalNo}
           seq={itemToEdit.seq}

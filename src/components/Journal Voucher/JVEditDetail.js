@@ -78,6 +78,7 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
     accCode: "",
     accDesc: "",
     accName: "",
+    // description:"",
     credit: 0,
     debit: 0,
   });
@@ -109,6 +110,7 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
           accCode: data[0].accCode || "",
           accDesc: data[0].accDesc || "",
           accName: data[0].accName || "",
+          // description: data[0].description || "",
           credit: (data[0].credit ?? 0).toString(),
           debit: (data[0].debit ?? 0).toString(),
           seq: data[0].seq || 1,
@@ -153,6 +155,7 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
       accCode: adddatadetail.accCode,
       accDesc: adddatadetail.accDesc,
       accName: adddatadetail.accName,
+      // description: adddatadetail.description,
       credit: parseFloat(adddatadetail.credit),
       debit: parseFloat(adddatadetail.debit),
     };
@@ -413,12 +416,12 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
             inputRef={exchangeRateRef}
           />
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <FontAwesomeIcon icon={faEllipsisVertical} size="lg" style={{ cursor: "pointer" }} onClick={() => setOpenModal(true)} />
-          <div style={{ paddingTop: "15px" }}>
+          <div style={{ paddingTop: "15px", width: "100%", gap: 8 }}>
             <TextField
               id="accName"
-              label="AccName"
+              label="&nbsp; AccName"
               value={adddatadetail.accName}
               type="text"
               variant="standard"
@@ -427,7 +430,19 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
             />
           </div>
         </div>
-
+        <div style={{ display: "flex", alignItems: "center", gap: 12, gridColumn: "1 / -1" }}>
+          <TextField
+            id="accDesc"
+            label="Description"
+            value={adddatadetail.accDesc}
+            type="text"
+            variant="standard"
+            fullWidth
+            onChange={handleInputChange}
+            onKeyDown={handleQtyKeyDown}
+          // InputProps={{ readOnly: true }} //ปิดตรงนี้ถ้าต้องการให้แก้ไขได้
+          />
+        </div>
         <div>
           <TextField
             id="debit"
@@ -455,6 +470,7 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
           // InputProps={{ readOnly: true }} //ปิดตรงนี้ถ้าต้องการให้แก้ไขได้
           />
         </div>
+       
       </div>
       <div style={{ padding: 10 }}></div>
 

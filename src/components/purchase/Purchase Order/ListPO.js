@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Auth/axiosConfig";
 import { API_BASE, API_VIEW_RESULT, URL } from "../../api/url";
 import Divider from "@mui/material/Divider";
@@ -310,7 +310,7 @@ function ListPOHD() {
     window.open(OCR, "_blank");
   };
   const handleUploadOCRfromPO = async () => {
-    navigate(`${URL}OCR`);
+    navigate(`${URL}OCR`, { state: { accDocType: accDocType } });
   };
   //--------------------------------------------------------
   const buttonActions = [

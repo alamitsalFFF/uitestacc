@@ -9,8 +9,8 @@ import { API_VIEW_RESULT, StoredProcedures_Base, URL } from "../../api/url";
 const fetchJournalNo = async (entryIdtoString) => {
   console.log("EntryID:", entryIdtoString);
   try {
-    const vPV_All = {
-      viewName: "vPV_All",
+    const vJournal_All = {
+      viewName: "vJournal_All",
       parameters: [{ field: "EntryId", value: `${entryIdtoString}` }],
       results: [
         { sourceField: "EntryId" },
@@ -32,7 +32,7 @@ const fetchJournalNo = async (entryIdtoString) => {
 
     const response = await axios.post(
       API_VIEW_RESULT,
-      vPV_All,
+      vJournal_All,
       {
         headers: {
           "Content-Type": "application/json",
@@ -58,10 +58,10 @@ const fetchJournalNo = async (entryIdtoString) => {
 };
 
 //จ่ายเช็ค
-export const PVfromPOFull = async (AccDocNoC, tranno, transtype, taxno, docdate, trandatail, acccode, accdebit, webAddress, navigate) => {
+export const PVfromPOFull = async (AccDocNoC, tranno, trantype, taxno, docdate, trandatail, acccode, accdebit, webAddress, navigate, pvno = '') => {
   console.log("AccDocNo:", AccDocNoC);
   console.log("tranno:", tranno);
-  console.log("transtype:", transtype);
+  console.log("trantype:", trantype);
   try {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split("T")[0]; // จัดรูปแบบเป็น YYYY-MM-DD
@@ -86,8 +86,8 @@ export const PVfromPOFull = async (AccDocNoC, tranno, transtype, taxno, docdate,
           value: docdate, //วันที่จ่ายเงิน
         },
         {
-          param: "transtype", //CA หรือ TR
-          value: transtype,
+          param: "trantype", //CA หรือ TR
+          value: trantype,
         },
         {
           param: "tranno", //เลขสลิป หรือ เลขอ้างอิง
@@ -99,7 +99,7 @@ export const PVfromPOFull = async (AccDocNoC, tranno, transtype, taxno, docdate,
         },
         {
           param: "pvno",
-          value: '',
+          value: pvno,
         },
         {
           param: "acccode",
@@ -132,10 +132,10 @@ export const PVfromPOFull = async (AccDocNoC, tranno, transtype, taxno, docdate,
 
     if (responsePVFromPO.status === 200) {
       console.log("responsePVFromPO:", responsePVFromPO);
-      const pvNo = responsePVFromPO.data.data[0].PVNo;
+      const pvNo = responsePVFromPO.data.data[0].EntryId; // The API returns EntryId, not PVNo
       const pvNotoString = pvNo.toString();
-      console.log("pvNo:", pvNotoString);
-      console.log("pvNo:", typeof pvNotoString);
+      console.log("EntryId:", pvNotoString);
+      console.log("EntryId type:", typeof pvNotoString);
       const PVNO = await fetchJournalNo(pvNotoString);
 
       if (PVNO) {

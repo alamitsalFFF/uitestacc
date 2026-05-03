@@ -36,7 +36,7 @@ import AccordionSelectProductPR from "./AccordionSelectProductPR.js";
 import AccordiionPRAddDT from "./AccordiionPRAddDT.js";
 import { Box, Modal } from "@mui/material";
 
-function PRDTAU({ accDocNo, onSaveSuccess }) {
+function PRDTAU({ accDocNo, onSaveSuccess, ocrLineItems = [] }) {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -280,6 +280,61 @@ function PRDTAU({ accDocNo, onSaveSuccess }) {
           </ListItem>
         </div>
       ))}
+
+      {/* OCR Preview Items — แสดงเมื่อยังไม่มีข้อมูลจาก API */}
+      {prd.length === 0 && ocrLineItems.length > 0 && (
+        <>
+          <div style={{
+            background: 'linear-gradient(135deg, #fff8e1, #fffde7)',
+            border: '1px solid #ffcc02',
+            borderRadius: 8,
+            padding: '8px 12px',
+            margin: '8px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <span style={{ fontSize: 18 }}>🤖</span>
+            <span style={{ color: '#b8860b', fontWeight: 600, fontSize: '0.85rem' }}>
+              รายการจาก OCR (Preview) — กด Save เพื่อบันทึกลงระบบ
+            </span>
+          </div>
+          {ocrLineItems.map((item, index) => {
+            const qty = parseFloat(item.qty) || 1;
+            const price = parseFloat(item.unitPrice) || 0;
+            const amount = parseFloat(item.amount) || (qty * price);
+            return (
+              <div key={`ocr-${index}`} style={{ background: '#fffdf0' }}>
+                <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
+                <ListItem style={{ display: "flex", alignItems: "center" }}>
+                  <div>
+                    <h5 style={{ color: '#555' }}>
+                      &nbsp; {index + 1}.&nbsp;
+                      {item.description || '(ไม่มีคำอธิบาย)'}
+                      &nbsp;
+                      <span style={{
+                        background: '#ffcc02', color: '#333',
+                        borderRadius: 4, padding: '1px 6px',
+                        fontSize: '0.7rem', fontWeight: 700,
+                      }}>OCR</span>
+                    </h5>
+                    <h6 style={{ color: '#888' }}>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      {formatNumber(price)} THB x {formatNumber(qty)} {item.unit || 'Unit'}
+                    </h6>
+                  </div>
+                  <div style={{ marginLeft: "auto" }}>
+                    <div style={{ display: "flex" }}>
+                      <h2 style={{ color: '#b8860b' }}>{formatNumber(amount)}</h2>
+                      &nbsp;&nbsp;&nbsp;
+                    </div>
+                  </div>
+                </ListItem>
+              </div>
+            );
+          })}
+        </>
+      )}
       {(!prh.length || prh[0]?.DocStatus === 0) && (
         <>
           <Divider variant="middle" component="li" style={{ listStyle: "none" }} />

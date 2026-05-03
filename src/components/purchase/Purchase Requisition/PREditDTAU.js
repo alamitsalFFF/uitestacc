@@ -350,11 +350,32 @@ function PREditDetailAU({
   };
 
   const calculateTotal = () => {
-    return (
+    const subtotal =
       parseFloat(adddatadetail.price || 0) *
       parseFloat(adddatadetail.qty || 0) *
-      parseFloat(adddatadetail.exchangeRate || 1)
-    );
+      parseFloat(adddatadetail.exchangeRate || 1);
+
+    const rateVat = parseFloat(adddatadetail.rateVat || 0);
+    const rateWht = parseFloat(adddatadetail.rateWht || 0);
+    // vatType: 1 = Exclusive, 2 = Inclusive
+    const vatType = parseInt(adddatadetail.vatType || 1, 10);
+
+    let baseAmount = subtotal;
+    let vatAmount = 0;
+
+    if (vatType === 2) {
+      // รวม VAT (Inclusive)
+      baseAmount = subtotal * (100 / (100 + rateVat));
+      vatAmount = subtotal - baseAmount;
+    } else {
+      // แยก VAT (Exclusive) หรือไม่มี VAT
+      vatAmount = subtotal * (rateVat / 100);
+    }
+
+    // หัก ณ ที่จ่าย (WHT) คิดจากยอดก่อน VAT
+    const whtAmount = baseAmount * (rateWht / 100);
+
+    return baseAmount + vatAmount - whtAmount;
   };
 
   const qtyRef = useRef(null);
@@ -568,7 +589,7 @@ function PREditDetailAU({
                 display: "flex",
                 alignItems: "center"
               }} >
-                <span style={{ color: "#0a0133ff", marginRight: "10px" }}>ProductCode:</span>
+                <span style={{ color: "#0a0133ff", marginRight: "10px" }} onClick={handleUpdate}>ProductCode:</span>
                 {adddatadetail.saleProductCode}
                 <FontAwesomeIcon
                   icon={faCirclePlus}
@@ -830,7 +851,7 @@ function PREditDetailAU({
                     </h5>
                     <p>
                       &nbsp; {formatNumber(adddatadetail.price)}x
-                      {formatNumber(adddatadetail.qty)}
+                      {formatNumber(adddatadetail.qty)}={formatNumber(calculateTotal())}
                     </p>
                   </div>
                   <div style={{ marginLeft: "auto" }}>
