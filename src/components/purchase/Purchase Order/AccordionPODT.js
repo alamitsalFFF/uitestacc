@@ -773,7 +773,7 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData, ocrLineItems = 
             size="2x"
             style={{ color: "#2d01bd" }}
           /> */}
-          <h5 style={{ color: "blue" }}>
+          <h5 style={{ color: "#00008b" }}>
             {/* &nbsp; <Abbreviation textName={partyName}/> */}
             {/* &nbsp;{partyName} */}
             &nbsp;{poh && poh.length > 0 && poh[0].PartyName}
@@ -785,7 +785,7 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData, ocrLineItems = 
           <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
           <ListItem style={{ display: "flex", alignItems: "center" }}>
             <div>
-              <h5>
+              <h5 style={{ color: "#00008b" }}>
                 &nbsp; {index + 1}.&nbsp;
                 {product.SalesDescription}
                 &nbsp;{" "}
@@ -830,7 +830,7 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData, ocrLineItems = 
             alignItems: 'center',
             gap: 8,
           }}>
-            <span style={{ fontSize: 18 }}>🤖</span>
+            {/* <span style={{ fontSize: 18 }}>🤖</span> */}
             <span style={{ color: '#b8860b', fontWeight: 600, fontSize: '0.85rem' }}>
               รายการจาก OCR (Preview) — กด Save เพื่อบันทึกลงระบบ
             </span>
@@ -998,22 +998,22 @@ function AccordionPODT({ accDocNo, onSaveSuccess, refreshPOData, ocrLineItems = 
             {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
             <div className="col-7" style={{ justifyItems: "end" }}>
               <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "3px" }}
+                style={{ marginTop: "5px", marginLeft: "10px", padding: "3px", color: "#00008b" }}
               >
                 &nbsp; TotalAmount &nbsp;
               </h5>
               <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "7px" }}
+                style={{ marginTop: "5px", marginLeft: "10px", padding: "7px", color: "#00008b" }}
               >
                 &nbsp; TotalVat VAT 7% &nbsp;
               </h5>
               <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "4px" }}
+                style={{ marginTop: "5px", marginLeft: "10px", padding: "4px", color: "#00008b" }}
               >
                 &nbsp; TotalWht &nbsp;
               </h5>
               <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "6px" }}
+                style={{ marginTop: "5px", marginLeft: "10px", padding: "6px", color: "#00008b" }}
               >
                 &nbsp; TotalNet &nbsp;
               </h5>

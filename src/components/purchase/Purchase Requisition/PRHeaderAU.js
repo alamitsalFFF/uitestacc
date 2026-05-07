@@ -1143,6 +1143,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
+        // onClick={handleUpdate}
         />
 
       </div>
@@ -1332,7 +1333,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
-      <div className="col-md-5">
+      <div className="col-md-5" onClick={handleUpdate}>
         {/* <TextField
           id="docStatus"
           label="DocStatus"

@@ -1569,7 +1569,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-3">
         <Box sx={{ minWidth: 30 }} style={{ width: "100%" }}>
           <FormControl fullWidth>
-            <InputLabel id="category-label">Category</InputLabel>
+            <InputLabel id="category-label" style={{ fontWeight: 700, color: "#00008b" }}>Category</InputLabel>
             <Select
               labelId="category-label"
               // id="category-select"
@@ -1623,6 +1623,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
           }}
           style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           onChange={handleChange}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1640,6 +1644,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1660,6 +1668,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
         <FontAwesomeIcon
@@ -1754,6 +1766,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
 
@@ -1772,6 +1788,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1792,6 +1812,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
 
@@ -1810,6 +1834,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1835,6 +1863,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1852,6 +1884,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             style: {
               backgroundColor: "#cdcdd1",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1872,6 +1908,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             }
           }}
           onChange={handleInputChange}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
@@ -1890,6 +1930,10 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
