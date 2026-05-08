@@ -200,6 +200,7 @@ function PREditDetailAU({
   ]);
 
   const saveDataToAPI = async (data) => {
+    console.log("Response API UpdateDetail Data:", data);
     try {
       const response = await authFetch(
         `${API_BASE}/AccTransaction/EditAccTransactionDT`,
@@ -272,10 +273,12 @@ function PREditDetailAU({
 
       try {
         const response = await saveDataToAPI(updatedProduct);
+        console.log("Response API UpdateDetail:", updatedProduct);
         if (
           response &&
           response.message === "AccTransactionDT details updated."
         ) {
+          console.log("Response API UpdateDetail2 :", updatedProduct);
           Swal.fire({
             icon: "success",
             title: `แก้ไข ${salesDescriptionValue} สำเร็จ`,

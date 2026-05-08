@@ -213,10 +213,12 @@ function PREditDetail({
 
     try {
       const response = await saveDataToAPI(updatedProduct);
+      console.log("Response API UpdateDetail:", response);
       if (
         response &&
         response.message === "AccTransactionDT details updated."
       ) {
+        console.log("Response API UpdateDetail2 :", response);
         Swal.fire({
           icon: "success",
           title: `แก้ไข ${salesDescriptionValue} สำเร็จ`,
