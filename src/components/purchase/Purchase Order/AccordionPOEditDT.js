@@ -53,6 +53,9 @@ function AccordionPOEditDT({
   price: initialPrice,
   qty: initialQty,
   selectedDocConfigID: initialSelectedDocConfigID,
+  accSourceDocNo,
+  accSourceDocItem,
+  stockTransNo,
 }) {
   const authFetch = useAuthFetch();
   const modalRef = useRef(null);
@@ -62,7 +65,6 @@ function AccordionPOEditDT({
   const [selectedDocConfigIDState, setSelectedDocConfigIDState] = useState(
     initialSelectedDocConfigID
   );
-
   const [productSizeUnitValue, setProductSizeUnitValue] = useState("");
   const [salesDescriptionValue, setSalesDescriptionValue] = useState("");
   const [adddatadetail, setdAddataDetail] = useState({
@@ -168,6 +170,8 @@ function AccordionPOEditDT({
               rateVat: itemData.rateVat || 0,
               rateWht: itemData.rateWht || 0,
               vatType: itemData.vatType || 0,
+              accSourceDocNo: itemData.AccSourceDocNo || accSourceDocNo,
+              accSourceDocItem: itemData.AccSourceDocItem || accSourceDocItem,
             });
             setCurrency(itemData.currency || "THB");
             setProductSizeUnitValue(itemData.unitMea || "");
@@ -255,9 +259,9 @@ function AccordionPOEditDT({
       const updatedProduct = {
         accDocNo: accDocNo,
         accItemNo: parseInt(accItemNo),
-        accSourceDocNo: "",
-        accSourceDocItem: 0,
-        stockTransNo: 0,
+        accSourceDocNo: accSourceDocNo,
+        accSourceDocItem: accSourceDocItem,
+        stockTransNo: stockTransNo || 0,
         qty: parseInt(adddatadetail.qty),
         price: parseFloat(adddatadetail.price),
         unitMea: productSizeUnitValue,
@@ -569,7 +573,7 @@ function AccordionPOEditDT({
                 display: "flex",
                 alignItems: "center"
               }} >
-                <span style={{ color: "#0a0133ff", marginRight: "10px" }}>ProductCode:</span>
+                <span style={{ color: "#0a0133ff", marginRight: "10px" }} onClick={handleUpdate}>ProductCode:</span>
                 {adddatadetail.saleProductCode}
                 <FontAwesomeIcon
                   icon={faCirclePlus}

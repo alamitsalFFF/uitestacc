@@ -1632,87 +1632,46 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
       </div>
       <div className="col-md-1">&nbsp;</div>
       <div className="col-md-5">
-        {/* <TextField
-          id="accEffectiveDate"
-          label="Due Date"
-          type="date"
-          variant="standard"
-          value={formData.accEffectiveDate}
-          onChange={handleInputChange}
-          style={{ width: "100%" }}
-          InputProps={{
-            // readOnly: true,
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-          }}
-        /> */}
-        <TextField
-          id="accBatchDate"
-          label="Doc Date"
-          type="date"
-          variant="standard"
-          value={formData.accBatchDate}
-          onChange={handleInputChange}
-          style={{ width: "100%" }}
-          InputProps={{
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-          }}
-        />
-      </div>
-
-      <div>&nbsp;</div>
-      <div className="col-md-6">
-        <TextField
-          id="issueBy"
-          label="IssueBy"
-          value={formData.issueBy}
-          type="text"
-          variant="standard"
-          onChange={handleInputChange}
-          style={{ width: "100%" }}
-          InputProps={{
-            readOnly: true,
-            style: {
-              backgroundColor: "#cdcdd1",
-            }
-          }}
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-          }}
-        />
-      </div>
-      <div className="col-md-1">&nbsp;</div>
-      <div className="col-md-5">
-        {/* <TextField
-          id="accBatchDate"
-          label="Doc Date"
-          type="date"
-          variant="standard"
-          value={formData.accBatchDate}
-          onChange={handleInputChange}
-          style={{ width: "100%" }}
-          InputProps={{
-            style: {
-              backgroundColor: "#ffffe0",
-            }
-          }}
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-          }}
-        /> */}
+        {/* <div style={{ position: "relative" }}>
+          <TextField
+            id="accEffectiveDate"
+            label="Due Date"
+            type="text"
+            variant="standard"
+            value={FormatDate({ dateString: formData.accEffectiveDate })}
+            onClick={() => {
+              const picker = document.getElementById("accEffectiveDatePicker");
+              if (picker?.showPicker) picker.showPicker();
+              else picker?.click();
+            }}
+            style={{ width: "100%", cursor: "pointer" }}
+            InputProps={{
+              readOnly: true,
+              style: {
+                backgroundColor: "#ffffe0",
+                cursor: "pointer",
+              },
+            }}
+            sx={{
+              "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            }}
+          />
+          <input
+            id="accEffectiveDatePicker"
+            type="date"
+            name="accEffectiveDate"
+            value={formData.accEffectiveDate || ""}
+            onChange={handleInputChange}
+            style={{
+              position: "absolute",
+              opacity: 0,
+              width: 0,
+              height: 0,
+              pointerEvents: "none",
+            }}
+          />
+        </div> */}
         <TextField
           id="accEffectiveDate"
           label="Due Date"
@@ -1928,7 +1887,51 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
         <DocStatusPO accDocNo={formData.accDocNo} DocType={formData.accDocType} />
       </div>
 
-
+      <div>&nbsp;</div>
+      <div className="col-md-6">
+        <TextField
+          id="accBatchDate"
+          label="Doc Date"
+          type="date"
+          variant="standard"
+          value={formData.accBatchDate}
+          onChange={handleInputChange}
+          // defaultValue={new Date().toISOString().slice(0, 10)}
+          style={{ width: "100%" }}
+          InputProps={{
+            // readOnly: true,
+            style: {
+              backgroundColor: "#ffffe0",
+            }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
+        />
+      </div>
+      <div className="col-md-1">&nbsp;</div>
+      <div className="col-md-5">
+        <TextField
+          id="issueBy"
+          label="IssueBy"
+          value={formData.issueBy}
+          type="text"
+          variant="standard"
+          onChange={handleInputChange}
+          style={{ width: "100%" }}
+          InputProps={{
+            readOnly: true,
+            style: {
+              backgroundColor: "#cdcdd1",
+            }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
+        />
+      </div>
 
       <div>&nbsp;</div>
       <div className="col-md-6">
