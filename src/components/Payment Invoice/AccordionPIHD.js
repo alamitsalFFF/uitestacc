@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig";
 import { useAuthFetch } from "../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -1250,6 +1250,10 @@ export default function AccordionPIHD({
           style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1269,6 +1273,10 @@ export default function AccordionPIHD({
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
 
@@ -1287,6 +1295,10 @@ export default function AccordionPIHD({
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
         <FontAwesomeIcon
@@ -1380,6 +1392,10 @@ export default function AccordionPIHD({
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
 
@@ -1398,6 +1414,10 @@ export default function AccordionPIHD({
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1418,6 +1438,10 @@ export default function AccordionPIHD({
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
 
@@ -1436,6 +1460,10 @@ export default function AccordionPIHD({
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1461,6 +1489,10 @@ export default function AccordionPIHD({
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1478,6 +1510,10 @@ export default function AccordionPIHD({
             style: {
               backgroundColor: "#cdcdd1",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>
@@ -1498,6 +1534,10 @@ export default function AccordionPIHD({
             }
           }}
           onChange={handleInputChange}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>
@@ -1516,6 +1556,10 @@ export default function AccordionPIHD({
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />

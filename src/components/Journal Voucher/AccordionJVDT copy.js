@@ -494,7 +494,6 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   return (
     <div>
       {/* <h1 style={{ textAlign: "center" }}>Payment Voucher</h1> */}
-
       <div className="row">
         <ListItem
           style={{
@@ -503,231 +502,160 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
             justifyContent: "flex-end",
           }}
         >
-          <div
+          <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{JournalNo ?? "—"}</h2>
+          <br />
+        </ListItem>
+        <div style={{ display: "flex" }}>
+          <ListItem
             style={{
-              display: "inline-flex",
-              flexDirection: "column",
+              display: "flex",
               alignItems: "center",
-              background: "linear-gradient(135deg, #1a237e, #1565c0)",
-              borderRadius: "20px",
-              padding: "8px 20px",
-              boxShadow: "0 2px 8px rgba(21, 101, 192, 0.4)",
-              marginTop: "5px",
-              marginLeft: "10px",
+              // justifyContent: "flex-end",
             }}
           >
-            <span
-              style={{
-                fontSize: "2rem",
-                fontWeight: 700,
-                color: "#ffffff",
-                letterSpacing: "0.05em",
-                lineHeight: 1.2,
-              }}
-            >
-              {JournalNo ?? "—"}
-            </span>
-            <span
-              style={{
-                fontSize: "0.75rem",
-                fontWeight: 500,
-                color: "rgba(255, 255, 255, 1)",
-                letterSpacing: "0.05em",
-                marginTop: "3px",
-                width: "100%",
-                textAlign: "right",
-              }}
-            >
-              Date:&nbsp;
+            <h5>
+              Description:{jvall && jvall.length > 0 && (jvall[0].Description)}
+            </h5>
+          </ListItem>
+          <ListItem
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <p>
+              Date:
               {jvall && jvall.length > 0 && (
                 <FormatDate dateString={jvall[0].EffectiveDate} />
               )}
-            </span>
-          </div>
-        </ListItem>
+            </p>
+          </ListItem>
+        </div>
       </div>
-      <div className="row">
-        <ListItem style={{ display: "flex", alignItems: "center" }}>
-          <h5 style={{ color: "#00008b" }}>
-            &nbsp;Description: {jvall && jvall.length > 0 && jvall[0].Description}
-          </h5>
-        </ListItem>
-      </div>
-
-      <div style={{ overflowX: "auto", marginTop: "10px" }}>
-        <div style={{ minWidth: "800px", paddingBottom: "10px" }}>
-          <div style={{ display: "flex", marginBottom: "5px", padding: "0 12px", color: "#1a237e" }}>
-            <div className="col-5">
-              <h5 style={{ fontWeight: "bold", margin: 0, paddingLeft: "35px" }}>AccName</h5>
-            </div>
-            <div className="col-3">
-              <h5 style={{ fontWeight: "bold", margin: 0 }}>Detail</h5>
-            </div>
-            <div className="col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
-              <h5 style={{ fontWeight: "bold", margin: 0 }}>Debit</h5>
-            </div>
-            <div className="col-2" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
-              <h5 style={{ fontWeight: "bold", margin: 0 }}>Credit</h5>
-            </div>
+      <div style={{ display: "flex" }}>
+        <div className="col-4">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; AccName</h4>
+        </div>
+        <div className="col-2">
+          <h4 style={{ textAlign: "center" }}>&nbsp; &nbsp; Detail</h4>
+        </div>
+        <div className="col-3"
+          style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
+        >
+          <h4 style={{ textAlign: "center" }}>Debit &nbsp;</h4>
+        </div>
+        <div className="col-3"
+          style={{ cursor: "pointer", display: "grid", justifyItems: "end", cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}
+        >
+          <div style={{ display: "flex" }}>
+            <h4 style={{ justifyItems: "end" }}>Credit &nbsp; &nbsp; &nbsp; &nbsp;
+            </h4>
           </div>
-
-          {/* paginated rows */}
-          {jvall.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map((item, pageIndex) => {
-            const globalIndex = currentPage * PAGE_SIZE + pageIndex;
-            return (
-              <div
-                key={globalIndex}
-                style={{
-                  background: "#ffffff",
-                  borderRadius: "10px",
-                  margin: "6px 4px",
-                  padding: "10px 12px",
-                  boxShadow: "0 1px 4px rgba(26,35,126,0.08)",
-                  border: "1px solid #e8eaf6",
-                  borderLeft: "4px solid #1565c0",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <div className="col-5" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  {/* Item number badge */}
-                  <span
-                    style={{
-                      background: "#1565c0",
-                      color: "#fff",
-                      borderRadius: "50%",
-                      width: "22px",
-                      height: "22px",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {item.ItemNo}
-                  </span>
-                  <span
-                    style={{
-                      color: "#1a237e",
-                      fontWeight: 600,
-                      fontSize: "0.95rem",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {item.AccCode} / {item.AccName}
-                  </span>
-                </div>
-
-                <div className="col-3">
-                  <div style={{ color: "#607d8b", fontSize: "0.85rem" }}>
-                    {item.AccDesc}
-                  </div>
-                </div>
-
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
-                  {item.Debit !== 0 && (
-                    <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#2e7d32" }}>
-                      {formatNumber(item.Debit)}
-                    </span>
-                  )}
-                </div>
-
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                  {item.Credit !== 0 && (
-                    <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#c62828" }}>
-                      {formatNumber(item.Credit)}
-                    </span>
-                  )}
+        </div>
+      </div>
+      {/* paginated rows */}
+      {jvall.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map((item, pageIndex) => {
+        const globalIndex = currentPage * PAGE_SIZE + pageIndex;
+        return (
+          <div key={globalIndex}>
+            <Divider
+              variant="middle"
+              component="li"
+              style={{ listStyle: "none" }}
+            />
+            <ListItem style={{ display: "flex", alignItems: "center" }}>
+              <div className="col-4">
+                <h5>
+                  &nbsp; {item.ItemNo}.&nbsp;{item.AccCode} &nbsp;
+                  {item.AccName}
+                </h5>
+              </div>
+              <div className="col-2">
+                <h5>
+                  &nbsp; {item.AccDesc}
+                </h5>
+              </div>
+              <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}>
+                {item.Debit !== 0.00 && <h4>{formatNumber(item.Debit)}</h4>}
+              </div>
+              <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
+                <div style={{ display: "flex" }}>
+                  {item.Credit !== 0.00 && <h4>{formatNumber(item.Credit)} &nbsp;</h4>}
+                  &nbsp; &nbsp;
                   <FontAwesomeIcon
                     icon={faChevronRight}
-                    size="sm"
-                    style={{
-                      color: "#1565c0",
-                      cursor: "pointer",
-                      padding: "6px",
-                      borderRadius: "50%",
-                      background: "#e3f2fd",
-                      marginLeft: "15px"
-                    }}
+                    size="1x"
+                    style={{ color: "#0310ce", paddingTop: "10px" }}
                     onClick={() => handleEditDetail(globalIndex)}
                   />
                 </div>
               </div>
-            );
-          })}
-          {/* pagination controls — show only when there are multiple pages */}
-          {jvall.length > PAGE_SIZE && (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", padding: "8px 0" }}>
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
-                disabled={currentPage === 0}
-                style={{
-                  padding: "4px 14px",
-                  borderRadius: "6px",
-                  border: "1px solid #0310ce",
-                  background: currentPage === 0 ? "#e0e0e0" : "#0310ce",
-                  color: currentPage === 0 ? "#888" : "#fff",
-                  cursor: currentPage === 0 ? "default" : "pointer",
-                  fontWeight: "bold",
-                }}
-              >
-                &laquo; Prev
-              </button>
-              <span style={{ fontSize: "14px", color: "#555" }}>
-                {currentPage + 1} / {Math.ceil(jvall.length / PAGE_SIZE)}
-                &nbsp;({jvall.length} rows)
-              </span>
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(Math.ceil(jvall.length / PAGE_SIZE) - 1, p + 1))}
-                disabled={currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1}
-                style={{
-                  padding: "4px 14px",
-                  borderRadius: "6px",
-                  border: "1px solid #0310ce",
-                  background: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#e0e0e0" : "#0310ce",
-                  color: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#888" : "#fff",
-                  cursor: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "default" : "pointer",
-                  fontWeight: "bold",
-                }}
-              >
-                Next &raquo;
-              </button>
-            </div>
-          )}
-          <div className="row">
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #e8eaf6, #e3f2fd)",
-                  borderRadius: "12px",
-                  margin: "8px 4px 4px 4px",
-                  padding: "12px 12px",
-                  boxShadow: "0 2px 8px rgba(26,35,126,0.10)",
-                  border: "1px solid #c5cae9",
-                  display: "flex",
-                  alignItems: "center"
-                }}
-              >
-                <div className="col-8">
-                   <h3 style={{ margin: 0, color: "#1a237e", fontWeight: "bold", textAlign: "right", paddingRight: "20px" }}>Total</h3>
-                </div>
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <h3 style={{ margin: 0, color: "#2e7d32", fontWeight: "bold" }}>
-                    {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalDebit) : formatNumber(0)}
-                  </h3>
-                </div>
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
-                  <h3 style={{ margin: 0, color: "#c62828", fontWeight: "bold" }}>
-                    {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalCredit) : formatNumber(0)}
-                  </h3>
-                </div>
-              </div>
+            </ListItem>
+          </div>
+        );
+      })}
+      {/* pagination controls — show only when there are multiple pages */}
+      {jvall.length > PAGE_SIZE && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", padding: "8px 0" }}>
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+            disabled={currentPage === 0}
+            style={{
+              padding: "4px 14px",
+              borderRadius: "6px",
+              border: "1px solid #0310ce",
+              background: currentPage === 0 ? "#e0e0e0" : "#0310ce",
+              color: currentPage === 0 ? "#888" : "#fff",
+              cursor: currentPage === 0 ? "default" : "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            &laquo; Prev
+          </button>
+          <span style={{ fontSize: "14px", color: "#555" }}>
+            {currentPage + 1} / {Math.ceil(jvall.length / PAGE_SIZE)}
+            &nbsp;({jvall.length} rows)
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(Math.ceil(jvall.length / PAGE_SIZE) - 1, p + 1))}
+            disabled={currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1}
+            style={{
+              padding: "4px 14px",
+              borderRadius: "6px",
+              border: "1px solid #0310ce",
+              background: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#e0e0e0" : "#0310ce",
+              color: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#888" : "#fff",
+              cursor: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "default" : "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Next &raquo;
+          </button>
+        </div>
+      )}
+      <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
+
+      <div style={{ display: "flex", paddingTop: "8px" }}>
+        <div className="col-5">
+          <h3 style={{ textAlign: "center" }}>&nbsp; &nbsp; Total</h3>
+        </div>
+        <div className="col-4"
+          style={{ cursor: "pointer", display: "grid", justifyItems: "end" }}
+        >
+          <h3 style={{ textAlign: "center" }}>{jvall && jvall.length > 0 && formatNumber(jvall[0].TotalDebit)}&nbsp;</h3>
+        </div>
+
+        <div className="col-3" style={{ cursor: "pointer", display: "grid", justifyItems: "end", marginLeft: "auto" }}>
+          <div style={{ display: "flex" }}>
+            <h3 style={{ textAlign: "center" }}>{jvall && jvall.length > 0 && formatNumber(jvall[0].TotalCredit)} &nbsp; &nbsp; &nbsp; &nbsp;
+            </h3>
           </div>
         </div>
       </div>
+      <Divider variant="middle" component="li" style={{ listStyle: "none" }} />
+      <div>&nbsp;</div>
+      {/* </div> */}
 
       {showEditDetailModal && itemToEdit && (
         <JVEditDetail

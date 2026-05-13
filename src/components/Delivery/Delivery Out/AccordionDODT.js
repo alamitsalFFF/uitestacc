@@ -824,6 +824,7 @@ function AccordionDODT({ accDocNo, onSaveSuccess }) {
 
   return (
     <div>
+      {/* Header Section */}
       <div className="row">
         <ListItem
           style={{
@@ -832,71 +833,158 @@ function AccordionDODT({ accDocNo, onSaveSuccess }) {
             justifyContent: "flex-end",
           }}
         >
-          <h2 style={{ marginTop: "5px", marginLeft: "10px" }}>{accDocNo}</h2>
-          <br />
-        </ListItem>
-        <ListItem
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <p>
-            Date:
-            {doh && doh.length > 0 && (
-              // <FormatDate dateString={doh[0].AccEffectiveDate}/>
-              <FormatDate dateString={doh[0].AccBatchDate} />
-            )}
-          </p>
+          <div
+            style={{
+              display: "inline-flex",
+              flexDirection: "column",
+              alignItems: "center",
+              background: "linear-gradient(135deg, #1a237e, #1565c0)",
+              borderRadius: "20px",
+              padding: "8px 20px",
+              boxShadow: "0 2px 8px rgba(21, 101, 192, 0.4)",
+              marginTop: "5px",
+              marginLeft: "10px",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "2rem",
+                fontWeight: 700,
+                color: "#ffffff",
+                letterSpacing: "0.05em",
+                lineHeight: 1.2,
+              }}
+            >
+              {accDocNo}
+            </span>
+            <span
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: 500,
+                color: "rgba(255, 255, 255, 1)",
+                letterSpacing: "0.05em",
+                marginTop: "3px",
+                width: "100%",
+                textAlign: "right",
+              }}
+            >
+              Date:&nbsp;
+              {doh && doh.length > 0 && doh[0]?.AccBatchDate && (
+                <FormatDate dateString={doh[0].AccBatchDate} />
+              )}
+            </span>
+          </div>
         </ListItem>
       </div>
       <div className="row">
-        <ListItem style={{ display: "flex", alignItems: "center" }}>
+        <ListItem
+          style={{ display: "flex", alignItems: "center", paddingLeft: "30px" }}
+        >
           <h5 style={{ color: "blue" }}>
-            &nbsp;{doh && doh.length > 0 && doh[0].PartyName}
+            &nbsp;
+            {doh && doh.length > 0 && doh[0].PartyName
+              ? doh[0].PartyName
+              : partyName}
           </h5>
         </ListItem>
       </div>
+
+      {/* Product List */}
       {dod.map((product, index) => (
-        <div key={index}>
-          <Divider
-            variant="middle"
-            component="li"
-            style={{ listStyle: "none" }}
-          />
-          <ListItem style={{ display: "flex", alignItems: "center" }}>
-            <div>
-              <h5>
-                &nbsp; {index + 1}.&nbsp;
-                {product.ProductCode}/
-                <Abbreviation textName={product.SalesDescription} />
-                &nbsp;
+        <div
+          key={index}
+          style={{
+            background: "#ffffff",
+            borderRadius: "10px",
+            margin: "6px 4px",
+            padding: "10px 12px",
+            boxShadow: "0 1px 4px rgba(26,35,126,0.08)",
+            border: "1px solid #e8eaf6",
+            borderLeft: "4px solid #1565c0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          {/* Left: Item info */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "6px", flexWrap: "wrap" }}>
+              {/* Item number badge */}
+              <span
+                style={{
+                  background: "#1565c0",
+                  color: "#fff",
+                  borderRadius: "50%",
+                  width: "22px",
+                  height: "22px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  flexShrink: 0,
+                }}
+              >
+                {product.AccItemNo}
+              </span>
+              {/* Description */}
+              <span
+                style={{
+                  color: "#1a237e",
+                  fontWeight: 600,
+                  fontSize: "0.95rem",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {product.ProductCode}/<Abbreviation textName={product.SalesDescription} />
                 {product.AccSourceDocNo && product.AccSourceDocItem ? (
-                  <i style={{ fontSize: "13px", color: "gray" }}>
+                  <span style={{ fontSize: "0.8rem", color: "#64748b", marginLeft: "8px" }}>
                     {product.AccSourceDocNo}#{product.AccSourceDocItem}
-                  </i>
+                  </span>
                 ) : null}
-              </h5>
-              <h>
-                &nbsp; &nbsp; {formatNumber(product.Price)}
-                {product.Currency} x {formatNumber(product.Qty)}
-                {product.UnitMea}
-              </h>
+              </span>
             </div>
-            <div style={{ marginLeft: "auto" }}>
-              <div style={{ display: "flex" }}>
-                <h2>{formatNumber(product.Amount)}</h2>
-                &nbsp; &nbsp; &nbsp;
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size="1x"
-                  style={{ color: "#0310ce", paddingTop: "10px" }}
-                  onClick={() => handleEditDetail(product.AccItemNo)}
-                />
-              </div>
+            {/* Price × Qty */}
+            <div
+              style={{
+                marginTop: "4px",
+                color: "#607d8b",
+                fontSize: "0.8rem",
+                paddingLeft: "28px",
+              }}
+            >
+              {formatNumber(product.Price)}&nbsp;{product.Currency}&nbsp;
+              <span style={{ color: "#90a4ae" }}>x</span>&nbsp;
+              {formatNumber(product.Qty)}&nbsp;{product.UnitMea}
             </div>
-          </ListItem>
+          </div>
+
+          {/* Right: Amount + Edit */}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "12px", flexShrink: 0 }}>
+            <span
+              style={{
+                fontSize: "1.15rem",
+                fontWeight: 700,
+                color: "#1a237e",
+              }}
+            >
+              {formatNumber(product.Amount)}
+            </span>
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              size="sm"
+              style={{
+                color: "#1565c0",
+                cursor: "pointer",
+                padding: "6px",
+                borderRadius: "50%",
+                background: "#e3f2fd",
+              }}
+              onClick={() => handleEditDetail(product.AccItemNo)}
+            />
+          </div>
         </div>
       ))}
       {showEditDetailModal && itemToEdit && (
@@ -997,60 +1085,67 @@ function AccordionDODT({ accDocNo, onSaveSuccess }) {
         </>
       )}
 
+      {/* Financial Totals */}
       <div className="row">
         {doh.map((productH, index) => (
-          <div className="financial-form" key={index}>
-            <div className="col-7" style={{ justifyItems: "end" }}>
-              <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "3px" }}
-              >
-                &nbsp; TotalAmount &nbsp;
-              </h5>
-              <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "7px" }}
-              >
-                &nbsp; TotalVat VAT 7% &nbsp;
-              </h5>
-              <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "4px" }}
-              >
-                &nbsp; TotalWht &nbsp;
-              </h5>
-              <h5
-                style={{ marginTop: "5px", marginLeft: "10px", padding: "6px", color: "green" }}
-              >
-                &nbsp; TotalNet &nbsp;
-              </h5>
+          <div
+            key={index}
+            style={{
+              background: "linear-gradient(135deg, #e8eaf6, #e3f2fd)",
+              borderRadius: "12px",
+              margin: "8px 4px 4px 4px",
+              padding: "10px 8px",
+              boxShadow: "0 2px 8px rgba(26,35,126,0.10)",
+              border: "1px solid #c5cae9",
+            }}
+          >
+            {/* Row: TotalAmount (subtotal before tax) */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 8px" }}>
+              <h5 style={{ color: "#1565c0", fontWeight: 500, margin: 0 }}>Total Amount</h5>
+              <h2 style={{ margin: 0, color: "#1565c0" }}>{formatNumber(productH.TotalAmount)}</h2>
             </div>
-            <div style={{ marginLeft: "auto", justifyItems: "end" }}>
-              <div style={{ display: "flex" }}>
-                <h2>{formatNumber(productH.TotalAmount)}</h2>
-                &nbsp; &nbsp; &nbsp;
-              </div>
-              <div style={{ display: "flex" }}>
-                <h2>{formatNumber(productH.TotalVat)}</h2>
-                &nbsp; &nbsp; &nbsp;
-              </div>
-              <div style={{ display: "flex" }}>
-                <h2>{formatNumber(productH.TotalWht)}</h2>
-                &nbsp; &nbsp; &nbsp;
-              </div>
-              <div style={{ display: "flex" }}>
-                <h2
-                  style={{
-                    borderBottom: "2px solid red",
-                    boxShadow: "0 4px 0 black",
-                  }}
-                >
-                  {formatNumber(productH.TotalNet)}
-                </h2>
-                &nbsp; &nbsp; &nbsp;
-              </div>
+
+            {/* Row: TotalVat */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 8px" }}>
+              <h5 style={{ color: "#1565c0", fontWeight: 500, margin: 0 }}>Total VAT 7%</h5>
+              <h2 style={{ margin: 0, color: "#1565c0" }}>{formatNumber(productH.TotalVat)}</h2>
+            </div>
+
+            {/* Row: TotalWht */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 8px" }}>
+              <h5 style={{ color: "#1565c0", fontWeight: 500, margin: 0 }}>Total WHT</h5>
+              <h2 style={{ margin: 0, color: "#1565c0" }}>{formatNumber(productH.TotalWht)}</h2>
+            </div>
+
+            {/* Divider */}
+            <div style={{ borderTop: "1.5px solid #9fa8da", margin: "6px 8px" }} />
+
+            {/* Row: TotalNet — highlighted */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "6px 8px",
+                background: "linear-gradient(135deg, #1a237e, #1565c0)",
+                borderRadius: "8px",
+              }}
+            >
+              <h5 style={{ color: "#ffffff", fontWeight: 700, margin: 0, letterSpacing: "0.04em" }}>Net Total</h5>
+              <h2
+                style={{
+                  margin: 0,
+                  color: "#ffffff",
+                  fontWeight: 800,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {formatNumber(productH.TotalNet)}
+              </h2>
             </div>
           </div>
         ))}
         <div>&nbsp;</div>
-
       </div>
     </div>
   );

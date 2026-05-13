@@ -660,10 +660,11 @@ function PREditDetailAU({
                   variant="standard"
                   style={{ width: "100%" }}
                   InputProps={{
-                    // readOnly: true,
-                    style: {
-                      backgroundColor: "#ffffe0",
-                    }
+                    style: { backgroundColor: "#ffffe0" }
+                  }}
+                  sx={{
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
                   }}
                   onChange={handleInputChange}
                   onKeyDown={handlePriceKeyDown}
@@ -683,10 +684,11 @@ function PREditDetailAU({
                   variant="standard"
                   style={{ width: "100%" }}
                   InputProps={{
-                    // readOnly: true,
-                    style: {
-                      backgroundColor: "#ffffe0",
-                    }
+                    style: { backgroundColor: "#ffffe0" }
+                  }}
+                  sx={{
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
                   }}
                   onChange={handleInputChange}
                   inputRef={qtyRef}
@@ -705,10 +707,11 @@ function PREditDetailAU({
                   variant="standard"
                   style={{ width: "100%" }}
                   InputProps={{
-                    // readOnly: true,
-                    style: {
-                      backgroundColor: "#ffffe0",
-                    }
+                    style: { backgroundColor: "#ffffe0" }
+                  }}
+                  sx={{
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
                   }}
                   onChange={(event) =>
                     setProductSizeUnitValue(event.target.value)
@@ -720,7 +723,16 @@ function PREditDetailAU({
                 style={{ display: "flex", paddingTop: "10px" }}
               >
                 <FormControl variant="standard" sx={{ minWidth: "100%" }}>
-                  <InputLabel id="currency">Currency</InputLabel>
+                  <InputLabel 
+                    id="currency"
+                    sx={{
+                      color: "#00008b",
+                      fontWeight: 700,
+                      "&.Mui-focused": { color: "#1976d2" },
+                    }}
+                  >
+                    Currency
+                  </InputLabel>
                   <Select
                     labelId="currency"
                     id="currency"
@@ -731,10 +743,9 @@ function PREditDetailAU({
                     inputRef={currencyRef}
                     onKeyDown={handleCurrencyKeyDown}
                     sx={{
-                      // readOnly: true,
-                      // style: {
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
                       backgroundColor: "#ffffe0",
-                      // }
                     }}
                   >
                     <MenuItem value={"THB"}>THB</MenuItem>
@@ -756,10 +767,11 @@ function PREditDetailAU({
                   variant="standard"
                   style={{ width: "100%" }}
                   InputProps={{
-                    // readOnly: true,
-                    style: {
-                      backgroundColor: "#ffffe0",
-                    }
+                    style: { backgroundColor: "#ffffe0" }
+                  }}
+                  sx={{
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
                   }}
                   onChange={handleInputChange}
                   inputRef={exchangeRateRef}
@@ -771,7 +783,16 @@ function PREditDetailAU({
                 style={{ display: "flex", paddingTop: "10px" }}
               >
                 <FormControl variant="standard" sx={{ minWidth: "100%" }}>
-                  <InputLabel id="rateVat-label">VAT Rate (%)</InputLabel>
+                  <InputLabel 
+                    id="rateVat-label"
+                    sx={{
+                      color: "#00008b",
+                      fontWeight: 700,
+                      "&.Mui-focused": { color: "#1976d2" },
+                    }}
+                  >
+                    VAT Rate (%)
+                  </InputLabel>
                   <Select
                     labelId="rateVat-label"
                     id="rateVat"
@@ -781,8 +802,9 @@ function PREditDetailAU({
                     label="VAT Rate"
                     type="number"
                     sx={{
-                      // readOnly: true,
                       backgroundColor: "#ffffe0",
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
                     }}
                   >
                     <MenuItem value={0}>0% (ยกเว้น)</MenuItem>
@@ -795,21 +817,29 @@ function PREditDetailAU({
                 style={{ display: "flex", paddingTop: "10px" }}
               >
                 <FormControl variant="standard" sx={{ minWidth: "100%" }}>
-                  <InputLabel id="rateWht-label">WHT Rate (%)</InputLabel>
+                  <InputLabel 
+                    id="rateWht-label"
+                    sx={{
+                      color: "#00008b",
+                      fontWeight: 700,
+                      "&.Mui-focused": { color: "#1976d2" },
+                    }}
+                  >
+                    WHT Rate (%)
+                  </InputLabel>
                   <Select
                     labelId="rateWht-label"
                     id="rateWht"
                     name="rateWht" // เพิ่ม name
                     value={adddatadetail.rateWht}
                     onChange={handleInputChange}
-                    sx={{
-                      // readOnly: true,
-                      // style: {
-                      backgroundColor: "#ffffe0",
-                      // }
-                    }}
                     label="WHT Rate"
                     type="number"
+                    sx={{
+                      backgroundColor: "#ffffe0",
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+                    }}
                   >
                     <MenuItem value={0}>0% (ไม่มี)</MenuItem>
                     <MenuItem value={1}>1%</MenuItem>
@@ -823,21 +853,29 @@ function PREditDetailAU({
                 style={{ display: "flex", paddingTop: "10px" }}
               >
                 <FormControl variant="standard" sx={{ minWidth: "100%" }}>
-                  <InputLabel id="vatType-label">VAT Type</InputLabel>
+                  <InputLabel 
+                    id="vatType-label"
+                    sx={{
+                      color: "#00008b",
+                      fontWeight: 700,
+                      "&.Mui-focused": { color: "#1976d2" },
+                    }}
+                  >
+                    VAT Type
+                  </InputLabel>
                   <Select
                     labelId="vatType-label"
                     id="vatType"
                     name="vatType" // เพิ่ม name
                     value={adddatadetail.vatType}
                     onChange={handleInputChange}
-                    sx={{
-                      // readOnly: true,
-                      // style: {
-                      backgroundColor: "#ffffe0",
-                      // }
-                    }}
                     label="VAT Type"
                     type="number"
+                    sx={{
+                      backgroundColor: "#ffffe0",
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+                    }}
                   >
                     <MenuItem value={2}>รวม VAT (Include)</MenuItem>
                     <MenuItem value={1}>ไม่รวม VAT (Exclude)</MenuItem>
@@ -847,23 +885,37 @@ function PREditDetailAU({
               </div>
               {/* ------------------------------------------- */}
               <div className="row">
-                <ListItem style={{ display: "flex", alignItems: "center" }}>
-                  <div>
-                    <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-                      Total
-                    </h5>
-                    <p>
-                      &nbsp; {formatNumber(adddatadetail.price)}x
-                      {formatNumber(adddatadetail.qty)}={formatNumber(calculateTotal())}
-                    </p>
-                  </div>
-                  <div style={{ marginLeft: "auto" }}>
-                    <div style={{ display: "flex" }}>
-                      <h1>{formatNumber(calculateTotal())}</h1>
-                      &nbsp; &nbsp; &nbsp;
+                <div style={{ 
+                  display: "flex", 
+                  justifyContent: "space-between", 
+                  alignItems: "center", 
+                  flexWrap: "wrap",
+                  gap: "12px",
+                  backgroundColor: "#f5f7fa", 
+                  padding: "16px", 
+                  borderRadius: "12px",
+                  marginTop: "20px",
+                  marginBottom: "10px",
+                  border: "1px solid #e4e7eb",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.02)"
+                }}>
+                  <div style={{ flex: "1 1 min-content" }}>
+                    <div style={{ fontSize: "16px", fontWeight: "700", color: "#4b5563" }}>
+                      Total Amount
+                    </div>
+                    <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px", wordBreak: "break-word" }}>
+                      {formatNumber(adddatadetail.price)} x {formatNumber(adddatadetail.qty)}
                     </div>
                   </div>
-                </ListItem>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                    <div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "800", color: "#1976d2", lineHeight: "1", wordBreak: "break-all" }}>
+                      {formatNumber(calculateTotal())}
+                    </div>
+                    <div style={{ fontSize: "16px", color: "#6b7280", fontWeight: "600" }}>
+                      {currency}
+                    </div>
+                  </div>
+                </div>
                 <hr
                   variant="middle"
                   component="li"

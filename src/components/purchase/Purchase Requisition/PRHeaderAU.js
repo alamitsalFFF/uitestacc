@@ -1144,6 +1144,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           // onChange={handleInputChange}
           onChange={handleChange}
         // onClick={handleUpdate}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
 
       </div>
@@ -1164,6 +1168,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1183,6 +1191,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
         <FontAwesomeIcon
           icon={faEllipsisVertical}
@@ -1274,6 +1286,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1292,6 +1308,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1311,6 +1331,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1330,6 +1354,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1370,6 +1398,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           }}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-1">&nbsp;</div>
@@ -1388,6 +1420,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div>&nbsp;</div>
@@ -1405,6 +1441,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
@@ -1425,6 +1465,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           style={{ width: "100%" }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         // defaultValue={new Date().toISOString().slice(0, 10)}
         />
       </div>

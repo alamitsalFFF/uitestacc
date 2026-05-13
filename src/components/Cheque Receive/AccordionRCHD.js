@@ -1039,6 +1039,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       {/* <div className="col-md-3">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           className="fonts"
           variant="outlined"
           id="demo-simple-select"
@@ -1055,6 +1060,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-9">
         <div>&nbsp;</div>
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           className="fonts"
           variant="standard"
           id="demo-simple-select"
@@ -1074,6 +1084,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
 
       <div className="col-md-6">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="accDocNo"
           label="AccDocNo"
           value={formData.accDocNo || AccDocNo || ""}
@@ -1097,6 +1112,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-1">&nbsp;</div>
       <div className="col-md-5">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="accEffectiveDate"
           label="AccEffectiveDate"
           type="date"
@@ -1117,6 +1137,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       <div className="col-md-6" style={{ display: "flex" }}>
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="partyCode"
           label="Customer Code"
           value={formData.partyCode || "DEF"}
@@ -1209,6 +1234,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-1">&nbsp;</div>
       <div className="col-md-5">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="partyTaxCode"
           label="Tax ID"
           value={formData.partyTaxCode || " "}
@@ -1228,6 +1258,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       <div className="col-md-12">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="partyName"
           label="CustomerName"
           value={formData.partyName || " "}
@@ -1246,6 +1281,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       <div className="col-md-12">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="partyAddress"
           label="Address"
           value={formData.partyAddress || " "}
@@ -1266,6 +1306,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       <div className="col-md-6">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="docRefNo"
           label="DocNo Inv."
           value={formData.docRefNo || " "}
@@ -1289,6 +1334,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       <div className="col-md-6">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="accBatchDate"
           label="AccBatchDate"
           type="date"
@@ -1308,6 +1358,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-1">&nbsp;</div>
       <div className="col-md-5">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="issueBy"
           label="IssueBy"
           value={formData.issueBy}
@@ -1327,6 +1382,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div>&nbsp;</div>
       <div className="col-md-6">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="accPostDate"
           label="AccPostDate"
           value={formData.accPostDate}
@@ -1346,6 +1406,11 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       <div className="col-md-1">&nbsp;</div>
       <div className="col-md-5">
         <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
           id="fiscalYear"
           label="FiscalYear"
           value={formData.fiscalYear}

@@ -381,15 +381,40 @@ function PVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
     },
   ];
 
-  const Content = (
+    const Content = (
     <div className="row"
       style={{ padding: "5%", paddingTop: "1px", position: "relative" }}
     >
-      <h4 style={{
-        textAlign: "center",
-        textDecorationLine: "underline",
-        paddingTop: "20px",
-      }}>Edit DocNo:{journalNoFromState} Item:{seqProp} </h4>
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        // paddingTop: "20px",
+        marginBottom: "10px"
+      }}>
+        <div style={{
+          background: "linear-gradient(135deg, #00008b, #1976d2)",
+          color: "white",
+          padding: "10px 24px",
+          borderRadius: "30px",
+          boxShadow: "0 4px 12px rgba(0, 0, 139, 0.3)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "4px"
+        }}>
+          {/* <span style={{ fontSize: "1.2rem", fontWeight: 700, letterSpacing: "0.5px" }}>
+            Edit Detail Entry
+          </span> */}
+          <div style={{ display: "flex", gap: "12px", opacity: 0.9, fontSize: "0.9rem", fontWeight: 500 }}>
+            <span>Doc No: <span style={{ fontWeight: 700 }}>{journalNoFromState}</span></span>
+            <span style={{ borderLeft: "1px solid rgba(255,255,255,0.3)", paddingLeft: "12px" }}>
+              Item Seq: <span style={{ fontWeight: 700 }}>{seqProp}</span>
+            </span>
+          </div>
+        </div>
+      </div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <CircularButtonGroup actions={buttonActions} />
       </div>
@@ -403,6 +428,11 @@ function PVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
           paddingTop: "15px",
         }}>
           <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
             id="accCode"
             label="AccCode"
             value={adddatadetail.accCode}
@@ -417,6 +447,11 @@ function PVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
           <FontAwesomeIcon icon={faEllipsisVertical} size="lg" style={{ cursor: "pointer" }} onClick={() => setOpenModal(true)} />
           <div style={{ paddingTop: "15px" }}>
             <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
               id="accName"
               label="AccName"
               value={adddatadetail.accName}
@@ -430,6 +465,11 @@ function PVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
 
         <div>
           <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
             id="debit"
             label="Debit"
             value={adddatadetail.debit}
@@ -444,6 +484,11 @@ function PVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
 
         <div>
           <TextField
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            backgroundColor: "#ffffe0",
+          }}
             id="credit"
             label="Credit"
             value={adddatadetail.credit}

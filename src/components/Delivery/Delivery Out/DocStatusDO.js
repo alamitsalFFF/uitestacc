@@ -82,6 +82,10 @@ const DocStatusDO = ({ accDocNo, onStatusNameFetched, DocType }) => {
         }
       }}
       style={{ width: "100%" }}
+      sx={{
+        "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+        "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+      }}
     />
   );
 };

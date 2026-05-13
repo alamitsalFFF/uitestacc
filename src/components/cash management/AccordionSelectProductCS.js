@@ -40,15 +40,14 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
+  width: { xs: "95%", sm: "90%" },
   maxWidth: 600,
   bgcolor: "background.paper",
   borderRadius: "20px",
   boxShadow: 24,
-  p: 4,
-  maxHeight: "80vh",
-  // overflowY: "auto", // เพิ่ม scroll bar เมื่อเนื้อหามากเกินไป
-  padding: "30px !important",
+  p: { xs: 2, sm: 4 },
+  maxHeight: "90vh",
+  overflowY: "auto",
 };
 const ItemNoContext = createContext({
   itemNo: 1,
@@ -405,6 +404,7 @@ function AccordionSelectProductCS({
               display: "flex",
               justifyContent: "center",
               marginTop: "10px",
+              overflowX: "auto"
             }}
           >
             <Pagination
@@ -412,17 +412,24 @@ function AccordionSelectProductCS({
               page={currentPage}
               onChange={handlePageChange}
               color="primary"
+              size="small"
+              siblingCount={0}
             />
           </div>
           <div
-            // className="row"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{ 
+              display: "flex", 
+              justifyContent: "center", 
+              flexWrap: "wrap", 
+              gap: "10px", 
+              marginTop: "20px" 
+            }}
           >
             <Button
               variant="contained"
               color="secondary"
               onClick={onClose}
-              style={{ marginLeft: "auto", marginRight: "10px" }}
+              style={{ minWidth: "100px" }}
             >
               Cancel
             </Button>
@@ -430,7 +437,7 @@ function AccordionSelectProductCS({
               variant="contained"
               color="primary"
               onClick={handleConfirm}
-            // style={{ marginRight: "auto" }}
+              style={{ minWidth: "100px" }}
             >
               Confirm
             </Button>
