@@ -958,8 +958,7 @@ export default function AccordionPVHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           className="fonts"
           variant="outlined"
@@ -978,8 +977,7 @@ export default function AccordionPVHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           className="fonts"
           variant="standard"
@@ -1002,7 +1000,6 @@ export default function AccordionPVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
           }}
           id="journalNo"
           label="JournalNo"
@@ -1010,6 +1007,7 @@ export default function AccordionPVHD({
           type="text"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1020,33 +1018,28 @@ export default function AccordionPVHD({
       </div>
       <div className="col-md-5" style={{ paddingTop: "5px" }}>
         <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
           id="description"
           label="Description"
-          value={String(formData?.description ?? "")}
+          value={String(formData?.description)}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div className="col-md-3" style={{ paddingTop: "5px" }}>
         <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
           id="entryBy"
           label="EntryBy"
           value={String(formData?.entryBy ?? "")}
@@ -1060,16 +1053,15 @@ export default function AccordionPVHD({
               backgroundColor: "#cdcdd1",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       <div>&nbsp;</div>
       <div className="col-md-6" style={{ paddingTop: "5px" }}>
         <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
           id="effectiveDate"
           label="EffectiveDate"
           type="date"
@@ -1077,22 +1069,23 @@ export default function AccordionPVHD({
           value={formData?.effectiveDate ? String(formData.effectiveDate) : ""}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
               backgroundColor: "#ffffe0",
             }
           }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+          }}
         />
       </div>
       {/* <div className="col-md-1">&nbsp;</div> */}
       <div className="col-md-6" style={{ paddingTop: "5px" }}>
         <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
+
           id="entryDate"
           label="EntryDate"
           value={formData?.entryDate ? String(formData.entryDate) : ""}
@@ -1100,11 +1093,16 @@ export default function AccordionPVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
               backgroundColor: "#ffffe0",
             }
+          }}
+          sx={{
+            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
           }}
         />
       </div>

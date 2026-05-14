@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+﻿import React, { useState, useEffect, useCallback } from "react";
 import axios from "../Auth/axiosConfig";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -171,11 +171,8 @@ function JVList() {
       if (response.status === 200) {
         setLoading(false);
         console.log("data_vJournal_All", response.data);
-        const excludedPrefixes = /^(PV|RV|BL|AJ)/i;
         setTransactionAll(
-          response.data
-            .filter((item) => !excludedPrefixes.test(item.JournalNo))
-            .sort((a, b) => b.JournalNo.localeCompare(a.JournalNo))
+          response.data.sort((a, b) => b.JournalNo.localeCompare(a.JournalNo))
         );
         setSearchTerm("");
       } else {

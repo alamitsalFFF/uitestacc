@@ -101,7 +101,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   const [seq, setSeq] = useState([]);
 
   // pagination
-  const PAGE_SIZE = 50;
+  const PAGE_SIZE = 20;
   const [currentPage, setCurrentPage] = useState(0);
 
   // load detail when parent passes accDocNo OR when redux accDocNo changes
@@ -548,8 +548,9 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
       </div>
       <div className="row">
         <ListItem style={{ display: "flex", alignItems: "center" }}>
-          <h5 style={{ color: "#00008b" }}>
-            &nbsp;Description: {jvall && jvall.length > 0 && jvall[0].Description}
+          <h5 style={{ margin: 0 }}>
+            <span style={{ color: "#00008b", fontWeight: "bold" }}>&nbsp;Description: </span>
+            <span style={{ color: "#1565c0" }}>{jvall && jvall.length > 0 && jvall[0].Description}</span>
           </h5>
         </ListItem>
       </div>
@@ -557,16 +558,16 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
       <div style={{ overflowX: "auto", marginTop: "10px" }}>
         <div style={{ minWidth: "800px", paddingBottom: "10px" }}>
           <div style={{ display: "flex", marginBottom: "5px", padding: "0 12px", color: "#1a237e" }}>
-            <div className="col-5">
+            <div className="col-4">
               <h5 style={{ fontWeight: "bold", margin: 0, paddingLeft: "35px" }}>AccName</h5>
             </div>
-            <div className="col-3">
+            <div className="col-2">
               <h5 style={{ fontWeight: "bold", margin: 0 }}>Detail</h5>
             </div>
-            <div className="col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div className="col-3" style={{ display: "flex", justifyContent: "flex-end" }}>
               <h5 style={{ fontWeight: "bold", margin: 0 }}>Debit</h5>
             </div>
-            <div className="col-2" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
+            <div className="col-3" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
               <h5 style={{ fontWeight: "bold", margin: 0 }}>Credit</h5>
             </div>
           </div>
@@ -582,14 +583,13 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
                   borderRadius: "10px",
                   margin: "6px 4px",
                   padding: "10px 12px",
-                  boxShadow: "0 1px 4px rgba(26,35,126,0.08)",
+                  boxShadow: "inset 4px 0 0 0 #1565c0, 0 1px 4px rgba(26,35,126,0.08)",
                   border: "1px solid #e8eaf6",
-                  borderLeft: "4px solid #1565c0",
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <div className="col-5" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div className="col-4" style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
                   {/* Item number badge */}
                   <span
                     style={{
@@ -616,27 +616,29 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
+                      minWidth: 0,
+                      flex: 1,
                     }}
                   >
                     {item.AccCode} / {item.AccName}
                   </span>
                 </div>
 
-                <div className="col-3">
+                <div className="col-2">
                   <div style={{ color: "#607d8b", fontSize: "0.85rem" }}>
                     {item.AccDesc}
                   </div>
                 </div>
 
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
+                <div className="col-3" style={{ display: "flex", justifyContent: "flex-end" }}>
                   {item.Debit !== 0 && (
-                    <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#2e7d32" }}>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#2e7d32", whiteSpace: "nowrap" }}>
                       {formatNumber(item.Debit)}
                     </span>
                   )}
                 </div>
 
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+                <div className="col-3" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
                   {item.Credit !== 0 && (
                     <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#c62828" }}>
                       {formatNumber(item.Credit)}
@@ -698,33 +700,33 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
               </button>
             </div>
           )}
-          <div className="row">
-              <div
-                style={{
-                  background: "linear-gradient(135deg, #e8eaf6, #e3f2fd)",
-                  borderRadius: "12px",
-                  margin: "8px 4px 4px 4px",
-                  padding: "12px 12px",
-                  boxShadow: "0 2px 8px rgba(26,35,126,0.10)",
-                  border: "1px solid #c5cae9",
-                  display: "flex",
-                  alignItems: "center"
-                }}
-              >
-                <div className="col-8">
-                   <h3 style={{ margin: 0, color: "#1a237e", fontWeight: "bold", textAlign: "right", paddingRight: "20px" }}>Total</h3>
-                </div>
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <h3 style={{ margin: 0, color: "#2e7d32", fontWeight: "bold" }}>
-                    {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalDebit) : formatNumber(0)}
-                  </h3>
-                </div>
-                <div className="col-2" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
-                  <h3 style={{ margin: 0, color: "#c62828", fontWeight: "bold" }}>
-                    {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalCredit) : formatNumber(0)}
-                  </h3>
-                </div>
+          <div>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #e8eaf6, #e3f2fd)",
+                borderRadius: "12px",
+                margin: "8px 4px 4px 4px",
+                padding: "12px 12px",
+                // boxShadow: "inset 4px 0 0 0 #1565c0, 0 2px 8px rgba(26,35,126,0.10)",
+                border: "1px solid #c5cae9",
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              <div className="col-6">
+                <h3 style={{ margin: 0, color: "#1a237e", fontWeight: "bold", textAlign: "right", paddingRight: "20px" }}>Total</h3>
               </div>
+              <div className="col-3" style={{ display: "flex", justifyContent: "flex-end" }}>
+                <h3 style={{ margin: 0, color: "#2e7d32", fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalDebit) : formatNumber(0)}
+                </h3>
+              </div>
+              <div className="col-3" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
+                <h3 style={{ margin: 0, color: "#c62828", fontWeight: "bold", whiteSpace: "nowrap" }}>
+                  {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalCredit) : formatNumber(0)}
+                </h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>

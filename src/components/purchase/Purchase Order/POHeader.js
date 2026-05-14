@@ -1154,7 +1154,7 @@ export default function POHeader() {
         <TextField
           id="partyTaxCode"
           label="PartyTaxCode"
-          value={formData.partyTaxCode || " "}
+          value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1167,7 +1167,7 @@ export default function POHeader() {
         <TextField
           id="partyName"
           label="PartyName"
-          value={formData.partyName || " "}
+          value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1179,7 +1179,7 @@ export default function POHeader() {
         <TextField
           id="partyAddress"
           label="PartyAddress"
-          value={formData.partyAddress || " "}
+          value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
@@ -1193,7 +1193,7 @@ export default function POHeader() {
         <TextField
           id="docRefNo"
           label="DocRefNo"
-          value={formData.docRefNo || " "}
+          value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}

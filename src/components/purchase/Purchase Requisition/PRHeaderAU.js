@@ -784,10 +784,10 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       accDocNo: `${PR}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
       partyCode: "DEF", //สำหรับ Supplier ที่ไม่ต้องการลง Mas_Supplier
-      partyTaxCode: " ",
-      partyName: " ",
-      partyAddress: " ",
-      docRefNo: " ",
+      partyTaxCode: "",
+      partyName: "",
+      partyAddress: "",
+      docRefNo: "",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin", //แก้เมื่อทำระบบlogin
@@ -801,6 +801,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
   const [supplierOptions, setSupplierOptions] = useState([]); // state สำหรับข้อมูลจาก API Supplier
   const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
   const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
+  const [supplierSearch, setSupplierSearch] = useState(""); // state สำหรับค้นหา supplier
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
 
   useEffect(() => {
@@ -823,6 +824,8 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setSupplierSearch(""); // reset ค้นหาเมื่อปิด modal
+    setCurrentPage(1);     // reset หน้า
   };
 
   const handleSupplierSelect = (partyCode) => {
@@ -849,9 +852,17 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
   };
 
   const getPaginatedData = () => {
+    const keyword = supplierSearch.trim().toLowerCase();
+    const filtered = keyword
+      ? supplierOptions.filter(
+        (s) =>
+          s.supplierCode?.toLowerCase().includes(keyword) ||
+          s.supplierName?.toLowerCase().includes(keyword)
+      )
+      : supplierOptions;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return supplierOptions.slice(startIndex, endIndex);
+    return filtered.slice(startIndex, endIndex);
   };
   // -------------------------------
 
@@ -1143,7 +1154,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           style={{ width: "100%", backgroundColor: "#cdcdd1" }}
           // onChange={handleInputChange}
           onChange={handleChange}
-        // onClick={handleUpdate}
+          // onClick={handleUpdate}
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
@@ -1162,6 +1173,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1184,6 +1196,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           type="text"
           variant="standard"
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1226,6 +1239,22 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
               component="li"
               style={{ listStyle: "none" }}
             />
+            {/* Search box */}
+            <ListItem>
+              <TextField
+                autoFocus
+                placeholder="ค้นหาด้วย Code หรือ Name..."
+                value={supplierSearch}
+                onChange={(e) => {
+                  setSupplierSearch(e.target.value);
+                  setCurrentPage(1);
+                }}
+                variant="outlined"
+                size="small"
+                fullWidth
+                InputProps={{ style: { backgroundColor: "#ffffe0" } }}
+              />
+            </ListItem>
             {getPaginatedData().map((supplier) => (
               <ListItem key={supplier.supplierID} disablePadding>
                 <ListItemButton
@@ -1275,10 +1304,11 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode || " "}
+          value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1297,10 +1327,11 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyName"
           label="Supplier Name"
-          value={formData.partyName || " "}
+          value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1319,11 +1350,12 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress || " "}
+          value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1343,10 +1375,11 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           id="docRefNo"
           // label="DocRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo || ` `}
+          value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1390,6 +1423,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           value={formData.accBatchDate}
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1436,6 +1470,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1458,6 +1493,7 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           type="date"
           variant="standard"
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {

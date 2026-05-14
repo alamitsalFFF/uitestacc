@@ -1065,8 +1065,6 @@ export default function AccordionJVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="journalNo"
           label="JournalNo"
@@ -1074,6 +1072,7 @@ export default function AccordionJVHD({
           type="text"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1087,16 +1086,15 @@ export default function AccordionJVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="description"
           label="Description"
-          value={String(formData?.description ?? "")}
+          value={String(formData?.description)}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1110,12 +1108,10 @@ export default function AccordionJVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="entryBy"
           label="EntryBy"
-          value={String(formData?.entryBy ?? "")}
+          value={String(formData?.entryBy)}
           type="text"
           variant="standard"
           onChange={handleInputChange}
@@ -1134,8 +1130,6 @@ export default function AccordionJVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="effectiveDate"
           label="EffectiveDate"
@@ -1144,6 +1138,7 @@ export default function AccordionJVHD({
           value={formData?.effectiveDate ? String(formData.effectiveDate) : ""}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1158,8 +1153,6 @@ export default function AccordionJVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="entryDate"
           label="EntryDate"
@@ -1168,6 +1161,7 @@ export default function AccordionJVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {

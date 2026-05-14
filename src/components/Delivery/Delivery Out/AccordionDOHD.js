@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import { useAuthFetch } from "../../Auth/fetchConfig";
 import TextField from "@mui/material/TextField";
@@ -681,11 +681,11 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
       accDocType: DocType,
       accDocNo: `${DocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
-      partyCode: " ",
-      partyTaxCode: " ",
-      partyName: " ",
-      partyAddress: " ",
-      docRefNo: " ",
+      partyCode: "",
+      partyTaxCode: "",
+      partyName: "",
+      partyAddress: "",
+      docRefNo: "",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin",//แก้เมื่อทำระบบlogin`
@@ -700,6 +700,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
   const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
   const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+  const [customerSearch, setCustomerSearch] = useState("");
 
   useEffect(() => {
     // ดึงข้อมูลจาก API ตัวใหม่
@@ -721,6 +722,8 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setCustomerSearch("");
+    setCurrentPage(1);
   };
 
   const handleCustomerSelect = (partyCode) => {
@@ -745,9 +748,25 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const getPaginatedData = () => {
+    const filtered = customerSearch
+      ? customerOptions.filter(
+          (c) =>
+            c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+            c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+        )
+      : customerOptions;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return customerOptions.slice(startIndex, endIndex);
+    return filtered.slice(startIndex, endIndex);
+  };
+
+  const getFilteredCount = () => {
+    if (!customerSearch) return customerOptions.length;
+    return customerOptions.filter(
+      (c) =>
+        c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+        c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+    ).length;
   };
   // -------------------------------
   const docStatus = formData.docStatus;
@@ -1001,8 +1020,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           className="fonts"
           variant="outlined"
@@ -1022,8 +1040,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           className="fonts"
           variant="standard"
@@ -1047,8 +1064,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accDocNo"
           label="AccDocNo"
@@ -1069,8 +1085,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accEffectiveDate"
           label="AccEffectiveDate"
@@ -1080,6 +1095,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1094,8 +1110,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyCode"
           label="Customer Code"
@@ -1104,6 +1119,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1134,13 +1150,22 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
             p: 4,
           }}
         >
+          <h4 style={{ textAlign: "center" }}>Select Customer</h4>
+          <TextField
+            placeholder="ค้นหาด้วย Code หรือ Name..."
+            value={customerSearch}
+            onChange={(e) => { setCustomerSearch(e.target.value); setCurrentPage(1); }}
+            variant="outlined"
+            size="small"
+            fullWidth
+            sx={{ mb: 1, "& .MuiOutlinedInput-root": { backgroundColor: "#ffffe0" } }}
+          />
+          <Divider
+            variant="middle"
+            component="li"
+            style={{ listStyle: "none" }}
+          />
           <List>
-            <h4 style={{ textAlign: "center" }}>Select Customer</h4>
-            <Divider
-              variant="middle"
-              component="li"
-              style={{ listStyle: "none" }}
-            />
             {getPaginatedData().map((customer) => (
               <ListItem key={customer.customerID} disablePadding>
                 <ListItemButton
@@ -1167,8 +1192,8 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           >
             <Stack spacing={2}>
               <Pagination
-                count={Math.ceil(categoryOptions.length / itemsPerPage)} // คำนวณจำนวนหน้า
-                page={currentPage} // กำหนดหน้าปัจจุบัน
+                count={Math.ceil(getFilteredCount() / itemsPerPage)}
+                page={currentPage}
                 onChange={handlePageChange} // ใช้ onChange เพื่อจัดการการเปลี่ยนหน้า
               />
             </Stack>
@@ -1191,16 +1216,16 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode || " "}
+          value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1215,16 +1240,16 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyName"
           label="Customer Name"
-          value={formData.partyName || " "}
+          value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1238,17 +1263,17 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress || " "}
+          value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1263,16 +1288,16 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo || " "}
+          value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1291,8 +1316,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accBatchDate"
           label="AccBatchDate"
@@ -1302,6 +1326,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1315,8 +1340,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="issueBy"
           label="IssueBy"
@@ -1339,8 +1363,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accPostDate"
           label="AccPostDate"
@@ -1349,6 +1372,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1363,8 +1387,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="fiscalYear"
           label="FiscalYear"
@@ -1373,6 +1396,7 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {

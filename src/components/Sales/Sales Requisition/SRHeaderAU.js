@@ -66,7 +66,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
     left: "50%",
     transform: "translate(-50%, -50%)",
     // width: 400,
-    width: "66%",
+    width: "90%",
     maxWidth: "800px",
     backgroundColor: "white",
     // border: "2px solid #000",
@@ -711,10 +711,10 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       accDocNo: `${DocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
       partyCode: "DEF", //สำหรับ Customer ที่ไม่ต้องการลง Mas_Customer
-      partyTaxCode: " ",
-      partyName: " ",
-      partyAddress: " ",
-      docRefNo: " ",
+      partyTaxCode: "",
+      partyName: "",
+      partyAddress: "",
+      docRefNo: "",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       issueBy: loginUser,
@@ -729,6 +729,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
   const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
   const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+  const [customerSearch, setCustomerSearch] = useState("");
 
   useEffect(() => {
     // ดึงข้อมูลจาก API ตัวใหม่
@@ -752,6 +753,8 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setCustomerSearch("");
+    setCurrentPage(1);
   };
 
   const handleCustomerSelect = (partyCode) => {
@@ -778,9 +781,25 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
   };
 
   const getPaginatedData = () => {
+    const filtered = customerSearch
+      ? customerOptions.filter(
+        (c) =>
+          c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+          c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+      )
+      : customerOptions;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return customerOptions.slice(startIndex, endIndex);
+    return filtered.slice(startIndex, endIndex);
+  };
+
+  const getFilteredCount = () => {
+    if (!customerSearch) return customerOptions.length;
+    return customerOptions.filter(
+      (c) =>
+        c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+        c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+    ).length;
   };
   // -------------------------------
   // const navigate = useNavigate();
@@ -1191,6 +1210,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           value={formData.accEffectiveDate}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1214,6 +1234,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1235,6 +1256,15 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box sx={customerModalStyle}>
           <h4 style={{ textAlign: "center" }}>Select Customer</h4>
+          <TextField
+            placeholder="ค้นหาด้วย Code หรือ Name..."
+            value={customerSearch}
+            onChange={(e) => { setCustomerSearch(e.target.value); setCurrentPage(1); }}
+            variant="outlined"
+            size="small"
+            fullWidth
+            sx={{ mb: 1, "& .MuiOutlinedInput-root": { backgroundColor: "#ffffe0" } }}
+          />
           <Divider
             variant="middle"
             component="li"
@@ -1269,7 +1299,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           >
             <Stack spacing={2}>
               <Pagination
-                count={Math.ceil(customerOptions.length / itemsPerPage)}
+                count={Math.ceil(getFilteredCount() / itemsPerPage)}
                 page={currentPage}
                 onChange={handlePageChange}
                 color="primary"
@@ -1297,11 +1327,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode || " "}
+          value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1319,11 +1350,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyName"
           label="Customer Name"
-          value={formData.partyName || " "}
+          value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1341,12 +1373,13 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress || " "}
+          value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1364,11 +1397,12 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo || " "}
+          value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1396,6 +1430,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1439,6 +1474,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1446,7 +1482,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             }
           }}
           onChange={handleInputChange}
-        // defaultValue={new Date().toISOString().slice(0, 10)}
+          // defaultValue={new Date().toISOString().slice(0, 10)}
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
@@ -1463,13 +1499,14 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
               backgroundColor: "#ffffe0",
             }
           }}
-        // defaultValue={new Date().toISOString().slice(0, 10)}
+          // defaultValue={new Date().toISOString().slice(0, 10)}
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },

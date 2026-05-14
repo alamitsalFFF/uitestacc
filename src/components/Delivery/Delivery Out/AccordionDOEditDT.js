@@ -450,15 +450,33 @@ function AccordionDOEditDT({
               accDocType={accDocType}
               onDocConfigFetched={handleDocConfigFetched}
             />
-            <h4
-              style={{
-                textAlign: "center",
-                textDecorationLine: "underline",
-                paddingTop: "20px",
-              }}
-            >
-              Edit DocNo:{accDocNo} &nbsp;ItemNo:&nbsp;{accItemNo}
-            </h4>
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "10px",
+              paddingTop: "16px",
+            }}>
+              <div style={{
+                background: "linear-gradient(135deg, #00008b, #1976d2)",
+                color: "white",
+                padding: "10px 24px",
+                borderRadius: "30px",
+                boxShadow: "0 4px 12px rgba(0, 0, 139, 0.3)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "4px",
+              }}>
+                <div style={{ display: "flex", gap: "12px", opacity: 0.9, fontSize: "0.9rem", fontWeight: 500 }}>
+                  <span>Doc No: <span style={{ fontWeight: 700 }}>{accDocNo}</span></span>
+                  <span style={{ borderLeft: "1px solid rgba(255,255,255,0.3)", paddingLeft: "12px" }}>
+                    Item No: <span style={{ fontWeight: 700 }}>{accItemNo}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <CircularButtonGroup actions={buttonActions} />
             </div>

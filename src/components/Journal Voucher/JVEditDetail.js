@@ -413,7 +413,7 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
           <div style={{ display: "flex", gap: "12px", opacity: 0.9, fontSize: "0.9rem", fontWeight: 500 }}>
             <span>Doc No: <span style={{ fontWeight: 700 }}>{journalNoFromState}</span></span>
             <span style={{ borderLeft: "1px solid rgba(255,255,255,0.3)", paddingLeft: "12px" }}>
-              Item Seq: <span style={{ fontWeight: 700 }}>{seqProp}</span>
+              Item No: <span style={{ fontWeight: 700 }}>{seqProp}</span>
             </span>
           </div>
         </div>
@@ -431,11 +431,6 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
           paddingTop: "15px",
         }}>
           <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
             id="accCode"
             label="AccCode"
             value={adddatadetail.accCode}
@@ -444,17 +439,22 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
             fullWidth
             onChange={handleInputChange}
             inputRef={exchangeRateRef}
+            InputProps={{
+              // readOnly: true,
+              style: {
+                backgroundColor: "#ffffe0",
+              }
+            }}
+            sx={{
+              "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            }}
           />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
           <FontAwesomeIcon icon={faEllipsisVertical} size="lg" style={{ cursor: "pointer" }} onClick={() => setOpenModal(true)} />
           <div style={{ paddingTop: "15px", width: "100%", gap: 8 }}>
             <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
               id="accName"
               label="&nbsp; AccName"
               value={adddatadetail.accName}
@@ -462,16 +462,21 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
               variant="standard"
               fullWidth
               onChange={handleInputChange}
+              InputProps={{
+                // readOnly: true,
+                style: {
+                  backgroundColor: "#ffffe0",
+                }
+              }}
+              sx={{
+                "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+              }}
             />
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, gridColumn: "1 / -1" }}>
           <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
             id="accDesc"
             label="Description"
             value={adddatadetail.accDesc}
@@ -480,16 +485,21 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
             fullWidth
             onChange={handleInputChange}
             onKeyDown={handleQtyKeyDown}
-          // InputProps={{ readOnly: true }} //ปิดตรงนี้ถ้าต้องการให้แก้ไขได้
+            // InputProps={{ readOnly: true }} //ปิดตรงนี้ถ้าต้องการให้แก้ไขได้
+            InputProps={{
+              // readOnly: true,
+              style: {
+                backgroundColor: "#ffffe0",
+              }
+            }}
+            sx={{
+              "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            }}
           />
         </div>
         <div>
           <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
             id="debit"
             label="Debit"
             value={adddatadetail.debit}
@@ -498,17 +508,22 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
             fullWidth
             onChange={handleInputChange}
             onKeyDown={handlePriceKeyDown}
+            InputProps={{
+              // readOnly: true,
+              style: {
+                backgroundColor: "#ffffe0",
+              }
+            }}
+            sx={{
+              "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            }}
           // InputProps={{ readOnly: true }} //ปิดตรงนี้ถ้าต้องการให้แก้ไขได้
           />
         </div>
 
         <div>
           <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-          }}
             id="credit"
             label="Credit"
             value={adddatadetail.credit}
@@ -517,10 +532,20 @@ function JVEditDetail({ open, onClose, entryId: entryIdProp, seq: seqProp, journ
             fullWidth
             onChange={handleInputChange}
             onKeyDown={handleQtyKeyDown}
+            InputProps={{
+              // readOnly: true,
+              style: {
+                backgroundColor: "#ffffe0",
+              }
+            }}
+            sx={{
+              "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+              "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+            }}
           // InputProps={{ readOnly: true }} //ปิดตรงนี้ถ้าต้องการให้แก้ไขได้
           />
         </div>
-       
+
       </div>
       <div style={{ padding: 10 }}></div>
 

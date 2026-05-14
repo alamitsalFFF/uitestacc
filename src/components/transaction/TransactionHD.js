@@ -658,10 +658,10 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
       accDocNo: `${setCurrentAccDocType}${shortYear}xx...`,
       accEffectiveDate: new Date().toISOString().slice(0, 10),
       partyCode: "DEF",
-      partyTaxCode: " ",
-      partyName: " ",
-      partyAddress: " ",
-      docRefNo: " ",
+      partyTaxCode: "",
+      partyName: "",
+      partyAddress: "",
+      docRefNo: "",
       docStatus: 0,
       accBatchDate: new Date().toISOString().slice(0, 10),
       // issueBy: "admin", //แก้เมื่อทำระบบlogin
@@ -1477,6 +1477,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           id="demo-simple-select"
           value={selectedEName}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1515,6 +1516,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           value={formData.accEffectiveDate}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1534,6 +1536,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1622,11 +1625,12 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           id="partyTaxCode"
           // label="PartyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode || " "}
+          value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1641,11 +1645,12 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="partyName"
           label="Party Name"
-          value={formData.partyName || " "}
+          value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1659,12 +1664,13 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress || " "}
+          value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1679,11 +1685,12 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
         <TextField
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo || " "}
+          value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1708,6 +1715,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1726,6 +1734,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1744,6 +1753,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1764,6 +1774,7 @@ export default function TransactionHeader({ apiData, setApiData, currentIndex, s
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {

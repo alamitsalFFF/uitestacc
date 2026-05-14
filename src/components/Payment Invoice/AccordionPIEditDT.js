@@ -444,15 +444,33 @@ function AccordionPIEditDT({
               accDocType={accDocType}
               onDocConfigFetched={handleDocConfigFetched}
             />
-            <h4
-              style={{
-                textAlign: "center",
-                textDecorationLine: "underline",
-                paddingTop: "20px",
-              }}
-            >
-              Edit DocNo:{accDocNo} &nbsp;ItemNo:&nbsp;{accItemNo}
-            </h4>
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "10px",
+              paddingTop: "16px",
+            }}>
+              <div style={{
+                background: "linear-gradient(135deg, #00008b, #1976d2)",
+                color: "white",
+                padding: "10px 24px",
+                borderRadius: "30px",
+                boxShadow: "0 4px 12px rgba(0, 0, 139, 0.3)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "4px",
+              }}>
+                <div style={{ display: "flex", gap: "12px", opacity: 0.9, fontSize: "0.9rem", fontWeight: 500 }}>
+                  <span>Doc No: <span style={{ fontWeight: 700 }}>{accDocNo}</span></span>
+                  <span style={{ borderLeft: "1px solid rgba(255,255,255,0.3)", paddingLeft: "12px" }}>
+                    Item No: <span style={{ fontWeight: 700 }}>{accItemNo}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <CircularButtonGroup actions={buttonActions} />
             </div>
@@ -514,9 +532,8 @@ function AccordionPIEditDT({
                     style: { backgroundColor: "#ffffe0" }
                   }}
                   sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+                    "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                    "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
                   }}
                   onChange={handleInputChange}
                   onKeyDown={handlePriceKeyDown}
@@ -539,9 +556,8 @@ function AccordionPIEditDT({
                     style: { backgroundColor: "#ffffe0" }
                   }}
                   sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+                    "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                    "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
                   }}
                   onChange={handleInputChange}
                   inputRef={qtyRef}
@@ -563,9 +579,8 @@ function AccordionPIEditDT({
                     style: { backgroundColor: "#ffffe0" }
                   }}
                   sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+                    "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                    "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
                   }}
                   onChange={(event) =>
                     setProductSizeUnitValue(event.target.value)
@@ -577,7 +592,7 @@ function AccordionPIEditDT({
                 style={{ display: "flex", paddingTop: "10px" }}
               >
                 <FormControl variant="standard" sx={{ minWidth: "100%" }}>
-                  <InputLabel 
+                  <InputLabel
                     id="currency"
                     sx={{
                       color: "#00008b",
@@ -597,10 +612,9 @@ function AccordionPIEditDT({
                     inputRef={currencyRef}
                     onKeyDown={handleCurrencyKeyDown}
                     sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-                      backgroundColor: "#ffffe0",
+                      "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
+                      backgroundColor: "#ffffe0"
                     }}
                   >
                     <MenuItem value={"THB"}>THB</MenuItem>
@@ -625,23 +639,22 @@ function AccordionPIEditDT({
                     style: { backgroundColor: "#ffffe0" }
                   }}
                   sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+                    "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
+                    "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
                   }}
                   onChange={handleInputChange}
                   inputRef={exchangeRateRef}
                 />
               </div>
               <div className="row">
-                <div style={{ 
-                  display: "flex", 
-                  justifyContent: "space-between", 
-                  alignItems: "center", 
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                   flexWrap: "wrap",
                   gap: "12px",
-                  backgroundColor: "#f5f7fa", 
-                  padding: "16px", 
+                  backgroundColor: "#f5f7fa",
+                  padding: "16px",
                   borderRadius: "12px",
                   marginTop: "20px",
                   marginBottom: "10px",

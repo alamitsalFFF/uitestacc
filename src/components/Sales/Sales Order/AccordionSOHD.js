@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../Auth/axiosConfig";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -61,6 +61,8 @@ import DocStatusSO from "./DocStatusSO";
 import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
 import { DOfromSOandStock } from "./DOfromSO_StockFromDO";
 import DOManagementComponent from "./DOManagementComponent";
+import Abbreviation from "../../purchase/Abbreviation";
+import Abbreviations from "../../DataFilters/Abbreviations";
 
 export default function SOAccordionHD({
   apiData,
@@ -705,6 +707,7 @@ export default function SOAccordionHD({
   const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
   const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+  const [customerSearch, setCustomerSearch] = useState("");
 
   useEffect(() => {
     // ดึงข้อมูลจาก API ตัวใหม่
@@ -725,6 +728,8 @@ export default function SOAccordionHD({
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setCustomerSearch("");
+    setCurrentPage(1);
   };
 
   const handleCustomerSelect = (partyCode) => {
@@ -750,9 +755,25 @@ export default function SOAccordionHD({
   };
 
   const getPaginatedData = () => {
+    const filtered = customerSearch
+      ? customerOptions.filter(
+        (c) =>
+          c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+          c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+      )
+      : customerOptions;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return customerOptions.slice(startIndex, endIndex);
+    return filtered.slice(startIndex, endIndex);
+  };
+
+  const getFilteredCount = () => {
+    if (!customerSearch) return customerOptions.length;
+    return customerOptions.filter(
+      (c) =>
+        c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+        c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+    ).length;
   };
   // -------------------------------
   const AccDocNO = formData.accDocNo;
@@ -1206,8 +1227,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           className="fonts"
           variant="outlined"
@@ -1226,8 +1246,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           className="fonts"
           variant="standard"
@@ -1250,8 +1269,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accDocNo"
           label="AccDocNo"
@@ -1273,8 +1291,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accEffectiveDate"
           label="AccEffectiveDate"
@@ -1284,6 +1301,7 @@ export default function SOAccordionHD({
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1297,8 +1315,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyCode"
           label="Customer Code"
@@ -1307,6 +1324,7 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1328,7 +1346,8 @@ export default function SOAccordionHD({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: "90%",
+            maxWidth: "800px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1337,20 +1356,30 @@ export default function SOAccordionHD({
             p: 4,
           }}
         >
+          <h4 style={{ textAlign: "center" }}>Select Customer</h4>
+          <TextField
+            placeholder="ค้นหาด้วย Code หรือ Name..."
+            value={customerSearch}
+            onChange={(e) => { setCustomerSearch(e.target.value); setCurrentPage(1); }}
+            variant="outlined"
+            size="small"
+            fullWidth
+            sx={{ mb: 1, "& .MuiOutlinedInput-root": { backgroundColor: "#ffffe0" } }}
+          />
+          <Divider
+            variant="middle"
+            component="li"
+            style={{ listStyle: "none" }}
+          />
           <List>
-            <h4 style={{ textAlign: "center" }}>Select Customer</h4>
-            <Divider
-              variant="middle"
-              component="li"
-              style={{ listStyle: "none" }}
-            />
             {getPaginatedData().map((customer) => (
               <ListItem key={customer.customerID} disablePadding>
                 <ListItemButton
                   onClick={() => handleCustomerSelect(customer.customerCode)}
                 >
                   <ListItemText primary={customer.customerCode} />
-                  <h5>{customer.customerName}</h5>
+                  {/* <h5>{customer.customerName}</h5> */}
+                  <Abbreviations textName={customer.customerName} />
                 </ListItemButton>
               </ListItem>
             ))}
@@ -1370,8 +1399,8 @@ export default function SOAccordionHD({
           >
             <Stack spacing={2}>
               <Pagination
-                count={Math.ceil(customerOptions.length / itemsPerPage)} // คำนวณจำนวนหน้า
-                page={currentPage} // กำหนดหน้าปัจจุบัน
+                count={Math.ceil(getFilteredCount() / itemsPerPage)}
+                page={currentPage}
                 onChange={handlePageChange} // ใช้ onChange เพื่อจัดการการเปลี่ยนหน้า
               />
             </Stack>
@@ -1383,16 +1412,16 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyTaxCode"
           label="Tax ID"
-          value={formData.partyTaxCode || " "}
+          value={formData.partyTaxCode}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1406,16 +1435,16 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyName"
           label="Customer Name"
-          value={formData.partyName || " "}
+          value={formData.partyName}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1429,17 +1458,17 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="partyAddress"
           label="Address"
-          value={formData.partyAddress || " "}
+          value={formData.partyAddress}
           // type="text"
           multiline
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1453,16 +1482,16 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="docRefNo"
           label="DocNo Inv."
-          value={formData.docRefNo || " "}
+          value={formData.docRefNo}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1476,8 +1505,7 @@ export default function SOAccordionHD({
         {/* <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="docStatus"
           label="DocStatus"
@@ -1499,8 +1527,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accBatchDate"
           label="AccBatchDate"
@@ -1510,6 +1537,7 @@ export default function SOAccordionHD({
           onChange={handleInputChange}
           // defaultValue={new Date().toISOString().slice(0, 10)}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1523,8 +1551,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="issueBy"
           label="IssueBy"
@@ -1546,8 +1573,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="accPostDate"
           label="AccPostDate"
@@ -1555,6 +1581,7 @@ export default function SOAccordionHD({
           type="date"
           variant="standard"
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1570,8 +1597,7 @@ export default function SOAccordionHD({
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
+            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }
           }}
           id="fiscalYear"
           label="FiscalYear"
@@ -1580,6 +1606,7 @@ export default function SOAccordionHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {

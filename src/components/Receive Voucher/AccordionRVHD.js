@@ -933,58 +933,11 @@ export default function AccordionRVHD({
         style={{ listStyle: "none", paddingTop: "3px" }}
       />
       <div>&nbsp;</div>
-      {/* <div className="col-md-3">
-        <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
-          }}
-          className="fonts"
-          variant="outlined"
-          id="demo-simple-select"
-          value="RV"
-          style={{ width: "100%" }}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
-        ></TextField>
-      </div>
-      <div className="col-md-9">
-        <div>&nbsp;</div>
-        <TextField
-          sx={{
-            "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
-          }}
-          className="fonts"
-          variant="standard"
-          id="demo-simple-select"
-          value={selectedEName}
-          style={{ width: "100%" }}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
-        >
-          <MenuItem value={PV}>Payment Voucher</MenuItem>
-        </TextField>
-      </div>
-      <div>&nbsp;</div> */}
-
       <div className="col-md-4" style={{ paddingTop: "5px" }}>
         <TextField
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="journalNo"
           label="JournalNo"
@@ -992,6 +945,7 @@ export default function AccordionRVHD({
           type="text"
           style={{ width: "100%" }}
           onChange={handleInputChange}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1006,16 +960,15 @@ export default function AccordionRVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="description"
           label="Description"
-          value={String(formData?.description ?? "")}
+          value={String(formData?.description)}
           type="text"
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1029,8 +982,6 @@ export default function AccordionRVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="entryBy"
           label="EntryBy"
@@ -1053,8 +1004,6 @@ export default function AccordionRVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="effectiveDate"
           label="EffectiveDate"
@@ -1063,6 +1012,7 @@ export default function AccordionRVHD({
           value={formData?.effectiveDate ? String(formData.effectiveDate) : ""}
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
@@ -1077,8 +1027,6 @@ export default function AccordionRVHD({
           sx={{
             "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 },
             "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" },
-            backgroundColor: "#ffffe0",
-            backgroundColor: "#ffffe0",
           }}
           id="entryDate"
           label="EntryDate"
@@ -1087,6 +1035,7 @@ export default function AccordionRVHD({
           variant="standard"
           onChange={handleInputChange}
           style={{ width: "100%" }}
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             // readOnly: true,
             style: {
