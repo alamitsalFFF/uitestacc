@@ -57,6 +57,7 @@ import SOManagementComponent from "./SOManagementComponent";
 // import { SOfromSRPartial } from "./SOFromSRPartial";0
 import DocStatusDisplay from "./DocStatusDisplay";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
+import Abbreviations from "../../DataFilters/Abbreviations";
 
 export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
   const authFetch = useAuthFetch();
@@ -67,7 +68,7 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
     transform: "translate(-50%, -50%)",
     // width: 400,
     width: "90%",
-    maxWidth: "800px",
+    maxWidth: "500px",
     backgroundColor: "white",
     // border: "2px solid #000",
     borderRadius: "30px",
@@ -1276,10 +1277,14 @@ export default function SRHeaderAU({ apiData, setApiData, currentIndex, setCurre
                 <ListItemButton
                   onClick={() => handleCustomerSelect(customer.customerCode)}
                 >
-                  <ListItemText
+                  {/* <ListItemText
                     primary={`${customer.customerCode} - ${customer.customerName}`}
                   //secondary={`${customer.taxNumber}/${customer.taxBranch} ${customer.address1}`}
+                  /> */}
+                  <ListItemText
+                    primary={customer.customerCode}
                   />
+                  <Abbreviations textName={customer.customerName} />
                 </ListItemButton>
               </ListItem>
             ))}

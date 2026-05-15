@@ -54,6 +54,7 @@ import Swal from "sweetalert2";
 import DocStatusDO from "./DocStatusDO";
 import { StockFromDO } from "./StockFromDO";
 import CircularButton from "../../DataFilters/CircularButton";
+import Abbreviations from "../../DataFilters/Abbreviations";
 
 export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -750,10 +751,10 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
   const getPaginatedData = () => {
     const filtered = customerSearch
       ? customerOptions.filter(
-          (c) =>
-            c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
-            c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
-        )
+        (c) =>
+          c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+          c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+      )
       : customerOptions;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -1141,7 +1142,8 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: "90%",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1172,7 +1174,8 @@ export default function AccordionDOHD({ apiData, setApiData, currentIndex, setCu
                   onClick={() => handleCustomerSelect(customer.customerCode)}
                 >
                   <ListItemText primary={customer.customerCode} />
-                  <h5>{customer.customerName}</h5>
+                  {/* <h5>{customer.customerName}</h5> */}
+                  <Abbreviations textName={customer.customerName} />
                 </ListItemButton>
               </ListItem>
             ))}

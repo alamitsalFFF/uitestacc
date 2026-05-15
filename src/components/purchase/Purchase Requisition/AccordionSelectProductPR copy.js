@@ -1,3 +1,5 @@
+//หน้านี้สำหรับเลือก product มาจาก VMas_Product
+// import React, { useState, useEffect } from "react";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,7 +31,7 @@ import {
   setAccDocNo,
 } from "../../redux/TransactionDataaction";
 import { useDispatch, useSelector } from "react-redux";
-import SearchComponent from "../../purchase/SearchComponen";
+import SearchComponent from "../SearchComponen";
 import { API_VIEW_RESULT } from "../../api/url";
 import { Padding } from "@mui/icons-material";
 
@@ -50,7 +52,7 @@ const modalStyle = {
 };
 const ItemNoContext = createContext({
   itemNo: 1,
-  setItemNo: () => { },
+  setItemNo: () => {},
 });
 
 const useItemNo = () => {
@@ -58,7 +60,7 @@ const useItemNo = () => {
   return { itemNo, setItemNo };
 };
 
-function AccordionSelectProductSR({
+function AccordionSelectProductPR({
   isOpen,
   onClose,
   onSave,
@@ -73,6 +75,7 @@ function AccordionSelectProductSR({
   const [selectedButton, setSelectedButton] = useState(null);
   const [materialCount, setMaterialCount] = useState(0);
   const [serviceCount, setServiceCount] = useState(0);
+  const [rawMaterialCount, setRawMaterialCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   // States ใหม่สำหรับ Pagination
@@ -83,13 +86,13 @@ function AccordionSelectProductSR({
     viewName: "vMas_Product",
     parameters: [],
     results: [
-      { sourceField: "productName" },
-      { sourceField: "productTypeCode" },
-      { sourceField: "productID" },
+      // { sourceField: "productName" },
+      // { sourceField: "productTypeCode" },
+      // { sourceField: "productID" },
       { sourceField: "IsMaterial" },
       { sourceField: "IsService" },
       { sourceField: "ProductBrand" },
-      { sourceField: "productCode" },
+      { sourceField: "ProductCode" },
       { sourceField: "ProductColor" },
       { sourceField: "ProductID" },
       { sourceField: "ProductName" },
@@ -123,16 +126,22 @@ function AccordionSelectProductSR({
         if (isMounted && response.status === 200) {
           setLoading(false);
           setProducts(response.data);
-          const products_count = response.data.filter(
-            (product) => product.IsService === false
+          const materials = response.data.filter(
+            (product) =>
+              product.IsMaterial === true && product.IsService === false
           );
           const services = response.data.filter(
             (product) =>
               product.IsService === true && product.IsMaterial === false
           );
+          const rawMaterials = response.data.filter(
+            (product) =>
+              product.IsMaterial === false && product.IsService === false
+          );
 
-          setMaterialCount(products_count.length);
+          setMaterialCount(materials.length);
           setServiceCount(services.length);
+          setRawMaterialCount(rawMaterials.length);
         } else if (isMounted) {
           setLoading(false);
           console.error("Error:", response.statusText);
@@ -157,11 +166,13 @@ function AccordionSelectProductSR({
     // กรองข้อมูลตามประเภทและคำค้นหาก่อนทำการแบ่งหน้า
     const filteredAndSearchedProducts = products
       .filter((product) => {
-        if (selectedType === "product") {
-          return product.IsService === false;
+        if (selectedType === "material") {
+          return product.IsMaterial === true && product.IsService === false;
         }
         if (selectedType === "service") {
           return product.IsService === true && product.IsMaterial === false;
+        } else if (selectedType === "rewmaterial") {
+          return product.IsService === false && product.IsMaterial === false;
         }
         return true;
       })
@@ -169,9 +180,8 @@ function AccordionSelectProductSR({
         if (!searchTerm) return true;
         const searchLower = searchTerm.toLowerCase();
         return (
-          (product.ProductName ?? "").toLowerCase().includes(searchLower) ||
-          (product.productCode ?? "").toLowerCase().includes(searchLower) ||
-          //(product.ProductID?.toString() ?? "").toLowerCase().includes(searchLower)
+          product.ProductName.toLowerCase().includes(searchLower) ||
+          product.ProductCode.toLowerCase().includes(searchLower) ||
           product.ProductID.toString().toLowerCase().includes(searchLower)
         );
       });
@@ -181,12 +191,12 @@ function AccordionSelectProductSR({
 
   const handleProductSelect = (product) => {
     const isSelected = selectedProducts.find(
-      (p) => p.productID === product.productID
+      (p) => p.ProductID === product.ProductID
     );
     if (isSelected) {
       dispatch(
         setSelectedProducts(
-          selectedProducts.filter((p) => p.productID !== product.productID)
+          selectedProducts.filter((p) => p.ProductID !== product.ProductID)
         )
       );
     } else {
@@ -197,8 +207,8 @@ function AccordionSelectProductSR({
             ...product,
             accDocNo: accDocNo,
             itemNo: nextItemNo,
-            productName: product.productName,
-            productCode: product.productCode,
+            productName: product.ProductName,
+            productCode: product.ProductCode,
             rateVat: product.rateVat,
             rateWht: product.rateWht,
             unitStock: product.unitStock,
@@ -209,16 +219,22 @@ function AccordionSelectProductSR({
     }
   };
 
-  const handleProductTypeSelect = () => {
-    setSelectedType("product");
-    setSelectedButton("product");
-    setCurrentPage(1);
+  const handleMaterialSelect = () => {
+    setSelectedType("material");
+    setSelectedButton("material");
+    setCurrentPage(1); // Reset หน้าเมื่อเปลี่ยนประเภท
   };
 
   const handleServiceSelect = () => {
     setSelectedType("service");
     setSelectedButton("service");
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset หน้าเมื่อเปลี่ยนประเภท
+  };
+
+  const handleRewMaterialSelect = () => {
+    setSelectedType("rewmaterial");
+    setSelectedButton("rewmaterial");
+    setCurrentPage(1); // Reset หน้าเมื่อเปลี่ยนประเภท
   };
 
   const handleConfirm = () => {
@@ -252,11 +268,13 @@ function AccordionSelectProductSR({
   // คำนวณจำนวนหน้ารวมทั้งหมด
   const totalItems = products
     .filter((product) => {
-      if (selectedType === "product") {
-        return product.IsService === false;
+      if (selectedType === "material") {
+        return product.IsMaterial === true && product.IsService === false;
       }
       if (selectedType === "service") {
         return product.IsService === true && product.IsMaterial === false;
+      } else if (selectedType === "rewmaterial") {
+        return product.IsService === false && product.IsMaterial === false;
       }
       return true;
     })
@@ -265,7 +283,7 @@ function AccordionSelectProductSR({
       const searchLower = searchTerm.toLowerCase();
       return (
         product.ProductName.toLowerCase().includes(searchLower) ||
-        product.productCode.toLowerCase().includes(searchLower) ||
+        product.ProductCode.toLowerCase().includes(searchLower) ||
         product.ProductID.toString().toLowerCase().includes(searchLower)
       );
     }).length;
@@ -279,47 +297,75 @@ function AccordionSelectProductSR({
           <h1 style={{ textAlign: "center" }}>SelectProduct/Service</h1>
           <div>&nbsp;</div>
           <div
-            style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px" }}
+            style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}
           >
-            <Stack
-              direction="row"
-              spacing={2}
-              flexWrap="wrap"
-              alignItems="center"
-              sx={{ flex: 1 }}
-            >
-              <Badge
-                anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                badgeContent={materialCount}
-                max={999}
-                color="primary"
-                sx={{ "& .MuiBadge-badge": { border: "1px solid white" } }}
-                style={{ marginLeft: "10px" }}
+            <div className="col-8">
+              <Stack
+                direction="row"
+                spacing={2}
+                flexWrap="wrap"
+                //sx={{ alignItems: "center", justifyContent: "center" }}
               >
-                <Chip
-                  label="PRODUCT"
-                  color={selectedButton === "product" ? "primary" : "primary"}
-                  variant={selectedButton === "product" ? "filled" : "outlined"}
-                  onClick={handleProductTypeSelect}
-                />
-              </Badge>
-              <Badge
-                anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                badgeContent={serviceCount}
-                max={999}
-                color="success"
-                sx={{ "& .MuiBadge-badge": { border: "1px solid white" } }}
-                style={{ marginLeft: "10px" }}
-              >
-                <Chip
-                  label="SERVICE"
-                  color={selectedButton === "service" ? "success" : "success"}
-                  variant={selectedButton === "service" ? "filled" : "outlined"}
-                  onClick={handleServiceSelect}
-                />
-              </Badge>
-            </Stack>
-            <div style={{ display: "flex", alignItems: "center" }}>
+                <Badge
+                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                  badgeContent={materialCount}
+                  max={999}
+                  color="primary"
+                  sx={{ "& .MuiBadge-badge": { border: "1px solid white"  }  }}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <Chip
+                    label="MATERIAL"
+                    color={
+                      selectedButton === "material" ? "primary" : "primary"
+                    }
+                    variant={
+                      selectedButton === "material" ? "filled" : "outlined"
+                    }
+                    onClick={handleMaterialSelect}
+                  />
+                </Badge>
+                <Badge
+                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                  badgeContent={serviceCount}
+                  max={999}
+                  color="success"
+                  sx={{ "& .MuiBadge-badge": { border: "1px solid white" } }}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <Chip
+                    label="SERVICE"
+                    color={selectedButton === "service" ? "success" : "success"}
+                    variant={
+                      selectedButton === "service" ? "filled" : "outlined"
+                    }
+                    onClick={handleServiceSelect}
+                  />
+                </Badge>
+                <Badge
+                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                  badgeContent={rawMaterialCount}
+                  max={999}
+                  color="secondary"
+                  sx={{ "& .MuiBadge-badge": { border: "1px solid white" } }}
+                  style={{ marginLeft: "10px" }}
+                >
+                  <Chip
+                    label="RAW MATERIAL"
+                    color={
+                      selectedButton === "rewmaterial"
+                        ? "secondary"
+                        : "secondary"
+                    }
+                    variant={
+                      selectedButton === "rewmaterial" ? "filled" : "outlined"
+                    }
+                    onClick={handleRewMaterialSelect}
+                  />
+                </Badge>
+              </Stack>
+            </div>
+            <div style={{ marginLeft: "auto", paddingTop: "10px" }}>
               {showSearch ? (
                 <SearchComponent onSearch={handleSearch} />
               ) : (
@@ -333,28 +379,28 @@ function AccordionSelectProductSR({
             </div>
           </div>
           <ul>
-            {getPaginatedData().map((product, index) => (
+            {getPaginatedData().map((product) => (
               <div
                 className="row"
-                key={product.productID}
+                key={product.ProductID}
                 onClick={() => handleProductSelect(product)}
                 style={{ paddingLeft: "20px", paddingRight: "20px" }}
               >
                 <ListItem style={{ display: "flex", alignItems: "center" }}>
                   <div>
                     <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-                      &nbsp; {(currentPage - 1) * itemsPerPage + index + 1}. {product.productCode}/{product.productName}
-                      <i>{product.rateVat ? `(รวม VAT${product.rateVat} %)` : "(ไม่รวม VAT)"}</i>
+                      &nbsp; {product.ProductCode}/{product.ProductName} 
+                      {/* <i>{product.rateVat ? `(รวม VAT${product.rateVat} %)`:"(ไม่รวม VAT)"}</i> */}
                       {/* &nbsp;&nbsp; */}
                       {selectedProducts.find(
-                        (p) => p.productID === product.productID
+                        (p) => p.ProductID === product.ProductID
                       ) && (
-                          <FontAwesomeIcon
-                            icon={faCircleCheck}
-                            size="1x"
-                            style={{ color: "#a10000" }}
-                          />
-                        )}
+                        <FontAwesomeIcon
+                          icon={faCircleCheck}
+                          size="1x"
+                          style={{ color: "#a10000" }}
+                        />
+                      )}
                     </h5>
                   </div>
                 </ListItem>
@@ -396,7 +442,7 @@ function AccordionSelectProductSR({
               variant="contained"
               color="primary"
               onClick={handleConfirm}
-            // style={{ marginRight: "auto" }}
+              // style={{ marginRight: "auto" }}
             >
               Confirm
             </Button>
@@ -407,4 +453,4 @@ function AccordionSelectProductSR({
   );
 }
 
-export default AccordionSelectProductSR;
+export default AccordionSelectProductPR;

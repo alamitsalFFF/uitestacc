@@ -1347,7 +1347,7 @@ export default function SOAccordionHD({
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: "90%",
-            maxWidth: "800px",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",

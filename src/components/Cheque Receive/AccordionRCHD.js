@@ -63,6 +63,7 @@ import DocStatusPC from "../Cheque Payment/DocStatusPC";
 import DocStatusRC from "./DocStatusRC";
 import { RVfromRC } from "./RVFromRC";
 import { DOfromRC } from "./DOfromRC";
+import Abbreviations from "../DataFilters/Abbreviations";
 
 export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -382,21 +383,21 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
       const partyAddress = formData.partyAddress;
       const nameCategory = selectedEName;
 
-      // ฟังก์ชันสำหรับเรียก API SetSupplier
-      const setSupplier = async (supplierData) => {
+      // ฟังก์ชันสำหรับเรียก API SetCustomer
+      const setCustomer = async (customerData) => {
         const response = await authFetch(
-          `${API_BASE}/Supplier/SetSupplier`,
+          `${API_BASE}/Customer/SetCustomer`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
               // Add any other necessary headers
             },
-            body: JSON.stringify(supplierData),
+            body: JSON.stringify(customerData),
           }
         );
         if (!response.ok) {
-          let errorMessage = `HTTP error during SetSupplier! status: ${response.status}`;
+          let errorMessage = `HTTP error during SetCustomer! status: ${response.status}`;
           try {
             const errorText = await response.text();
             errorMessage += `, message: ${errorText || "Unknown error"}`;
@@ -418,65 +419,65 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
           }
         } else {
           const textResponse = await response.text();
-          console.log("SetSupplier response (non-JSON):", textResponse);
+          console.log("SetCustomer response (non-JSON):", textResponse);
           return textResponse;
         }
       };
 
-      // ตรวจสอบค่า partyCode และดำเนินการเรียก API SetSupplier ถ้าไม่ใช่ 'DEF'
+      // ตรวจสอบค่า partyCode และดำเนินการเรียก API SetCustomer ถ้าไม่ใช่ 'DEF'
       if (partyCode !== "DEF") {
         const taxParts = partyTaxCode.split("/");
-        const taxNumberForSupplier = taxParts[0];
-        const taxBranchForSupplier =
+        const taxNumberForCustomer = taxParts[0];
+        const taxBranchForCustomer =
           taxParts.length > 1 ? taxParts[1] : "00000";
-        const supplierPayload = [
+        const customerPayload = [
           {
-            supplierCode: partyCode,
-            taxNumber: taxNumberForSupplier,
-            taxBranch: taxBranchForSupplier,
-            supplierName: partyName,
+            customerCode: partyCode,
+            taxNumber: taxNumberForCustomer,
+            taxBranch: taxBranchForCustomer,
+            customerName: partyName,
             address1: partyAddress,
           },
         ];
 
         console.log(
-          "Data to send for SetSupplier:",
-          JSON.stringify(supplierPayload)
+          "Data to send for SetCustomer:",
+          JSON.stringify(customerPayload)
         );
         try {
-          const setSupplierResponse = await setSupplier(supplierPayload);
-          console.log("SetSupplier response:", setSupplierResponse);
-          // ตรวจสอบ Response หากมีข้อความระบุ Supplier สร้างสำเร็จ
+          const setCustomerResponse = await setCustomer(customerPayload);
+          console.log("SetCustomer response:", setCustomerResponse);
+          // ตรวจสอบ Response หากมีข้อความระบุ Customer สร้างสำเร็จ
           if (
-            typeof setSupplierResponse === "string" &&
-            setSupplierResponse.includes("Suppliers Created.")
+            typeof setCustomerResponse === "string" &&
+            setCustomerResponse.includes("Customer Created.")
           ) {
-            console.log("Supplier created successfully");
+            console.log("Customer created successfully");
           } else if (
-            typeof setSupplierResponse === "string" &&
-            setSupplierResponse.includes("Supplier code already exists.")
+            typeof setCustomerResponse === "string" &&
+            setCustomerResponse.includes("Customer code already exists.")
           ) {
             console.log(
-              "Supplier code already exists, skipping success alert for supplier."
+              "Customer code already exists, skipping success alert for Customer."
             );
             // ไม่ต้องทำอะไร ให้ข้ามไปแจ้งเตือนบันทึกสำเร็จของ Header
-          } else if (typeof setSupplierResponse !== "string") {
+          } else if (typeof setCustomerResponse !== "string") {
             // กรณี Response เป็น JSON อาจมี Logic อื่นๆ ในการตรวจสอบความสำเร็จ
-            // หากไม่สำเร็จจริงๆ คุณอาจต้องการ Throw Error ที่นี่
+            // หากไม่สำเร็จจริงๆ คุณอาจต้องการThrow Error ที่นี่
             console.warn(
-              "Unexpected response from SetSupplier:",
-              setSupplierResponse
+              "Unexpected response from SetCustomer:",
+              setCustomerResponse
             );
           }
         } catch (error) {
-          console.error("Error during SetSupplier:", error);
-          // ตรวจสอบ Error Message หากเป็น Supplier Code ซ้ำ ให้ Log และข้ามการแจ้งเตือน Error
+          console.error("Error during SetCustomer:", error);
+          // ตรวจสอบ Error Message หากเป็น Customer Code ซ้ำ ให้ Log และข้ามการแจ้งเตือน Error
           if (
-            error.message.includes("SupplierCode :") &&
+            error.message.includes("CustomerCode :") &&
             error.message.includes("is already exsist.")
           ) {
             console.log(
-              "Supplier code already exists, skipping error alert for supplier."
+              "Customer code already exists, skipping error alert for Customer."
             );
           } else {
           }
@@ -639,24 +640,23 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
   };
 
   // ---------------------
-  const [supplierOptions, setSupplierOptions] = useState([]); // state สำหรับข้อมูลจาก API Supplier
+  const [customerOptions, setCustomerOptions] = useState([]); // state สำหรับข้อมูลจาก API Customer
   const [openModal, setOpenModal] = useState(false); // state สำหรับเปิด/ปิด Modal
   const [currentPage, setCurrentPage] = useState(1); // state สำหรับหน้าปัจจุบัน
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
-  const [supplierSearch, setSupplierSearch] = useState("");
+  const [customerSearch, setCustomerSearch] = useState("");
 
   useEffect(() => {
     // ดึงข้อมูลจาก API ตัวใหม่
-    const fetchSupplierOptions = async () => {
+    const fetchCustomerOptions = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/Supplier/GetSupplier`);
-        console.log("supplierOptions:", supplierOptions);
-        setSupplierOptions(response.data); // อัปเดต state Supplier
+        const response = await axios.get(`${API_BASE}/Customer/GetCustomer`);
+        setCustomerOptions(response.data); // อัปเดต state Customer
       } catch (error) {
-        console.error("Error fetching Supplier options:", error);
+        console.error("Error fetching Customer options:", error);
       }
     };
-    fetchSupplierOptions();
+    fetchCustomerOptions();
   }, []);
 
   const handleOpenModal = () => {
@@ -665,24 +665,23 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
 
   const handleCloseModal = () => {
     setOpenModal(false);
-    setSupplierSearch("");
+    setCustomerSearch("");
     setCurrentPage(1);
   };
 
-  const handleSupplierSelect = (partyCode) => {
-    const selectedSupplier = supplierOptions.find(
-      (supplier) => supplier.supplierCode === partyCode
+  const handleCustomerSelect = (partyCode) => {
+    const selectedCustomer = customerOptions.find(
+      (customer) => customer.customerCode === partyCode
     );
 
-    if (selectedSupplier) {
+    if (selectedCustomer) {
       setFormData({
         ...formData,
         partyCode: partyCode,
-        partyCode: selectedSupplier.supplierCode,
         partyTaxCode:
-          selectedSupplier.taxNumber + "/" + selectedSupplier.taxBranch,
-        partyName: selectedSupplier.supplierName,
-        partyAddress: selectedSupplier.address1,
+          selectedCustomer.taxNumber + "/" + selectedCustomer.taxBranch,
+        partyName: selectedCustomer.customerName,
+        partyAddress: selectedCustomer.address1,
       });
     }
 
@@ -693,27 +692,28 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
   };
 
   const getPaginatedData = () => {
-    const filtered = supplierSearch
-      ? supplierOptions.filter(
-          (s) =>
-            s.supplierCode.toLowerCase().includes(supplierSearch.toLowerCase()) ||
-            s.supplierName.toLowerCase().includes(supplierSearch.toLowerCase())
-        )
-      : supplierOptions;
+    const filtered = customerSearch
+      ? customerOptions.filter(
+        (c) =>
+          c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+          c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
+      )
+      : customerOptions;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return filtered.slice(startIndex, endIndex);
   };
 
   const getFilteredCount = () => {
-    if (!supplierSearch) return supplierOptions.length;
-    return supplierOptions.filter(
-      (s) =>
-        s.supplierCode.toLowerCase().includes(supplierSearch.toLowerCase()) ||
-        s.supplierName.toLowerCase().includes(supplierSearch.toLowerCase())
+    if (!customerSearch) return customerOptions.length;
+    return customerOptions.filter(
+      (c) =>
+        c.customerCode.toLowerCase().includes(customerSearch.toLowerCase()) ||
+        c.customerName.toLowerCase().includes(customerSearch.toLowerCase())
     ).length;
   };
   // -------------------------------
+
   const docStatus = formData.docStatus;
   const accDocNo = formData.accDocNo;
   const docRefNo = formData.docRefNo;
@@ -1186,7 +1186,8 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: "90%",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1199,8 +1200,8 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
             <h4 style={{ textAlign: "center" }}>Select Customer</h4> {/**แก้เป็น Customer**/}
             <TextField
               placeholder="ค้นหาด้วย Code หรือ Name..."
-              value={supplierSearch}
-              onChange={(e) => { setSupplierSearch(e.target.value); setCurrentPage(1); }}
+              value={customerSearch}
+              onChange={(e) => { setCustomerSearch(e.target.value); setCurrentPage(1); }}
               variant="outlined"
               size="small"
               fullWidth
@@ -1211,13 +1212,14 @@ export default function AccordionRCHD({ apiData, setApiData, currentIndex, setCu
               component="li"
               style={{ listStyle: "none" }}
             />
-            {getPaginatedData().map((supplier) => (
-              <ListItem key={supplier.supplierID} disablePadding>
+            {getPaginatedData().map((customer) => (
+              <ListItem key={customer.customerID} disablePadding>
                 <ListItemButton
-                  onClick={() => handleSupplierSelect(supplier.supplierCode)}
+                  onClick={() => handleCustomerSelect(customer.customerCode)}
                 >
-                  <ListItemText primary={supplier.supplierCode} />
-                  <h5>{supplier.supplierName}</h5>
+                  <ListItemText primary={customer.customerCode} />
+                  {/* <h5>{customer.customerName}</h5> */}
+                  <Abbreviations textName={customer.customerName} />
                 </ListItemButton>
               </ListItem>
             ))}
