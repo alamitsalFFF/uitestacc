@@ -49,11 +49,10 @@ import { FormatDate } from "../../purchase/FormatData.js";
 import { API_VIEW_RESULT } from "../../api/url.js";
 import AccordiionSOAddDT from "../Sales Order/AccordiionSOAddDT.js";
 import SOManagementComponentFromSR from "../Sales Order/SOManagementComponentFromSR.js";
-import AccordionSelectProductSO from "../Sales Order/AccordionSelectProductSO.js";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import AccordionSOEditDT from "../Sales Order/AccordionSOEditDT.js";
-import AccordionSelectProductSI from "../Sales Order/AccordionSelectProductSO.js";
+import AccordionSelectProductSI from "./AccordionSelectProductSI.js";
 
 function AccordionSIDT({ accDocNo, onSaveSuccess, refreshPOData }) {
   const location = useLocation();

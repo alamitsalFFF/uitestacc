@@ -59,6 +59,7 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
 
   // เตรียม state สำหรับแต่ละ product ที่ถูกเลือก
   const [productDetails, setProductDetails] = useState([]);
+  const [editingProductID, setEditingProductID] = useState(null);
 
   useEffect(() => {
     if (selectedProducts.length > 0) {
@@ -82,12 +83,27 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
   }, [selectedProducts]);
 
   const handleInputChange = (event, productID) => {
-    const { id, value } = event.target;
+    const { id, name, value } = event.target;
+    const field = id || name;
     setProductDetails((prevDetails) =>
       prevDetails.map((detail) =>
-        detail.productID === productID ? { ...detail, [id]: value } : detail
+        detail.productID === productID ? { ...detail, [field]: value } : detail
       )
     );
+  };
+
+  const handleDescriptionClick = (productID) => {
+    setEditingProductID(productID);
+  };
+
+  const handleDescriptionBlur = () => {
+    setEditingProductID(null);
+  };
+
+  const handleDescriptionKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      setEditingProductID(null);
+    }
   };
 
   const calculateAmount = (price, qty, exchangeRate) => {
@@ -282,21 +298,81 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
         <div className="row" style={{ padding: "3%" }}>
-          <h4 style={{ textAlign: "center", textDecoration: "underline" }}>Add PR Detail</h4>
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "10px",
+          }}>
+            <div style={{
+              background: "linear-gradient(135deg, #056f03, #3ee963f5)",
+              color: "white",
+              padding: "10px 24px",
+              borderRadius: "30px",
+              boxShadow: "0 4px 12px rgba(0, 0, 139, 0.3)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "4px",
+            }}>
+              <div style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.5px" }}>
+                &nbsp;&nbsp; &nbsp;&nbsp;Add PR Detail&nbsp;&nbsp; &nbsp;&nbsp;
+              </div>
+            </div>
+          </div>
           <div style={{ padding: "3%" }}>
             {productDetails.map((detail) => (
               <div key={detail.productID} className="row">
                 {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
-                <div style={{ flexGrow: 1 }}>
-                  <h5 style={{ marginTop: "5px", marginRight: "10px" }}>
-                    {detail.itemNo}.&nbsp;{detail.productCode}/{detail.productName} <i>{detail.rateVat ? `(รวม VAT${detail.rateVat} %)` : "(ไม่รวม VAT)"}</i>
-                  </h5>
-                  {/* &nbsp;&nbsp;&nbsp;&nbsp;<i>({detail.productCode})</i> */}
+                <h5 style={{ paddingTop: "10px", display: "flex", alignItems: "center" }}>
+                  <span style={{ color: "#0a0133ff", marginRight: "10px", fontWeight: 700 }}>ProductCode:</span>
+                  {detail.itemNo}.&nbsp;{detail.productCode}
+                </h5>
+                <div
+                  style={{ display: "flex", alignItems: "center" }}
+                  onClick={() => handleDescriptionClick(detail.productID)}
+                >
+                  {editingProductID === detail.productID ? (
+                    <TextField
+                      id="productName"
+                      label="Description"
+                      value={detail.productName}
+                      type="text"
+                      variant="standard"
+                      style={{ width: "100%", marginTop: "5px" }}
+                      onChange={(e) =>
+                        handleInputChange(
+                          { target: { name: "productName", value: e.target.value } },
+                          detail.productID
+                        )
+                      }
+                      onKeyDown={handleDescriptionKeyDown}
+                      onBlur={handleDescriptionBlur}
+                      autoFocus
+                    />
+                  ) : (
+                    <h5
+                      style={{
+                        marginTop: "5px",
+                        marginRight: "10px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <span style={{ color: "#1976d2" }}>Description:</span>
+                      &nbsp;&nbsp;{detail.productName}&nbsp;
+                      <i>
+                        <span style={{ color: "#f78a83ff", fontSize: "14px" }}>
+                          {detail.rateVat
+                            ? `(รวม VAT ${detail.rateVat} %)`
+                            : "(ไม่รวม VAT)"}
+                        </span>
+                      </i>
+                    </h5>
+                  )}
                 </div>
                 {/* </ListItem> */}
                 <div className="col-md-6" style={{ display: "flex" }}>
-
-                  {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
                   <TextField
                     id="price"
                     label="Price"
@@ -305,17 +381,12 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
                     variant="standard"
                     style={{ width: "100%" }}
                     onChange={(e) => handleInputChange(e, detail.productID)}
-                    InputProps={{
-                      // readOnly: true,
-                      style: {
-                        backgroundColor: "#ffffe0",
-                      }
-                    }}
+                    InputLabelProps={{ shrink: true }}
+                    InputProps={{ style: { backgroundColor: "#ffffe0" } }}
+                    sx={{ "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
                   />
-                  {/* </ListItem> */}
                 </div>
-                <div className="col-md-6" style={{ display: "flex", paddingTop: "10px" }}>
-                  {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
+                <div className="col-md-6" style={{ display: "flex" }}>
                   <TextField
                     id="qty"
                     label="Qty"
@@ -324,38 +395,27 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
                     variant="standard"
                     style={{ width: "100%" }}
                     onChange={(e) => handleInputChange(e, detail.productID)}
-                    InputProps={{
-                      // readOnly: true,
-                      style: {
-                        backgroundColor: "#ffffe0",
-                      }
-                    }}
+                    InputLabelProps={{ shrink: true }}
+                    InputProps={{ style: { backgroundColor: "#ffffe0" } }}
+                    sx={{ "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
                   />
-                  {/* </ListItem> */}
                 </div>
                 <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
-                  {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
                   <FormControl variant="standard" sx={{ minWidth: "100%" }}>
-                    <InputLabel id="currency">Currency</InputLabel>
+                    <InputLabel id="currency" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>Currency</InputLabel>
                     <Select
                       labelId="currency"
                       id="currency"
                       value={detail.currency}
                       onChange={(e) => handleInputChange(e, detail.productID)}
                       label="Currency"
-                      sx={{
-                        // readOnly: true,
-                        // style: {
-                        backgroundColor: "#ffffe0",
-                        // }
-                      }}
+                      inputProps={{ name: "currency" }}
+                      sx={{ "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" }, backgroundColor: "#ffffe0" }}
                     >
                       <MenuItem value={"THB"}>THB</MenuItem>
                       <MenuItem value={"USD"}>USD</MenuItem>
                     </Select>
                   </FormControl>
-                  {/* </ListItem> */}
-                  {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
                 </div>
                 <div className="col-md-4" style={{ display: "flex", paddingTop: "5px" }}>
                   <TextField
@@ -365,18 +425,13 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
                     type="number"
                     variant="standard"
                     style={{ width: "100%" }}
+                    InputLabelProps={{ shrink: true }}
+                    InputProps={{ style: { backgroundColor: "#ffffe0" } }}
+                    sx={{ "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
                     onChange={(e) => handleInputChange(e, detail.productID)}
-                    InputProps={{
-                      // readOnly: true,
-                      style: {
-                        backgroundColor: "#ffffe0",
-                      }
-                    }}
                   />
-                  {/* </ListItem> */}
                 </div>
                 <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
-                  {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
                   <TextField
                     id="unitMea"
                     label="Unit"
@@ -384,28 +439,69 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
                     type="text"
                     variant="standard"
                     style={{ width: "100%" }}
+                    InputLabelProps={{ shrink: true }}
+                    InputProps={{ style: { backgroundColor: "#ffffe0" } }}
+                    sx={{ "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
                     onChange={(e) => handleInputChange(e, detail.productID)}
-                    InputProps={{
-                      // readOnly: true,
-                      style: {
-                        backgroundColor: "#ffffe0",
-                      }
-                    }}
                   />
-                  {/* </ListItem> */}
-                  {/* <ListItem style={{ display: "flex", alignItems: "center" }}> */}
                 </div>
-                {/* <div className="col-md-3" style={{ display: "flex" }}>
-                    <TextField
+                <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
+                  <FormControl variant="standard" sx={{ minWidth: "100%" }}>
+                    <InputLabel id="rateVat-label" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>VAT Rate (%)</InputLabel>
+                    <Select
+                      labelId="rateVat-label"
                       id="rateVat"
-                      label="RateVat"
+                      name="rateVat"
                       value={detail.rateVat}
+                      onChange={(e) => handleInputChange(e, detail.productID)}
+                      label="VAT Rate"
                       type="number"
-                      variant="standard"
-                      style={{ width: "100%" }}
-                      InputProps={{ readOnly: true }}
-                    /> */}
-                {/* </div> */}
+                      sx={{ backgroundColor: "#ffffe0", "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
+                    >
+                      <MenuItem value={0}>0% (ยกเว้น)</MenuItem>
+                      <MenuItem value={7}>7%</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
+                  <FormControl variant="standard" sx={{ minWidth: "100%" }}>
+                    <InputLabel id="rateWht-label" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>WHT Rate (%)</InputLabel>
+                    <Select
+                      labelId="rateWht-label"
+                      id="rateWht"
+                      name="rateWht"
+                      value={detail.rateWht}
+                      onChange={(e) => handleInputChange(e, detail.productID)}
+                      label="WHT Rate"
+                      type="number"
+                      sx={{ backgroundColor: "#ffffe0", "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
+                    >
+                      <MenuItem value={0}>0% (ไม่มี)</MenuItem>
+                      <MenuItem value={1}>1%</MenuItem>
+                      <MenuItem value={3}>3%</MenuItem>
+                      <MenuItem value={5}>5%</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
+                  <FormControl variant="standard" sx={{ minWidth: "100%" }}>
+                    <InputLabel id="vatType-label" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>VAT Type</InputLabel>
+                    <Select
+                      labelId="vatType-label"
+                      id="vatType"
+                      name="vatType"
+                      value={detail.vatType}
+                      onChange={(e) => handleInputChange(e, detail.productID)}
+                      label="VAT Type"
+                      type="number"
+                      sx={{ backgroundColor: "#ffffe0", "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
+                    >
+                      <MenuItem value={2}>รวม VAT (Include)</MenuItem>
+                      <MenuItem value={1}>ไม่รวม VAT (Exclude)</MenuItem>
+                      <MenuItem value={0}>ไม่รวม/ยกเว้น VAT</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
                 {/* <div className="col-md-3" style={{ display: "flex" }}>
                     <TextField
                       id="rateWht"
@@ -418,27 +514,37 @@ function AccordiionPRAddDT({ open, onClose, onSave }) {
                     />
                 </div> */}
                 <div className="row">
-                  <ListItem style={{ display: "flex", alignItems: "center" }}>
-                    <div>
-                      <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-                        Total
-                      </h5>
-                      <p>
-                        &nbsp; {detail.price} x {detail.qty}
-                      </p>
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "12px",
+                    backgroundColor: "#f5f7fa",
+                    padding: "16px",
+                    borderRadius: "12px",
+                    marginTop: "20px",
+                    marginBottom: "10px",
+                    border: "1px solid #e4e7eb",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.02)"
+                  }}>
+                    <div style={{ flex: "1 1 min-content" }}>
+                      <div style={{ fontSize: "16px", fontWeight: "700", color: "#4b5563" }}>
+                        Total Amount
+                      </div>
+                      <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px", wordBreak: "break-word" }}>
+                        {formatNumber(parseFloat(detail.price) || 0)} x {formatNumber(parseFloat(detail.qty) || 0)}
+                      </div>
                     </div>
-                    <div style={{ marginLeft: "auto" }}>
-                      <h1>
-                        {formatNumber(
-                          calculateAmount(
-                            detail.price,
-                            detail.qty,
-                            detail.exchangeRate
-                          )
-                        )}
-                      </h1>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                      <div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "800", color: "#1976d2", lineHeight: "1", wordBreak: "break-all" }}>
+                        {formatNumber(calculateAmount(detail.price, detail.qty, detail.exchangeRate))}
+                      </div>
+                      <div style={{ fontSize: "16px", color: "#6b7280", fontWeight: "600" }}>
+                        {detail.currency}
+                      </div>
                     </div>
-                  </ListItem>
+                  </div>
                 </div>
                 <Divider />
               </div>

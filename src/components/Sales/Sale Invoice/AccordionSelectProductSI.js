@@ -34,35 +34,21 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchComponent from "../../purchase/SearchComponen";
 import { API_VIEW_RESULT } from "../../api/url";
 import { Padding } from "@mui/icons-material";
-import Abbreviations from "../../DataFilters/Abbreviations";
 
 const modalStyle = {
-  // position: "absolute",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "90%",
   maxWidth: 600,
   bgcolor: "background.paper",
-  // borderRadius: "20px",
+  borderRadius: "20px",
   boxShadow: 24,
   p: 4,
   maxHeight: "80vh",
   // overflowY: "auto", // เพิ่ม scroll bar เมื่อเนื้อหามากเกินไป
   padding: "30px !important",
-
-  backgroundColor: "white",
-  padding: "20px",
-  borderRadius: "8px",
-  // maxWidth: "90%",
-  // maxHeight: "90%",
-  overflowY: "auto",
-  position: "relative",
-  // width: "90%",
-  // maxWidth: "600px",
-  borderRadius: "30px",
-  // top: "10%",
-  // left: "5%",
 };
 const ItemNoContext = createContext({
   itemNo: 1,
@@ -74,7 +60,7 @@ const useItemNo = () => {
   return { itemNo, setItemNo };
 };
 
-function AccordionSelectProductDO({
+function AccordionSelectProductSI({
   isOpen,
   onClose,
   onSave,
@@ -95,40 +81,17 @@ function AccordionSelectProductDO({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-   const VMas_ProductOnStock = {
-    viewName: "vStock_Onhand",
-    parameters: [],
-    results: [
-      { sourceField: "WarehouseCode" },
-      { sourceField: "StockProductCode" },
-      { sourceField: "UnitStock" },
-      { sourceField: "ProductName" },
-      { sourceField: "ProductColor" },
-      { sourceField: "ProductBrand" },
-      { sourceField: "AssetAccCode" },
-      { sourceField: "AssetAccName" },
-      { sourceField: "AssetAccMainCode" },
-      { sourceField: "AssetAccMainName" },
-      { sourceField: "SumQty" },
-      { sourceField: "SumAmount" },
-      { sourceField: "AvgPrice" },
-      { sourceField: "QtyIN" },
-      { sourceField: "QtyOUT" },
-      { sourceField: "MaxPriceIN" },
-      { sourceField: "MaxPriceOUT" },
-    ],
-  };
-
   const VMasProduct = {
     viewName: "vMas_Product",
     parameters: [],
     results: [
-      // { sourceField: "productTypeCode" },
-      // { sourceField: "productID" },
+      { sourceField: "productName" },
+      { sourceField: "productTypeCode" },
+      { sourceField: "productID" },
       { sourceField: "IsMaterial" },
       { sourceField: "IsService" },
       { sourceField: "ProductBrand" },
-      { sourceField: "ProductCode" },
+      { sourceField: "productCode" },
       { sourceField: "ProductColor" },
       { sourceField: "ProductID" },
       { sourceField: "ProductName" },
@@ -156,69 +119,37 @@ function AccordionSelectProductDO({
     (async () => {
       try {
         setLoading(true);
-        // fetch products and stock in parallel
-        const [prodResp, stockResp] = await Promise.all([
-          axios.post(`${API_VIEW_RESULT}`, VMasProduct, {
-            headers: { "Content-Type": "application/json" },
-          }),
-          axios.post(`${API_VIEW_RESULT}`, VMas_ProductOnStock, {
-            headers: { "Content-Type": "application/json" },
-          }),
-        ]);
-
-        if (!isMounted) return;
-
-        if (prodResp.status === 200 && stockResp.status === 200) {
-          const prodData = Array.isArray(prodResp.data) ? prodResp.data : [];
-          const stockData = Array.isArray(stockResp.data) ? stockResp.data : [];
-
-          // build map: StockProductCode -> SumQty
-          const stockMap = stockData.reduce((m, s) => {
-            const code = String(s.StockProductCode ?? s.StockProductCode ?? "").trim();
-            const qty = Number(s.SumQty ?? 0) || 0;
-            if (!code) return m;
-            // if multiple stock rows per product, sum them
-            m[code] = (m[code] || 0) + qty;
-            return m;
-          }, {});
-
-          // attach SumQty to products by matching productCode -> StockProductCode
-          const merged = prodData.map((p) => {
-            const key = String(p.productCode ?? p.ProductCode ?? "").trim();
-            return {
-              ...p,
-              SumQty: stockMap[key] ?? 0,
-            };
-          });
-
-          setProducts(merged);
-
-          const products_count = merged.filter(
+        const response = await axios.post(`${API_VIEW_RESULT}`, VMasProduct, {
+          headers: { "Content-Type": "application/json" },
+        });
+        if (isMounted && response.status === 200) {
+          setLoading(false);
+          setProducts(response.data);
+          const products_count = response.data.filter(
             (product) => product.IsService === false
           );
-          const services = merged.filter(
+          const services = response.data.filter(
             (product) =>
               product.IsService === true && product.IsMaterial === false
           );
 
           setMaterialCount(products_count.length);
           setServiceCount(services.length);
+        } else if (isMounted) {
           setLoading(false);
-        } else {
-          setLoading(false);
-          console.error("Error fetching product/stock:", prodResp.statusText, stockResp.statusText);
+          console.error("Error:", response.statusText);
         }
-       } catch (error) {
-         if (isMounted) {
-           console.error("Error:", error);
-           setLoading(false);
-         }
-       }
-     })();
-     return () => {
-       isMounted = false;
-     };
-   }, [dispatch]);
+      } catch (error) {
+        if (isMounted) {
+          console.error("Error:", error);
+          setLoading(false);
+        }
+      }
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch]);
 
   // ฟังก์ชันสำหรับแบ่งหน้าข้อมูล
   const getPaginatedData = () => {
@@ -241,7 +172,7 @@ function AccordionSelectProductDO({
         const searchLower = searchTerm.toLowerCase();
         return (
           product.ProductName.toLowerCase().includes(searchLower) ||
-          product.ProductCode.toLowerCase().includes(searchLower) ||
+          product.productCode.toLowerCase().includes(searchLower) ||
           product.ProductID.toString().toLowerCase().includes(searchLower)
         );
       });
@@ -251,12 +182,12 @@ function AccordionSelectProductDO({
 
   const handleProductSelect = (product) => {
     const isSelected = selectedProducts.find(
-      (p) => p.ProductID === product.ProductID
+      (p) => p.productID === product.productID
     );
     if (isSelected) {
       dispatch(
         setSelectedProducts(
-          selectedProducts.filter((p) => p.ProductID !== product.ProductID)
+          selectedProducts.filter((p) => p.productID !== product.productID)
         )
       );
     } else {
@@ -267,8 +198,8 @@ function AccordionSelectProductDO({
             ...product,
             accDocNo: accDocNo,
             itemNo: nextItemNo,
-            productName: product.ProductName,
-            productCode: product.ProductCode,
+            productName: product.productName,
+            productCode: product.productCode,
             rateVat: product.rateVat,
             rateWht: product.rateWht,
             unitStock: product.unitStock,
@@ -334,9 +265,9 @@ function AccordionSelectProductDO({
       if (!searchTerm) return true;
       const searchLower = searchTerm.toLowerCase();
       return (
-        product.ProductName.toLowerCase().includes(searchLower) ||
-        product.ProductCode.toLowerCase().includes(searchLower) ||
-        product.ProductID.toString().toLowerCase().includes(searchLower)
+        product.productName.toLowerCase().includes(searchLower) ||
+        product.productCode.toLowerCase().includes(searchLower) ||
+        product.productID.toString().toLowerCase().includes(searchLower)
       );
     }).length;
 
@@ -347,7 +278,7 @@ function AccordionSelectProductDO({
       <Box sx={modalStyle}>
         <div>
           <h1 style={{ textAlign: "center" }}>SelectProduct/Service</h1>
-          {/* <div>&nbsp;</div> */}
+          <div>&nbsp;</div>
           <div
             style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px" }}
           >
@@ -402,30 +333,22 @@ function AccordionSelectProductDO({
               )}
             </div>
           </div>
-          <ul style={{paddingLeft:"unset"}}>
+          <ul>
             {getPaginatedData().map((product, index) => (
               <div
                 className="row"
                 key={product.productID}
                 onClick={() => handleProductSelect(product)}
-                style={{ paddingLeft: "20px",
-                   paddingRight: "20px" }}
+                style={{ paddingLeft: "20px", paddingRight: "20px" }}
               >
                 <ListItem style={{ display: "flex", alignItems: "center" }}>
                   <div>
-                    <h5 //style={{ marginTop: "5px", marginLeft: "10px" }}
-                    >
-                      &nbsp; {(currentPage - 1) * itemsPerPage + index + 1}. {product.ProductCode}/
-                      <Abbreviations textName={product.ProductName} />
-                      {typeof product.SumQty !== "undefined" && (
-                        <i style={{ fontSize: "13px", marginLeft: 8 }}>
-                          (Stock: {product.SumQty})
-                        </i>
-                      )}
+                    <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
+                      &nbsp; {(currentPage - 1) * itemsPerPage + index + 1}. {product.productCode}/{product.productName}
                       <i>{product.rateVat ? `(รวม VAT${product.rateVat} %)` : "(ไม่รวม VAT)"}</i>
                       {/* &nbsp;&nbsp; */}
                       {selectedProducts.find(
-                        (p) => p.ProductID === product.ProductID
+                        (p) => p.productID === product.productID
                       ) && (
                         <FontAwesomeIcon
                           icon={faCircleCheck}
@@ -460,7 +383,7 @@ function AccordionSelectProductDO({
           </div>
           <div
             // className="row"
-            style={{ display: "flex", justifyContent: "space-between" ,paddingTop:"10px"}}
+            style={{ display: "flex", justifyContent: "space-between" }}
           >
             <Button
               variant="contained"
@@ -485,4 +408,4 @@ function AccordionSelectProductDO({
   );
 }
 
-export default AccordionSelectProductDO;
+export default AccordionSelectProductSI;

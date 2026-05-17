@@ -75,7 +75,6 @@ function AccordionSelectProductPI({
   const [selectedButton, setSelectedButton] = useState(null);
   const [materialCount, setMaterialCount] = useState(0);
   const [serviceCount, setServiceCount] = useState(0);
-  const [rawMaterialCount, setRawMaterialCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   // States ใหม่สำหรับ Pagination
@@ -126,22 +125,16 @@ function AccordionSelectProductPI({
         if (isMounted && response.status === 200) {
           setLoading(false);
           setProducts(response.data);
-          const materials = response.data.filter(
-            (product) =>
-              product.IsMaterial === true && product.IsService === false
+          const products_count = response.data.filter(
+            (product) => product.IsService === false
           );
           const services = response.data.filter(
             (product) =>
               product.IsService === true && product.IsMaterial === false
           );
-          const rawMaterials = response.data.filter(
-            (product) =>
-              product.IsMaterial === false && product.IsService === false
-          );
 
-          setMaterialCount(materials.length);
+          setMaterialCount(products_count.length);
           setServiceCount(services.length);
-          setRawMaterialCount(rawMaterials.length);
         } else if (isMounted) {
           setLoading(false);
           console.error("Error:", response.statusText);
@@ -166,13 +159,11 @@ function AccordionSelectProductPI({
     // กรองข้อมูลตามประเภทและคำค้นหาก่อนทำการแบ่งหน้า
     const filteredAndSearchedProducts = products
       .filter((product) => {
-        if (selectedType === "material") {
-          return product.IsMaterial === true && product.IsService === false;
+        if (selectedType === "product") {
+          return product.IsService === false;
         }
         if (selectedType === "service") {
           return product.IsService === true && product.IsMaterial === false;
-        } else if (selectedType === "rewmaterial") {
-          return product.IsService === false && product.IsMaterial === false;
         }
         return true;
       })
@@ -219,22 +210,16 @@ function AccordionSelectProductPI({
     }
   };
 
-  const handleMaterialSelect = () => {
-    setSelectedType("material");
-    setSelectedButton("material");
-    setCurrentPage(1); // Reset หน้าเมื่อเปลี่ยนประเภท
+  const handleProductTypeSelect = () => {
+    setSelectedType("product");
+    setSelectedButton("product");
+    setCurrentPage(1);
   };
 
   const handleServiceSelect = () => {
     setSelectedType("service");
     setSelectedButton("service");
-    setCurrentPage(1); // Reset หน้าเมื่อเปลี่ยนประเภท
-  };
-
-  const handleRewMaterialSelect = () => {
-    setSelectedType("rewmaterial");
-    setSelectedButton("rewmaterial");
-    setCurrentPage(1); // Reset หน้าเมื่อเปลี่ยนประเภท
+    setCurrentPage(1);
   };
 
   const handleConfirm = () => {
@@ -268,16 +253,14 @@ function AccordionSelectProductPI({
   // คำนวณจำนวนหน้ารวมทั้งหมด
   const totalItems = products
     .filter((product) => {
-      if (selectedType === "material") {
-        return product.IsMaterial === true && product.IsService === false;
-      }
-      if (selectedType === "service") {
-        return product.IsService === true && product.IsMaterial === false;
-      } else if (selectedType === "rewmaterial") {
-        return product.IsService === false && product.IsMaterial === false;
-      }
-      return true;
-    })
+        if (selectedType === "product") {
+          return product.IsService === false;
+        }
+        if (selectedType === "service") {
+          return product.IsService === true && product.IsMaterial === false;
+        }
+        return true;
+      })
     .filter((product) => {
       if (!searchTerm) return true;
       const searchLower = searchTerm.toLowerCase();
@@ -311,18 +294,14 @@ function AccordionSelectProductPI({
                   badgeContent={materialCount}
                   max={999}
                   color="primary"
-                  sx={{ "& .MuiBadge-badge": { border: "1px solid white"  }  }}
+                  sx={{ "& .MuiBadge-badge": { border: "1px solid white" } }}
                   style={{ marginLeft: "10px" }}
                 >
                   <Chip
-                    label="MATERIAL"
-                    color={
-                      selectedButton === "material" ? "primary" : "primary"
-                    }
-                    variant={
-                      selectedButton === "material" ? "filled" : "outlined"
-                    }
-                    onClick={handleMaterialSelect}
+                    label="PRODUCT"
+                    color={selectedButton === "product" ? "primary" : "primary"}
+                    variant={selectedButton === "product" ? "filled" : "outlined"}
+                    onClick={handleProductTypeSelect}
                   />
                 </Badge>
                 <Badge
@@ -336,31 +315,8 @@ function AccordionSelectProductPI({
                   <Chip
                     label="SERVICE"
                     color={selectedButton === "service" ? "success" : "success"}
-                    variant={
-                      selectedButton === "service" ? "filled" : "outlined"
-                    }
+                    variant={selectedButton === "service" ? "filled" : "outlined"}
                     onClick={handleServiceSelect}
-                  />
-                </Badge>
-                <Badge
-                  anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                  badgeContent={rawMaterialCount}
-                  max={999}
-                  color="secondary"
-                  sx={{ "& .MuiBadge-badge": { border: "1px solid white" } }}
-                  style={{ marginLeft: "10px" }}
-                >
-                  <Chip
-                    label="RAW MATERIAL"
-                    color={
-                      selectedButton === "rewmaterial"
-                        ? "secondary"
-                        : "secondary"
-                    }
-                    variant={
-                      selectedButton === "rewmaterial" ? "filled" : "outlined"
-                    }
-                    onClick={handleRewMaterialSelect}
                   />
                 </Badge>
               </Stack>

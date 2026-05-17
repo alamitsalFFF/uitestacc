@@ -52,7 +52,7 @@ import { API_VIEW_RESULT, URL } from "../api/url.js";
 import AccordiionDIAddDT from "../Delivery/Delivery In/AccordiionDIAddDT.js";
 import AccordionSelectProductDI from "../Delivery/Delivery In/AccordionSelectProductDI.js";
 import AccordionDIEditDT from "../Delivery/Delivery In/AccordionDIEditDT.js";
-import AccordiionPIAddDT from "./AccordiionPIAddDT.js";
+import AccordiionPCAddDT from "./AccordiionPCAddDT.js";
 import AccordionSelectProductPI from "./AccordionSelectProductPI.js";
 import AccordionPCEditDT from "./AccordionPCEditDT.js";
 
@@ -911,7 +911,7 @@ function AccordionPCDT({ accDocNo, onSaveSuccess }) {
               accDocNo={accDocNo}
               nextItemNo={itemCounter}
             />
-            <AccordiionPIAddDT
+            <AccordiionPCAddDT
               open={openAddDTModal}
               onClose={handleCloseAddDTModal}
               onSave={handleSaveDetail}

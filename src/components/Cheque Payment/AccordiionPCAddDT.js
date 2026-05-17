@@ -29,11 +29,11 @@ import {
   setAddProducts,
   setAccDocNo,
   setSelectedProducts,
-} from "../../redux/TransactionDataaction";
+} from "../redux/TransactionDataaction";
 import { useSelector, useDispatch } from "react-redux";
-import { API_BASE } from "../../api/url";
-import { useAuthFetch } from "../../Auth/fetchConfig";
-import axios from "../../Auth/axiosConfig";
+import { API_BASE } from "../api/url";
+import { useAuthFetch } from "../Auth/fetchConfig";
+import axios from "../Auth/axiosConfig";
 
 const modalStyle = {
   position: "absolute",
@@ -50,7 +50,7 @@ const modalStyle = {
   overflowY: "auto", // เปิดใช้งาน scroll
   padding: "30px !important",
 };
-function AccordiionDIAddDT({ open, onClose, onSave }) {
+function AccordiionPCAddDT({ open, onClose, onSave }) {
   const authFetch = useAuthFetch();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -217,7 +217,7 @@ function AccordiionDIAddDT({ open, onClose, onSave }) {
               gap: "4px",
             }}>
               <div style={{ fontSize: "1rem", fontWeight: 700, letterSpacing: "0.5px" }}>
-                &nbsp;&nbsp; &nbsp;&nbsp;Add Detail&nbsp;&nbsp; &nbsp;&nbsp;
+                &nbsp;&nbsp; &nbsp;&nbsp;Add PC Detail&nbsp;&nbsp; &nbsp;&nbsp;
               </div>
             </div>
           </div>
@@ -485,5 +485,4 @@ function AccordiionDIAddDT({ open, onClose, onSave }) {
   );
 }
 
-export default AccordiionDIAddDT;
-  
+export default AccordiionPCAddDT;

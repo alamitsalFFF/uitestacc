@@ -297,15 +297,15 @@ function AccordionSelectProductPI({
           <h1 style={{ textAlign: "center" }}>SelectProduct/Service</h1>
           <div>&nbsp;</div>
           <div
-            style={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}
+            style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px" }}
           >
-            <div className="col-8">
-              <Stack
-                direction="row"
-                spacing={2}
-                flexWrap="wrap"
-                //sx={{ alignItems: "center", justifyContent: "center" }}
-              >
+            <Stack
+              direction="row"
+              spacing={2}
+              flexWrap="wrap"
+              alignItems="center"
+              sx={{ flex: 1 }}
+            >
                 <Badge
                   anchorOrigin={{ vertical: "top", horizontal: "left" }}
                   badgeContent={materialCount}
@@ -363,9 +363,8 @@ function AccordionSelectProductPI({
                     onClick={handleRewMaterialSelect}
                   />
                 </Badge>
-              </Stack>
-            </div>
-            <div style={{ marginLeft: "auto", paddingTop: "10px" }}>
+            </Stack>
+            <div style={{ display: "flex", alignItems: "center" }}>
               {showSearch ? (
                 <SearchComponent onSearch={handleSearch} />
               ) : (
@@ -379,7 +378,7 @@ function AccordionSelectProductPI({
             </div>
           </div>
           <ul>
-            {getPaginatedData().map((product) => (
+            {getPaginatedData().map((product, index) => (
               <div
                 className="row"
                 key={product.productID}
@@ -389,8 +388,8 @@ function AccordionSelectProductPI({
                 <ListItem style={{ display: "flex", alignItems: "center" }}>
                   <div>
                     <h5 style={{ marginTop: "5px", marginLeft: "10px" }}>
-                      &nbsp; {product.productCode}/{product.productName} 
-                      {/* <i>{product.rateVat ? `(รวม VAT${product.rateVat} %)`:"(ไม่รวม VAT)"}</i> */}
+                      &nbsp; {(currentPage - 1) * itemsPerPage + index + 1}. {product.productCode}/{product.productName}
+                      <i>{product.rateVat ? `(รวม VAT${product.rateVat} %)` : "(ไม่รวม VAT)"}</i>
                       {/* &nbsp;&nbsp; */}
                       {selectedProducts.find(
                         (p) => p.productID === product.productID
