@@ -156,6 +156,9 @@ function AccordionDOEditDT({
               rateVat: itemData.rateVat || 0,
               rateWht: itemData.rateWht || 0,
               vatType: itemData.vatType || 0,
+              accSourceDocNo: itemData.accSourceDocNo || "",
+              accSourceDocItem: itemData.accSourceDocItem || 0,
+              stockTransNo: itemData.stockTransNo || 0,
             });
             setCurrency(itemData.currency || "THB");
             setProductSizeUnitValue(itemData.unitMea || "");
@@ -231,9 +234,9 @@ function AccordionDOEditDT({
     const updatedProduct = {
       accDocNo: accDocNo,
       accItemNo: parseInt(accItemNo),
-      accSourceDocNo: adddatadetail.accSourceDocNo || accSourceDocNo || "",
-      accSourceDocItem: adddatadetail.accSourceDocItem || accSourceDocItem || 0,
-      stockTransNo: adddatadetail.stockTransNo || stockTransNo || 0,
+      accSourceDocNo: adddatadetail.accSourceDocNo || "",
+      accSourceDocItem: adddatadetail.accSourceDocItem || 0,
+      stockTransNo: adddatadetail.stockTransNo || 0,
       qty: parseInt(adddatadetail.qty),
       price: parseFloat(adddatadetail.price),
       unitMea: productSizeUnitValue,
@@ -501,18 +504,32 @@ function AccordionDOEditDT({
             </div>
             {/* ... (ส่วนโค้ดฟอร์มและ input ทั้งหมด) ... */}
             <div className="row">
+              <h5 style={{
+                paddingTop: "15px",
+                display: "flex",
+                alignItems: "center"
+              }} >
+                <span style={{ color: "#0a0133ff", marginRight: "10px" }} onClick={handleUpdate}>ProductCode:</span>
+                {adddatadetail.saleProductCode}
+                <FontAwesomeIcon
+                  icon={faCirclePlus}
+                  style={{ color: "#2f9901", marginLeft: "10px", cursor: "pointer" }}
+                  onClick={handleOpenProductModal}
+                />
+              </h5>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   textAlign: "start",
                   justifyContent: "start",
-                  paddingTop: "15px",
+                  // paddingTop: "15px",
                 }}
                 onClick={handleDescriptionClick}
               >
                 {isEditing ? (
                   <TextField
+                    label="Description"
                     value={salesDescriptionValue}
                     multiline
                     variant="standard"
@@ -854,6 +871,12 @@ function AccordionDOEditDT({
           docConfigID={selectedDocConfigIDState}
         />
       )}
+      {/* Product Selection Modal */}
+      <AccordionSelectProductDO
+        isOpen={openProductModal}
+        onClose={handleCloseProductModal}
+        onSave={handleConfirmProductSelection}
+      />
     </>
   );
 }

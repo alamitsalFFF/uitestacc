@@ -302,7 +302,16 @@ function AccordionSelectProductDO({
     dispatch(setSelectedProducts(updatedSelectedProducts));
 
     // Call the onSave function
-    onSave();
+    if (updatedSelectedProducts && updatedSelectedProducts.length > 0) {
+      onSave(updatedSelectedProducts[0]);
+    } else {
+      onSave();
+    }
+    
+    // Close the Modal
+    if (onClose) {
+      onClose();
+    }
   };
 
   const handleSearch = (term) => {
