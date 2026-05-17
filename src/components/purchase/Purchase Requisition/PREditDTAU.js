@@ -1,3 +1,4 @@
+import AccordionSelectProductPR from "./AccordionSelectProductPR";
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
@@ -253,23 +254,23 @@ function PREditDetailAU({
 
     if (result.isConfirmed) {
       const updatedProduct = {
-        accDocNo: accDocNo,
-        accItemNo: parseInt(accItemNo),
-        accSourceDocNo: "",
-        accSourceDocItem: 0,
-        stockTransNo: 0,
-        qty: parseInt(adddatadetail.qty),
-        price: parseFloat(adddatadetail.price),
-        unitMea: productSizeUnitValue,
-        currency: adddatadetail.currency,
-        exchangeRate: parseFloat(adddatadetail.exchangeRate),
-        amount: calculateTotal(),
-        saleProductCode: adddatadetail.saleProductCode,
-        salesDescription: salesDescriptionValue,
-        rateVat: parseFloat(adddatadetail.rateVat),
-        rateWht: parseFloat(adddatadetail.rateWht),
-        vatType: parseFloat(adddatadetail.vatType),
-      };
+      accDocNo: accDocNo,
+      accItemNo: parseInt(accItemNo),
+      accSourceDocNo: adddatadetail.accSourceDocNo || accSourceDocNo || "",
+      accSourceDocItem: adddatadetail.accSourceDocItem || accSourceDocItem || 0,
+      stockTransNo: adddatadetail.stockTransNo || stockTransNo || 0,
+      qty: parseInt(adddatadetail.qty),
+      price: parseFloat(adddatadetail.price),
+      unitMea: productSizeUnitValue,
+      currency: adddatadetail.currency || currency,
+      exchangeRate: parseFloat(adddatadetail.exchangeRate),
+      amount: calculateTotal(),
+      saleProductCode: adddatadetail.saleProductCode,
+      salesDescription: salesDescriptionValue,
+      rateVat: parseFloat(adddatadetail.rateVat) || 0,
+      rateWht: parseFloat(adddatadetail.rateWht) || 0,
+      vatType: parseFloat(adddatadetail.vatType) || 0,
+    };
 
       try {
         const response = await saveDataToAPI(updatedProduct);

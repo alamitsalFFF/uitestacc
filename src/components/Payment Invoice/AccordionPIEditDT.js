@@ -1,3 +1,4 @@
+import AccordionSelectProductPI from "./AccordionSelectProductPI";
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
@@ -74,6 +75,24 @@ function AccordionPIEditDT({
     salesDescription: isproductName || "",
     saleProductCode: "",
   });
+  // --- Product Selection Modal State ---
+  const [openProductModal, setOpenProductModal] = useState(false);
+  const handleOpenProductModal = () => setOpenProductModal(true);
+  const handleCloseProductModal = () => setOpenProductModal(false);
+  const handleConfirmProductSelection = (product) => {
+    setdAddataDetail((prev) => ({
+      ...prev,
+      saleProductCode: product.productCode,
+      salesDescription: product.ProductName || product.productName,
+      productSizeUnitValue: product.ProductSizeUnit || product.unitMea || "",
+      rateVat: product.rateVat !== undefined && product.rateVat !== null ? product.rateVat : prev.rateVat,
+      rateWht: product.rateWht !== undefined && product.rateWht !== null ? product.rateWht : prev.rateWht,
+      vatType: product.vatType !== undefined && product.vatType !== null ? product.vatType : prev.vatType,
+    }));
+    setSalesDescriptionValue(product.ProductName || product.productName || "");
+    setProductSizeUnitValue(product.ProductSizeUnit || product.unitMea || "");
+  };
+
 
   // --- State for MoreInfoModal ---
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false);
@@ -91,8 +110,9 @@ function AccordionPIEditDT({
   };
 
   const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    setdAddataDetail({ ...adddatadetail, [id]: value });
+    const name = event.target.name || event.target.id;
+    const value = event.target.value;
+    setdAddataDetail({ ...adddatadetail, [name]: value });
   };
 
   const fetchData = async (accDocNo, accItemNo) => {
@@ -207,20 +227,20 @@ function AccordionPIEditDT({
     const updatedProduct = {
       accDocNo: accDocNo,
       accItemNo: parseInt(accItemNo),
-      accSourceDocNo: "",
-      accSourceDocItem: 0,
-      stockTransNo: 0,
+      accSourceDocNo: adddatadetail.accSourceDocNo || accSourceDocNo || "",
+      accSourceDocItem: adddatadetail.accSourceDocItem || accSourceDocItem || 0,
+      stockTransNo: adddatadetail.stockTransNo || stockTransNo || 0,
       qty: parseInt(adddatadetail.qty),
       price: parseFloat(adddatadetail.price),
       unitMea: productSizeUnitValue,
-      currency: adddatadetail.currency,
+      currency: adddatadetail.currency || currency,
       exchangeRate: parseFloat(adddatadetail.exchangeRate),
       amount: calculateTotal(),
       saleProductCode: adddatadetail.saleProductCode,
       salesDescription: salesDescriptionValue,
-      rateVat: parseFloat(adddatadetail.rateVat),
-      rateWht: parseFloat(adddatadetail.rateWht),
-      vatType: parseFloat(adddatadetail.vatType),
+      rateVat: parseFloat(adddatadetail.rateVat) || 0,
+      rateWht: parseFloat(adddatadetail.rateWht) || 0,
+      vatType: parseFloat(adddatadetail.vatType) || 0,
     };
 
     try {
@@ -646,8 +666,67 @@ function AccordionPIEditDT({
                   inputRef={exchangeRateRef}
                 />
               </div>
+              
+              {/* --- เพิ่มส่วน VAT, WHT, VAT Type ที่นี่ --- */}
+              <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
+                <FormControl variant="standard" sx={{ minWidth: "100%" }}>
+                  <InputLabel id="rateVat-label" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>VAT Rate (%)</InputLabel>
+                  <Select
+                    labelId="rateVat-label"
+                    id="rateVat"
+                    name="rateVat"
+                    value={adddatadetail.rateVat}
+                    onChange={handleInputChange}
+                    label="VAT Rate"
+                    type="number"
+                    sx={{ backgroundColor: "#ffffe0", "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
+                  >
+                    <MenuItem value={0}>0% (ยกเว้น)</MenuItem>
+                    <MenuItem value={7}>7%</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
+                <FormControl variant="standard" sx={{ minWidth: "100%" }}>
+                  <InputLabel id="rateWht-label" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>WHT Rate (%)</InputLabel>
+                  <Select
+                    labelId="rateWht-label"
+                    id="rateWht"
+                    name="rateWht"
+                    value={adddatadetail.rateWht}
+                    onChange={handleInputChange}
+                    label="WHT Rate"
+                    type="number"
+                    sx={{ backgroundColor: "#ffffe0", "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
+                  >
+                    <MenuItem value={0}>0% (ไม่มี)</MenuItem>
+                    <MenuItem value={1}>1%</MenuItem>
+                    <MenuItem value={3}>3%</MenuItem>
+                    <MenuItem value={5}>5%</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="col-md-4" style={{ display: "flex", paddingTop: "10px" }}>
+                <FormControl variant="standard" sx={{ minWidth: "100%" }}>
+                  <InputLabel id="vatType-label" sx={{ color: "#00008b", fontWeight: 700, "&.Mui-focused": { color: "#1976d2" } }}>VAT Type</InputLabel>
+                  <Select
+                    labelId="vatType-label"
+                    id="vatType"
+                    name="vatType"
+                    value={adddatadetail.vatType}
+                    onChange={handleInputChange}
+                    label="VAT Type"
+                    type="number"
+                    sx={{ backgroundColor: "#ffffe0", "& .MuiInputLabel-root": { color: "#00008b", fontWeight: 700 }, "& .MuiInputLabel-root.Mui-focused": { color: "#1976d2" } }}
+                  >
+                    <MenuItem value={2}>รวม VAT (Include)</MenuItem>
+                    <MenuItem value={1}>ไม่รวม VAT (Exclude)</MenuItem>
+                    <MenuItem value={0}>ไม่รวม/ยกเว้น VAT</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
               <div className="row">
-                <div style={{
+                <div style={{ 
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",

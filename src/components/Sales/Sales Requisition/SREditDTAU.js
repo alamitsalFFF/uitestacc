@@ -1,3 +1,4 @@
+import AccordionSelectProductSR from "./AccordionSelectProductSR";
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ListItem from "@mui/material/ListItem";
@@ -74,6 +75,24 @@ function SREditDetailAU({
     salesDescription: isproductName || "",
     saleProductCode: "",
   });
+  // --- Product Selection Modal State ---
+  const [openProductModal, setOpenProductModal] = useState(false);
+  const handleOpenProductModal = () => setOpenProductModal(true);
+  const handleCloseProductModal = () => setOpenProductModal(false);
+  const handleConfirmProductSelection = (product) => {
+    setdAddataDetail((prev) => ({
+      ...prev,
+      saleProductCode: product.productCode,
+      salesDescription: product.ProductName || product.productName,
+      productSizeUnitValue: product.ProductSizeUnit || product.unitMea || "",
+      rateVat: product.rateVat !== undefined && product.rateVat !== null ? product.rateVat : prev.rateVat,
+      rateWht: product.rateWht !== undefined && product.rateWht !== null ? product.rateWht : prev.rateWht,
+      vatType: product.vatType !== undefined && product.vatType !== null ? product.vatType : prev.vatType,
+    }));
+    setSalesDescriptionValue(product.ProductName || product.productName || "");
+    setProductSizeUnitValue(product.ProductSizeUnit || product.unitMea || "");
+  };
+
 
   // --- State for MoreInfoModal ---
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false);
@@ -91,8 +110,9 @@ function SREditDetailAU({
   };
 
   const handleInputChange = (event) => {
-    const { id, value } = event.target;
-    setdAddataDetail({ ...adddatadetail, [id]: value });
+    const name = event.target.name || event.target.id;
+    const value = event.target.value;
+    setdAddataDetail({ ...adddatadetail, [name]: value });
   };
 
   const fetchData = async (accDocNo, accItemNo) => {
@@ -207,20 +227,20 @@ function SREditDetailAU({
     const updatedProduct = {
       accDocNo: accDocNo,
       accItemNo: parseInt(accItemNo),
-      accSourceDocNo: "",
-      accSourceDocItem: 0,
-      stockTransNo: 0,
+      accSourceDocNo: adddatadetail.accSourceDocNo || accSourceDocNo || "",
+      accSourceDocItem: adddatadetail.accSourceDocItem || accSourceDocItem || 0,
+      stockTransNo: adddatadetail.stockTransNo || stockTransNo || 0,
       qty: parseInt(adddatadetail.qty),
       price: parseFloat(adddatadetail.price),
       unitMea: productSizeUnitValue,
-      currency: adddatadetail.currency,
+      currency: adddatadetail.currency || currency,
       exchangeRate: parseFloat(adddatadetail.exchangeRate),
       amount: calculateTotal(),
       saleProductCode: adddatadetail.saleProductCode,
       salesDescription: salesDescriptionValue,
-      rateVat: parseFloat(adddatadetail.rateVat),
-      rateWht: parseFloat(adddatadetail.rateWht),
-      vatType: parseFloat(adddatadetail.vatType),
+      rateVat: parseFloat(adddatadetail.rateVat) || 0,
+      rateWht: parseFloat(adddatadetail.rateWht) || 0,
+      vatType: parseFloat(adddatadetail.vatType) || 0,
     };
 
     try {
