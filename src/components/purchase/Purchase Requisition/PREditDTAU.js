@@ -256,9 +256,9 @@ function PREditDetailAU({
       const updatedProduct = {
       accDocNo: accDocNo,
       accItemNo: parseInt(accItemNo),
-      accSourceDocNo: adddatadetail.accSourceDocNo || accSourceDocNo || "",
-      accSourceDocItem: adddatadetail.accSourceDocItem || accSourceDocItem || 0,
-      stockTransNo: adddatadetail.stockTransNo || stockTransNo || 0,
+      accSourceDocNo: adddatadetail.accSourceDocNo || "",
+      accSourceDocItem: adddatadetail.accSourceDocItem || 0,
+      stockTransNo: adddatadetail.stockTransNo || 0,
       qty: parseInt(adddatadetail.qty),
       price: parseFloat(adddatadetail.price),
       unitMea: productSizeUnitValue,

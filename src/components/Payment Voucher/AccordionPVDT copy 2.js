@@ -1,5 +1,6 @@
+import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
-import axios from "../Auth/axiosConfig.js";
+import axios from "../../components/Auth/axiosConfig.js";
 import { ButtonGroup } from "@mui/material";
 import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -44,10 +45,11 @@ import { styled } from "@mui/material/styles";
 import { formatNumber } from "../purchase/formatNumber.js";
 import Abbreviation from "../purchase/Abbreviation.js";
 import { FormatDate } from "../purchase/FormatData.js";
-import { API_VIEW_RESULT, URL } from "../api/url.js";
-import JVEditDetail from "./JVEditDetail.js";
+import { API_VIEW_RESULT } from "../api/url.js";
+import PVEditDetail from "./PVEditDetail.js";
+// import AccordionPVEditDT from "./AccordionPVEditDT"; 
 
-function AccordionJVDT({ accDocNo, onSaveSuccess }) {
+function AccordionPVDT({ accDocNo, onSaveSuccess }) {
   const location = useLocation();
   const dispatch = useDispatch();
   // const accDocNo = useSelector((state) => state.accDocNo);
@@ -97,7 +99,9 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   }, [location.state, dispatch]);
 
   const [loading, setLoading] = useState(false);
-  const [jvall, setJVAll] = useState([]);
+  const [pvh, setPVH] = useState([]);
+  const [pvd, setPVD] = useState([]);
+  const [pvall, setPVAll] = useState([]);
   const [seq, setSeq] = useState([]);
 
   // pagination
@@ -109,9 +113,9 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     const journal = accDocNo ?? JournalNoFromStore;
     if (!journal) return;
 
-    const vJournal_All = {
-      viewName: "vJournal_All",
-      parameters: [{ field: "JournalNo", value: journal }],
+    const vPV_All = {
+      viewName: "vPV_All",
+      parameters: [{ field: "JournalNo", value: JournalNo }],
       results: [
         { sourceField: "EntryId" },
         { sourceField: "JournalNo" },
@@ -121,104 +125,51 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         { sourceField: "Description" },
         { sourceField: "TotalDebit" },
         { sourceField: "TotalCredit" },
-        { sourceField: "DocNo" },
         { sourceField: "Seq" },
-        // { sourceField: "Text1" },
-        // { sourceField: "Date1" },
-        // { sourceField: "Num1" },
-        // { sourceField: "Text2" },
-        // { sourceField: "Date2" },
-        // { sourceField: "Num2" },
-        // { sourceField: "Text3" },
-        // { sourceField: "Date3" },
-        // { sourceField: "Num3" },
-        // { sourceField: "Text4" },
-        // { sourceField: "Date4" },
-        // { sourceField: "Num4" },
-        // { sourceField: "Text5" },
-        // { sourceField: "Date5" },
-        // { sourceField: "Num5" },
-        // { sourceField: "Text6" },
-        // { sourceField: "Date6" },
-        // { sourceField: "Num6" },
-        // { sourceField: "Text7" },
-        // { sourceField: "Date7" },
-        // { sourceField: "Num7" },
-        // { sourceField: "Text8" },
-        // { sourceField: "Date8" },
-        // { sourceField: "Num8" },
-        // { sourceField: "Text9" },
-        // { sourceField: "Date9" },
-        // { sourceField: "Num9" },
-        // { sourceField: "Text10" },
-        // { sourceField: "Date10" },
-        // { sourceField: "Num10" },
-        { sourceField: "ItemNo" },
         { sourceField: "AccCode" },
         { sourceField: "AccName" },
-        { sourceField: "AccMainCode" },
-        { sourceField: "AccMainCodeName" },
-        { sourceField: "AccRemark" },
         { sourceField: "AccDesc" },
         { sourceField: "Debit" },
         { sourceField: "Credit" },
-        { sourceField: "AccTypeID" },
-        // { sourceField: "DText1" },
-        // { sourceField: "DDate1" },
-        // { sourceField: "DNum1" },
-        // { sourceField: "DText2" },
-        // { sourceField: "DDate2" },
-        // { sourceField: "DNum2" },
-        // { sourceField: "DText3" },
-        // { sourceField: "DDate3" },
-        // { sourceField: "DNum3" },
-        // { sourceField: "DText4" },
-        // { sourceField: "DDate4" },
-        // { sourceField: "DNum4" },
-        // { sourceField: "DText5" },
-        // { sourceField: "DDate5" },
-        // { sourceField: "DNum5" },
-        // { sourceField: "DText6" },
-        // { sourceField: "DDate6" },
-        // { sourceField: "DNum6" },
-        // { sourceField: "DText7" },
-        // { sourceField: "DDate7" },
-        // { sourceField: "DNum7" },
-        // { sourceField: "DText8" },
-        // { sourceField: "DDate8" },
-        // { sourceField: "DNum8" },
-        // { sourceField: "DText9" },
-        // { sourceField: "DDate9" },
-        // { sourceField: "DNum9" },
-        // { sourceField: "DText10" },
-        // { sourceField: "DDate10" },
-        // { sourceField: "DNum10" },
       ],
     };
 
     (async () => {
       try {
         setLoading(true);
-        const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
+        const response = await axios.post(API_VIEW_RESULT, vPV_All, {
           headers: { "Content-Type": "application/json" },
         });
         if (response.status === 200) {
           const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
-          console.log("sortedData:", sortedData);
-          setJVAll(sortedData);
-          setCurrentPage(0); // reset to first page on new data load
+          setPVAll(sortedData);
         } else {
           console.error("Error fetching data");
-          setJVAll([]);
+          setPVAll([]);
         }
       } catch (err) {
-        console.error("Error fetching JV detail:", err);
-        setJVAll([]);
+        console.error("Error fetching PV detail:", err);
+        setPVAll([]);
       } finally {
         setLoading(false);
       }
     })();
   }, [accDocNo, JournalNoFromStore]);
+
+  const handleAccCodeSelect = () => {
+    // const handleProductSelect = () => {
+    navigate(`${URL}PVselectAccCode/`, {
+      state: {
+        // selectedProducts,
+        JournalNo,
+        accEffectiveDate: accEffectiveDate,
+        partyCode: partyCode,
+        partyName: partyName,
+        isnameCategory: nameCategory,
+        selectedProducts: selectedProducts,
+      },
+    });
+  };
 
   useEffect(() => {
     if (
@@ -280,7 +231,21 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     }
   }, [detailData]);
 
+  const handleGoBack = () => {
+    navigate(`${URL}PVHeader?journalNo=${JournalNo}`);
+  };
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const navigate = useNavigate();
+
+  // const handlePlusClick = () => {
+  //   navigate(`${URL}QCSupplier`);
+  // };
 
   const style = {
     p: 0,
@@ -354,8 +319,8 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
 
   const [editDetail, setEditDetail] = useState([]);
 
-  const EntryId = jvall.EntryId;
-  const Seq = jvall.Seq;
+  const EntryId = pvall.EntryId;
+  const Seq = pvall.Seq;
 
   // เพิ่ม state สำหรับ modal / item ที่จะแก้ไข
   const [showEditDetailModal, setShowEditDetailModal] = useState(false);
@@ -363,13 +328,12 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
 
   const handleEditDetail = async (index) => {
     try {
-      const journalNo = jvall && jvall.length > 0 ? jvall[0].JournalNo : JournalNo;
-      const entryId = jvall && jvall.length > 0 ? jvall[0].EntryId : null;
-      const seq = jvall && jvall[index] ? jvall[index].ItemNo : null;
+      const journalNo = pvall && pvall.length > 0 ? pvall[0].JournalNo : JournalNo;
+      const entryId = pvall && pvall.length > 0 ? pvall[0].EntryId : null;
+      const seq = pvall && pvall[index] ? pvall[index].Seq : null;
       if (!entryId || seq == null) return console.error("missing entryId/seq");
 
       setItemToEdit({ entryId, journalNo, seq, index });
-      console.log("itemToEdit:", 'entryId', entryId, 'journalNo', journalNo, 'seq', seq, 'index', index);
       setShowEditDetailModal(true);
     } catch (error) {
       console.error("Error in handleEditDetail:", error);
@@ -386,101 +350,26 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     setShowEditDetailModal(false);
     setItemToEdit(null);
     if (refresh) {
-      // รีเฟรชข้อมูล vJournal_All (เหมือนที่มีใน useEffect) โดยเรียก API อีกครั้ง
+      // รีเฟรชข้อมูล vPV_All (เหมือนที่มีใน useEffect) โดยเรียก API อีกครั้ง
       if (JournalNo) {
         try {
-          const vJournal_All = {
-            viewName: "vJournal_All",
+          const vPV_All = {
+            viewName: "vPV_All",
             parameters: [{ field: "JournalNo", value: JournalNo }],
             results: [
-              { sourceField: "EntryId" },
-              { sourceField: "JournalNo" },
-              { sourceField: "EntryDate" },
-              { sourceField: "EffectiveDate" },
-              { sourceField: "EntryBy" },
-              { sourceField: "Description" },
-              { sourceField: "TotalDebit" },
-              { sourceField: "TotalCredit" },
-              { sourceField: "DocNo" },
-              { sourceField: "Seq" },
-              // { sourceField: "Text1" },
-              // { sourceField: "Date1" },
-              // { sourceField: "Num1" },
-              // { sourceField: "Text2" },
-              // { sourceField: "Date2" },
-              // { sourceField: "Num2" },
-              // { sourceField: "Text3" },
-              // { sourceField: "Date3" },
-              // { sourceField: "Num3" },
-              // { sourceField: "Text4" },
-              // { sourceField: "Date4" },
-              // { sourceField: "Num4" },
-              // { sourceField: "Text5" },
-              // { sourceField: "Date5" },
-              // { sourceField: "Num5" },
-              // { sourceField: "Text6" },
-              // { sourceField: "Date6" },
-              // { sourceField: "Num6" },
-              // { sourceField: "Text7" },
-              // { sourceField: "Date7" },
-              // { sourceField: "Num7" },
-              // { sourceField: "Text8" },
-              // { sourceField: "Date8" },
-              // { sourceField: "Num8" },
-              // { sourceField: "Text9" },
-              // { sourceField: "Date9" },
-              // { sourceField: "Num9" },
-              // { sourceField: "Text10" },
-              // { sourceField: "Date10" },
-              // { sourceField: "Num10" },
-              { sourceField: "ItemNo" },
-              { sourceField: "AccCode" },
-              { sourceField: "AccName" },
-              { sourceField: "AccMainCode" },
-              { sourceField: "AccMainCodeName" },
-              { sourceField: "AccRemark" },
-              { sourceField: "AccDesc" },
-              { sourceField: "Debit" },
-              { sourceField: "Credit" },
-              { sourceField: "AccTypeID" },
-              // { sourceField: "DText1" },
-              // { sourceField: "DDate1" },
-              // { sourceField: "DNum1" },
-              // { sourceField: "DText2" },
-              // { sourceField: "DDate2" },
-              // { sourceField: "DNum2" },
-              // { sourceField: "DText3" },
-              // { sourceField: "DDate3" },
-              // { sourceField: "DNum3" },
-              // { sourceField: "DText4" },
-              // { sourceField: "DDate4" },
-              // { sourceField: "DNum4" },
-              // { sourceField: "DText5" },
-              // { sourceField: "DDate5" },
-              // { sourceField: "DNum5" },
-              // { sourceField: "DText6" },
-              // { sourceField: "DDate6" },
-              // { sourceField: "DNum6" },
-              // { sourceField: "DText7" },
-              // { sourceField: "DDate7" },
-              // { sourceField: "DNum7" },
-              // { sourceField: "DText8" },
-              // { sourceField: "DDate8" },
-              // { sourceField: "DNum8" },
-              // { sourceField: "DText9" },
-              // { sourceField: "DDate9" },
-              // { sourceField: "DNum9" },
-              // { sourceField: "DText10" },
-              // { sourceField: "DDate10" },
-              // { sourceField: "DNum10" },
+              { sourceField: "EntryId" }, { sourceField: "JournalNo" }, { sourceField: "EntryDate" },
+              { sourceField: "EffectiveDate" }, { sourceField: "EntryBy" }, { sourceField: "Description" },
+              { sourceField: "TotalDebit" }, { sourceField: "TotalCredit" }, { sourceField: "Seq" },
+              { sourceField: "AccCode" }, { sourceField: "AccName" }, { sourceField: "AccDesc" },
+              { sourceField: "Debit" }, { sourceField: "Credit" },
             ],
           };
-          const response = await axios.post(API_VIEW_RESULT, vJournal_All, {
+          const response = await axios.post(API_VIEW_RESULT, vPV_All, {
             headers: { "Content-Type": "application/json" },
           });
           if (response.status === 200) {
             const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
-            setJVAll(sortedData);
+            setPVAll(sortedData);
           }
         } catch (err) {
           console.error("Error refreshing data:", err);
@@ -489,10 +378,36 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
     }
   };
 
+  useEffect(() => {
+    if (!accDocNo) return;
+    const fetchDetails = async () => {
+      try {
+        const vPV_All = {
+          viewName: "vPV_All",
+          parameters: [{ field: "JournalNo", value: accDocNo }],
+          results: [
+            { sourceField: "EntryId" }, { sourceField: "JournalNo" }, { sourceField: "Seq" },
+            { sourceField: "AccCode" }, { sourceField: "AccName" },
+            { sourceField: "Debit" }, { sourceField: "Credit" },
+            { sourceField: "TotalDebit" }, { sourceField: "TotalCredit" },
+            // ... ตามที่ต้องการ
+          ],
+        };
+        const response = await axios.post(API_VIEW_RESULT, vPV_All, { headers: { "Content-Type": "application/json" } });
+        if (response.status === 200) {
+          const sortedData = response.data.sort((a, b) => a.Seq - b.Seq);
+          setPVAll(sortedData); // ชื่อ state ตามไฟล์เดิม
+        }
+      } catch (err) {
+        console.error("Error fetching PV detail:", err);
+      }
+    };
+    fetchDetails();
+  }, [accDocNo]);
+
   return (
     <div>
       {/* <h1 style={{ textAlign: "center" }}>Payment Voucher</h1> */}
-
       <div className="row">
         <ListItem
           style={{
@@ -537,8 +452,8 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
               }}
             >
               Date:&nbsp;
-              {jvall && jvall.length > 0 && (
-                <FormatDate dateString={jvall[0].EffectiveDate} />
+              {pvall && pvall.length > 0 && (
+                <FormatDate dateString={pvall[0].EffectiveDate} />
               )}
             </span>
           </div>
@@ -548,7 +463,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
         <ListItem style={{ display: "flex", alignItems: "center" }}>
           <h5 style={{ margin: 0 }}>
             <span style={{ color: "#00008b", fontWeight: "bold" }}>&nbsp;Description: </span>
-            <span style={{ color: "#1565c0" }}>{jvall && jvall.length > 0 && jvall[0].Description}</span>
+            <span style={{ color: "#1565c0" }}>{pvall && pvall.length > 0 && pvall[0].Description}</span>
           </h5>
         </ListItem>
       </div>
@@ -571,7 +486,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
           </div>
 
           {/* paginated rows */}
-          {jvall.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map((item, pageIndex) => {
+          {pvall.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map((pvItem, pageIndex) => {
             const globalIndex = currentPage * PAGE_SIZE + pageIndex;
             return (
               <div
@@ -604,7 +519,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
                       flexShrink: 0,
                     }}
                   >
-                    {item.ItemNo}
+                    {pvItem.Seq}
                   </span>
                   <span
                     style={{
@@ -618,28 +533,28 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
                       flex: 1,
                     }}
                   >
-                    {item.AccCode} / {item.AccName}
+                    {pvItem.AccCode} / {pvItem.AccName}
                   </span>
                 </div>
 
                 <div className="col-2">
                   <div style={{ color: "#607d8b", fontSize: "0.85rem" }}>
-                    {item.AccDesc}
+                    {pvItem.AccDesc}
                   </div>
                 </div>
 
                 <div className="col-3" style={{ display: "flex", justifyContent: "flex-end" }}>
-                  {item.Debit !== 0 && (
+                  {pvItem.Debit !== 0 && (
                     <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#2e7d32", whiteSpace: "nowrap" }}>
-                      {formatNumber(item.Debit)}
+                      {formatNumber(pvItem.Debit)}
                     </span>
                   )}
                 </div>
 
                 <div className="col-3" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                  {item.Credit !== 0 && (
-                    <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#c62828" }}>
-                      {formatNumber(item.Credit)}
+                  {pvItem.Credit !== 0 && (
+                    <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#c62828", whiteSpace: "nowrap" }}>
+                      {formatNumber(pvItem.Credit)}
                     </span>
                   )}
                   <FontAwesomeIcon
@@ -660,7 +575,7 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
             );
           })}
           {/* pagination controls — show only when there are multiple pages */}
-          {jvall.length > PAGE_SIZE && (
+          {pvall.length > PAGE_SIZE && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", padding: "8px 0" }}>
               <button
                 onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
@@ -678,19 +593,19 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
                 &laquo; Prev
               </button>
               <span style={{ fontSize: "14px", color: "#555" }}>
-                {currentPage + 1} / {Math.ceil(jvall.length / PAGE_SIZE)}
-                &nbsp;({jvall.length} rows)
+                {currentPage + 1} / {Math.ceil(pvall.length / PAGE_SIZE)}
+                &nbsp;({pvall.length} rows)
               </span>
               <button
-                onClick={() => setCurrentPage((p) => Math.min(Math.ceil(jvall.length / PAGE_SIZE) - 1, p + 1))}
-                disabled={currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1}
+                onClick={() => setCurrentPage((p) => Math.min(Math.ceil(pvall.length / PAGE_SIZE) - 1, p + 1))}
+                disabled={currentPage >= Math.ceil(pvall.length / PAGE_SIZE) - 1}
                 style={{
                   padding: "4px 14px",
                   borderRadius: "6px",
                   border: "1px solid #0310ce",
-                  background: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#e0e0e0" : "#0310ce",
-                  color: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "#888" : "#fff",
-                  cursor: currentPage >= Math.ceil(jvall.length / PAGE_SIZE) - 1 ? "default" : "pointer",
+                  background: currentPage >= Math.ceil(pvall.length / PAGE_SIZE) - 1 ? "#e0e0e0" : "#0310ce",
+                  color: currentPage >= Math.ceil(pvall.length / PAGE_SIZE) - 1 ? "#888" : "#fff",
+                  cursor: currentPage >= Math.ceil(pvall.length / PAGE_SIZE) - 1 ? "default" : "pointer",
                   fontWeight: "bold",
                 }}
               >
@@ -698,17 +613,20 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
               </button>
             </div>
           )}
-          <div>
+
+          <div >
             <div
               style={{
                 background: "linear-gradient(135deg, #e8eaf6, #e3f2fd)",
                 borderRadius: "12px",
                 margin: "8px 4px 4px 4px",
                 padding: "12px 12px",
-                // boxShadow: "inset 4px 0 0 0 #1565c0, 0 2px 8px rgba(26,35,126,0.10)",
+                boxShadow: "0 2px 8px rgba(26,35,126,0.10)",
                 border: "1px solid #c5cae9",
                 display: "flex",
-                alignItems: "center"
+                alignItems: "center",
+                // borderLeftWidth: "4px",
+                // borderLeftColor: "#1565c0",
               }}
             >
               <div className="col-6">
@@ -716,12 +634,12 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
               </div>
               <div className="col-3" style={{ display: "flex", justifyContent: "flex-end" }}>
                 <h3 style={{ margin: 0, color: "#2e7d32", fontWeight: "bold", whiteSpace: "nowrap" }}>
-                  {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalDebit) : formatNumber(0)}
+                  {pvall && pvall.length > 0 ? formatNumber(pvall[0].TotalDebit) : formatNumber(0)}
                 </h3>
               </div>
               <div className="col-3" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "35px" }}>
                 <h3 style={{ margin: 0, color: "#c62828", fontWeight: "bold", whiteSpace: "nowrap" }}>
-                  {jvall && jvall.length > 0 ? formatNumber(jvall[0].TotalCredit) : formatNumber(0)}
+                  {pvall && pvall.length > 0 ? formatNumber(pvall[0].TotalCredit) : formatNumber(0)}
                 </h3>
               </div>
             </div>
@@ -730,10 +648,10 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
       </div>
 
       {showEditDetailModal && itemToEdit && (
-        <JVEditDetail
+        <PVEditDetail
           open={showEditDetailModal}
           onClose={handleCloseEditDetailModal}
-          onSaved={() => handleDetailUpdatedOrDeleted(true)}
+          onSave={() => handleDetailUpdatedOrDeleted(true)}
           entryId={itemToEdit.entryId}
           journalNo={itemToEdit.journalNo}
           seq={itemToEdit.seq}
@@ -743,4 +661,4 @@ function AccordionJVDT({ accDocNo, onSaveSuccess }) {
   );
 }
 
-export default AccordionJVDT;
+export default AccordionPVDT;

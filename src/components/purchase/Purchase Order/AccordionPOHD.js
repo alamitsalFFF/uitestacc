@@ -65,6 +65,7 @@ import GLTemplateModal from "./GLTemplateModal";
 import { FaDochub } from "react-icons/fa";
 import DIManagementComponent from "./DIManagementComponent";
 import { FormatDate } from "../FormatData";
+import Abbreviations from "../../DataFilters/Abbreviations";
 
 export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo, ocrData, fromOCR, ocrLineItems }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -843,7 +844,7 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
     // 1. แสดง Modal เพื่อรับค่า refno และ duedate จากผู้ใช้
     const currentDate = new Date().toISOString().split('T')[0];
     const { value: formValues } = await Swal.fire({
-      title: "Create DI from PC",
+      title: "Create DI from PO",
       // html:
       //   '<div style="text-align: left;">' +
       //   '<label for="swal-input1" style="display: block; margin-bottom: 5px;">Reference No:</label>' +
@@ -1786,7 +1787,9 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            // width: 400,
+            width: "90%",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1829,7 +1832,8 @@ export default function AccordionPOHD({ apiData, setApiData, currentIndex, setCu
                   onClick={() => handleSupplierSelect(supplier.supplierCode)}
                 >
                   <ListItemText primary={supplier.supplierCode} />
-                  <h5>{supplier.supplierName}</h5>
+                  {/* <h5>{supplier.supplierName}</h5> */}
+                  <Abbreviations textName={supplier.supplierName} />
                 </ListItemButton>
               </ListItem>
             ))}

@@ -1,8 +1,8 @@
 import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../../components/Auth/axiosConfig.js";
-import { ButtonGroup } from "@mui/material";
-import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { ButtonGroup, Stack, Chip, useMediaQuery } from "@mui/material";
+import { faCircleArrowUp, faFileInvoiceDollar, faFileInvoice, faMoneyCheckDollar } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setAccDocNo,
@@ -47,6 +47,13 @@ import Abbreviation from "../purchase/Abbreviation.js";
 import { FormatDate } from "../purchase/FormatData.js";
 import { API_VIEW_RESULT } from "../api/url.js";
 import PVEditDetail from "./PVEditDetail.js";
+import ChooseDocForPV from "./ChooseDocForPV.js";
+import ChooseDocForPI from "./ChooseDocForPI.js";
+import ChooseDocForPC from "../Cheque Payment/ChooseDocForPC.js";
+import { PVfromPOFull } from "../purchase/Purchase Order/PVFromPOFull.js";
+import { PVfromPIFull } from "./PVFromPIFull.js";
+import { PVfromPCFull } from "../Cheque Payment/PVFromPCFull.js";
+import Swal from "sweetalert2";
 // import AccordionPVEditDT from "./AccordionPVEditDT"; 
 
 function AccordionPVDT({ accDocNo, onSaveSuccess }) {
@@ -58,6 +65,7 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
 
   // expose active journal for components below
   const JournalNo = journalActive;
+  const isDesktop = useMediaQuery('(min-width:600px)');
   const accItemNo = useSelector((state) => state.accItemNo);
   const detailData = useSelector((state) => state.detailData);
   const selectedProducts = useSelector((state) => state.selectedProducts);
@@ -326,6 +334,290 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
   const [showEditDetailModal, setShowEditDetailModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
 
+  // ---- Choose PO → Create PV ----
+  const webAddressPV = "PVList"; // หน้าที่จะ navigate ไปหลังสร้าง PV สำเร็จ
+  const [openChooseDoc, setOpenChooseDoc] = useState(false);
+
+  const handleChoosePO = () => {
+    setOpenChooseDoc(true);
+  };
+
+  const handleDocSelected = async (docNo, partyName, totalNet) => {
+    setOpenChooseDoc(false);
+    // แสดง Swal กรอกข้อมูลการจ่าย (เหมือน handlePV ใน AccordionPOHD)
+    try {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: `สร้าง PV จาก PO: ${docNo}`,
+        width: '600px',
+        html:
+          `<div style="display:grid;grid-template-columns:150px 1fr;gap:12px;text-align:right;align-items:center;padding-right:16px;">` +
+
+          `<label style="font-weight:bold;">PO No:</label>` +
+          `<input class="swal2-input" value="${docNo}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">Supplier:</label>` +
+          `<input class="swal2-input" value="${(partyName || "").replace(/"/g, '&quot;')}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">DocRef No:</label>` +
+          `<input id="swal-taxno" class="swal2-input" placeholder="เลขใบเสร็จ/ใบหัก/บัตรประชาชน" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Due Date:</label>` +
+          `<input id="swal-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Tran No:</label>` +
+          `<input id="swal-tranno" class="swal2-input" placeholder="เลขสลิป หรือ เลขอ้างอิง" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Type:</label>` +
+          `<select id="swal-trantype" class="swal2-select" style="margin:0;width:100%;">` +
+          `<option value="TR">TR - Transfer</option>` +
+          `<option value="CA">CA - Cash</option>` +
+          `</select>` +
+
+          `<label style="font-weight:bold;">Tran Detail:</label>` +
+          `<input id="swal-trandatail" class="swal2-input" placeholder="วันเวลาที่จ่าย หรือ บันทึกอื่นๆ" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Code (Cash):</label>` +
+          `<input id="swal-acccode" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่จ่าย" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Debit:</label>` +
+          `<input id="swal-accdebit" class="swal2-input" placeholder="รหัสบัญชีค่าใช้จ่าย/รายได้" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">PV No:</label>` +
+          `<input id="swal-pvno" class="swal2-input" value="${JournalNo || ''}" disabled style="margin:0;width:100%;background:#f5f7ff;font-weight:700;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const taxno = document.getElementById('swal-taxno')?.value?.trim() || '';
+          const tranno = document.getElementById('swal-tranno')?.value?.trim();
+          const trantype = document.getElementById('swal-trantype')?.value || 'TR';
+          const docdate = document.getElementById('swal-docdate')?.value;
+          const trandatail = document.getElementById('swal-trandatail')?.value?.trim() || '';
+          const acccode = document.getElementById('swal-acccode')?.value?.trim() || '';
+          const accdebit = document.getElementById('swal-accdebit')?.value?.trim() || '';
+          const pvno = JournalNo || ''; // ใช้ JournalNo ที่เปิดอยู่เสมอ
+
+          if (!tranno) {
+            Swal.showValidationMessage('กรุณากรอกเลขที่อ้างอิง (Tran No)!');
+            return false;
+          }
+          if (!docdate) {
+            Swal.showValidationMessage('กรุณาระบุ Due Date');
+            return false;
+          }
+          return { taxno, tranno, trantype, docdate, trandatail, acccode, accdebit, pvno };
+        },
+      });
+
+      if (!formValues) return; // user cancelled
+
+      const { taxno, tranno, trantype, docdate, trandatail, acccode, accdebit, pvno } = formValues;
+
+      const resp = await PVfromPOFull(
+        docNo,
+        tranno,
+        trantype,
+        taxno,
+        docdate,
+        trandatail,
+        acccode,
+        accdebit,
+        "",          // webAddress ว่าง — ไม่ให้ redirect
+        () => {},    // no-op navigate — อยู่หน้าเดิม
+        pvno
+      );
+      console.log('PVfromPOFull response:', resp);
+      // รีเฟรชรายการ journal entries ในหน้านี้
+      if (!resp?.error) {
+        await handleDetailUpdatedOrDeleted(true);
+      }
+    } catch (err) {
+      console.error('handleDocSelected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message || '',
+      });
+    }
+  };
+  // ---- End Choose PO ----
+
+  // ---- Choose PI → Create PV ----
+  const [openChoosePI, setOpenChoosePI] = useState(false);
+
+  const handleChoosePI = () => {
+    setOpenChoosePI(true);
+  };
+
+  const handlePISelected = async (docNo, partyName, totalNet) => {
+    setOpenChoosePI(false);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: `สร้าง PV จาก PI: ${docNo}`,
+        width: '580px',
+        html:
+          `<div style="display:grid;grid-template-columns:150px 1fr;gap:12px;text-align:right;align-items:center;padding-right:16px;">` +
+
+          `<label style="font-weight:bold;">PI No:</label>` +
+          `<input class="swal2-input" value="${docNo}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">Supplier:</label>` +
+          `<input class="swal2-input" value="${(partyName || "").replace(/"/g, '&quot;')}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">DocRef No:</label>` +
+          `<input id="swal-pi-taxno" class="swal2-input" placeholder="เลขใบเสร็จ/ใบหัก/บัตรประชาชน" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Due Date:</label>` +
+          `<input id="swal-pi-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Credit (Cash):</label>` +
+          `<input id="swal-pi-acccredit" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่จ่าย" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Debit:</label>` +
+          `<input id="swal-pi-accdebit" class="swal2-input" placeholder="รหัสบัญชีค่าใช้จ่าย/รายได้" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">PV No:</label>` +
+          `<input id="swal-pi-pvno" class="swal2-input" value="${JournalNo || ''}" disabled style="margin:0;width:100%;background:#f5f7ff;font-weight:700;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const taxno = document.getElementById('swal-pi-taxno')?.value?.trim() || '';
+          const docdate = document.getElementById('swal-pi-docdate')?.value;
+          const acccredit = document.getElementById('swal-pi-acccredit')?.value?.trim() || '';
+          const accdebit = document.getElementById('swal-pi-accdebit')?.value?.trim() || '';
+          const pvno = JournalNo || '';
+
+          if (!docdate) {
+            Swal.showValidationMessage('กรุณาระบุ Due Date');
+            return false;
+          }
+          return { taxno, docdate, acccredit, accdebit, pvno };
+        },
+      });
+
+      if (!formValues) return;
+
+      const { taxno, docdate, acccredit, accdebit, pvno } = formValues;
+
+      const resp = await PVfromPIFull(
+        docNo,
+        taxno,
+        docdate,
+        pvno,
+        acccredit,
+        accdebit,
+        '',         // webAddress ว่าง
+        () => {}    // no-op navigate
+      );
+      console.log('PVfromPIFull response:', resp);
+      if (!resp?.error) {
+        await handleDetailUpdatedOrDeleted(true);
+      }
+    } catch (err) {
+      console.error('handlePISelected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message || '',
+      });
+    }
+  };
+  // ---- End Choose PI ----
+
+  // ---- Choose PC (Cheque Payment) → Create PV ----
+  const [openChoosePC, setOpenChoosePC] = useState(false);
+
+  const handleChoosePC = () => {
+    setOpenChoosePC(true);
+  };
+
+  const handlePCSelected = async (docNo, partyName, totalNet) => {
+    setOpenChoosePC(false);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: `สร้าง PV จาก PC: ${docNo}`,
+        width: '580px',
+        html:
+          `<div style="display:grid;grid-template-columns:160px 1fr;gap:12px;text-align:right;align-items:center;padding-right:16px;">` +
+
+          `<label style="font-weight:bold;">PC No:</label>` +
+          `<input class="swal2-input" value="${docNo}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">Supplier:</label>` +
+          `<input class="swal2-input" value="${(partyName || "").replace(/"/g, '&quot;')}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">Due Date:</label>` +
+          `<input id="swal-pc-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Code (Cash):</label>` +
+          `<input id="swal-pc-acccode" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่จ่าย" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Bank Charge:</label>` +
+          `<input id="swal-pc-bankchg" class="swal2-input" placeholder="ค่าธรรมเนียมธนาคาร (ถ้าไม่มีใส่ 0)" value="0" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Debit:</label>` +
+          `<input id="swal-pc-accdebit" class="swal2-input" placeholder="รหัสบัญชีค่าใช้จ่าย/รายได้" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">PV No:</label>` +
+          `<input class="swal2-input" value="${JournalNo || ''}" disabled style="margin:0;width:100%;background:#f5f7ff;font-weight:700;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const docdate = document.getElementById('swal-pc-docdate')?.value;
+          const acccode = document.getElementById('swal-pc-acccode')?.value?.trim() || '';
+          const bankchg = document.getElementById('swal-pc-bankchg')?.value?.trim() || '0';
+          const accdebit = document.getElementById('swal-pc-accdebit')?.value?.trim() || '';
+          const pvno = JournalNo || '';
+
+          if (!docdate) {
+            Swal.showValidationMessage('กรุณาระบุ Due Date');
+            return false;
+          }
+          return { docdate, acccode, bankchg, accdebit, pvno };
+        },
+      });
+
+      if (!formValues) return;
+
+      const { docdate, acccode, bankchg, accdebit, pvno } = formValues;
+
+      const resp = await PVfromPCFull(
+        docNo,
+        docdate,
+        acccode,
+        bankchg,
+        pvno,
+        accdebit
+      );
+      console.log('PVfromPCFull response:', resp);
+      if (!resp?.error) {
+        await handleDetailUpdatedOrDeleted(true);
+      }
+    } catch (err) {
+      console.error('handlePCSelected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message || '',
+      });
+    }
+  };
+  // ---- End Choose PC ----
+
   const handleEditDetail = async (index) => {
     try {
       const journalNo = pvall && pvall.length > 0 ? pvall[0].JournalNo : JournalNo;
@@ -390,7 +682,6 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
             { sourceField: "AccCode" }, { sourceField: "AccName" },
             { sourceField: "Debit" }, { sourceField: "Credit" },
             { sourceField: "TotalDebit" }, { sourceField: "TotalCredit" },
-            // ... ตามที่ต้องการ
           ],
         };
         const response = await axios.post(API_VIEW_RESULT, vPV_All, { headers: { "Content-Type": "application/json" } });
@@ -408,34 +699,137 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
   return (
     <div>
       {/* <h1 style={{ textAlign: "center" }}>Payment Voucher</h1> */}
+
+      {/* Choose PO modal */}
+      <ChooseDocForPV
+        isOpen={openChooseDoc}
+        onClose={() => setOpenChooseDoc(false)}
+        onSelect={handleDocSelected}
+      />
+
+      {/* Choose PI modal */}
+      <ChooseDocForPI
+        isOpen={openChoosePI}
+        onClose={() => setOpenChoosePI(false)}
+        onSelect={handlePISelected}
+      />
+
+      {/* Choose PC modal */}
+      <ChooseDocForPC
+        isOpen={openChoosePC}
+        onClose={() => setOpenChoosePC(false)}
+        onSelect={handlePCSelected}
+      />
+
       <div className="row">
         <ListItem
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
+            flexDirection: isDesktop ? "row" : "column",
+            alignItems: isDesktop ? "center" : "stretch",
+            justifyContent: "space-between",
+            gap: "10px",
+            padding: "8px 16px",
           }}
         >
+          {/* ปุ่มกลุ่ม Choose */}
           <div
             style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+              flexWrap: "wrap",
+              order: isDesktop ? 1 : 2,
+            }}
+          >
+            {/* Choose PO */}
+            <Chip
+              icon={
+                <FontAwesomeIcon
+                  icon={faFileInvoiceDollar}
+                  style={{ color: "#fff", fontSize: "0.85rem" }}
+                />
+              }
+              label="Choose PO"
+              onClick={handleChoosePO}
+              style={{
+                background: "linear-gradient(135deg, #1565c0, #0d47a1)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(21,101,192,0.35)",
+                padding: "4px 4px",
+                borderRadius: "20px",
+              }}
+            />
+            {/* Choose PI */}
+            <Chip
+              icon={
+                <FontAwesomeIcon
+                  icon={faFileInvoice}
+                  style={{ color: "#fff", fontSize: "0.85rem" }}
+                />
+              }
+              label="Choose PI"
+              onClick={handleChoosePI}
+              style={{
+                background: "linear-gradient(135deg, #0288d1, #0277bd)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(2,136,209,0.35)",
+                padding: "4px 4px",
+                borderRadius: "20px",
+              }}
+            />
+            {/* Choose PC */}
+            <Chip
+              icon={
+                <FontAwesomeIcon
+                  icon={faMoneyCheckDollar}
+                  style={{ color: "#fff", fontSize: "0.85rem" }}
+                />
+              }
+              label="Choose PC"
+              onClick={handleChoosePC}
+              style={{
+                background: "linear-gradient(135deg, #2e7d32, #388e3c)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(56,142,60,0.35)",
+                padding: "4px 4px",
+                borderRadius: "20px",
+              }}
+            />
+          </div>
+
+          {/* Badge เลขเอกสาร */}
+          <div
+            style={{
+              order: isDesktop ? 2 : 1,
               display: "inline-flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: isDesktop ? "flex-end" : "center",
               background: "linear-gradient(135deg, #1a237e, #1565c0)",
-              borderRadius: "20px",
+              borderRadius: "16px",
               padding: "8px 20px",
               boxShadow: "0 2px 8px rgba(21, 101, 192, 0.4)",
-              marginTop: "5px",
-              marginLeft: "10px",
+              width: isDesktop ? "auto" : "100%",
+              boxSizing: "border-box",
             }}
           >
             <span
               style={{
-                fontSize: "2rem",
+                fontSize: "clamp(1.3rem, 5vw, 2rem)",
                 fontWeight: 700,
                 color: "#ffffff",
-                letterSpacing: "0.05em",
+                letterSpacing: "0.04em",
                 lineHeight: 1.2,
+                whiteSpace: "nowrap",
               }}
             >
               {JournalNo ?? "—"}
@@ -444,11 +838,10 @@ function AccordionPVDT({ accDocNo, onSaveSuccess }) {
               style={{
                 fontSize: "0.75rem",
                 fontWeight: 500,
-                color: "rgba(255, 255, 255, 1)",
-                letterSpacing: "0.05em",
-                marginTop: "3px",
-                width: "100%",
-                textAlign: "right",
+                color: "rgba(255,255,255,0.85)",
+                letterSpacing: "0.04em",
+                marginTop: "2px",
+                whiteSpace: "nowrap",
               }}
             >
               Date:&nbsp;

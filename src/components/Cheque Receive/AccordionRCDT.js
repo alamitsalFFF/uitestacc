@@ -52,7 +52,7 @@ import { API_VIEW_RESULT, URL } from "../api/url.js";
 import AccordiionDIAddDT from "../Delivery/Delivery In/AccordiionDIAddDT.js";
 import AccordionSelectProductDI from "../Delivery/Delivery In/AccordionSelectProductDI.js";
 import AccordionDIEditDT from "../Delivery/Delivery In/AccordionDIEditDT.js";
-import AccordiionPIAddDT from "../Cheque Payment/AccordiionPIAddDT.js";
+import AccordiionPIAddDT from "../Cheque Payment/AccordiionPCAddDT.js";
 import AccordionSelectProductPI from "../Cheque Payment/AccordionSelectProductPI.js";
 import AccordionPCEditDT from "../Cheque Payment/AccordionPCEditDT.js";
 

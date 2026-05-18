@@ -497,7 +497,7 @@ export default function SIAccordionHD({
       // แสดง SweetAlert เมื่อบันทึก SetAccTransactionHD สำเร็จ (โดยไม่สนใจผลลัพธ์ SetCustomer ใน try block)
       Swal.fire({
         icon: "success",
-        title: `บันทึกข้อมูลสำเร็จ SO:${AccDocNo}`,
+        title: `บันทึกข้อมูลสำเร็จ SI:${AccDocNo}`,
         showConfirmButton: false,
         timer: 2000,
       });

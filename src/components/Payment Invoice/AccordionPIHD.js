@@ -67,6 +67,7 @@ import GLTemplateModal from "../purchase/Purchase Order/GLTemplateModal";
 import { PCfromPI } from "./PCFromPI";
 import { PIToJournal } from "./PIToJournal";
 import { DIfromPI } from "./DIfromPI";
+import Abbreviations from "../DataFilters/Abbreviations";
 
 export default function AccordionPIHD({
   apiData,
@@ -1328,7 +1329,9 @@ export default function AccordionPIHD({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            // width: 400,
+            width: "90%",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1366,7 +1369,8 @@ export default function AccordionPIHD({
                   onClick={() => handleSupplierSelect(supplier.supplierCode)}
                 >
                   <ListItemText primary={supplier.supplierCode} />
-                  <h5>{supplier.supplierName}</h5>
+                  <Abbreviations textName={supplier.supplierName} />
+                  {/* <h5>{supplier.supplierName}</h5> */}
                 </ListItemButton>
               </ListItem>
             ))}

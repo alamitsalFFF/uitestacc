@@ -57,6 +57,7 @@ import POManagementComponent from "./POManagementComponent";
 import MoreInfoHD from "../../AdditionData/AdditionDataHD/MoreInfoHD";
 import CircularButtonGroup from "../../DataFilters/CircularButtonGroup";
 import { CancelPR } from "../CancelPR";
+import Abbreviations from "../../DataFilters/Abbreviations";
 
 export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo, ocrData, fromOCR, ocrLineItems }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -1223,7 +1224,9 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            // width: 400,
+            width: "90%",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1261,7 +1264,8 @@ export default function PRHeaderAU({ apiData, setApiData, currentIndex, setCurre
                   onClick={() => handleSupplierSelect(supplier.supplierCode)}
                 >
                   <ListItemText primary={supplier.supplierCode} />
-                  <h5>{supplier.supplierName}</h5>
+                  {/* <h5>{supplier.supplierName}</h5> */}
+                  <Abbreviations textName={supplier.supplierName} />
                 </ListItemButton>
               </ListItem>
             ))}

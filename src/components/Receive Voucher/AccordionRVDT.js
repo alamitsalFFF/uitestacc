@@ -1,8 +1,8 @@
 import { URL } from '../api/url';
 import React, { useState, useEffect } from "react";
 import axios from "../Auth/axiosConfig.js";
-import { ButtonGroup } from "@mui/material";
-import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { ButtonGroup, Chip, useMediaQuery } from "@mui/material";
+import { faCircleArrowUp, faFileContract, faFileInvoiceDollar, faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setAccDocNo,
@@ -48,6 +48,13 @@ import { FormatDate } from "../purchase/FormatData.js";
 import { API_VIEW_RESULT } from "../api/url.js";
 import PVEditDetail from "../Payment Voucher/PVEditDetail.js";
 import RVEditDetail from "./RVEditDetail.js";
+import ChooseDocForSO from "./ChooseDocForSO.js";
+import { RVfromSOFull } from "./RVFromSOFull.js";
+import ChooseDocForSI from "./ChooseDocForSI.js";
+import { RVfromSIFull } from "./RVFromSIFull.js";
+import ChooseDocForRC from "../Cheque Receive/ChooseDocForRC.js";
+import { RVfromRCFull } from "../Cheque Receive/RVFromRCFull.js";
+import Swal from "sweetalert2";
 // import AccordionPVEditDT from "./AccordionPVEditDT"; 
 
 function AccordionRVDT({ accDocNo, onSaveSuccess }) {
@@ -59,6 +66,7 @@ function AccordionRVDT({ accDocNo, onSaveSuccess }) {
 
   // expose active journal for components below
   const JournalNo = journalActive;
+  const isDesktop = useMediaQuery('(min-width:600px)');
   const accItemNo = useSelector((state) => state.accItemNo);
   const detailData = useSelector((state) => state.detailData);
   const selectedProducts = useSelector((state) => state.selectedProducts);
@@ -320,6 +328,246 @@ function AccordionRVDT({ accDocNo, onSaveSuccess }) {
   const [showEditDetailModal, setShowEditDetailModal] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
 
+  // ---- Choose SO → Create RV ----
+  const [openChooseSO, setOpenChooseSO] = useState(false);
+
+  const handleChooseSO = () => {
+    setOpenChooseSO(true);
+  };
+
+  const handleSOSelected = async (docNo, partyName, totalNet) => {
+    setOpenChooseSO(false);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: `สร้าง RV จาก SO: ${docNo}`,
+        width: '580px',
+        html:
+          `<div style="display:grid;grid-template-columns:150px 1fr;gap:12px;text-align:right;align-items:center;padding-right:16px;">` +
+
+          `<label style="font-weight:bold;">SO No:</label>` +
+          `<input class="swal2-input" value="${docNo}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">ลูกค้า:</label>` +
+          `<input class="swal2-input" value="${(partyName || "").replace(/"/g, '&quot;')}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">DocRef No:</label>` +
+          `<input id="swal-so-taxno" class="swal2-input" placeholder="เลขใบเสร็จ/ใบหัก/บัตรประชาชน" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Receive Date:</label>` +
+          `<input id="swal-so-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Code (Cash):</label>` +
+          `<input id="swal-so-acccode" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่รับ" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">RV No:</label>` +
+          `<input class="swal2-input" value="${JournalNo || ''}" disabled style="margin:0;width:100%;background:#f5f7ff;font-weight:700;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const taxno = document.getElementById('swal-so-taxno')?.value?.trim() || '';
+          const docdate = document.getElementById('swal-so-docdate')?.value;
+          const acccode = document.getElementById('swal-so-acccode')?.value?.trim() || '';
+          const rvno = JournalNo || '';
+
+          if (!docdate) {
+            Swal.showValidationMessage('กรุณาระบุวันที่รับเงิน');
+            return false;
+          }
+          return { taxno, docdate, acccode, rvno };
+        },
+      });
+
+      if (!formValues) return;
+
+      const { taxno, docdate, acccode, rvno } = formValues;
+
+      const resp = await RVfromSOFull(
+        docNo,
+        taxno,
+        docdate,
+        rvno,
+        acccode
+      );
+      console.log('RVfromSOFull response:', resp);
+      if (!resp?.error) {
+        await handleDetailUpdatedOrDeleted(true);
+      }
+    } catch (err) {
+      console.error('handleSOSelected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message || '',
+      });
+    }
+  };
+  // ---- End Choose SO ----
+
+  // ---- Choose SI → Create RV ----
+  const [openChooseSI, setOpenChooseSI] = useState(false);
+
+  const handleChooseSI = () => {
+    setOpenChooseSI(true);
+  };
+
+  const handleSISelected = async (docNo, partyName, totalNet) => {
+    setOpenChooseSI(false);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: `สร้าง RV จาก SI: ${docNo}`,
+        width: '560px',
+        html:
+          `<div style="display:grid;grid-template-columns:150px 1fr;gap:12px;text-align:right;align-items:center;padding-right:16px;">` +
+
+          `<label style="font-weight:bold;">SI No:</label>` +
+          `<input class="swal2-input" value="${docNo}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">ลูกค้า:</label>` +
+          `<input class="swal2-input" value="${(partyName || "").replace(/"/g, '&quot;')}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">DocRef No:</label>` +
+          `<input id="swal-si-taxno" class="swal2-input" placeholder="เลขใบเสร็จ/ใบหัก/บัตรประชาชน" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Receive Date:</label>` +
+          `<input id="swal-si-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">RV No:</label>` +
+          `<input class="swal2-input" value="${JournalNo || ''}" disabled style="margin:0;width:100%;background:#f5f7ff;font-weight:700;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const taxno = document.getElementById('swal-si-taxno')?.value?.trim() || '';
+          const docdate = document.getElementById('swal-si-docdate')?.value;
+          const rvno = JournalNo || '';
+
+          if (!docdate) {
+            Swal.showValidationMessage('กรุณาระบุวันที่รับเงิน');
+            return false;
+          }
+          return { taxno, docdate, rvno };
+        },
+      });
+
+      if (!formValues) return;
+
+      const { taxno, docdate, rvno } = formValues;
+
+      const resp = await RVfromSIFull(
+        docNo,
+        taxno,
+        docdate,
+        rvno
+      );
+      console.log('RVfromSIFull response:', resp);
+      if (!resp?.error) {
+        await handleDetailUpdatedOrDeleted(true);
+      }
+    } catch (err) {
+      console.error('handleSISelected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message || '',
+      });
+    }
+  };
+  // ---- End Choose SI ----
+
+  // ---- Choose RC (Cheque Receive) → Create RV ----
+  const [openChooseRC, setOpenChooseRC] = useState(false);
+
+  const handleChooseRC = () => {
+    setOpenChooseRC(true);
+  };
+
+  const handleRCSelected = async (docNo, partyName, totalNet) => {
+    setOpenChooseRC(false);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const { value: formValues } = await Swal.fire({
+        title: `สร้าง RV จาก RC: ${docNo}`,
+        width: '600px',
+        html:
+          `<div style="display:grid;grid-template-columns:170px 1fr;gap:12px;text-align:right;align-items:center;padding-right:16px;">` +
+
+          `<label style="font-weight:bold;">RC No:</label>` +
+          `<input class="swal2-input" value="${docNo}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">ลูกค้า:</label>` +
+          `<input class="swal2-input" value="${(partyName || "").replace(/"/g, '&quot;')}" disabled style="margin:0;width:100%;background:#f5f7ff;">` +
+
+          `<label style="font-weight:bold;">Receive Date:</label>` +
+          `<input id="swal-rc-docdate" class="swal2-input" type="date" value="${currentDate}" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Code (Cash):</label>` +
+          `<input id="swal-rc-acccode" class="swal2-input" placeholder="รหัสบัญชีเงินสดที่รับ" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Bank Charge:</label>` +
+          `<input id="swal-rc-bankchg" class="swal2-input" placeholder="ค่าธรรมเนียมธนาคาร (ถ้าไม่มีใส่ 0)" value="0" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">Acc Credit:</label>` +
+          `<input id="swal-rc-acccredit" class="swal2-input" placeholder="รหัสบัญชีรายได้/ค่าใช้จ่าย หมวด4" style="margin:0;width:100%;">` +
+
+          `<label style="font-weight:bold;">RV No:</label>` +
+          `<input class="swal2-input" value="${JournalNo || ''}" disabled style="margin:0;width:100%;background:#f5f7ff;font-weight:700;">` +
+
+          `</div>`,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const docdate = document.getElementById('swal-rc-docdate')?.value;
+          const acccode = document.getElementById('swal-rc-acccode')?.value?.trim() || '';
+          const bankchg = document.getElementById('swal-rc-bankchg')?.value?.trim() || '0';
+          const acccredit = document.getElementById('swal-rc-acccredit')?.value?.trim() || '';
+          const rvno = JournalNo || '';
+
+          if (!docdate) {
+            Swal.showValidationMessage('กรุณาระบุวันที่รับเงิน');
+            return false;
+          }
+          return { docdate, acccode, bankchg, acccredit, rvno };
+        },
+      });
+
+      if (!formValues) return;
+
+      const { docdate, acccode, bankchg, acccredit, rvno } = formValues;
+
+      const resp = await RVfromRCFull(
+        docNo,
+        docdate,
+        acccode,
+        bankchg,
+        rvno,
+        acccredit
+      );
+      console.log('RVfromRCFull response:', resp);
+      if (!resp?.error) {
+        await handleDetailUpdatedOrDeleted(true);
+      }
+    } catch (err) {
+      console.error('handleRCSelected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด',
+        text: err.message || '',
+      });
+    }
+  };
+  // ---- End Choose RC ----
+
   const handleEditDetail = async (index) => {
     try {
       const journalNo = rvall && rvall.length > 0 ? rvall[0].JournalNo : JournalNo;
@@ -402,35 +650,138 @@ function AccordionRVDT({ accDocNo, onSaveSuccess }) {
 
   return (
     <div>
-      {/* <h1 style={{ textAlign: "center" }}>Payment Voucher</h1> */}
+      {/* <h1 style={{ textAlign: "center" }}>Receive Voucher</h1> */}
+
+      {/* Choose SO modal */}
+      <ChooseDocForSO
+        isOpen={openChooseSO}
+        onClose={() => setOpenChooseSO(false)}
+        onSelect={handleSOSelected}
+      />
+
+      {/* Choose SI modal */}
+      <ChooseDocForSI
+        isOpen={openChooseSI}
+        onClose={() => setOpenChooseSI(false)}
+        onSelect={handleSISelected}
+      />
+
+      {/* Choose RC modal */}
+      <ChooseDocForRC
+        isOpen={openChooseRC}
+        onClose={() => setOpenChooseRC(false)}
+        onSelect={handleRCSelected}
+      />
+
       <div className="row">
         <ListItem
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
+            flexDirection: isDesktop ? "row" : "column",
+            alignItems: isDesktop ? "center" : "stretch",
+            justifyContent: "space-between",
+            gap: "10px",
+            padding: "8px 16px",
           }}
         >
+          {/* ปุ่มกลุ่ม Choose */}
           <div
             style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+              flexWrap: "wrap",
+              order: isDesktop ? 1 : 2,
+            }}
+          >
+            {/* Choose SO */}
+            <Chip
+              icon={
+                <FontAwesomeIcon
+                  icon={faFileContract}
+                  style={{ color: "#fff", fontSize: "0.85rem" }}
+                />
+              }
+              label="Choose SO"
+              onClick={handleChooseSO}
+              style={{
+                background: "linear-gradient(135deg, #e65100, #f57c00)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(230,81,0,0.35)",
+                padding: "4px 4px",
+                borderRadius: "20px",
+              }}
+            />
+            {/* Choose SI */}
+            <Chip
+              icon={
+                <FontAwesomeIcon
+                  icon={faFileInvoiceDollar}
+                  style={{ color: "#fff", fontSize: "0.85rem" }}
+                />
+              }
+              label="Choose SI"
+              onClick={handleChooseSI}
+              style={{
+                background: "linear-gradient(135deg, #6a1b9a, #8e24aa)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(106,27,154,0.35)",
+                padding: "4px 4px",
+                borderRadius: "20px",
+              }}
+            />
+            {/* Choose RC */}
+            <Chip
+              icon={
+                <FontAwesomeIcon
+                  icon={faMoneyBillWave}
+                  style={{ color: "#fff", fontSize: "0.85rem" }}
+                />
+              }
+              label="Choose RC"
+              onClick={handleChooseRC}
+              style={{
+                background: "linear-gradient(135deg, #00695c, #00897b)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(0,137,123,0.35)",
+                padding: "4px 4px",
+                borderRadius: "20px",
+              }}
+            />
+          </div>
+
+          {/* Badge เลขเอกสาร */}
+          <div
+            style={{
+              order: isDesktop ? 2 : 1,
               display: "inline-flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: isDesktop ? "flex-end" : "center",
               background: "linear-gradient(135deg, #1a237e, #1565c0)",
-              borderRadius: "20px",
+              borderRadius: "16px",
               padding: "8px 20px",
               boxShadow: "0 2px 8px rgba(21, 101, 192, 0.4)",
-              marginTop: "5px",
-              marginLeft: "10px",
+              width: isDesktop ? "auto" : "100%",
+              boxSizing: "border-box",
             }}
           >
             <span
               style={{
-                fontSize: "2rem",
+                fontSize: "clamp(1.3rem, 5vw, 2rem)",
                 fontWeight: 700,
                 color: "#ffffff",
-                letterSpacing: "0.05em",
+                letterSpacing: "0.04em",
                 lineHeight: 1.2,
+                whiteSpace: "nowrap",
               }}
             >
               {JournalNo ?? "—"}
@@ -439,11 +790,10 @@ function AccordionRVDT({ accDocNo, onSaveSuccess }) {
               style={{
                 fontSize: "0.75rem",
                 fontWeight: 500,
-                color: "rgba(255, 255, 255, 1)",
-                letterSpacing: "0.05em",
-                marginTop: "3px",
-                width: "100%",
-                textAlign: "right",
+                color: "rgba(255,255,255,0.85)",
+                letterSpacing: "0.04em",
+                marginTop: "2px",
+                whiteSpace: "nowrap",
               }}
             >
               Date:&nbsp;

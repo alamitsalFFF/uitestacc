@@ -53,8 +53,8 @@ import AccordiionDIAddDT from "../Delivery/Delivery In/AccordiionDIAddDT.js";
 import AccordionSelectProductDI from "../Delivery/Delivery In/AccordionSelectProductDI.js";
 import AccordionDIEditDT from "../Delivery/Delivery In/AccordionDIEditDT.js";
 import AccordiionPCAddDT from "./AccordiionPCAddDT.js";
-import AccordionSelectProductPI from "./AccordionSelectProductPI.js";
 import AccordionPCEditDT from "./AccordionPCEditDT.js";
+import AccordionSelectProductPC from "./AccordionSelectProductPC.js";
 
 function AccordionPCDT({ accDocNo, onSaveSuccess }) {
   const location = useLocation('');
@@ -904,7 +904,7 @@ function AccordionPCDT({ accDocNo, onSaveSuccess }) {
                 </Button>
               </Stack>
             )}
-            <AccordionSelectProductPI
+            <AccordionSelectProductPC
               isOpen={openProductModal}
               onClose={handleCloseProductModal}
               onSave={handleConfirmProductSelection}

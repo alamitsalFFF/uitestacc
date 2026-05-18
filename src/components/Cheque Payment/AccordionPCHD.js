@@ -61,6 +61,7 @@ import { PVfromPC } from "./PVFromPC";
 import GLTemplateModal from "../purchase/Purchase Order/GLTemplateModal";
 import DocStatusPC from "./DocStatusPC";
 import { DIfromPC } from "./DIfromPC";
+import Abbreviations from "../DataFilters/Abbreviations";
 
 export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCurrentIndex, setCurrentAccDocNo }) {
   const AccDocNo = useSelector((state) => state.accDocNo); // ดึงข้อมูล transaction จาก Store
@@ -1154,7 +1155,9 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            // width: 400,
+            width: "90%",
+            maxWidth: "500px",
             backgroundColor: "white",
             // border: "2px solid #000",
             borderRadius: "30px",
@@ -1192,7 +1195,8 @@ export default function AccordionPCHD({ apiData, setApiData, currentIndex, setCu
                   onClick={() => handleSupplierSelect(supplier.supplierCode)}
                 >
                   <ListItemText primary={supplier.supplierCode} />
-                  <h5>{supplier.supplierName}</h5>
+                  {/* <h5>{supplier.supplierName}</h5> */}
+                  <Abbreviations textName={supplier.supplierName} />
                 </ListItemButton>
               </ListItem>
             ))}
